@@ -30,7 +30,6 @@ public class Sleepynes extends BasicNeed{
 	}
 	
 	private void triggerSleepy() {
-		System.out.println("Feel sleepy!");
 		brain.addIntention(new Sleep());
 	}
 	

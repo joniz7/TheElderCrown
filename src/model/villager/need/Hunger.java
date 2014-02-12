@@ -35,7 +35,6 @@ public class Hunger extends BasicNeed{
 	
 	private void triggerHunger(){
 		cD = 0;
-		System.out.println("Feel hungry!");
 		brain.addIntention(new Eat());
 	}
 	
