@@ -9,6 +9,8 @@ import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.SlickException;
 
+import view.View;
+
 import control.Controller;
 import control.WorldController;
 
@@ -17,6 +19,7 @@ public class GameSlick implements Game{
 	private static AppGameContainer appgc;
 	private Controller controller;
 	private GamePhase phase;
+	private View view;
 	private static boolean isExit;
 
 	@Override
@@ -36,13 +39,13 @@ public class GameSlick implements Game{
 		controller = new WorldController(this, phase);
 		appgc.setFullscreen(true);
 		appgc.getInput().addKeyListener(controller);
-		//View(activeDisplay);
+		view = new View(appgc.getWidth(), appgc.getHeight());
 		isExit = false;
 	}
 
 	@Override
-	public void render(GameContainer arg0, Graphics arg1) throws SlickException {
-		// TODO Auto-generated method stub
+	public void render(GameContainer arg0, Graphics g) throws SlickException {
+		view.render(g, phase.getViewX(), phase.getViewY());
 		
 	}
 

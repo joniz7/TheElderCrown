@@ -1,7 +1,5 @@
 package view;
 
-
-import java.awt.DisplayMode;
 import java.util.ArrayList;
 
 import org.newdawn.slick.Graphics;
@@ -9,13 +7,14 @@ import org.newdawn.slick.Graphics;
 public class View {
 
 	private static ArrayList<Drawable> graphics = new ArrayList<Drawable>();
-	private static DisplayMode activeDisplay;
+	private static int width;
+	private static int height;
 	
-	public View(DisplayMode activeDisplay){
-		graphics  = new ArrayList<Drawable>();
-		View.activeDisplay = activeDisplay;
+	public View(int width, int height) {
+		this.width = width;
+		this.height = height;
 	}
-	
+
 	public static void addGraphic(Drawable d){
 		graphics.add(d);
 	}
@@ -32,7 +31,7 @@ public class View {
 		int drawCount = 0;
 		
 		for(Drawable d : graphics)
-			if(d.draw(g, viewX, viewY, activeDisplay))
+			if(d.draw(g, viewX, viewY, width, height))
 				drawCount++;
 	}
 	

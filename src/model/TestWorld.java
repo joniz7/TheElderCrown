@@ -1,16 +1,15 @@
 package model;
 
-import control.WorldController;
+import java.awt.Point;
+import java.util.ArrayList;
+import java.util.Random;
+
 import model.entity.Tree;
-import model.path.FindObject;
 import model.path.PathFinder;
 import model.tile.GrassTile;
 import model.tile.Tile;
 import model.tile.WaterTile;
 import model.villager.Villager;
-
-import java.awt.Point;
-import java.util.*;
 
 import org.newdawn.slick.util.pathfinding.PathFindingContext;
 import org.newdawn.slick.util.pathfinding.TileBasedMap;

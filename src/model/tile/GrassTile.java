@@ -3,8 +3,6 @@ package model.tile;
 import org.newdawn.slick.Image;
 
 import resource.ImageLoader;
-import view.Drawable;
-import view.View;
 
 public class GrassTile extends Tile{
 

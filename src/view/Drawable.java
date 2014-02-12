@@ -20,15 +20,15 @@ public class Drawable{
 		this.image = image;
 	}
 	
-	public boolean draw(Graphics g, int viewX, int viewY, DisplayMode activeDisplay){
-		int width = image.getWidth();
-		int height = image.getHeight();
+	public boolean draw(Graphics g, int viewX, int viewY, int width, int height){
+		int imageWidth = image.getWidth();
+		int imageHeight = image.getHeight();
 		
 		int transposedX = worldX - viewX;
 		int transposedY = worldY - viewY;
 			
-		if(transposedX + width > 0 && transposedX < activeDisplay.getWidth())
-			if(transposedY + height > 0 && transposedY < activeDisplay.getHeight()){
+		if(transposedX + imageWidth > 0 && transposedX < width)
+			if(transposedY + imageHeight > 0 && transposedY < height){
 				g.drawImage(image, transposedX, transposedY);
 				return true;
 			}
