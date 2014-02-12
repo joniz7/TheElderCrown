@@ -76,6 +76,7 @@ public class GameSlick implements Game{
 	 */
 	public void update(GameContainer arg0, int arg1) throws SlickException {
 		phase.tick();
+		controller.tick();
 		if(isExit){
 			appgc.destroy();
 		}

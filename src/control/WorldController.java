@@ -36,8 +36,9 @@ public class WorldController extends Controller{
 		if(e == 'a' || e == 'A')
 			isADown = true;
 		if(e == 'd' || e == 'D')
-			isDDown = true;
+			isDDown = true;ww
 		if(key == Input.KEY_ESCAPE){
+			System.exit(0);
 			game.closeRequested();
 		}
 	}
@@ -62,7 +63,6 @@ public class WorldController extends Controller{
 
 	@Override
 	public void inputStarted() {
-		// TODO Auto-generated method stub
 		
 	}
 
