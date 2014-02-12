@@ -1,0 +1,36 @@
+package model.villager.need;
+
+import resource.RandomClass;
+
+public class Hunger extends BasicNeed{
+
+	public Hunger() {
+		super(-100.0f, 100.0f);
+		value = 25.0f;
+	}
+
+	@Override
+	public void tick() {
+		value = value - 0.0001f;
+		
+		if(value < 0 && RandomClass.getRandomInt(10, 0) == 0){
+			triggerHunger();
+		}
+		else if(value < -75 && RandomClass.getRandomInt(10, 0) == 0){
+			triggerStarvation();
+		}
+	}
+	
+	public void satisfy(float amount){
+		value = value + amount;
+	}
+	
+	private void triggerHunger(){
+		// Do something with villager brain
+	}
+	
+	private void triggerStarvation() {
+		// Do something with Villager brain
+	}
+
+}

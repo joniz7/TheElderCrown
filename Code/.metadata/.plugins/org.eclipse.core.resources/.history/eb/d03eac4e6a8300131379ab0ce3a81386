@@ -1,0 +1,19 @@
+package state;
+
+import java.util.ArrayList;
+
+import head.Drawable;
+import head.Tickable;
+
+public class GameState implements Tickable{
+
+	ArrayList<Drawable> drawables = new ArrayList<Drawable>();
+	
+	@Override
+	public void tick() {
+		
+		
+		
+	}
+
+}

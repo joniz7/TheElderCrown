@@ -1,0 +1,5 @@
+package model.villager;
+
+public class BasicNeed {
+
+}

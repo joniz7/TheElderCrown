@@ -1,0 +1,30 @@
+package state;
+
+import java.awt.Graphics;
+import java.util.ArrayList;
+
+import head.Drawable;
+import head.Tickable;
+
+public class GameState implements Tickable, Drawable{
+
+	protected ArrayList<Drawable> drawables = new ArrayList<Drawable>();
+	protected ArrayList<Tickable> tickables = new ArrayList<Tickable>();
+
+	@Override
+	public void tick() {
+		for(Tickable t : tickables){
+			t.tick();
+		}
+	}
+
+	@Override
+	public void draw(Graphics g) {
+		for(Drawable d : drawables){
+			d.draw(g);
+		}
+	}
+	
+	
+
+}
