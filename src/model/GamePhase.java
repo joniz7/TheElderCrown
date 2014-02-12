@@ -27,7 +27,6 @@ public abstract class GamePhase implements Tickable{
 	public void incViewX(){
 		viewX++;
 		viewX++;
-		System.out.println("Right");
 	}
 	
 	public void incViewY(){
