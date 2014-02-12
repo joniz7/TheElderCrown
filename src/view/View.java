@@ -33,6 +33,7 @@ public class View {
 		for(Drawable d : graphics)
 			if(d.draw(g, viewX, viewY, width, height))
 				drawCount++;
+			
 	}
 	
 }

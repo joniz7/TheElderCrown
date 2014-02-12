@@ -28,7 +28,7 @@ public class Villager extends GraphicalEntity implements Tickable{
 	private boolean moving = false;
 	
 	public Villager(TestWorld world, int tileX, int tileY){
-		super("ph", "villager.png");
+		super("villager");
 		this.world = world;
 		this.tileX = tileX;
 		this.tileY = tileY;

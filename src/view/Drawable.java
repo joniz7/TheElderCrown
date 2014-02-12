@@ -1,7 +1,5 @@
 package view;
 
-import java.awt.DisplayMode;
-
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.Image;
 
@@ -11,9 +9,11 @@ public class Drawable{
 
 	private Image image;
 	private int worldX, worldY;
+	private String name;
 	
-	public Drawable(String folder, String name){
-		image = ImageLoader.loadImage(folder, name);
+	public Drawable(String name){
+		image = ImageLoader.getImage(name);
+		this.name = name;
 	}
 	
 	public Drawable(Image image){
@@ -43,8 +43,8 @@ public class Drawable{
 		this.worldY = drawY;
 	}
 
-	public void setImage(String folder, String name) {
-		image = ImageLoader.loadImage(folder, name);
+	public void setImage(String name) {
+		image = ImageLoader.getImage(name);
 	}
 	
 	

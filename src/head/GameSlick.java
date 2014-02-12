@@ -9,6 +9,8 @@ import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.SlickException;
 
+import resource.ImageLoader;
+
 import view.View;
 
 import control.Controller;
@@ -51,6 +53,8 @@ public class GameSlick implements Game{
 	 * connects them properly.
 	 */
 	public void init(GameContainer arg0) throws SlickException {
+		new ImageLoader();
+		
 		phase = new TestWorld();
 		controller = new WorldController(this, phase);
 		
@@ -58,6 +62,7 @@ public class GameSlick implements Game{
 		appgc.getInput().addKeyListener(controller);
 		appgc.setTitle(getTitle());
 		view = new View(appgc.getWidth(), appgc.getHeight());
+		
 		isExit = false;
 	}
 

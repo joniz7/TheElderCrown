@@ -15,7 +15,7 @@ public class Tree extends GraphicalEntity implements Tickable{
 	private static TestWorld world;
 	
 	public Tree(int tileX, int tileY, TestWorld world) {
-		super("ph", "tree2.png");
+		super("tree2");
 		this.tileX = tileX;
 		this.tileY = tileY;
 		updatePos((tileX * 20) - 20, (tileY * 20) - 20);
@@ -28,7 +28,7 @@ public class Tree extends GraphicalEntity implements Tickable{
 		if(fruit)
 			timer = 0;
 		if(timer > fruitRegTime){
-			drawable.setImage("ph", "tree2.png");
+			drawable.setImage("tree2");
 			world.setObjectIndexID(tileX, tileY, 101);
 			fruit = true;
 		}
@@ -36,7 +36,7 @@ public class Tree extends GraphicalEntity implements Tickable{
 	}
 	
 	public void eaten(){
-		drawable.setImage("ph", "tree.png");
+		drawable.setImage("tree");
 		world.setObjectIndexID(tileX, tileY, 102);
 		fruit = false;
 	}
