@@ -53,11 +53,6 @@ public class GameAWT implements Runnable{
 		new DisplayMode(1024, 768, 16, 0),
 	};
 	
-	public static void main(String[] args){
-		GameAWT game = new GameAWT();
-		game.init();
-		game.run();
-	}
 
 	@Override
 	public void run() {

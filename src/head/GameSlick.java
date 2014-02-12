@@ -1,8 +1,14 @@
 package head;
 
-import org.newdawn.slick.*;
+import org.newdawn.slick.AppGameContainer;
+import org.newdawn.slick.Game;
+import org.newdawn.slick.GameContainer;
+import org.newdawn.slick.Graphics;
+import org.newdawn.slick.SlickException;
 
 public class GameSlick implements Game{
+
+	private AppGameContainer appgc;
 
 	@Override
 	public boolean closeRequested() {
@@ -18,8 +24,13 @@ public class GameSlick implements Game{
 
 	@Override
 	public void init(GameContainer arg0) throws SlickException {
-		// TODO Auto-generated method stub
 		
+		appgc = new AppGameContainer(this);
+		
+		appgc.start();
+		
+		//View(activeDisplay);
+		//state = new TestWorld();		
 	}
 
 	@Override
@@ -32,6 +43,10 @@ public class GameSlick implements Game{
 	public void update(GameContainer arg0, int arg1) throws SlickException {
 		// TODO Auto-generated method stub
 		
+	}
+	
+	public static void main(String[] args){
+		GameSlick game = new GameSlick();
 	}
 
 }
