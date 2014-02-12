@@ -6,7 +6,7 @@ import java.util.ArrayList;
 import view.Drawable;
 import head.Tickable;
 
-public abstract class GameState implements Tickable{
+public abstract class GamePhase implements Tickable{
 
 	protected ArrayList<Tickable> tickables = new ArrayList<Tickable>();
 

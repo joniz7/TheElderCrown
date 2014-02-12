@@ -1,21 +1,18 @@
 package control;
 
-import head.Tickable;
+import head.GameSlick;
+import model.GamePhase;
 
-import java.awt.event.KeyEvent;
-import java.awt.event.KeyListener;
-import java.awt.event.MouseEvent;
-import java.awt.event.MouseMotionListener;
-
-import model.GameState;
-import model.TestWorld;
+import org.newdawn.slick.Input;
 
 public class WorldController extends Controller{
 
 	private boolean isWDown, isADown, isSDown, isDDown;
+	private GameSlick game;
 	
-	public WorldController(GameState gameState) {
+	public WorldController(GameSlick game, GamePhase gameState) {
 		super(gameState);
+		this.game = game;
 	}
 
 	@Override
@@ -29,68 +26,56 @@ public class WorldController extends Controller{
 		if(isDDown)
 			gameState.incViewX();
 	}
-	
+
 	@Override
-	public void keyPressed(KeyEvent e) {
-		if(e.getKeyChar() == 'w' || e.getKeyChar() == 'W')
+	public void keyPressed(int key, char e) {
+		System.out.println("KEY PRESSED!!!!");
+		if(e == 'w' || e == 'W')
 			isWDown = true;
-		if(e.getKeyChar() == 's' || e.getKeyChar() == 'S')
+		if(e == 's' || e == 'S')
 			isSDown = true;
-		if(e.getKeyChar() == 'a' || e.getKeyChar() == 'A')
+		if(e == 'a' || e == 'A')
 			isADown = true;
-		if(e.getKeyChar() == 'd' || e.getKeyChar() == 'D')
+		if(e == 'd' || e == 'D')
 			isDDown = true;
+		if(key == Input.KEY_ESCAPE){
+			game.closeRequested();
+		}
 	}
 
 	@Override
-	public void keyReleased(KeyEvent e) {
-		if(e.getKeyChar() == 'w' || e.getKeyChar() == 'W')
+	public void keyReleased(int key, char e) {
+		if(e == 'w' || e == 'W')
 			isWDown = false;
-		if(e.getKeyChar() == 's' || e.getKeyChar() == 'S')
+		if(e == 's' || e == 'S')
 			isSDown = false;
-		if(e.getKeyChar() == 'a' || e.getKeyChar() == 'A')
+		if(e == 'a' || e == 'A')
 			isADown = false;
-		if(e.getKeyChar() == 'd' || e.getKeyChar() == 'D')
-			isDDown = false;
+		if(e == 'd' || e == 'D')
+			isDDown = false;		
 	}
 
 	@Override
-	public void keyTyped(KeyEvent e) {
+	public void inputEnded() {
+		// TODO Auto-generated method stub
 		
 	}
 
 	@Override
-	public void mouseDragged(MouseEvent e) {
+	public void inputStarted() {
+		// TODO Auto-generated method stub
 		
 	}
 
 	@Override
-	public void mouseMoved(MouseEvent e) {
-		
+	public boolean isAcceptingInput() {
+		// TODO Auto-generated method stub
+		return false;
 	}
 
 	@Override
-	public void mouseClicked(MouseEvent e) {
-		
-	}
-
-	@Override
-	public void mouseEntered(MouseEvent e) {
-		
-	}
-
-	@Override
-	public void mouseExited(MouseEvent e) {
-		
-	}
-
-	@Override
-	public void mousePressed(MouseEvent e) {
-		
-	}
-
-	@Override
-	public void mouseReleased(MouseEvent e) {
+	public void setInput(Input arg0) {
+		// TODO Auto-generated method stub
 		
 	}
 

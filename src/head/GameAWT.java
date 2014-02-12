@@ -13,20 +13,20 @@ import java.util.ArrayList;
 
 import control.WorldController;
 import view.View;
-import model.GameState;
+import model.GamePhase;
 import model.TestWorld;
 import model.villager.Villager;
 
 public class GameAWT implements Runnable{
 
 	private boolean running = true;
-	private Frame gameFrame;
+//	private Frame gameFrame;
 	
-	private static GameState state;
+	private static GamePhase state;
 	private View view;
 	private DisplayMode activeDisplay;
 	
-	private Display disp;
+//	private Display disp;
 	
 	public static final double TARGET_TPS = 75.0;
 	public static final double TARGET_FPS = 200.0;
@@ -103,59 +103,59 @@ public class GameAWT implements Runnable{
 	}
 	
 	private void init(){
-		disp = new Display();
-		
-		Frame frame = new Frame(0, 0);
-		
-		disp.getGraphicsDevice().setFullScreenWindow(frame);
-		
-		DisplayMode dm = disp.findFirstCompatibleMode(preferedResolutions);
-		
-		DisplayMode newDisplayMode = dm;
-		DisplayMode oldDisplayMode = disp.getGraphicsDevice().getDisplayMode();
-		
-		try {
-			disp.getGraphicsDevice().setFullScreenWindow(frame);
-			disp.getGraphicsDevice().setDisplayMode(newDisplayMode);
-			activeDisplay = newDisplayMode;
-		} finally {
-			disp.getGraphicsDevice().setDisplayMode(oldDisplayMode);
-			disp.getGraphicsDevice().setFullScreenWindow(frame);
-			activeDisplay = oldDisplayMode;
-		}
-		
-		view = new View(activeDisplay);
-		state = new TestWorld();
-		
-		frame.addKeyListener(new WorldController(state));
-		disp.getGraphicsDevice().getFullScreenWindow().addKeyListener(new WorldController(state));
+//		disp = new Display();
+//		
+//		Frame frame = new Frame(0, 0);
+//		
+//		disp.getGraphicsDevice().setFullScreenWindow(frame);
+//		
+//		DisplayMode dm = disp.findFirstCompatibleMode(preferedResolutions);
+//		
+//		DisplayMode newDisplayMode = dm;
+//		DisplayMode oldDisplayMode = disp.getGraphicsDevice().getDisplayMode();
+//		
+//		try {
+//			disp.getGraphicsDevice().setFullScreenWindow(frame);
+//			disp.getGraphicsDevice().setDisplayMode(newDisplayMode);
+//			activeDisplay = newDisplayMode;
+//		} finally {
+//			disp.getGraphicsDevice().setDisplayMode(oldDisplayMode);
+//			disp.getGraphicsDevice().setFullScreenWindow(frame);
+//			activeDisplay = oldDisplayMode;
+//		}
+//		
+//		view = new View(activeDisplay);
+//		state = new TestWorld();
+//		
+//		frame.addKeyListener(new WorldController(state));
+//		disp.getGraphicsDevice().getFullScreenWindow().addKeyListener(new WorldController(state));
 	}
 	
 	public static void render(){
-		BufferStrategy bs = Frame.getCanvas().getBufferStrategy();
-		if(bs == null){
-			Frame.getCanvas().createBufferStrategy(3);
-			Frame.getCanvas().requestFocus();
-			return;
-		}
-		
-		Graphics2D g = null;
-		do{
-			try{
-				g = (Graphics2D) bs.getDrawGraphics();
-				
-				g.setColor(Color.BLACK);
-				g.fillRect(0, 0, Frame.getCanvas().getWidth(), Frame.getCanvas().getHeight());
-				
-				// Sets preferences for rendering / Sets rendering rules
-				// KEY_ANTIALIASING reduces artifacts on shapes
-				// VALUE_ANTIALIAS_ON will clean up the edges
-				g.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON); 
-				
-				View.render(g, state.getViewX(), state.getViewY());
-			}finally{g.dispose();}
-		}while(bs.contentsLost());
-		bs.show();
-		Toolkit.getDefaultToolkit().sync();
+//		BufferStrategy bs = Frame.getCanvas().getBufferStrategy();
+//		if(bs == null){
+//			Frame.getCanvas().createBufferStrategy(3);
+//			Frame.getCanvas().requestFocus();
+//			return;
+//		}
+//		
+//		Graphics2D g = null;
+//		do{
+//			try{
+//				g = (Graphics2D) bs.getDrawGraphics();
+//				
+//				g.setColor(Color.BLACK);
+//				g.fillRect(0, 0, Frame.getCanvas().getWidth(), Frame.getCanvas().getHeight());
+//				
+//				// Sets preferences for rendering / Sets rendering rules
+//				// KEY_ANTIALIASING reduces artifacts on shapes
+//				// VALUE_ANTIALIAS_ON will clean up the edges
+//				g.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON); 
+//				
+//				View.render(g, state.getViewX(), state.getViewY());
+//			}finally{g.dispose();}
+//		}while(bs.contentsLost());
+//		bs.show();
+//		Toolkit.getDefaultToolkit().sync();
 	}
 }

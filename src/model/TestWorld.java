@@ -1,7 +1,6 @@
 package model;
 
 import control.WorldController;
-import head.Frame;
 import model.entity.Tree;
 import model.path.FindObject;
 import model.path.PathFinder;
@@ -16,7 +15,7 @@ import java.util.*;
 import org.newdawn.slick.util.pathfinding.PathFindingContext;
 import org.newdawn.slick.util.pathfinding.TileBasedMap;
 
-public class TestWorld extends GameState implements TileBasedMap{
+public class TestWorld extends GamePhase implements TileBasedMap{
 	
 	private final int WIDTH = 80, HEIGHT = 80;
 	
@@ -42,9 +41,9 @@ public class TestWorld extends GameState implements TileBasedMap{
 					objectTiles[i + 1][j + 1] = 101;
 				}
 		
-		WorldController vpl = new WorldController(this);
-		Frame.getCanvas().addKeyListener(vpl);
-		tickables.add(vpl);
+//		WorldController vpl = new WorldController(this);
+//		Frame.getCanvas().addKeyListener(vpl);
+//		tickables.add(vpl);
 		
 		new PathFinder(this);
 		

@@ -1,19 +1,27 @@
 package head;
 
+import model.GamePhase;
+import model.TestWorld;
+
 import org.newdawn.slick.AppGameContainer;
 import org.newdawn.slick.Game;
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.SlickException;
 
+import control.Controller;
+import control.WorldController;
+
 public class GameSlick implements Game{
 
-	private AppGameContainer appgc;
+	private static AppGameContainer appgc;
+	private Controller controller;
+	private GamePhase phase;
+	private static boolean isExit;
 
 	@Override
 	public boolean closeRequested() {
-		// TODO Auto-generated method stub
-		return false;
+		return isExit;
 	}
 
 	@Override
@@ -24,13 +32,12 @@ public class GameSlick implements Game{
 
 	@Override
 	public void init(GameContainer arg0) throws SlickException {
-		
-		appgc = new AppGameContainer(this);
-		
-		appgc.start();
-		
+		phase = new TestWorld();
+		controller = new WorldController(this, phase);
+		appgc.setFullscreen(true);
+		appgc.getInput().addKeyListener(controller);
 		//View(activeDisplay);
-		//state = new TestWorld();		
+		isExit = false;
 	}
 
 	@Override
@@ -41,12 +48,25 @@ public class GameSlick implements Game{
 
 	@Override
 	public void update(GameContainer arg0, int arg1) throws SlickException {
-		// TODO Auto-generated method stub
-		
+		phase.tick();
+		if(isExit){
+			appgc.destroy();
+		}
+	}
+	
+	public static void requestClose(){
+		isExit = true;
 	}
 	
 	public static void main(String[] args){
 		GameSlick game = new GameSlick();
+		try {
+			appgc = new AppGameContainer(game);
+			appgc.start();
+		} catch (SlickException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 
 }

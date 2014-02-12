@@ -1,6 +1,5 @@
 package view;
 
-import head.Display;
 
 import java.awt.DisplayMode;
 import java.awt.Graphics;
@@ -25,9 +24,9 @@ public class View {
 	}
 	
 	public static void render(Graphics g, int viewX, int viewY){
-		Display disp = new Display();
-		g.fillRect(0, 0, disp.getGraphicsDevice().getDisplayMode().getWidth(), 
-				disp.getGraphicsDevice().getDisplayMode().getHeight());
+//		Display disp = new Display();
+//		g.fillRect(0, 0, disp.getGraphicsDevice().getDisplayMode().getWidth(), 
+//				disp.getGraphicsDevice().getDisplayMode().getHeight());
 		
 		int drawCount = 0;
 		
