@@ -1,18 +1,15 @@
 package resource;
 
-import java.awt.image.BufferedImage;
-import java.awt.image.DataBufferInt;
-import java.io.IOException;
-
-import javax.imageio.ImageIO;
+import org.newdawn.slick.Image;
+import org.newdawn.slick.SlickException;
 
 public class ImageLoader {
 	
-	public static synchronized BufferedImage loadImage(String folder, String name){
-		BufferedImage img = null;
+	public static synchronized Image loadImage(String folder, String name){
+		Image img = null;
 		try {
-			img = ImageIO.read(ImageLoader.class.getResource(folder + "/" + name));
-		} catch (IOException e) {
+			img = new Image(folder + "/" + name);
+		} catch (SlickException e) {
 			e.printStackTrace();
 		}
 		return img;

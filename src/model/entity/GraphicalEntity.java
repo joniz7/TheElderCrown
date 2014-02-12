@@ -1,6 +1,6 @@
 package model.entity;
 
-import java.awt.Image;
+import org.newdawn.slick.Image;
 
 import view.Drawable;
 import view.View;

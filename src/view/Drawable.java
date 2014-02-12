@@ -1,8 +1,9 @@
 package view;
 
 import java.awt.DisplayMode;
-import java.awt.Graphics;
-import java.awt.Image;
+
+import org.newdawn.slick.Graphics;
+import org.newdawn.slick.Image;
 
 import resource.ImageLoader;
 
@@ -20,15 +21,15 @@ public class Drawable{
 	}
 	
 	public boolean draw(Graphics g, int viewX, int viewY, DisplayMode activeDisplay){
-		int width = image.getWidth(null);
-		int height = image.getHeight(null);
+		int width = image.getWidth();
+		int height = image.getHeight();
 		
 		int transposedX = worldX - viewX;
 		int transposedY = worldY - viewY;
 			
 		if(transposedX + width > 0 && transposedX < activeDisplay.getWidth())
 			if(transposedY + height > 0 && transposedY < activeDisplay.getHeight()){
-				g.drawImage(image, transposedX, transposedY, null);
+				g.drawImage(image, transposedX, transposedY);
 				return true;
 			}
 		return false;

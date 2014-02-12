@@ -1,6 +1,6 @@
 package resource;
 
-import java.awt.Image;
+import org.newdawn.slick.Image;
 
 import model.entity.GraphicalEntity;
 

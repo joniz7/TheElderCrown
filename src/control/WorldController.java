@@ -2,7 +2,6 @@ package control;
 
 import head.GameSlick;
 import model.GamePhase;
-
 import org.newdawn.slick.Input;
 
 public class WorldController extends Controller{
