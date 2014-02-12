@@ -1,5 +1,0 @@
-package head;
-
-public interface Tickable {
-
-}

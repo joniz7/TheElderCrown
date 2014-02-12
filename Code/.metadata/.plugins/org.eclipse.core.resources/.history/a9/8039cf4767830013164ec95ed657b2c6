@@ -1,9 +1,0 @@
-package head;
-
-import java.util.ArrayList;
-
-public class Game {
-
-	ArrayList<Tickable> tickables = new ArrayList<Tickable>();
-	
-}

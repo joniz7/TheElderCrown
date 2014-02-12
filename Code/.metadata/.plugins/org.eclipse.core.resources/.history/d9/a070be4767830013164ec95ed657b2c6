@@ -1,7 +1,0 @@
-package state;
-
-import head.Tickable;
-
-public class GameState implements Tickable{
-
-}

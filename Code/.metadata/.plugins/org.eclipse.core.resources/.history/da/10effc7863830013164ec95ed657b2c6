@@ -1,6 +1,0 @@
-package head;
-
-public interface Drawable{
-
-
-}
