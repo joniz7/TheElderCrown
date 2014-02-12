@@ -1,15 +1,11 @@
 package model.path;
 
-import head.GameAWT;
-
 import java.awt.Point;
 
-import org.newdawn.slick.util.pathfinding.Path;
-
-import resource.Hit;
-import resource.Miss;
 import model.TestWorld;
 import model.tile.Tile;
+
+import org.newdawn.slick.util.pathfinding.Path;
 
 public class FindObject {
 	
