@@ -1,7 +1,5 @@
 package view;
 
-import java.awt.DisplayMode;
-
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.Image;
 

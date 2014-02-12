@@ -1,15 +1,9 @@
 package model.tile;
 
-import org.newdawn.slick.Image;
-
-import resource.ImageLoader;
-
 public class WaterTile extends Tile{
 
-protected static Image image = ImageLoader.loadImage("ph", "water.png");
-	
 	public WaterTile(int x, int y) {
-		super(image);
+		super("ph", "water.png");
 		updatePos(x, y);
 		typeID = 1;
 	}
