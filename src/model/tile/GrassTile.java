@@ -1,6 +1,6 @@
 package model.tile;
 
-import java.awt.Image;
+import org.newdawn.slick.Image;
 
 import resource.ImageLoader;
 import view.Drawable;

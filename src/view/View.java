@@ -3,8 +3,9 @@ package view;
 import head.Display;
 
 import java.awt.DisplayMode;
-import java.awt.Graphics;
 import java.util.ArrayList;
+
+import org.newdawn.slick.Graphics;
 
 public class View {
 

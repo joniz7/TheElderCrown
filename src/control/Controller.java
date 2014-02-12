@@ -6,13 +6,13 @@ import java.awt.event.KeyListener;
 import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
 
-import model.GameState;
+import model.GamePhase;
 
 public abstract class Controller implements KeyListener, MouseListener, MouseMotionListener, Tickable{
 
-	protected GameState gameState;
+	protected GamePhase gameState;
 	
-	public Controller(GameState gameState){
+	public Controller(GamePhase gameState){
 		this.gameState = gameState;
 	}
 	

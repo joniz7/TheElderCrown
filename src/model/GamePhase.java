@@ -1,19 +1,16 @@
 package model;
 
-import java.awt.Graphics;
 import java.util.ArrayList;
 
-import view.Drawable;
 import head.Tickable;
 
-public abstract class GameState implements Tickable{
+public abstract class GamePhase implements Tickable{
 
 	protected ArrayList<Tickable> tickables = new ArrayList<Tickable>();
-
 	protected int viewX = 0, viewY = 0;
 	
 	@Override
-	public void tick() {
+	public void tick(){
 		for(Tickable t : tickables){
 			t.tick();
 		}

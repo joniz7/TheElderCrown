@@ -13,7 +13,7 @@ import java.util.ArrayList;
 
 import control.WorldController;
 import view.View;
-import model.GameState;
+import model.GamePhase;
 import model.TestWorld;
 import model.villager.Villager;
 
@@ -22,7 +22,7 @@ public class GameAWT implements Runnable{
 	private boolean running = true;
 	private Frame gameFrame;
 	
-	private static GameState state;
+	private static GamePhase state;
 	private View view;
 	private DisplayMode activeDisplay;
 	

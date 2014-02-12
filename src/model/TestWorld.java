@@ -16,7 +16,7 @@ import java.util.*;
 import org.newdawn.slick.util.pathfinding.PathFindingContext;
 import org.newdawn.slick.util.pathfinding.TileBasedMap;
 
-public class TestWorld extends GameState implements TileBasedMap{
+public class TestWorld extends GamePhase implements TileBasedMap{
 	
 	private final int WIDTH = 80, HEIGHT = 80;
 	

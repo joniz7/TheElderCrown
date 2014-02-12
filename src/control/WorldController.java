@@ -3,18 +3,15 @@ package control;
 import head.Tickable;
 
 import java.awt.event.KeyEvent;
-import java.awt.event.KeyListener;
 import java.awt.event.MouseEvent;
-import java.awt.event.MouseMotionListener;
 
-import model.GameState;
-import model.TestWorld;
+import model.GamePhase;
 
 public class WorldController extends Controller{
 
 	private boolean isWDown, isADown, isSDown, isDDown;
 	
-	public WorldController(GameState gameState) {
+	public WorldController(GamePhase gameState) {
 		super(gameState);
 	}
 
