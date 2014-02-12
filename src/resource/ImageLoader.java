@@ -21,13 +21,6 @@ public class ImageLoader {
 		
 		//Villager
 		imageLib.put("villager", loadImage("image", "villager.png"));
-		
-		try {
-			Thread.sleep(1000);
-		} catch (InterruptedException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
 	}
 	
 	public static Image getImage(String name){
