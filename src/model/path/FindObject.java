@@ -1,6 +1,6 @@
 package model.path;
 
-import head.Game;
+import head.GameAWT;
 
 import java.awt.Point;
 

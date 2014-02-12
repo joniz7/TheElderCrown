@@ -17,7 +17,7 @@ import model.GameState;
 import model.TestWorld;
 import model.villager.Villager;
 
-public class Game implements Runnable{
+public class GameAWT implements Runnable{
 
 	private boolean running = true;
 	private Frame gameFrame;
@@ -54,7 +54,7 @@ public class Game implements Runnable{
 	};
 	
 	public static void main(String[] args){
-		Game game = new Game();
+		GameAWT game = new GameAWT();
 		game.init();
 		game.run();
 	}
