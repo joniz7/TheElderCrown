@@ -36,7 +36,6 @@ public class Tree extends GraphicalEntity implements Tickable{
 	}
 	
 	public void eaten(){
-		System.out.println("Eaten");
 		drawable.setImage("ph", "tree.png");
 		world.setObjectIndexID(tileX, tileY, 102);
 		fruit = false;

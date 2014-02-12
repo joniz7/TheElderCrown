@@ -28,7 +28,6 @@ public class WorldController extends Controller{
 
 	@Override
 	public void keyPressed(int key, char e) {
-		System.out.println("KEY PRESSED!!!!");
 		if(e == 'w' || e == 'W')
 			isWDown = true;
 		if(e == 's' || e == 'S')
