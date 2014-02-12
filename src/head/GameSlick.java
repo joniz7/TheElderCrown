@@ -53,7 +53,8 @@ public class GameSlick implements Game{
 	public void init(GameContainer arg0) throws SlickException {
 		phase = new TestWorld();
 		controller = new WorldController(this, phase);
-		appgc.setFullscreen(true);
+		
+		appgc.setDisplayMode(appgc.getScreenWidth(), appgc.getScreenHeight(), true);
 		appgc.getInput().addKeyListener(controller);
 		appgc.setTitle(getTitle());
 		view = new View(appgc.getWidth(), appgc.getHeight());
