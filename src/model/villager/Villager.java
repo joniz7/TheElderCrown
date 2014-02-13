@@ -50,7 +50,7 @@ public class Villager extends MiddleLayerGraphicalEntity implements Tickable{
         	tileY = brain.getCurrentPath().getStep(stepCount++).getY();
         }
         
-        updatePos(tileX + (interPolX * (progress/12)), tileY + (interPolY * (progress/12)));
+        updatePos(tileX + (interPolX * (progress/12))/20, tileY + (interPolY * (progress/12))/20);
 	}
 	
 	public boolean eat(){

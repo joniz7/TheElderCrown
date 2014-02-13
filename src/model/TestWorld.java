@@ -27,7 +27,7 @@ public class TestWorld extends GamePhase implements TileBasedMap{
 	public TestWorld(){
 		for(int i = 0; i < WIDTH; i++)
 			for(int j = 0; j < HEIGHT; j++)
-				tiles[i][j] = new GrassTile(i * 20, j * 20);
+				tiles[i][j] = new GrassTile(i , j);
 		
 		createLakes();
 		

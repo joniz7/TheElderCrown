@@ -8,6 +8,7 @@ public abstract class Tile extends BottomLayerGraphicalEntity{
 
 	public Tile(String imageName, int x, int y) {
 		super(imageName, x ,y);
+		updatePos(x,y);
 	}
 
 	public int getTypeID() {

@@ -21,7 +21,7 @@ public class Tree extends TopLayerGraphicalEntity implements Tickable{
 	 */
 	public Tree(int x, int y) {
 		super("tree2", x, y);
-		updatePos(x - 1, y - 1);
+		updatePos(x-1, y-1);
 	}
 
 	@Override
