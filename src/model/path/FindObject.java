@@ -28,27 +28,33 @@ public class FindObject {
 		while(!found){
 			for(int i = (int) upperLeft.getX(); i <= lowerRight.getX(); i++)
 				if(tiles[i][(int) upperLeft.getY()].getTypeID() == tileID)
-					return new Point(i, (int) upperLeft.getY());
+					if(PathFinder.getPathToAdjacent(startX, startY, i, (int) upperLeft.getY()) != null)
+						return new Point(i, (int) upperLeft.getY());
 //				else
 //					new Miss(i * 20, (int) upperLeft.getY() * 20);
 			
 			for(int i = (int) upperLeft.getX(); i <= lowerRight.getX(); i++)
 				if(tiles[i][(int) lowerRight.getY()].getTypeID() == tileID)
-					return new Point(i, (int) lowerRight.getY());
+					if(PathFinder.getPathToAdjacent(startX, startY, i, (int) lowerRight.getY()) != null)
+						return new Point(i, (int) lowerRight.getY());
 //				else
 //					new Miss(i * 20, (int) lowerRight.getY() * 20);
 			
 			for(int i = (int) upperLeft.getY(); i <= lowerRight.getY(); i++)
 				if(tiles[(int) upperLeft.getX()][i].getTypeID() == tileID)
-					return new Point((int) upperLeft.getX(), i);
+					if(PathFinder.getPathToAdjacent(startX, startY, (int) upperLeft.getX(), i) != null)
+						return new Point((int) upperLeft.getX(), i);
 //				else
 //					new Miss((int) upperLeft.getX() * 20, (int) i * 20);
 			
 			for(int i = (int) upperLeft.getY(); i <= lowerRight.getY(); i++)
 				if(tiles[(int) lowerRight.getX()][i].getTypeID() == tileID)
-					return new Point((int) lowerRight.getX(), i);
+					if(PathFinder.getPathToAdjacent(startX, startY, (int) lowerRight.getX(), i) != null)
+						return new Point((int) lowerRight.getX(), i);
 //				else
 //					new Miss((int) lowerRight.getX() * 20, (int) i * 20);
+			
+			System.out.println("FindObject: Searching");
 			
 			if(upperLeft.getX() > 0)
 				upperLeft.translate(-1, 0);
@@ -146,25 +152,29 @@ public class FindObject {
 		while(!found){
 			for(int i = (int) upperLeft.getX(); i <= lowerRight.getX(); i++)
 				if(tiles[i][(int) upperLeft.getY()] == tileID)
-					return new Point(i, (int) upperLeft.getY());
+					if(PathFinder.getPathToAdjacent(startX, startY, i, (int) upperLeft.getY()) != null)
+						return new Point(i, (int) upperLeft.getY());
 //				else
 //					new Miss(i * 20, (int) upperLeft.getY() * 20);
 			
 			for(int i = (int) upperLeft.getX(); i <= lowerRight.getX(); i++)
 				if(tiles[i][(int) lowerRight.getY()] == tileID)
-					return new Point(i, (int) lowerRight.getY());
+					if(PathFinder.getPathToAdjacent(startX, startY, i, (int) lowerRight.getY()) != null)
+						return new Point(i, (int) lowerRight.getY());
 //				else
 //					new Miss(i * 20, (int) lowerRight.getY() * 20);
 			
 			for(int i = (int) upperLeft.getY(); i <= lowerRight.getY(); i++)
 				if(tiles[(int) upperLeft.getX()][i] == tileID)
-					return new Point((int) upperLeft.getX(), i);
+					if(PathFinder.getPathToAdjacent(startX, startY, (int) upperLeft.getX(), i) != null)
+						return new Point((int) upperLeft.getX(), i);
 //				else
 //					new Miss((int) upperLeft.getX() * 20, (int) i * 20);
 			
 			for(int i = (int) upperLeft.getY(); i <= lowerRight.getY(); i++)
 				if(tiles[(int) lowerRight.getX()][i] == tileID)
-					return new Point((int) lowerRight.getX(), i);
+					if(PathFinder.getPathToAdjacent(startX, startY, (int) lowerRight.getX(), i) != null)
+						return new Point((int) lowerRight.getX(), i);
 //				else
 //					new Miss((int) lowerRight.getX() * 20, (int) i * 20);
 			
@@ -195,13 +205,13 @@ public class FindObject {
 		Path p3 = null;
 		Path p4 = null;
 		
-		if(tiles[(int) p.getX() - 1][(int) p.getY()] == 0)
+		if(p.getX() > 0 && tiles[(int) p.getX() - 1][(int) p.getY()] == 0)
 			p1 = PathFinder.getPath(startX, startY, (int) p.getX() - 1, (int) p.getY());
-		if(tiles[(int) p.getX() + 1][(int) p.getY()] == 0)
+		if(p.getX() < world.getWidthInTiles() - 1 && tiles[(int) p.getX() + 1][(int) p.getY()] == 0)
 			p2 = PathFinder.getPath(startX, startY, (int) p.getX() + 1, (int) p.getY());
-		if(tiles[(int) p.getX()][(int) p.getY() - 1] == 0)
+		if(p.getY() > 0 && tiles[(int) p.getX()][(int) p.getY() - 1] == 0)
 			p3 = PathFinder.getPath(startX, startY, (int) p.getX(), (int) p.getY() - 1);
-		if(tiles[(int) p.getX()][(int) p.getY() + 1] == 0)
+		if(p.getY() < world.getHeightInTiles() - 1 && tiles[(int) p.getX()][(int) p.getY() + 1] == 0)
 			p4 = PathFinder.getPath(startX, startY, (int) p.getX(), (int) p.getY() + 1);
 		
 		Path bestPath = null;

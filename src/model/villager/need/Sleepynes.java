@@ -13,7 +13,7 @@ public class Sleepynes extends BasicNeed{
 
 	@Override
 	public void tick() {
-		value = value - 0.01f;
+		value = value - 0.00001f;
 		
 		if(value < 0 && RandomClass.getRandomInt(10, 0) == 0){
 			triggerSleepy();
