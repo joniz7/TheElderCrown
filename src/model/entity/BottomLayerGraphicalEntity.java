@@ -9,6 +9,8 @@ import view.View;
  *
  */
 public class BottomLayerGraphicalEntity extends GraphicalEntity {
+	
+	private int tileID;
 
 	/**
 	 * General constructor for a graphical entity.
@@ -18,6 +20,14 @@ public class BottomLayerGraphicalEntity extends GraphicalEntity {
 	public BottomLayerGraphicalEntity(String name, int x, int y) {
 		super(name, x, y);
 		View.addBotGraphic(drawable);
+	}
+	
+	public void setTileID(int id){
+		tileID = id;
+	}
+	
+	public int getTileID(){
+		return tileID;
 	}
 
 }

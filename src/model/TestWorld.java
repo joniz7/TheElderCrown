@@ -8,7 +8,6 @@ import java.util.Random;
 import model.objects.Tree;
 import model.path.PathFinder;
 import model.tile.GrassTile;
-import model.tile.Tile;
 import model.tile.WaterTile;
 import model.villager.Villager;
 
@@ -29,9 +28,13 @@ public class TestWorld extends GamePhase implements TileBasedMap{
 	private Random rnd = new Random();
 	
 	public TestWorld(){
+		tiles = new HashMap<Point, BottomLayerGraphicalEntity>();
 		for(int i = 0; i < WIDTH; i++)
-			for(int j = 0; j < HEIGHT; j++)
-				tiles.put(new Point(i, j), new GrassTile(i * 20, j * 20));
+			for(int j = 0; j < HEIGHT; j++){
+				GrassTile gt = new GrassTile(i, j);
+				gt.setTileID(0);
+				tiles.put(new Point(i, j), gt);
+			}
 		
 		createLakes();
 

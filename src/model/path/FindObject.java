@@ -1,8 +1,10 @@
 package model.path;
 
 import java.awt.Point;
+import java.util.HashMap;
 
 import model.TestWorld;
+import model.entity.BottomLayerGraphicalEntity;
 import model.tile.Tile;
 
 import org.newdawn.slick.util.pathfinding.Path;
@@ -10,7 +12,7 @@ import org.newdawn.slick.util.pathfinding.Path;
 public class FindObject {
 	
 	public static Point findTile(TestWorld world, int tileID, int startX, int startY){
-		Tile[][] tiles = world.getTiles();
+		HashMap<Point, BottomLayerGraphicalEntity> tiles = world.getTiles();
 		
 		Point upperLeft = new Point(startX - 1, startY - 1);
 		Point lowerRight  = new Point(startX + 1, startY + 1);
@@ -27,28 +29,28 @@ public class FindObject {
 		boolean found = false;
 		while(!found){
 			for(int i = (int) upperLeft.getX(); i <= lowerRight.getX(); i++)
-				if(tiles[i][(int) upperLeft.getY()].getTypeID() == tileID)
+				if(tiles.get(new Point(i, (int) upperLeft.getY())).getTileID() == tileID)
 					if(PathFinder.getPathToAdjacent(startX, startY, i, (int) upperLeft.getY()) != null)
 						return new Point(i, (int) upperLeft.getY());
 //				else
 //					new Miss(i * 20, (int) upperLeft.getY() * 20);
 			
 			for(int i = (int) upperLeft.getX(); i <= lowerRight.getX(); i++)
-				if(tiles[i][(int) lowerRight.getY()].getTypeID() == tileID)
+				if(tiles.get(new Point(i, (int) lowerRight.getX())).getTileID() == tileID)
 					if(PathFinder.getPathToAdjacent(startX, startY, i, (int) lowerRight.getY()) != null)
 						return new Point(i, (int) lowerRight.getY());
 //				else
 //					new Miss(i * 20, (int) lowerRight.getY() * 20);
 			
 			for(int i = (int) upperLeft.getY(); i <= lowerRight.getY(); i++)
-				if(tiles[(int) upperLeft.getX()][i].getTypeID() == tileID)
+				if(tiles.get(new Point(i, (int) lowerRight.getY())).getTileID() == tileID)
 					if(PathFinder.getPathToAdjacent(startX, startY, (int) upperLeft.getX(), i) != null)
 						return new Point((int) upperLeft.getX(), i);
 //				else
 //					new Miss((int) upperLeft.getX() * 20, (int) i * 20);
 			
 			for(int i = (int) upperLeft.getY(); i <= lowerRight.getY(); i++)
-				if(tiles[(int) lowerRight.getX()][i].getTypeID() == tileID)
+				if(tiles.get(new Point(i, (int) lowerRight.getY())).getTileID() == tileID)
 					if(PathFinder.getPathToAdjacent(startX, startY, (int) lowerRight.getX(), i) != null)
 						return new Point((int) lowerRight.getX(), i);
 //				else
@@ -72,20 +74,20 @@ public class FindObject {
 	public static Point findTileNeighbour(TestWorld world, int tileID, int startX, int startY){
 		Point p = findTile(world, tileID, startX, startY);
 		
-		Tile[][] tiles = world.getTiles();
+		HashMap<Point, BottomLayerGraphicalEntity> tiles = world.getTiles();
 		
 		Path p1 = null;
 		Path p2 = null;
 		Path p3 = null;
 		Path p4 = null;
 		
-		if(tiles[(int) p.getX() - 1][(int) p.getY()].getTypeID() == 0)
+		if(tiles.get(new Point((int) p.getX() - 1, (int) p.getY())).getTileID() == 0)
 			p1 = PathFinder.getPath(startX, startY, (int) p.getX() - 1, (int) p.getY());
-		if(tiles[(int) p.getX() + 1][(int) p.getY()].getTypeID() == 0)
+		if(tiles.get(new Point((int) p.getX() + 1, (int) p.getY())).getTileID() == 0)
 			p2 = PathFinder.getPath(startX, startY, (int) p.getX() + 1, (int) p.getY());
-		if(tiles[(int) p.getX()][(int) p.getY() - 1].getTypeID() == 0)
+		if(tiles.get(new Point((int) p.getX(), (int) p.getY() - 1)).getTileID() == 0)
 			p3 = PathFinder.getPath(startX, startY, (int) p.getX(), (int) p.getY() - 1);
-		if(tiles[(int) p.getX()][(int) p.getY() + 1].getTypeID() == 0)
+		if(tiles.get(new Point((int) p.getX(), (int) p.getY() + 1)).getTileID() == 0)
 			p4 = PathFinder.getPath(startX, startY, (int) p.getX(), (int) p.getY() + 1);
 		
 		Path bestPath = null;
@@ -115,16 +117,16 @@ public class FindObject {
 	}
 	
 	public static boolean isAdjacentTile(TestWorld world, int tileID, int startX, int startY){
-		Tile[][] tiles = world.getTiles();
+		HashMap<Point, BottomLayerGraphicalEntity> tiles = world.getTiles();
 		
 		try{
-			if(tiles[(int) startX - 1][(int) startY].getTypeID() == tileID)
+			if(tiles.get(new Point((int) startX - 1, (int) startY)).getTileID() == tileID)
 				return true;
-			if(tiles[(int) startX + 1][(int) startY].getTypeID() == tileID)
+			if(tiles.get(new Point((int) startX + 1, (int) startY)).getTileID() == tileID)
 				return true;
-			if(tiles[(int) startX][(int) startY - 1].getTypeID() == tileID)
+			if(tiles.get(new Point((int) startX, (int) startY - 1)).getTileID() == tileID)
 				return true;
-			if(tiles[(int) startX][(int) startY + 1].getTypeID() == tileID)
+			if(tiles.get(new Point((int) startX, (int) startY + 1)).getTileID() == tileID)
 				return true;
 		}catch(ArrayIndexOutOfBoundsException e){
 			
