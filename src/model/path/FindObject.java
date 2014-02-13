@@ -5,6 +5,8 @@ import java.util.HashMap;
 
 import model.TestWorld;
 import model.entity.BottomLayerGraphicalEntity;
+import model.entity.MiddleLayerGraphicalEntity;
+import model.entity.TopLayerGraphicalEntity;
 
 import org.newdawn.slick.util.pathfinding.Path;
 
@@ -135,7 +137,8 @@ public class FindObject {
 	}
 	
 	public static Point findObject(TestWorld world, int tileID, int startX, int startY){
-		int[][] tiles = world.getObjectTiles();
+		HashMap<Point, MiddleLayerGraphicalEntity> mids = world.getMidObjects();
+		HashMap<Point, TopLayerGraphicalEntity> tops = world.getTopObjects();
 		
 		Point upperLeft = new Point(startX - 1, startY - 1);
 		Point lowerRight = new Point(startX + 1, startY + 1);
@@ -152,7 +155,7 @@ public class FindObject {
 		boolean found = false;
 		while(!found){
 			for(int i = (int) upperLeft.getX(); i <= lowerRight.getX(); i++)
-				if(tiles[i][(int) upperLeft.getY()] == tileID)
+				if(mids.get(new Point(i, (int) upperLeft.getY())) == tileID)
 					if(PathFinder.getPathToAdjacent(startX, startY, i, (int) upperLeft.getY()) != null)
 						return new Point(i, (int) upperLeft.getY());
 //				else
