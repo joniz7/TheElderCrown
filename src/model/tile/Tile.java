@@ -1,8 +1,8 @@
 package model.tile;
 
-import model.entity.GraphicalEntity;
+import model.entity.BottomLayerGraphicalEntity;
 
-public abstract class Tile extends GraphicalEntity{
+public abstract class Tile extends BottomLayerGraphicalEntity{
 	
 	protected int typeID;
 

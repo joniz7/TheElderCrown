@@ -47,6 +47,10 @@ public class Drawable{
 		image = ImageLoader.getImage(name);
 	}
 	
+	public String getImageName(){
+		return name;
+	}
+	
 	
 	
 }

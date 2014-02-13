@@ -4,7 +4,7 @@ import java.awt.Point;
 import java.util.ArrayList;
 import java.util.Random;
 
-import model.entity.Tree;
+import model.objects.Tree;
 import model.path.PathFinder;
 import model.tile.GrassTile;
 import model.tile.Tile;

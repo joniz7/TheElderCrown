@@ -1,23 +1,12 @@
 package model.villager;
 
 import head.Tickable;
-
-import java.awt.Point;
-import java.util.ArrayList;
-import java.util.LinkedList;
-
-import org.newdawn.slick.util.pathfinding.AStarPathFinder;
-import org.newdawn.slick.util.pathfinding.Path;
-
-import resource.SoundP;
 import model.TestWorld;
-import model.entity.GraphicalEntity;
+import model.entity.MiddleLayerGraphicalEntity;
 import model.path.FindObject;
-import model.path.PathFinder;
-import model.tile.WaterTile;
-import model.villager.intention.Intention;
+import resource.SoundP;
 
-public class Villager extends GraphicalEntity implements Tickable{
+public class Villager extends MiddleLayerGraphicalEntity implements Tickable{
 
 	private Brain brain;
 	private TestWorld world;
@@ -72,7 +61,7 @@ public class Villager extends GraphicalEntity implements Tickable{
 	public boolean eat(){
 		if(FindObject.isAdjacentObject(world, 101, tileX, tileY)){
 			if(world.getTree(tileX + 1, tileY) != null){
-				if(world.getTree(tileX + 1, tileY).isFruit()){
+				if(world.getTree(tileX + 1, tileY).hasFruit()){
 					world.getTree(tileX + 1, tileY).eaten();
 					brain.getHunger().satisfy(14);
 					SoundP.playSound("ph", "eat.wav");
@@ -82,7 +71,7 @@ public class Villager extends GraphicalEntity implements Tickable{
 			}
 			
 			if(world.getTree(tileX - 1, tileY) != null){
-				if(world.getTree(tileX - 1, tileY).isFruit()){
+				if(world.getTree(tileX - 1, tileY).hasFruit()){
 					world.getTree(tileX - 1, tileY).eaten();
 					brain.getHunger().satisfy(14);
 					SoundP.playSound("ph", "eat.wav");
@@ -91,7 +80,7 @@ public class Villager extends GraphicalEntity implements Tickable{
 			}
 			
 			if(world.getTree(tileX, tileY + 1) != null){
-				if(world.getTree(tileX, tileY + 1).isFruit()){
+				if(world.getTree(tileX, tileY + 1).hasFruit()){
 					world.getTree(tileX, tileY + 1).eaten();
 					brain.getHunger().satisfy(14);
 					SoundP.playSound("ph", "eat.wav");
@@ -100,7 +89,7 @@ public class Villager extends GraphicalEntity implements Tickable{
 			}
 			
 			if(world.getTree(tileX, tileY - 1) != null){
-				if(world.getTree(tileX, tileY - 1).isFruit()){
+				if(world.getTree(tileX, tileY - 1).hasFruit()){
 					world.getTree(tileX, tileY - 1).eaten();
 					brain.getHunger().satisfy(14);
 					SoundP.playSound("ph", "eat.wav");

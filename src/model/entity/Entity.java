@@ -1,9 +1,11 @@
 package model.entity;
 
-import view.Drawable;
-
+/**
+ * A class to represent all objects that are not visible in the world.
+ * 
+ * @author Simon E
+ *
+ */
 public class Entity{
-
-	
 	
 }
