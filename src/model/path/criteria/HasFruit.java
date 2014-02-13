@@ -8,8 +8,11 @@ public class HasFruit implements Criteria{
 	@Override
 	public boolean match(GraphicalEntity ge){
 		Tree tree = (Tree) ge;
-		
-		return tree.hasFruit();
+
+		if(tree.hasFruit())
+			return true;
+		else
+			return false;	
 	}
 
 }
