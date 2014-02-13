@@ -15,8 +15,8 @@ public class BottomLayerGraphicalEntity extends GraphicalEntity {
 	 * 
 	 * @param name The name of the image to be associated with this object.
 	 */
-	public BottomLayerGraphicalEntity(String name) {
-		super(name);
+	public BottomLayerGraphicalEntity(String name, int x, int y) {
+		super(name, x, y);
 		View.addBotGraphic(drawable);
 	}
 

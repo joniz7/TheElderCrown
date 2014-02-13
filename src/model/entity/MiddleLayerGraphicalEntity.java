@@ -15,8 +15,8 @@ public class MiddleLayerGraphicalEntity extends GraphicalEntity {
 	 * 
 	 * @param name The name of the image to be associated with this object.
 	 */
-	public MiddleLayerGraphicalEntity(String name) {
-		super(name);
+	public MiddleLayerGraphicalEntity(String name, int x, int y) {
+		super(name, x, y);
 		View.addMidGraphic(drawable);
 	}
 
