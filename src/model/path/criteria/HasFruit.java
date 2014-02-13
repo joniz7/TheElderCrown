@@ -1,7 +1,7 @@
 package model.path.criteria;
 
 import model.entity.GraphicalEntity;
-import model.entity.Tree;
+import model.objects.Tree;
 
 public class HasFruit implements Criteria{
 
@@ -9,7 +9,7 @@ public class HasFruit implements Criteria{
 	public boolean match(GraphicalEntity ge){
 		Tree tree = (Tree) ge;
 		
-		if(tree.isFruit())
+		if(tree.hasFruit())
 			return true;
 		else
 			return false;	

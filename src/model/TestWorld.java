@@ -2,6 +2,7 @@ package model;
 
 import java.awt.Point;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Random;
 
 import model.objects.Tree;
@@ -11,6 +12,8 @@ import model.tile.Tile;
 import model.tile.WaterTile;
 import model.villager.Villager;
 
+import model.entity.*;
+
 import org.newdawn.slick.util.pathfinding.PathFindingContext;
 import org.newdawn.slick.util.pathfinding.TileBasedMap;
 
@@ -18,7 +21,8 @@ public class TestWorld extends GamePhase implements TileBasedMap{
 	
 	private final int WIDTH = 80, HEIGHT = 80;
 	
-	private Tile[][] tiles = new Tile[WIDTH][HEIGHT];
+//	private Tile[][] tiles = new Tile[WIDTH][HEIGHT];
+	private HashMap<Point, BottomLayerGraphicalEntity> tiles;
 	private int[][] objectTiles = new int[WIDTH][HEIGHT];
 	private ArrayList<Tree> trees = new ArrayList<Tree>();
 	
@@ -27,18 +31,18 @@ public class TestWorld extends GamePhase implements TileBasedMap{
 	public TestWorld(){
 		for(int i = 0; i < WIDTH; i++)
 			for(int j = 0; j < HEIGHT; j++)
-				tiles[i][j] = new GrassTile(i * 20, j * 20);
+				tiles.put(new Point(i, j), new GrassTile(i * 20, j * 20));
 		
 		createLakes();
 		
-		for(int i = 0; i < WIDTH - 1; i++)
-			for(int j = 0; j < HEIGHT - 1; j++)
-				if(rnd.nextInt(140) == 0 && tiles[i+1][j+1] instanceof GrassTile){
-					Tree tree = new Tree(i + 1, j + 1, this);
-					trees.add(tree);
-					tickables.add(tree);
-					objectTiles[i + 1][j + 1] = 101;
-				}
+//		for(int i = 0; i < WIDTH - 1; i++)
+//			for(int j = 0; j < HEIGHT - 1; j++)
+//				if(rnd.nextInt(140) == 0 && tiles.get(new Point(i + 1, j + 1)) instanceof GrassTile){
+//					Tree tree = new Tree(i + 1, j + 1, this);
+//					trees.add(tree);
+//					tickables.add(tree);
+//					objectTiles[i + 1][j + 1] = 101;
+//				}
 		
 //		WorldController vpl = new WorldController(this);
 //		Frame.getCanvas().addKeyListener(vpl);
@@ -48,7 +52,7 @@ public class TestWorld extends GamePhase implements TileBasedMap{
 		
 		for(int i = 18; i < 23; i++)
 			for(int j = 18; j < 23; j++)
-				tiles[i][j] = new GrassTile(i * 20, j * 20);
+				tiles.put(new Point(i, j), new GrassTile(i * 20, j * 20));
 		
 		Villager villager = new Villager(this, 20, 20);
 		tickables.add(villager);
@@ -66,7 +70,7 @@ public class TestWorld extends GamePhase implements TileBasedMap{
 			int x = rnd.nextInt(WIDTH);
 			int y = rnd.nextInt(HEIGHT);
 			centers.add(new Point(x, y));
-			tiles[x][y] = new WaterTile(x * 20, y * 20);
+			tiles.put(new Point(x, y), new GrassTile(x * 20, y * 20));
 		}
 		
 		//weight and loss defines the sizes of lakes
@@ -81,20 +85,20 @@ public class TestWorld extends GamePhase implements TileBasedMap{
 			while(!lakeDone){
 				ArrayList<Point> newWater = new ArrayList<Point>();
 				for(Point p : oldWater){
-					if(rnd.nextFloat() < weight && p.x != 0 && tiles[p.x-1][p.y] instanceof GrassTile){
-						tiles[p.x-1][p.y] = new WaterTile((p.x-1) * 20, p.y * 20);
+					if(rnd.nextFloat() < weight && p.x != 0 && tiles.get(new Point(p.x - 1, p.y)) instanceof GrassTile){
+						tiles.put(new Point(p.x-1, p.y), new WaterTile((p.x-1) * 20, p.y * 20));
 						newWater.add(new Point(p.x-1, p.y));
 					}
-					if(rnd.nextFloat() < weight  && p.x != 79 && tiles[p.x+1][p.y] instanceof GrassTile){
-						tiles[p.x+1][p.y] = new WaterTile((p.x+1) * 20, p.y * 20);
+					if(rnd.nextFloat() < weight  && p.x != 79 && tiles.get(new Point(p.x + 1, p.y)) instanceof GrassTile){
+						tiles.put(new Point(p.x+1, p.y), new WaterTile((p.x+1) * 20, p.y * 20));
 						newWater.add(new Point(p.x+1, p.y));
 					}	
-					if(rnd.nextFloat() < weight  && p.y != 0 && tiles[p.x][p.y-1] instanceof GrassTile){
-						tiles[p.x][p.y-1] = new WaterTile(p.x * 20, (p.y-1) * 20);
+					if(rnd.nextFloat() < weight  && p.y != 0 && tiles.get(new Point(p.x, p.y - 1)) instanceof GrassTile){
+						tiles.put(new Point(p.x, p.y-1), new WaterTile(p.x * 20, (p.y-1) * 20));
 						newWater.add(new Point(p.x, p.y-1));
 					}
-					if(rnd.nextFloat() < weight  && p.y != 79 && tiles[p.x][p.y+1] instanceof GrassTile){
-						tiles[p.x][p.y+1] = new WaterTile(p.x * 20, (p.y+1) * 20);
+					if(rnd.nextFloat() < weight  && p.y != 79 && tiles.get(new Point(p.x, p.y + 1)) instanceof GrassTile){
+						tiles.put(new Point(p.x, p.y+1), new WaterTile(p.x * 20, (p.y+1) * 20));
 						newWater.add(new Point(p.x, p.y+1));
 					}
 				}
@@ -112,7 +116,7 @@ public class TestWorld extends GamePhase implements TileBasedMap{
 
 	@Override
 	public boolean blocked(PathFindingContext pfc, int x, int y){
-		return tiles[x][y] instanceof WaterTile;
+		return tiles.get(new Point(x, y)) instanceof WaterTile;
 	}
 
 	@Override
@@ -135,7 +139,7 @@ public class TestWorld extends GamePhase implements TileBasedMap{
 		
 	}
 
-	public Tile[][] getTiles() {
+	public HashMap<Point, BottomLayerGraphicalEntity> getTiles() {
 		return tiles;
 	}
 

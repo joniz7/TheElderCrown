@@ -67,7 +67,6 @@ public class Villager extends MiddleLayerGraphicalEntity implements Tickable{
 					SoundP.playSound("ph", "eat.wav");
 					return true;
 				}
-				
 			}
 			
 			if(world.getTree(tileX - 1, tileY) != null){

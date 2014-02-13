@@ -1,5 +1,6 @@
 package model.entity;
 
+import model.path.criteria.Criteria;
 import view.Drawable;
 
 /**
@@ -8,7 +9,7 @@ import view.Drawable;
  * 
  * @author Simon E, Teodor O
  */
-abstract class GraphicalEntity {
+public abstract class GraphicalEntity {
 	
 	protected Drawable drawable;
 	/**
