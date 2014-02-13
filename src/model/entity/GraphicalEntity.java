@@ -67,4 +67,8 @@ public abstract class GraphicalEntity {
 		return criteria.match(this);
 	}
 	
+	public ObjectID getObjectID(){
+		return id;
+	}
+	
 }
