@@ -15,8 +15,8 @@ public class TopLayerGraphicalEntity extends GraphicalEntity {
 	 * 
 	 * @param name The name of the image to be associated with this object.
 	 */
-	public TopLayerGraphicalEntity(String name) {
-		super(name);
+	public TopLayerGraphicalEntity(String name, int x, int y) {
+		super(name, x, y);
 		View.addTopGraphic(drawable);
 	}
 

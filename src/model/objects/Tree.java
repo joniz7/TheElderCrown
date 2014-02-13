@@ -12,7 +12,6 @@ public class Tree extends TopLayerGraphicalEntity implements Tickable{
 	
 	private int fruitRegTime = 5000, timer = 0;
 	private boolean fruit = true;
-	private int tileX, tileY;
 	
 	/**
 	 * The constructor which initialises all the necessary things for a tree.
@@ -20,11 +19,9 @@ public class Tree extends TopLayerGraphicalEntity implements Tickable{
 	 * @param tileX	The column in which the tree will stand in.
 	 * @param tileY The row in which the tree will stand in.
 	 */
-	public Tree(int tileX, int tileY) {
-		super("tree2");
-		this.tileX = tileX;
-		this.tileY = tileY;
-		updatePos((tileX * 20) - 20, (tileY * 20) - 20);
+	public Tree(int x, int y) {
+		super("tree2", x, y);
+		updatePos(x - 1, y - 1);
 	}
 
 	@Override
@@ -47,24 +44,6 @@ public class Tree extends TopLayerGraphicalEntity implements Tickable{
 	public void eaten(){
 		drawable.setImage("tree");
 		fruit = false;
-	}
-	
-	/**
-	 * A method to find the column of the tree.
-	 * 
-	 * @return the column in which the tree is.
-	 */
-	public int getTileX() {
-		return tileX;
-	}
-
-	/**
-	 * A method to find the row of the tree.
-	 * 
-	 * @return the row in which the tree is.
-	 */
-	public int getTileY() {
-		return tileY;
 	}
 
 	/**

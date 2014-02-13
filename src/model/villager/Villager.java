@@ -10,18 +10,14 @@ public class Villager extends MiddleLayerGraphicalEntity implements Tickable{
 
 	private Brain brain;
 	private TestWorld world;
-	
-	private int tileX, tileY;
 
 	private int speedCap = 240, progress = 0, speed = 20, stepCount = 0;
 	private boolean moving = false;
 	
-	public Villager(TestWorld world, int tileX, int tileY){
-		super("villager");
+	public Villager(TestWorld world, int x, int y){
+		super("villager", x , y);
 		this.world = world;
-		this.tileX = tileX;
-		this.tileY = tileY;
-		updatePos(tileX * 20, tileY * 20);
+		updatePos(x, y);
 		brain = new Brain(this, world);
 	}
 
@@ -32,7 +28,7 @@ public class Villager extends MiddleLayerGraphicalEntity implements Tickable{
 		if(moving)
 			move();
 		else
-			updatePos(tileX * 20, tileY * 20);
+			updatePos(tileX , tileY);
 	}
 	
 	public void move(){
@@ -54,8 +50,7 @@ public class Villager extends MiddleLayerGraphicalEntity implements Tickable{
         	tileY = brain.getCurrentPath().getStep(stepCount++).getY();
         }
         
-        updatePos((tileX * 20) + (interPolX * (progress/12)), 
-    			(tileY * 20) + (interPolY * (progress/12)));
+        updatePos(tileX + (interPolX * (progress/12)), tileY + (interPolY * (progress/12)));
 	}
 	
 	public boolean eat(){
@@ -112,14 +107,6 @@ public class Villager extends MiddleLayerGraphicalEntity implements Tickable{
 	public void sleep(){
 		brain.getSleep().satisfy(100);
 		SoundP.playSound("ph", "sleep.wav");
-	}
-
-	public int getTileX() {
-		return tileX;
-	}
-
-	public int getTileY() {
-		return tileY;
 	}
 
 	public boolean isMoving() {
