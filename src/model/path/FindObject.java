@@ -5,12 +5,12 @@ import java.util.HashMap;
 
 import model.TestWorld;
 import model.entity.BottomLayerGraphicalEntity;
+import model.objects.Tree;
 import model.tile.Tile;
 
 import org.newdawn.slick.util.pathfinding.Path;
 
-public class FindObject {
-	
+public class FindObject{
 	public static Point findTile(TestWorld world, int tileID, int startX, int startY){
 		HashMap<Point, BottomLayerGraphicalEntity> tiles = world.getTiles();
 		
@@ -131,7 +131,6 @@ public class FindObject {
 		}catch(ArrayIndexOutOfBoundsException e){
 			
 		}
-		
 		return false;
 	}
 	
