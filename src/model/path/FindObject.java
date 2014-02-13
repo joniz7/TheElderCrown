@@ -5,7 +5,6 @@ import java.util.HashMap;
 
 import model.TestWorld;
 import model.entity.BottomLayerGraphicalEntity;
-import model.tile.Tile;
 
 import org.newdawn.slick.util.pathfinding.Path;
 

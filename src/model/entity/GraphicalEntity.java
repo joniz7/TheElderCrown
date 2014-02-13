@@ -1,5 +1,6 @@
 package model.entity;
 
+import resource.ObjectID;
 import model.path.criteria.Criteria;
 import view.Drawable;
 
@@ -13,16 +14,18 @@ public abstract class GraphicalEntity {
 	
 	protected Drawable drawable;
 	protected int tileX, tileY;
+	ObjectID id;
 	
 	/**
 	 * The general constructor.
 	 * 
 	 * @param name The name of the image to be assigned.
 	 */
-	public GraphicalEntity(String name, int x, int y){
+	public GraphicalEntity(String name, int x, int y, ObjectID id){
 		drawable = new Drawable(name);
 		tileX = x;
 		tileY = y;
+		this.id = id;
 	}
 	
 	/**

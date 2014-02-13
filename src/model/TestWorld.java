@@ -38,14 +38,14 @@ public class TestWorld extends GamePhase implements TileBasedMap{
 		
 		createLakes();
 		
-//		for(int i = 0; i < WIDTH - 1; i++)
-//			for(int j = 0; j < HEIGHT - 1; j++)
-//				if(rnd.nextInt(140) == 0 && tiles.get(new Point(i + 1, j + 1)) instanceof GrassTile){
-//					Tree tree = new Tree(i + 1, j + 1, this);
-//					trees.add(tree);
-//					tickables.add(tree);
-//					objectTiles[i + 1][j + 1] = 101;
-//				}
+		for(int i = 0; i < WIDTH - 1; i++)
+			for(int j = 0; j < HEIGHT - 1; j++)
+				if(rnd.nextInt(140) == 0 && tiles.get(new Point(i + 1, j + 1)) instanceof GrassTile){
+					Tree tree = new Tree(i + 1, j + 1);
+					trees.add(tree);
+					tickables.add(tree);
+					objectTiles[i + 1][j + 1] = 101;
+				}
 		
 //		WorldController vpl = new WorldController(this);
 //		Frame.getCanvas().addKeyListener(vpl);

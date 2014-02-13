@@ -1,5 +1,6 @@
 package model.entity;
 
+import resource.ObjectID;
 import view.View;
 
 /**
@@ -15,8 +16,8 @@ public class MiddleLayerGraphicalEntity extends GraphicalEntity {
 	 * 
 	 * @param name The name of the image to be associated with this object.
 	 */
-	public MiddleLayerGraphicalEntity(String name, int x, int y) {
-		super(name, x, y);
+	public MiddleLayerGraphicalEntity(String name, int x, int y, ObjectID id) {
+		super(name, x, y, id);
 		View.addMidGraphic(drawable);
 	}
 

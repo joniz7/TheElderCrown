@@ -4,6 +4,7 @@ import head.Tickable;
 import model.TestWorld;
 import model.entity.MiddleLayerGraphicalEntity;
 import model.path.FindObject;
+import resource.ObjectID;
 import resource.SoundP;
 
 public class Villager extends MiddleLayerGraphicalEntity implements Tickable{
@@ -15,7 +16,7 @@ public class Villager extends MiddleLayerGraphicalEntity implements Tickable{
 	private boolean moving = false;
 	
 	public Villager(TestWorld world, int x, int y){
-		super("villager", x , y);
+		super("villager", x , y, ObjectID.VILLAGER);
 		this.world = world;
 		updatePos(x, y);
 		brain = new Brain(this, world);

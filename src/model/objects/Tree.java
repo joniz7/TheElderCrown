@@ -1,5 +1,6 @@
 package model.objects;
 
+import resource.ObjectID;
 import head.Tickable;
 import model.entity.TopLayerGraphicalEntity;
 
@@ -20,7 +21,7 @@ public class Tree extends TopLayerGraphicalEntity implements Tickable{
 	 * @param tileY The row in which the tree will stand in.
 	 */
 	public Tree(int x, int y) {
-		super("tree2", x, y);
+		super("tree2", x, y, ObjectID.TREE);
 		updatePos(x-1, y-1);
 	}
 

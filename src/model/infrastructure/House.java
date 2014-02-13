@@ -1,5 +1,6 @@
 package model.infrastructure;
 
+import resource.ObjectID;
 import model.entity.TopLayerGraphicalEntity;
 
 public class House extends TopLayerGraphicalEntity {
@@ -8,7 +9,7 @@ public class House extends TopLayerGraphicalEntity {
 	private int orientation;
 
 	public House(String name, int x, int y, int orientation) {
-		super(name, x, y);
+		super(name, x, y, ObjectID.HOUSE);
 		this.orientation = orientation;
 		updatePos(x-1, y-1);
 	}
