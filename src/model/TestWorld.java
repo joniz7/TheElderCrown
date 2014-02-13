@@ -16,13 +16,15 @@ import model.entity.*;
 import org.newdawn.slick.util.pathfinding.PathFindingContext;
 import org.newdawn.slick.util.pathfinding.TileBasedMap;
 
+import resource.ObjectID;
+
 public class TestWorld extends GamePhase implements TileBasedMap{
 	
 	private final int WIDTH = 80, HEIGHT = 80;
 	
-//	private Tile[][] tiles = new Tile[WIDTH][HEIGHT];
 	private HashMap<Point, BottomLayerGraphicalEntity> tiles;
-	private int[][] objectTiles = new int[WIDTH][HEIGHT];
+	private HashMap<Point, MiddleLayerGraphicalEntity> midObjects;
+	private HashMap<Point, TopLayerGraphicalEntity> topObjects;
 	private ArrayList<Tree> trees = new ArrayList<Tree>();
 	
 	private Random rnd = new Random();
@@ -40,22 +42,18 @@ public class TestWorld extends GamePhase implements TileBasedMap{
 		
 		for(int i = 0; i < WIDTH - 1; i++)
 			for(int j = 0; j < HEIGHT - 1; j++)
-				if(rnd.nextInt(140) == 0 && tiles.get(new Point(i + 1, j + 1)) instanceof GrassTile){
+				if(rnd.nextInt(140) == 0 && tiles.get(new Point(i + 1, j + 1)).getObjectID==ObjectID.GRASS_TILE){
 					Tree tree = new Tree(i + 1, j + 1);
 					trees.add(tree);
 					tickables.add(tree);
-					objectTiles[i + 1][j + 1] = 101;
+					topObjects.put(new Point(i + 1, j + 1), tree);
 				}
-		
-//		WorldController vpl = new WorldController(this);
-//		Frame.getCanvas().addKeyListener(vpl);
-//		tickables.add(vpl);
 		
 		new PathFinder(this);
 		
 		for(int i = 18; i < 23; i++)
 			for(int j = 18; j < 23; j++)
-				tiles.put(new Point(i, j), new GrassTile(i * 20, j * 20));
+				tiles.put(new Point(i, j), new GrassTile(i, j));
 		
 		Villager villager = new Villager(this, 20, 20);
 		tickables.add(villager);
@@ -145,13 +143,13 @@ public class TestWorld extends GamePhase implements TileBasedMap{
 	public HashMap<Point, BottomLayerGraphicalEntity> getTiles() {
 		return tiles;
 	}
-
-	public int[][] getObjectTiles() {
-		return objectTiles;
+	
+	public HashMap<Point, MiddleLayerGraphicalEntity> getMidObjects(){
+		return midObjects;
 	}
-
-	public void setObjectIndexID(int tileX, int tileY, int ID){
-		objectTiles[tileX][tileY] = ID;
+	
+	public HashMap<Point, TopLayerGraphicalEntity> getTopObjects(){
+		return topObjects;
 	}
 	
 	public Tree getTree(int tileX, int tileY){
