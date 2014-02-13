@@ -155,7 +155,7 @@ public class FindObject {
 		boolean found = false;
 		while(!found){
 			for(int i = (int) upperLeft.getX(); i <= lowerRight.getX(); i++)
-				if(mids.get(new Point(i, (int) upperLeft.getY())) == tileID)
+				if(mids.get(new Point(i, (int) upperLeft.getY())). == tileID)
 					if(PathFinder.getPathToAdjacent(startX, startY, i, (int) upperLeft.getY()) != null)
 						return new Point(i, (int) upperLeft.getY());
 //				else
