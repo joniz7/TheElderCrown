@@ -7,7 +7,7 @@ import head.Tickable;
 public abstract class GamePhase implements Tickable{
 
 	protected ArrayList<Tickable> tickables = new ArrayList<Tickable>();
-	protected int viewX = 0, viewY = 0;
+	protected int viewX, viewY;
 	
 	@Override
 	public void tick(){

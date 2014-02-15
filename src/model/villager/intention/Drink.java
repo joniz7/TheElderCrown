@@ -23,8 +23,10 @@ public class Drink extends Intention{
 			hasIssuedMove = true;
 		}
 		
-		if(brain.getVillager().drink())
+		if(brain.getVillager().drink()){
 			brain.activeTaskDone();
+			SoundP.playSound("image", "drink.wav");
+		}
 	}
 	
 }

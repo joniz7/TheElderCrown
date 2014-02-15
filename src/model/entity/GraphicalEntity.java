@@ -40,6 +40,20 @@ public abstract class GraphicalEntity {
 	}
 	
 	/**
+	 * The method used to update the position of this entity. Also includes an
+	 * interpolation value.
+	 * 
+	 * @param x The new x-value of the entity.
+	 * @param y The new y-value of the entity.
+	 * @param interPolX The interpolation in x-axis
+	 * @param interPolY The interpolation in y-axis
+	 */
+	protected void updatePos(int x, int y, int interPolX, int interPolY){
+		drawable.setDrawX((x*20) + interPolX);
+		drawable.setDrawY((y*20) + interPolY);
+	}
+	
+	/**
 	 * A method to find the column of the GraphicalEntity.
 	 * 
 	 * @return the column in which the GraphicalEntity is.

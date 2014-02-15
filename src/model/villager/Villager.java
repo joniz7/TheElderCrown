@@ -51,11 +51,11 @@ public class Villager extends MiddleLayerGraphicalEntity implements Tickable{
         	tileY = brain.getCurrentPath().getStep(stepCount++).getY();
         }
         
-        updatePos(tileX + (interPolX * (progress/12))/20, tileY + (interPolY * (progress/12))/20);
+        updatePos(tileX, tileY, (interPolX * (progress/12)), (interPolY * (progress/12)));
 	}
 	
 	public boolean eat(){
-		if(FindObject.isAdjacentObject(world, 101, tileX, tileY)){
+		if(FindObject.isAdjacentObject(world, ObjectID.TREE, tileX, tileY)){
 			if(world.getTree(tileX + 1, tileY) != null){
 				if(world.getTree(tileX + 1, tileY).hasFruit()){
 					world.getTree(tileX + 1, tileY).eaten();
@@ -96,7 +96,8 @@ public class Villager extends MiddleLayerGraphicalEntity implements Tickable{
 	}
 	
 	public boolean drink(){
-		if(FindObject.isAdjacentTile(world, 1, tileX, tileY)){
+		if(FindObject.isAdjacentTile(world, ObjectID.WATER_TILE, tileX, tileY)){
+			System.out.println("Villager: Drank");
 			brain.getThirst().satisfy(10);
 			SoundP.playSound("ph", "drink.wav");
 			return true;

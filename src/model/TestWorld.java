@@ -20,7 +20,7 @@ import resource.ObjectID;
 
 public class TestWorld extends GamePhase implements TileBasedMap{
 	
-	private final int WIDTH = 80, HEIGHT = 80;
+	private final int WIDTH = 256, HEIGHT = 256;
 	
 	private HashMap<Point, BottomLayerGraphicalEntity> tiles;
 	private HashMap<Point, MiddleLayerGraphicalEntity> midObjects;
@@ -31,6 +31,9 @@ public class TestWorld extends GamePhase implements TileBasedMap{
 	
 	public TestWorld(){
 		tiles = new HashMap<Point, BottomLayerGraphicalEntity>();
+		midObjects = new HashMap<Point, MiddleLayerGraphicalEntity>();
+		topObjects = new HashMap<Point, TopLayerGraphicalEntity>();
+		
 		for(int i = 0; i < WIDTH; i++)
 			for(int j = 0; j < HEIGHT; j++){
 				GrassTile gt = new GrassTile(i, j);
@@ -51,27 +54,32 @@ public class TestWorld extends GamePhase implements TileBasedMap{
 		
 		new PathFinder(this);
 		
-		for(int i = 18; i < 23; i++)
-			for(int j = 18; j < 23; j++)
+		for(int i = 118; i < 123; i++)
+			for(int j = 118; j < 123; j++)
 				tiles.put(new Point(i, j), new GrassTile(i, j));
 		
-		Villager villager = new Villager(this, 20, 20);
-		tickables.add(villager);
-		villager = new Villager(this, 20, 21);
-		tickables.add(villager);
-		villager = new Villager(this, 21, 20);
-		tickables.add(villager);
+		viewX = 100 * 20;
+		viewY = 100 * 20;
+		
+		for(int i = 0; i < 30; i++){
+			Villager villager = new Villager(this, 120, 120);
+			tickables.add(villager);
+		}
+//		villager = new Villager(this, 20, 21);
+//		tickables.add(villager);
+//		villager = new Villager(this, 21, 20);
+//		tickables.add(villager);
 	}
 	
 	private void createLakes(){
 		ArrayList<Point> centers = new ArrayList<Point>();
 		
 		//Create random centerpoints for lakes
-		for(int i = 0; i < 15; i++){
+		for(int i = 0; i < 150; i++){
 			int x = rnd.nextInt(WIDTH);
 			int y = rnd.nextInt(HEIGHT);
 			centers.add(new Point(x, y));
-			tiles.put(new Point(x, y), new GrassTile(x * 20, y * 20));
+			tiles.put(new Point(x, y), new WaterTile(x, y));
 		}
 		
 		//weight and loss defines the sizes of lakes
@@ -87,19 +95,19 @@ public class TestWorld extends GamePhase implements TileBasedMap{
 				ArrayList<Point> newWater = new ArrayList<Point>();
 				for(Point p : oldWater){
 					if(rnd.nextFloat() < weight && p.x != 0 && tiles.get(new Point(p.x - 1, p.y)) instanceof GrassTile){
-						tiles.put(new Point(p.x-1, p.y), new WaterTile((p.x-1) * 20, p.y * 20));
+						tiles.put(new Point(p.x-1, p.y), new WaterTile((p.x-1), p.y));
 						newWater.add(new Point(p.x-1, p.y));
 					}
 					if(rnd.nextFloat() < weight  && p.x != 79 && tiles.get(new Point(p.x + 1, p.y)) instanceof GrassTile){
-						tiles.put(new Point(p.x+1, p.y), new WaterTile((p.x+1) * 20, p.y * 20));
+						tiles.put(new Point(p.x+1, p.y), new WaterTile((p.x+1), p.y));
 						newWater.add(new Point(p.x+1, p.y));
 					}	
 					if(rnd.nextFloat() < weight  && p.y != 0 && tiles.get(new Point(p.x, p.y - 1)) instanceof GrassTile){
-						tiles.put(new Point(p.x, p.y-1), new WaterTile(p.x * 20, (p.y-1) * 20));
+						tiles.put(new Point(p.x, p.y-1), new WaterTile(p.x, (p.y-1)));
 						newWater.add(new Point(p.x, p.y-1));
 					}
 					if(rnd.nextFloat() < weight  && p.y != 79 && tiles.get(new Point(p.x, p.y + 1)) instanceof GrassTile){
-						tiles.put(new Point(p.x, p.y+1), new WaterTile(p.x * 20, (p.y+1) * 20));
+						tiles.put(new Point(p.x, p.y+1), new WaterTile(p.x, (p.y+1)));
 						newWater.add(new Point(p.x, p.y+1));
 					}
 				}

@@ -1,5 +1,6 @@
 package model.villager.intention;
 
+import resource.ObjectID;
 import resource.SoundP;
 import model.villager.Brain;
 import model.villager.Villager;
@@ -11,7 +12,7 @@ public class Eat extends Intention{
 	
 	public void act(Brain brain){
 		if(!hasIssuedMove){
-			brain.walkToObjectType(101);
+			brain.walkToObjectType(ObjectID.TREE);
 //			SoundP.playSound("ph", "findnuts.wav");
 			hasIssuedMove = true;
 		}
@@ -20,7 +21,6 @@ public class Eat extends Intention{
 			brain.activeTaskDone();
 		else if(!brain.getVillager().isMoving())
 			brain.activeTaskDone();
-		
 	}
 	
 }

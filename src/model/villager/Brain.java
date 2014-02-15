@@ -5,10 +5,12 @@ import java.util.LinkedList;
 
 import org.newdawn.slick.util.pathfinding.Path;
 
+import resource.ObjectID;
 import head.Tickable;
 import model.TestWorld;
 import model.path.FindObject;
 import model.path.PathFinder;
+import model.path.criteria.HasFruit;
 import model.tile.WaterTile;
 import model.villager.intention.Intention;
 import model.villager.need.Hunger;
@@ -53,15 +55,15 @@ public class Brain implements Tickable{
 	}
 	
 	public void walkToTileType(int tileID){
-		Point p = FindObject.findTileNeighbour(world, 1, 
+		Point p = FindObject.findTileNeighbour(world, ObjectID.WATER_TILE, 
 				villager.getTileX(), villager.getTileY());
 		currentPath = PathFinder.getPath(villager.getTileX(), villager.getTileY(), 
 				(int) p.getX(), (int) p.getY());
 		villager.setMoving(true);
 	}
 	
-	public void walkToObjectType(int tileID){
-		Point p = FindObject.findObjectNeighbour(world, 101, 
+	public void walkToObjectType(ObjectID id){
+		Point p = FindObject.findObjectNeighbour(world, new HasFruit(), id, 
 				villager.getTileX(), villager.getTileY());
 		currentPath = PathFinder.getPath(villager.getTileX(), villager.getTileY(), 
 				(int) p.getX(), (int) p.getY());

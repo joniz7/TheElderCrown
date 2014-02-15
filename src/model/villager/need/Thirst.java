@@ -6,14 +6,19 @@ import resource.RandomClass;
 
 public class Thirst extends BasicNeed{
 	
+	private float decay;
+	
 	public Thirst(Brain brain) {
 		super(-100.0f, 100.0f, brain);
 		value = 10.0f;
+		int rnd = RandomClass.getRandomInt(10, 1);
+		float rndF = (float) rnd;
+		decay = 0.001f + (rndF / 10000);
 	}
 
 	@Override
 	public void tick() {
-		value = value - 0.01f;
+		value = value - decay;
 		
 		cD = cD + 1;
 		if(cD > cDRoof)

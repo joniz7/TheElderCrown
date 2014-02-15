@@ -104,8 +104,8 @@ public class GameSlick implements Game{
 		GameSlick game = new GameSlick();
 		try {
 			appgc = new AppGameContainer(game);
-			appgc.setMaximumLogicUpdateInterval(2);
-			appgc.setMinimumLogicUpdateInterval(2);
+			appgc.setMaximumLogicUpdateInterval(5);
+			appgc.setMinimumLogicUpdateInterval(5);
 			appgc.start();
 		} catch (SlickException e) {
 			// TODO Auto-generated catch block
