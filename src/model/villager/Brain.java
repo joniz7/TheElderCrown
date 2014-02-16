@@ -14,7 +14,7 @@ import model.path.criteria.HasFruit;
 import model.tile.WaterTile;
 import model.villager.intention.Intention;
 import model.villager.need.Hunger;
-import model.villager.need.Sleepynes;
+import model.villager.need.Sleepyness;
 import model.villager.need.Thirst;
 
 public class Brain implements Tickable{
@@ -24,7 +24,7 @@ public class Brain implements Tickable{
 	
 	private Hunger hunger = new Hunger(this);
 	private Thirst thirst = new Thirst(this);
-	private Sleepynes sleep = new Sleepynes(this);
+	private Sleepyness sleep = new Sleepyness(this);
 	
 	private LinkedList<Intention> intentions = new LinkedList<Intention>();
 	
@@ -86,7 +86,7 @@ public class Brain implements Tickable{
 		return thirst;
 	}
 
-	public Sleepynes getSleep() {
+	public Sleepyness getSleep() {
 		return sleep;
 	}
 

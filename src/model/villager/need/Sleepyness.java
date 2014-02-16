@@ -4,9 +4,9 @@ import model.villager.Brain;
 import model.villager.intention.Sleep;
 import resource.RandomClass;
 
-public class Sleepynes extends BasicNeed{
+public class Sleepyness extends BasicNeed{
 
-	public Sleepynes(Brain brain) {
+	public Sleepyness(Brain brain) {
 		super(-100, 100.0f, brain);
 		value = 100.0f;
 	}
