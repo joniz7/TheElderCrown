@@ -32,7 +32,8 @@ public class GameSlick implements Game{
 	private View view;
 	private static String title = "The Elder Crown";
 	private static boolean isExit;
-
+	private static final int TICK_INTERVAL = 20;
+	
 	@Override
 	public boolean closeRequested() {
 		isExit = true;
@@ -103,11 +104,10 @@ public class GameSlick implements Game{
 		GameSlick game = new GameSlick();
 		try {
 			appgc = new AppGameContainer(game);
-			appgc.setMaximumLogicUpdateInterval(1);
-			appgc.setMinimumLogicUpdateInterval(1);
+			appgc.setMaximumLogicUpdateInterval(TICK_INTERVAL);
+			appgc.setMinimumLogicUpdateInterval(TICK_INTERVAL);
 			appgc.start();
 		} catch (SlickException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 	}

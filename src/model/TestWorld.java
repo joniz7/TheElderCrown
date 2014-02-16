@@ -22,6 +22,10 @@ public class TestWorld extends GamePhase implements TileBasedMap{
 	
 	private final int WIDTH = 200, HEIGHT = 200;
 	
+	private final int TREE_SPARSITY = 140, VILLAGER_SPAWN = 120;
+	private final int LAKE_COUNT = 3;
+	private final float LAKE_WEIGHT = 1f, LAKE_LOSS = 0.02f;
+	
 	private HashMap<Point, BottomLayerGraphicalEntity> tiles;
 	private HashMap<Point, MiddleLayerGraphicalEntity> midObjects;
 	private HashMap<Point, TopLayerGraphicalEntity> topObjects;
@@ -45,7 +49,7 @@ public class TestWorld extends GamePhase implements TileBasedMap{
 		
 		for(int i = 0; i < WIDTH - 1; i++)
 			for(int j = 0; j < HEIGHT - 1; j++)
-				if(rnd.nextInt(14) == 0 && tiles.get(new Point(i + 1, j + 1)).getObjectID()==ObjectID.GRASS_TILE){
+				if(rnd.nextInt(TREE_SPARSITY) == 0 && tiles.get(new Point(i + 1, j + 1)).getObjectID() == ObjectID.GRASS_TILE){
 					Tree tree = new Tree(i + 1, j + 1);
 					trees.add(tree);
 					tickables.add(tree);
@@ -58,11 +62,11 @@ public class TestWorld extends GamePhase implements TileBasedMap{
 			for(int j = 118; j < 123; j++)
 				tiles.put(new Point(i, j), new GrassTile(i, j));
 		
-		viewX = 100 * 20;
-		viewY = 100 * 20;
+		viewX = (VILLAGER_SPAWN - 20) * 20;
+		viewY = (VILLAGER_SPAWN - 20) * 20;
 		
-		for(int i = 0; i < 150; i++){
-			Villager villager = new Villager(this, 120, 120);
+		for(int i = 0; i < 15; i++){
+			Villager villager = new Villager(this, VILLAGER_SPAWN, VILLAGER_SPAWN);
 			tickables.add(villager);
 		}
 	}
@@ -71,7 +75,7 @@ public class TestWorld extends GamePhase implements TileBasedMap{
 		ArrayList<Point> centers = new ArrayList<Point>();
 		
 		//Create random centerpoints for lakes
-		for(int i = 0; i < 3; i++){
+		for(int i = 0; i < LAKE_COUNT; i++){
 			int x = rnd.nextInt(WIDTH);
 			int y = rnd.nextInt(HEIGHT);
 			centers.add(new Point(x, y));
@@ -79,11 +83,11 @@ public class TestWorld extends GamePhase implements TileBasedMap{
 		}
 		
 		//weight and loss defines the sizes of lakes
-		float weight = 3f, loss = 0.17f;
+		float weight = LAKE_WEIGHT, loss = LAKE_LOSS;
 		ArrayList<Point> oldWater = new ArrayList<Point>();
 		for(Point c : centers){
 			boolean lakeDone = false;
-			weight = 3f;
+			weight = LAKE_WEIGHT;
 			
 			oldWater.add(c);
 			
@@ -111,7 +115,7 @@ public class TestWorld extends GamePhase implements TileBasedMap{
 				oldWater = newWater;
 				
 				
-				weight = weight - 0.1f;
+				weight = weight - LAKE_LOSS;
 				if(weight <= 0)
 					lakeDone = true;
 			}

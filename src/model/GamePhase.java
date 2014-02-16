@@ -9,6 +9,7 @@ public abstract class GamePhase implements Tickable{
 	protected ArrayList<Tickable> tickables = new ArrayList<Tickable>();
 	protected int viewX, viewY;
 	protected boolean paused;
+	protected final int SCROLL_SPEED = 8;
 	
 	@Override
 	public void tick(){
@@ -27,23 +28,19 @@ public abstract class GamePhase implements Tickable{
 	}
 	
 	public void incViewX(){
-		viewX++;
-		viewX++;
+		viewX += SCROLL_SPEED;
 	}
 	
 	public void incViewY(){
-		viewY++;
-		viewY++;
+		viewY += SCROLL_SPEED;
 	}
 	
 	public void decViewX(){
-		viewX--;
-		viewX--;
+		viewX -= SCROLL_SPEED;
 	}
 	
 	public void decViewY(){
-		viewY--;
-		viewY--;
+		viewY -= SCROLL_SPEED;
 	}
 
 	public void setViewX(int viewX) {

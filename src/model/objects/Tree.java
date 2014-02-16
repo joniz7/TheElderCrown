@@ -11,7 +11,8 @@ import model.entity.TopLayerGraphicalEntity;
  */
 public class Tree extends TopLayerGraphicalEntity implements Tickable{
 	
-	private int fruitRegTime = 5000, timer = 0;
+	private final int FRUIT_REGROWTH = 5000;
+	private int timer = 0;
 	private boolean fruit = true;
 	
 	/**
@@ -33,7 +34,7 @@ public class Tree extends TopLayerGraphicalEntity implements Tickable{
 		timer = timer + 1;
 		if(fruit)
 			timer = 0;
-		if(timer > fruitRegTime){
+		if(timer > FRUIT_REGROWTH){
 			drawable.setImage("tree2");
 			fruit = true;
 		}

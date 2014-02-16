@@ -14,6 +14,7 @@ public abstract class GraphicalEntity {
 	
 	protected Drawable drawable;
 	protected int tileX, tileY;
+	protected final int TILE_OFFSET = 20;
 	ObjectID id;
 	
 	/**
@@ -35,8 +36,8 @@ public abstract class GraphicalEntity {
 	 * @param y The new y-value of the entity.
 	 */
 	protected void updatePos(int x, int y){
-		drawable.setDrawX(x*20);
-		drawable.setDrawY(y*20);
+		drawable.setDrawX(x*TILE_OFFSET);
+		drawable.setDrawY(y*TILE_OFFSET);
 	}
 	
 	/**
@@ -49,8 +50,8 @@ public abstract class GraphicalEntity {
 	 * @param interPolY The interpolation in y-axis
 	 */
 	protected void updatePos(int x, int y, int interPolX, int interPolY){
-		drawable.setDrawX((x*20) + interPolX);
-		drawable.setDrawY((y*20) + interPolY);
+		drawable.setDrawX((x*TILE_OFFSET) + interPolX);
+		drawable.setDrawY((y*TILE_OFFSET) + interPolY);
 	}
 	
 	/**
