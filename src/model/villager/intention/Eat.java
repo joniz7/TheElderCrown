@@ -2,8 +2,8 @@ package model.villager.intention;
 
 import resource.ObjectID;
 import resource.SoundP;
-import model.villager.Brain;
 import model.villager.Villager;
+import model.villager.brain.Brain;
 
 public class Eat extends Intention{
 

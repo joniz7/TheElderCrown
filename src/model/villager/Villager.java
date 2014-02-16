@@ -4,6 +4,7 @@ import head.Tickable;
 import model.TestWorld;
 import model.entity.MiddleLayerGraphicalEntity;
 import model.path.FindObject;
+import model.villager.brain.Brain;
 import resource.ObjectID;
 import resource.SoundP;
 
@@ -59,7 +60,7 @@ public class Villager extends MiddleLayerGraphicalEntity implements Tickable{
 			if(world.getTree(tileX + 1, tileY) != null){
 				if(world.getTree(tileX + 1, tileY).hasFruit()){
 					world.getTree(tileX + 1, tileY).eaten();
-					brain.getHunger().satisfy(6);
+					brain.getBrainStem().getHunger().satisfy(6);
 					SoundP.playSound("ph", "eat.wav");
 					return true;
 				}
@@ -68,7 +69,7 @@ public class Villager extends MiddleLayerGraphicalEntity implements Tickable{
 			if(world.getTree(tileX - 1, tileY) != null){
 				if(world.getTree(tileX - 1, tileY).hasFruit()){
 					world.getTree(tileX - 1, tileY).eaten();
-					brain.getHunger().satisfy(6);
+					brain.getBrainStem().getHunger().satisfy(6);
 					SoundP.playSound("ph", "eat.wav");
 					return true;
 				}
@@ -77,7 +78,7 @@ public class Villager extends MiddleLayerGraphicalEntity implements Tickable{
 			if(world.getTree(tileX, tileY + 1) != null){
 				if(world.getTree(tileX, tileY + 1).hasFruit()){
 					world.getTree(tileX, tileY + 1).eaten();
-					brain.getHunger().satisfy(6);
+					brain.getBrainStem().getHunger().satisfy(6);
 					SoundP.playSound("ph", "eat.wav");
 					return true;
 				}
@@ -86,7 +87,7 @@ public class Villager extends MiddleLayerGraphicalEntity implements Tickable{
 			if(world.getTree(tileX, tileY - 1) != null){
 				if(world.getTree(tileX, tileY - 1).hasFruit()){
 					world.getTree(tileX, tileY - 1).eaten();
-					brain.getHunger().satisfy(6);
+					brain.getBrainStem().getHunger().satisfy(6);
 					SoundP.playSound("ph", "eat.wav");
 					return true;
 				}
@@ -97,7 +98,7 @@ public class Villager extends MiddleLayerGraphicalEntity implements Tickable{
 	
 	public boolean drink(){
 		if(FindObject.isAdjacentTile(world, ObjectID.WATER_TILE, tileX, tileY)){
-			brain.getThirst().satisfy(5);
+			brain.getBrainStem().getThirst().satisfy(5);
 			SoundP.playSound("ph", "drink.wav");
 			return true;
 		}
@@ -105,7 +106,7 @@ public class Villager extends MiddleLayerGraphicalEntity implements Tickable{
 	}
 	
 	public void sleep(){
-		brain.getSleep().satisfy(100);
+		brain.getBrainStem().getSleep().satisfy(100);
 		SoundP.playSound("ph", "sleep.wav");
 	}
 

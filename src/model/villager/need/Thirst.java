@@ -1,6 +1,7 @@
 package model.villager.need;
 
-import model.villager.Brain;
+import model.villager.brain.Brain;
+import model.villager.brain.Instinct;
 import model.villager.intention.Drink;
 import resource.RandomClass;
 
@@ -41,7 +42,7 @@ public class Thirst extends BasicNeed{
 
 	private void triggerThirst(){
 		cD = 0;
-		brain.addIntention(new Drink());
+		brain.input(new Instinct(new Drink()));
 	}
 	
 	private void triggerStarvation() {

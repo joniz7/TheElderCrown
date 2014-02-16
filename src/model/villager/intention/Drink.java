@@ -7,8 +7,8 @@ import model.TestWorld;
 import model.path.FindObject;
 import model.path.PathFinder;
 import model.tile.WaterTile;
-import model.villager.Brain;
 import model.villager.Villager;
+import model.villager.brain.Brain;
 
 public class Drink extends Intention{
 

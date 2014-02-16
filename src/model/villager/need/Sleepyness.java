@@ -1,6 +1,6 @@
 package model.villager.need;
 
-import model.villager.Brain;
+import model.villager.brain.Brain;
 import model.villager.intention.Sleep;
 import resource.RandomClass;
 

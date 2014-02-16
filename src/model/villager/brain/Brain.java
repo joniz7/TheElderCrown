@@ -1,4 +1,4 @@
-package model.villager;
+package model.villager.brain;
 
 import java.awt.Point;
 import java.util.LinkedList;
@@ -13,6 +13,8 @@ import model.path.FindObject;
 import model.path.PathFinder;
 import model.path.criteria.HasFruit;
 import model.tile.WaterTile;
+import model.villager.Villager;
+import model.villager.brain.stem.BrainStem;
 import model.villager.intention.Intention;
 import model.villager.need.Hunger;
 import model.villager.need.Sleepyness;
@@ -23,15 +25,17 @@ public class Brain implements Tickable{
 	private Villager villager;
 	private TestWorld world;
 	
-	private Hunger hunger = new Hunger(this);
-	private Thirst thirst = new Thirst(this);
-	private Sleepyness sleep = new Sleepyness(this);
+//	private Hunger hunger = new Hunger(this);
+//	private Thirst thirst = new Thirst(this);
+//	private Sleepyness sleep = new Sleepyness(this);
 	
 	private LinkedList<Intention> intentions = new LinkedList<Intention>();
 	
 	private Intention activeIntention;
 	
 	private Path currentPath;
+	
+	private BrainStem stem = new BrainStem(this);
 	
 	public Brain(Villager villager, TestWorld world){
 		this.villager = villager;
@@ -40,9 +44,7 @@ public class Brain implements Tickable{
 
 	@Override
 	public void tick(){
-		hunger.tick();
-		thirst.tick();
-		sleep.tick();
+		stem.tick();
 		
 		if(activeIntention == null && intentions.size() > 0){
 			Intention intent = intentions.getFirst();
@@ -53,6 +55,11 @@ public class Brain implements Tickable{
 		
 		if(activeIntention != null)
 			activeIntention.act(this);
+	}
+	
+	public void input(BrainInput input){
+		if(input instanceof Instinct)
+			this.addIntention(((Instinct) input).getIntent());
 	}
 	
 	public void walkToTileType(int tileID){
@@ -69,13 +76,9 @@ public class Brain implements Tickable{
 		
 		startTime = System.currentTimeMillis();
 		
-		try{
-			currentPath = PathFinder.getPath(villager.getTileX(), villager.getTileY(), 
-					(int) p.getX(), (int) p.getY());
-			villager.setMoving(true);
-		}catch(NullPointerException e){
-			
-		}
+		currentPath = PathFinder.getPath(villager.getTileX(), villager.getTileY(), 
+				(int) p.getX(), (int) p.getY());
+		villager.setMoving(true);
 		
 		endTime = System.currentTimeMillis();
 		System.out.println("Brain, path-find time to water: " + (endTime - startTime));
@@ -119,24 +122,16 @@ public class Brain implements Tickable{
 			intentions.addLast(intention);
 	}
 	
-	public Hunger getHunger() {
-		return hunger;
-	}
-
-	public Thirst getThirst() {
-		return thirst;
-	}
-
-	public Sleepyness getSleep() {
-		return sleep;
-	}
-
 	public Path getCurrentPath() {
 		return currentPath;
 	}
 
 	public Villager getVillager() {
 		return villager;
+	}
+
+	public BrainStem getBrainStem() {
+		return stem;
 	}
 
 	

@@ -1,6 +1,6 @@
 package model.villager.need;
 
-import model.villager.Brain;
+import model.villager.brain.Brain;
 import head.Tickable;
 
 public abstract class BasicNeed implements Tickable {
