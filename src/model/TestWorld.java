@@ -20,7 +20,7 @@ import resource.ObjectID;
 
 public class TestWorld extends GamePhase implements TileBasedMap{
 	
-	private final int WIDTH = 256, HEIGHT = 256;
+	private final int WIDTH = 200, HEIGHT = 200;
 	
 	private HashMap<Point, BottomLayerGraphicalEntity> tiles;
 	private HashMap<Point, MiddleLayerGraphicalEntity> midObjects;
@@ -71,7 +71,7 @@ public class TestWorld extends GamePhase implements TileBasedMap{
 		ArrayList<Point> centers = new ArrayList<Point>();
 		
 		//Create random centerpoints for lakes
-		for(int i = 0; i < 10; i++){
+		for(int i = 0; i < 3; i++){
 			int x = rnd.nextInt(WIDTH);
 			int y = rnd.nextInt(HEIGHT);
 			centers.add(new Point(x, y));
