@@ -184,7 +184,7 @@ public class FindObject {
 				return true;
 			if(tiles.get(new Point((int) startX, (int) startY + 1)).getObjectID() == id)
 				return true;
-		}catch(ArrayIndexOutOfBoundsException e){
+		}catch(NullPointerException e){
 			
 		}
 		
