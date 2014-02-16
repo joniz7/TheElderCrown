@@ -5,6 +5,7 @@ import java.util.LinkedList;
 
 import org.newdawn.slick.util.pathfinding.Path;
 
+import resource.Helper;
 import resource.ObjectID;
 import head.Tickable;
 import model.TestWorld;
@@ -55,19 +56,53 @@ public class Brain implements Tickable{
 	}
 	
 	public void walkToTileType(int tileID){
+		long startTime = System.currentTimeMillis();
+
 		Point p = FindObject.findTileNeighbour(world, ObjectID.WATER_TILE, 
 				villager.getTileX(), villager.getTileY());
-		currentPath = PathFinder.getPath(villager.getTileX(), villager.getTileY(), 
-				(int) p.getX(), (int) p.getY());
-		villager.setMoving(true);
+		
+		long endTime = System.currentTimeMillis();
+		System.out.println("Brain, find water time: " + (endTime - startTime));
+
+		if(endTime - startTime > 100)
+			world.printArea(p);
+		
+		startTime = System.currentTimeMillis();
+		
+		try{
+			currentPath = PathFinder.getPath(villager.getTileX(), villager.getTileY(), 
+					(int) p.getX(), (int) p.getY());
+			villager.setMoving(true);
+		}catch(NullPointerException e){
+			
+		}
+		
+		endTime = System.currentTimeMillis();
+		System.out.println("Brain, path-find time to water: " + (endTime - startTime));
 	}
 	
 	public void walkToObjectType(ObjectID id){
+		long startTime = System.currentTimeMillis();
+		
 		Point p = FindObject.findObjectNeighbour(world, new HasFruit(), id, 
 				villager.getTileX(), villager.getTileY());
+		
+		long endTime = System.currentTimeMillis();
+		System.out.println("Brain, find Tree time: " + (endTime - startTime) + " : Point: " + p.toString());
+		if(endTime - startTime > 100){
+			world.printArea(p);
+			world.setPaused(true);
+			new Helper(villager.getTileX(), villager.getTileY());
+		}
+		
+		startTime = System.currentTimeMillis();
+		
 		currentPath = PathFinder.getPath(villager.getTileX(), villager.getTileY(), 
 				(int) p.getX(), (int) p.getY());
 		villager.setMoving(true);
+		
+		endTime = System.currentTimeMillis();
+		System.out.println("Brain, path-find time to Tree: " + (endTime - startTime));
 	}
 	
 	public void activeTaskDone(){
@@ -75,7 +110,13 @@ public class Brain implements Tickable{
 	}
 	
 	public void addIntention(Intention intention){
-		intentions.addLast(intention);
+		boolean hasIntent = false;
+		for(Intention x : intentions)
+			if(x.getClass() == intention.getClass()){
+				hasIntent = true;
+			}
+		if(!hasIntent)
+			intentions.addLast(intention);
 	}
 	
 	public Hunger getHunger() {

@@ -10,7 +10,7 @@ public class Thirst extends BasicNeed{
 	
 	public Thirst(Brain brain) {
 		super(-100.0f, 100.0f, brain);
-		value = 10.0f;
+		value = 1.0f;
 		int rnd = RandomClass.getRandomInt(10, 1);
 		float rndF = (float) rnd;
 		decay = 0.001f + (rndF / 10000);

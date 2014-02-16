@@ -11,9 +11,8 @@ public class Eat extends Intention{
 	private boolean hasEaten;
 	
 	public void act(Brain brain){
-		if(!hasIssuedMove){
+		if(!hasIssuedMove && !brain.getVillager().eat()){
 			brain.walkToObjectType(ObjectID.TREE);
-//			SoundP.playSound("ph", "findnuts.wav");
 			hasIssuedMove = true;
 		}
 		

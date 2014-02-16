@@ -17,15 +17,13 @@ public class Drink extends Intention{
 	
 	
 	public void act(Brain brain){
-		if(!hasIssuedMove) {
+		if(!hasIssuedMove && !brain.getVillager().drink()){
 			brain.walkToTileType(1);
-//			SoundP.playSound("ph", "findwater.wav");
 			hasIssuedMove = true;
 		}
 		
 		if(brain.getVillager().drink()){
 			brain.activeTaskDone();
-			SoundP.playSound("image", "drink.wav");
 		}
 	}
 	

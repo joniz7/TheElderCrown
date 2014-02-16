@@ -72,7 +72,6 @@ public class GameSlick implements Game{
 	 */
 	public void render(GameContainer arg0, Graphics g) throws SlickException {
 		view.render(g, phase.getViewX(), phase.getViewY());
-		
 	}
 
 	@Override
@@ -111,6 +110,14 @@ public class GameSlick implements Game{
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+	}
+	
+	public static Graphics getG(){
+		return appgc.getGraphics();
+	}
+	
+	public static AppGameContainer getAppGC(){
+		return appgc;
 	}
 
 }

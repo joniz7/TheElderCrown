@@ -45,7 +45,7 @@ public class TestWorld extends GamePhase implements TileBasedMap{
 		
 		for(int i = 0; i < WIDTH - 1; i++)
 			for(int j = 0; j < HEIGHT - 1; j++)
-				if(rnd.nextInt(140) == 0 && tiles.get(new Point(i + 1, j + 1)).getObjectID()==ObjectID.GRASS_TILE){
+				if(rnd.nextInt(14) == 0 && tiles.get(new Point(i + 1, j + 1)).getObjectID()==ObjectID.GRASS_TILE){
 					Tree tree = new Tree(i + 1, j + 1);
 					trees.add(tree);
 					tickables.add(tree);
@@ -61,21 +61,17 @@ public class TestWorld extends GamePhase implements TileBasedMap{
 		viewX = 100 * 20;
 		viewY = 100 * 20;
 		
-		for(int i = 0; i < 30; i++){
+		for(int i = 0; i < 150; i++){
 			Villager villager = new Villager(this, 120, 120);
 			tickables.add(villager);
 		}
-//		villager = new Villager(this, 20, 21);
-//		tickables.add(villager);
-//		villager = new Villager(this, 21, 20);
-//		tickables.add(villager);
 	}
 	
 	private void createLakes(){
 		ArrayList<Point> centers = new ArrayList<Point>();
 		
 		//Create random centerpoints for lakes
-		for(int i = 0; i < 150; i++){
+		for(int i = 0; i < 10; i++){
 			int x = rnd.nextInt(WIDTH);
 			int y = rnd.nextInt(HEIGHT);
 			centers.add(new Point(x, y));
@@ -83,11 +79,11 @@ public class TestWorld extends GamePhase implements TileBasedMap{
 		}
 		
 		//weight and loss defines the sizes of lakes
-		float weight = 1f, loss = 0.17f;
+		float weight = 3f, loss = 0.17f;
 		ArrayList<Point> oldWater = new ArrayList<Point>();
 		for(Point c : centers){
 			boolean lakeDone = false;
-			weight = 1f;
+			weight = 3f;
 			
 			oldWater.add(c);
 			
@@ -161,13 +157,46 @@ public class TestWorld extends GamePhase implements TileBasedMap{
 	}
 	
 	public Tree getTree(int tileX, int tileY){
-		for(Tree x : trees)
-			if(x.getTileX() == tileX && x.getTileY() == tileY){
-				System.out.println("World: Tree found");
-				return x;
+		if(topObjects.get(new Point(tileX, tileY)) != null &&
+				topObjects.get(new Point(tileX, tileY)) instanceof Tree)
+			return (Tree) topObjects.get(new Point(tileX, tileY));
+		else
+			return null;
+	}
+	
+	public void printArea(Point centerPoint){
+		Point upperLeft = new Point(centerPoint.x - 4, centerPoint.y - 4);
+		Point lowerRight = new Point(centerPoint.x + 3, centerPoint.y + 3);
+		
+		System.out.println("");
+		System.out.println("");
+		System.out.println("");
+		
+		for(int i = (int) upperLeft.getX(); i < lowerRight.getX(); i++){
+			for(int j = (int) upperLeft.getY(); j < lowerRight.getY(); j++){
+				System.out.print(tiles.get(new Point(i, j)).getObjectID() + "  -  ");
 			}
-		System.out.println("World: Tree not found");
-		return null;
+			System.out.println("");
+		}
+		
+		System.out.println("");
+		System.out.println("");
+		System.out.println("");
+		
+		for(int i = (int) upperLeft.getX(); i < lowerRight.getX(); i++){
+			for(int j = (int) upperLeft.getY(); j < lowerRight.getY(); j++){
+				if(topObjects.get(new Point(i, j)) != null)
+					System.out.print(topObjects.get(new Point(i, j)).getObjectID() + "  -  ");
+				else
+					System.out.print("NULL  -  ");
+
+			}
+			System.out.println("");
+		}
+		
+		System.out.println("");
+		System.out.println("");
+		System.out.println("");
 	}
 	
 	

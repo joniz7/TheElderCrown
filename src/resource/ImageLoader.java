@@ -21,6 +21,10 @@ public class ImageLoader {
 		
 		//Villager
 		imageLib.put("villager", loadImage("image", "villager.png"));
+		
+		//Debugging
+		imageLib.put("helper", loadImage("image", "miss.png"));
+		imageLib.put("helper2", loadImage("image", "hit.png"));
 	}
 	
 	public static Image getImage(String name){
