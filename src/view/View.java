@@ -1,12 +1,17 @@
 package view;
 
+import java.awt.Point;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.util.ArrayList;
 
+import model.entity.MidEntity;
+import model.entity.TopEntity;
+import model.entity.bottom.BottomEntity;
+
 import org.newdawn.slick.Graphics;
 
-import util.Position;
+import view.entity.EntityView;
 
 public class View implements PropertyChangeListener {
 
@@ -17,9 +22,7 @@ public class View implements PropertyChangeListener {
 	private static final int TILE_OFFSET = 20;
 	private static int width, height;
 	private static int cameraX, cameraY;
-	
 
-	
 	public View(int width, int height) {
 		View.width = width;
 		View.height = height;
@@ -78,6 +81,8 @@ public class View implements PropertyChangeListener {
 //		g.fillRect(0, 0, disp.getGraphicsDevice().getDisplayMode().getWidth(), 
 //				disp.getGraphicsDevice().getDisplayMode().getHeight());
 		
+		System.out.println(""+botGraphics.size()+" "+midGraphics.size()+" "+topGraphics.size());
+		
 		for(EntityView d : botGraphics)
 			d.draw(g, cameraX, cameraY, width, height);
 			
@@ -101,14 +106,39 @@ public class View implements PropertyChangeListener {
 	@Override
 	public void propertyChange(PropertyChangeEvent event) {
 		
-		switch (event.getPropertyName()) {
-			// Camera position changed
-			case "camera":
-				Position p = (Position)event.getNewValue();
-				cameraX = convertCoordinate(p.getX());
-				cameraY = convertCoordinate(p.getY());
-				break;
+		String name = event.getPropertyName();
+		if (name.equals("camera")) {
+			Point p = (Point)event.getNewValue();
+			cameraX = convertCoordinate(p.getX());
+			cameraY = convertCoordinate(p.getY());
 		}
+		else if (name.equals("addTopEntity")) {
+			TopEntity entity = (TopEntity) event.getNewValue();
+			EntityView view = entity.createView();
+			topGraphics.add(view);
+		}
+		else if (name.equals("addMidEntity")) {
+			MidEntity entity = (MidEntity) event.getNewValue();
+			EntityView view = entity.createView();
+			midGraphics.add(view);
+		} 
+		else if (name.equals("addBotEntity")) {
+			BottomEntity entity = (BottomEntity) event.getNewValue();
+			EntityView view = entity.createView();
+			botGraphics.add(view);
+		}
+		else if (name.equals("removeTopEntity")) {
+			// TODO search and remove from list
+			//      (should implement GUIDs first)
+			throw new UnsupportedOperationException();
+		}
+		else if (name.equals("removeMidEntity")) {
+			throw new UnsupportedOperationException();
+		}
+		else if (name.equals("removeBotEntity")) {
+			throw new UnsupportedOperationException();
+		}
+		
 	}
 	
 	/**
@@ -118,5 +148,16 @@ public class View implements PropertyChangeListener {
 	 */
 	public static int convertCoordinate(int worldCoordinate) {
 		return worldCoordinate*TILE_OFFSET;
+	}
+	/**
+	 * Converts from world to view coordinates.
+	 * (Should always be used when receiving positions from model!)
+	 * 
+	 * Note: "worldCoordinate" is here converted to an integer.
+	 * 
+	 * @Author Niklas 
+	 */
+	public static int convertCoordinate(double worldCoordinate) {
+		return (int)worldCoordinate*TILE_OFFSET;
 	}
 }

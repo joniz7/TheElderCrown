@@ -5,14 +5,14 @@ import java.util.LinkedList;
 
 import org.newdawn.slick.util.pathfinding.Path;
 
-import resource.Helper;
-import resource.ObjectType;
+import util.Helper1;
+import util.ObjectType;
 import head.Tickable;
 import model.TestWorld;
+import model.entity.bottom.WaterTile;
 import model.path.FindObject;
 import model.path.PathFinder;
 import model.path.criteria.HasFruit;
-import model.tile.WaterTile;
 import model.villager.Villager;
 import model.villager.brain.stem.BrainStem;
 import model.villager.intention.Intention;
@@ -66,7 +66,7 @@ public class Brain implements Tickable{
 		long startTime = System.currentTimeMillis();
 
 		Point p = FindObject.findTileNeighbour(world, ObjectType.WATER_TILE, 
-				villager.getTileX(), villager.getTileY());
+				villager.getX(), villager.getY());
 		
 		long endTime = System.currentTimeMillis();
 		System.out.println("Brain, find water time: " + (endTime - startTime));
@@ -76,7 +76,7 @@ public class Brain implements Tickable{
 		
 		startTime = System.currentTimeMillis();
 		
-		currentPath = PathFinder.getPath(villager.getTileX(), villager.getTileY(), 
+		currentPath = PathFinder.getPath(villager.getX(), villager.getY(), 
 				(int) p.getX(), (int) p.getY());
 		villager.setMoving(true);
 		
@@ -88,19 +88,19 @@ public class Brain implements Tickable{
 		long startTime = System.currentTimeMillis();
 		
 		Point p = FindObject.findObjectNeighbour(world, new HasFruit(), id, 
-				villager.getTileX(), villager.getTileY());
+				villager.getX(), villager.getY());
 		
 		long endTime = System.currentTimeMillis();
 		System.out.println("Brain, find Tree time: " + (endTime - startTime) + " : Point: " + p.toString());
 		if(endTime - startTime > 100){
 			world.printArea(p);
 			world.setPaused(true);
-			new Helper(villager.getTileX(), villager.getTileY());
+			new Helper1(villager.getX(), villager.getY());
 		}
 		
 		startTime = System.currentTimeMillis();
 		
-		currentPath = PathFinder.getPath(villager.getTileX(), villager.getTileY(), 
+		currentPath = PathFinder.getPath(villager.getX(), villager.getY(), 
 				(int) p.getX(), (int) p.getY());
 		villager.setMoving(true);
 		

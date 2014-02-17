@@ -9,8 +9,8 @@ import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.SlickException;
 
-import resource.ImageLoader;
 
+import util.ImageLoader;
 import view.View;
 
 import control.Controller;

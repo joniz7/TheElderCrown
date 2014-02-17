@@ -1,36 +1,43 @@
-package view;
+package view.entity;
 
+import java.awt.Point;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.Image;
 
-import resource.ImageLoader;
-import util.Position;
+import util.ImageLoader;
+import view.View;
 
 /**
- * The graphical part of an Entity.
+ * A generic view representation of an entity.
  *
  * Keeps track of the entity's image, view position (and image name).
  */
 public class EntityView implements PropertyChangeListener {
 
 	private Image image;
-	
-	// View coordinates
-	private int x, y;
-	
 	private String name;
 	
-	public EntityView(String name){
+	// View coordinates
+	protected int x, y;
+	
+	/**
+	 * Creates a new EntityView.
+	 * (Note: do not forget to set up listeners)
+	 * 
+	 * @param name - the name of the graphic to use
+	 * @param x - the world's x coordinate
+	 * @param y - the world's y coordinate
+	 */
+	public EntityView(String name, int x, int y){
 		image = ImageLoader.getImage(name);
+		this.x = View.convertCoordinate(x);
+		this.y = View.convertCoordinate(y);
 		this.name = name;
 	}
 	
-	public EntityView(Image image){
-		this.image = image;
-	}
 	
 	public boolean draw(Graphics g, int cameraX, int cameraY, int width, int height){
 		int imageWidth = image.getWidth();
@@ -47,16 +54,6 @@ public class EntityView implements PropertyChangeListener {
 		return false;
 	}
 
-	/*
-	public void setDrawX(int drawX) {
-		this.worldX = drawX;
-	}
-
-	public void setDrawY(int drawY) {
-		this.worldY = drawY;
-	}
-	*/
-
 	public void setImage(String name) {
 		image = ImageLoader.getImage(name);
 	}
@@ -65,7 +62,6 @@ public class EntityView implements PropertyChangeListener {
 		return name;
 	}
 
-	
 	@Override
 	/**
 	 * Is called when our associated model changes in any way.
@@ -73,24 +69,18 @@ public class EntityView implements PropertyChangeListener {
 	 * @author Niklas
 	 */
 	public void propertyChange(PropertyChangeEvent event) {
-
 		
-		
-		switch (event.getPropertyName()) {
-		
-		// Camera position changed
-		case "position":
-			Position p = (Position)event.getNewValue();
-			x = p.getX();
-			y = p.getY();
+		String name = event.getPropertyName();
+		if (name.equals("position")) {
+			Point p = (Point)event.getNewValue();
+			x = (int)p.getX();
+			y = (int)p.getY();
 			// TODO should send model coordinates here!
 			// Fix when we do view interpolation
 //			x = View.convertCoordinate(p.getX());
 //			y = View.convertCoordinate(p.getY());
-			break;
-	
-	}
-		
+		}
+
 	}
 	
 	

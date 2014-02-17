@@ -3,7 +3,7 @@ package model.villager.need;
 import model.villager.brain.Brain;
 import model.villager.brain.Instinct;
 import model.villager.intention.Drink;
-import resource.RandomClass;
+import util.RandomClass;
 
 public class Thirst extends BasicNeed{
 	

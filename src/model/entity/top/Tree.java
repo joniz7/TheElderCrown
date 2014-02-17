@@ -1,15 +1,18 @@
-package model.objects;
+package model.entity.top;
 
-import resource.ObjectType;
+import util.ObjectType;
+import view.entity.EntityView;
+import view.entity.bot.WaterTileView;
+import view.entity.top.TreeView;
 import head.Tickable;
-import model.entity.TopLayerEntity;
+import model.entity.TopEntity;
 
 /**
  * A class to represent a tree.
  * 
  * @author Simon E
  */
-public class Tree extends TopLayerEntity implements Tickable{
+public class Tree extends TopEntity implements Tickable{
 	
 	private final int FRUIT_REGROWTH = 5000;
 	private int timer = 0;
@@ -22,7 +25,7 @@ public class Tree extends TopLayerEntity implements Tickable{
 	 * @param tileY The row in which the tree will stand in.
 	 */
 	public Tree(int x, int y) {
-		super("tree2", x, y, ObjectType.TREE);
+		super(x, y, ObjectType.TREE);
 		updatePos(x-1, y-1);
 	}
 
@@ -35,7 +38,8 @@ public class Tree extends TopLayerEntity implements Tickable{
 		if(fruit)
 			timer = 0;
 		if(timer > FRUIT_REGROWTH){
-			drawable.setImage("tree2");
+			// Send update to view
+			pcs.firePropertyChange("fruit", false, true);
 			fruit = true;
 		}
 	}
@@ -44,7 +48,8 @@ public class Tree extends TopLayerEntity implements Tickable{
 	 * The method to call when the fruit of a tree has been eaten.
 	 */
 	public void eaten(){
-		drawable.setImage("tree");
+		// Send update to view
+		pcs.firePropertyChange("fruit", true, false);
 		fruit = false;
 	}
 
@@ -55,6 +60,17 @@ public class Tree extends TopLayerEntity implements Tickable{
 	 */
 	public boolean hasFruit() {
 		return fruit;
+	}
+	
+	/**
+	 * Creates and returns a new TreeView.
+	 * Registers the view as our listener.
+	 */
+	@Override
+	public EntityView createView() {
+		EntityView view = new TreeView(x, y);
+		pcs.addPropertyChangeListener(view);
+		return view;
 	}
 	
 }

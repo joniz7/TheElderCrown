@@ -1,11 +1,11 @@
 package model.entity;
 
+import java.awt.Point;
 import java.beans.PropertyChangeSupport;
 
 import model.path.criteria.Criteria;
-import resource.ObjectType;
-import util.Position;
-import view.EntityView;
+import util.ObjectType;
+import view.entity.EntityView;
 
 /**
  * A class representing an object that is visible in the world.
@@ -15,16 +15,10 @@ import view.EntityView;
  */
 public abstract class Entity {
 	
-	// TODO remove - this reference is bad
-	protected EntityView drawable;
-	
-	// TODO use Position instead
-	protected int tileX, tileY;
+	// This entity's belief of its position
+	protected int x, y;
 
-	// TODO remove when we fix view interpolation
-	protected final int TILE_OFFSET = 20;
-	protected ObjectType id;
-	
+	protected ObjectType type;
 	protected PropertyChangeSupport pcs;
 	
 	/**
@@ -32,20 +26,13 @@ public abstract class Entity {
 	 * 
 	 * @param name The name of the image to be assigned.
 	 */
-	public Entity(String name, int x, int y, ObjectType id){
+	public Entity(int x, int y, ObjectType type){
 		
 		pcs = new PropertyChangeSupport(this);
-		tileX = x;
-		tileY = y;
-		this.id = id;
-		
-		// Create view and tell it to listen
-		// TODO do not create views here, but in subclasses
-		//      why can we not remove these?
-		drawable = new EntityView(name);
-		pcs.addPropertyChangeListener(drawable);
-		
-		
+		this.x = x;
+		this.y = y;
+		this.type = type;
+
 	}
 	
 	/**
@@ -55,11 +42,13 @@ public abstract class Entity {
 	 * @param y The new y-value of the entity.
 	 */
 	protected void updatePos(int x, int y){
+		// Tell entity of its new position
+		this.x = x;
+		this.y = y;
 		// TODO should send model coordinates!
 		//      fix when we fix view interpolation
-		Position pos = new Position(x*TILE_OFFSET, y*TILE_OFFSET);
+		Point pos = new Point(x*20, y*20);
 		pcs.firePropertyChange("position", null, pos);
-		
 	}
 	
 	/**
@@ -72,9 +61,12 @@ public abstract class Entity {
 	 * @param interPolY The interpolation in y-axis
 	 */
 	protected void updatePos(int x, int y, int interPolX, int interPolY){
+		// Tell entity of its new position
+		this.x = x;
+		this.y = y;
 		// TODO should not exist!
 		//      interpolation is ideally handled in view (?)
-		Position pos = new Position((x*TILE_OFFSET) + interPolX, (y*TILE_OFFSET) + interPolY);
+		Point pos = new Point((x*20) + interPolX, (y*20) + interPolY);
 		pcs.firePropertyChange("position", null, pos);		
 	}
 	
@@ -83,8 +75,8 @@ public abstract class Entity {
 	 * 
 	 * @return the column in which the GraphicalEntity is.
 	 */
-	public int getTileX() {
-		return tileX;
+	public int getX() {
+		return x;
 	}
 
 	/**
@@ -92,8 +84,8 @@ public abstract class Entity {
 	 * 
 	 * @return the row in which the GraphicalEntity is.
 	 */
-	public int getTileY() {
-		return tileY;
+	public int getY() {
+		return y;
 	}
 
 	/**
@@ -106,8 +98,17 @@ public abstract class Entity {
 		return criteria.match(this);
 	}
 	
+	/**
+	 * Creates and returns a view for this Entity.
+	 * Sets up listeners between the Entity and its view.
+	 */
+	public abstract EntityView createView();
+	
+	/**
+	 * Returns the type of this Entity.
+	 */
 	public ObjectType getObjectType(){
-		return id;
+		return type;
 	}
 	
 }

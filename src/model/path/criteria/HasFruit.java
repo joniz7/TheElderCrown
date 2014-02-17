@@ -1,7 +1,7 @@
 package model.path.criteria;
 
 import model.entity.Entity;
-import model.objects.Tree;
+import model.entity.top.Tree;
 
 public class HasFruit implements Criteria{
 

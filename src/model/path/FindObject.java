@@ -9,22 +9,22 @@ import java.util.HashSet;
 import java.util.Queue;
 
 import model.TestWorld;
-import model.entity.BottomLayerEntity;
-import model.entity.MiddleLayerEntity;
-import model.entity.TopLayerEntity;
+import model.entity.MidEntity;
+import model.entity.TopEntity;
+import model.entity.bottom.BottomEntity;
 import model.path.criteria.Criteria;
 
 import org.newdawn.slick.util.pathfinding.Path;
 
-import resource.Helper;
-import resource.Helper2;
-import resource.ObjectType;
+import util.Helper1;
+import util.Helper2;
+import util.ObjectType;
 import view.View;
 
 public class FindObject {
 	
 	public static Point findTile(TestWorld world, ObjectType id, int startX, int startY){
-		HashMap<Point, BottomLayerEntity> tiles = world.getTiles();
+		HashMap<Point, BottomEntity> tiles = world.getTiles();
 		
 		Point upperLeft = new Point(startX - 1, startY - 1);
 		Point lowerRight  = new Point(startX + 1, startY + 1);
@@ -75,7 +75,7 @@ public class FindObject {
 	
 	public static Point findTile2(TestWorld world, ObjectType id, int startX, int startY){
 		HashMap<Point, Boolean> visitedHash = new HashMap<Point, Boolean>();
-		HashMap<Point, BottomLayerEntity> tiles = world.getTiles();
+		HashMap<Point, BottomEntity> tiles = world.getTiles();
 		
 		ArrayList<Point> visited = new ArrayList<Point>();
 		ArrayList<Point> toVisit = new ArrayList<Point>();
@@ -125,7 +125,7 @@ public class FindObject {
 		long endTime = System.currentTimeMillis();
 		System.out.println("FindObject, find water tile: " + (endTime - startTime));
 		
-		HashMap<Point, BottomLayerEntity> tiles = world.getTiles();
+		HashMap<Point, BottomEntity> tiles = world.getTiles();
 		
 		Path p1 = null;
 		Path p2 = null;
@@ -164,7 +164,7 @@ public class FindObject {
 			int finalY = bestPath.getStep(bestPath.getLength() - 1).getY();
 			return new Point(finalX, finalY);
 		}catch(NullPointerException e){
-			new Helper(p.x, p.y);
+			new Helper1(p.x, p.y);
 			new Helper2(startX, startY);
 			world.setPaused(true);
 		}
@@ -173,7 +173,7 @@ public class FindObject {
 	}
 	
 	public static boolean isAdjacentTile(TestWorld world, ObjectType id, int startX, int startY){
-		HashMap<Point, BottomLayerEntity> tiles = world.getTiles();
+		HashMap<Point, BottomEntity> tiles = world.getTiles();
 		
 		try{
 			if(tiles.get(new Point((int) startX - 1, (int) startY)).getObjectType() == id)
@@ -192,8 +192,8 @@ public class FindObject {
 	}
 	
 	public static Point findObject(TestWorld world, Criteria crit, ObjectType id, int startX, int startY){
-		HashMap<Point, MiddleLayerEntity> mids = world.getMidObjects();
-		HashMap<Point, TopLayerEntity> tops = world.getTopObjects();
+		HashMap<Point, MidEntity> mids = world.getMidObjects();
+		HashMap<Point, TopEntity> tops = world.getTopObjects();
 		
 		Point upperLeft = new Point(startX - 1, startY - 1);
 		Point lowerRight = new Point(startX + 1, startY + 1);
@@ -276,8 +276,8 @@ public class FindObject {
 	
 	public static Point findObject2(TestWorld world, Criteria crit, ObjectType id, int startX, int startY){
 		HashMap<Point, Boolean> visitedHash = new HashMap<Point, Boolean>();
-		HashMap<Point, MiddleLayerEntity> mids = world.getMidObjects();
-		HashMap<Point, TopLayerEntity> tops = world.getTopObjects();
+		HashMap<Point, MidEntity> mids = world.getMidObjects();
+		HashMap<Point, TopEntity> tops = world.getTopObjects();
 		
 		ArrayList<Point> visited = new ArrayList<Point>();
 		ArrayList<Point> toVisit = new ArrayList<Point>();
@@ -330,7 +330,7 @@ public class FindObject {
 		long endTime = System.currentTimeMillis();
 		System.out.println("FindObject, find Tree tile: " + (endTime - startTime));
 		
-		HashMap<Point, BottomLayerEntity> tiles = world.getTiles();
+		HashMap<Point, BottomEntity> tiles = world.getTiles();
 		
 		Path p1 = null;
 		Path p2 = null;
@@ -371,8 +371,8 @@ public class FindObject {
 	}
 	
 	public static boolean isAdjacentObject(TestWorld world, ObjectType id, int startX, int startY){
-		HashMap<Point, MiddleLayerEntity> mids = world.getMidObjects();
-		HashMap<Point, TopLayerEntity> tops = world.getTopObjects();
+		HashMap<Point, MidEntity> mids = world.getMidObjects();
+		HashMap<Point, TopEntity> tops = world.getTopObjects();
 		
 		try{
 			if(mids.get(new Point(startX - 1, startY)) != null &&

@@ -1,7 +1,12 @@
-package view.tile;
+package view.entity.bot;
 
-import view.EntityView;
+import view.entity.EntityView;
 
+/**
+ * The view representation of a grass tile.
+ * 
+ * @author Niklas
+ */
 public class GrassTileView extends EntityView {
 
 	/**
@@ -10,10 +15,7 @@ public class GrassTileView extends EntityView {
 	 * @param y - the world's y coordinate
 	 */
 	public GrassTileView(int x, int y) {
-		super("grass");
-		// TODO convert to model
-		// save to vars
-		
+		super("grass", x, y);
 	}
 	
 }

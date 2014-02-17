@@ -1,7 +1,7 @@
 package model.villager.intention;
 
-import resource.ObjectType;
-import resource.SoundP;
+import util.ObjectType;
+import util.SoundP;
 import model.villager.Villager;
 import model.villager.brain.Brain;
 

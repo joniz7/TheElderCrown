@@ -2,7 +2,7 @@ package model.villager.need;
 
 import model.villager.brain.Brain;
 import model.villager.intention.Sleep;
-import resource.RandomClass;
+import util.RandomClass;
 
 public class Sleepyness extends BasicNeed{
 

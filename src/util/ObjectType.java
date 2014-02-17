@@ -1,4 +1,4 @@
-package resource;
+package util;
 
 public enum ObjectType {
 	GRASS_TILE, WATER_TILE,

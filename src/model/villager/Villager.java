@@ -2,13 +2,16 @@ package model.villager;
 
 import head.Tickable;
 import model.TestWorld;
-import model.entity.MiddleLayerEntity;
+import model.entity.MidEntity;
 import model.path.FindObject;
 import model.villager.brain.Brain;
-import resource.ObjectType;
-import resource.SoundP;
+import util.ObjectType;
+import util.SoundP;
+import view.entity.EntityView;
+import view.entity.mid.VillagerView;
+import view.entity.top.TreeView;
 
-public class Villager extends MiddleLayerEntity implements Tickable{
+public class Villager extends MidEntity implements Tickable{
 
 	private Brain brain;
 	private TestWorld world;
@@ -17,7 +20,7 @@ public class Villager extends MiddleLayerEntity implements Tickable{
 	private boolean moving = false;
 	
 	public Villager(TestWorld world, int x, int y){
-		super("villager", x , y, ObjectType.VILLAGER);
+		super(x , y, ObjectType.VILLAGER);
 		this.world = world;
 		updatePos(x, y);
 		brain = new Brain(this, world);
@@ -30,7 +33,7 @@ public class Villager extends MiddleLayerEntity implements Tickable{
 		if(moving)
 			move();
 		else
-			updatePos(tileX , tileY);
+			updatePos(x , y);
 	}
 	
 	public void move(){
@@ -40,53 +43,53 @@ public class Villager extends MiddleLayerEntity implements Tickable{
 		int interPolY = 0;
 		
 		if(stepCount < brain.getCurrentPath().getLength()){
-			interPolX = brain.getCurrentPath().getStep(stepCount).getX() - tileX;
-			interPolY = brain.getCurrentPath().getStep(stepCount).getY() - tileY;
+			interPolX = brain.getCurrentPath().getStep(stepCount).getX() - x;
+			interPolY = brain.getCurrentPath().getStep(stepCount).getY() - y;
 		}else{
 			setMoving(false);
 		}
 		
         if(progress > speedCap && stepCount < brain.getCurrentPath().getLength()){
         	progress = 0;
-        	tileX = brain.getCurrentPath().getStep(stepCount).getX();
-        	tileY = brain.getCurrentPath().getStep(stepCount++).getY();
+        	x = brain.getCurrentPath().getStep(stepCount).getX();
+        	y = brain.getCurrentPath().getStep(stepCount++).getY();
         }
         
-        updatePos(tileX, tileY, (interPolX * (progress/12)), (interPolY * (progress/12)));
+        updatePos(x, y, (interPolX * (progress/12)), (interPolY * (progress/12)));
 	}
 	
 	public boolean eat(){
-		if(FindObject.isAdjacentObject(world, ObjectType.TREE, tileX, tileY)){
-			if(world.getTree(tileX + 1, tileY) != null){
-				if(world.getTree(tileX + 1, tileY).hasFruit()){
-					world.getTree(tileX + 1, tileY).eaten();
+		if(FindObject.isAdjacentObject(world, ObjectType.TREE, x, y)){
+			if(world.getTree(x + 1, y) != null){
+				if(world.getTree(x + 1, y).hasFruit()){
+					world.getTree(x + 1, y).eaten();
 					brain.getBrainStem().getHunger().satisfy(6);
 					SoundP.playSound("ph", "eat.wav");
 					return true;
 				}
 			}
 			
-			if(world.getTree(tileX - 1, tileY) != null){
-				if(world.getTree(tileX - 1, tileY).hasFruit()){
-					world.getTree(tileX - 1, tileY).eaten();
+			if(world.getTree(x - 1, y) != null){
+				if(world.getTree(x - 1, y).hasFruit()){
+					world.getTree(x - 1, y).eaten();
 					brain.getBrainStem().getHunger().satisfy(6);
 					SoundP.playSound("ph", "eat.wav");
 					return true;
 				}
 			}
 			
-			if(world.getTree(tileX, tileY + 1) != null){
-				if(world.getTree(tileX, tileY + 1).hasFruit()){
-					world.getTree(tileX, tileY + 1).eaten();
+			if(world.getTree(x, y + 1) != null){
+				if(world.getTree(x, y + 1).hasFruit()){
+					world.getTree(x, y + 1).eaten();
 					brain.getBrainStem().getHunger().satisfy(6);
 					SoundP.playSound("ph", "eat.wav");
 					return true;
 				}
 			}
 			
-			if(world.getTree(tileX, tileY - 1) != null){
-				if(world.getTree(tileX, tileY - 1).hasFruit()){
-					world.getTree(tileX, tileY - 1).eaten();
+			if(world.getTree(x, y - 1) != null){
+				if(world.getTree(x, y - 1).hasFruit()){
+					world.getTree(x, y - 1).eaten();
 					brain.getBrainStem().getHunger().satisfy(6);
 					SoundP.playSound("ph", "eat.wav");
 					return true;
@@ -97,7 +100,7 @@ public class Villager extends MiddleLayerEntity implements Tickable{
 	}
 	
 	public boolean drink(){
-		if(FindObject.isAdjacentTile(world, ObjectType.WATER_TILE, tileX, tileY)){
+		if(FindObject.isAdjacentTile(world, ObjectType.WATER_TILE, x, y)){
 			brain.getBrainStem().getThirst().satisfy(5);
 			SoundP.playSound("ph", "drink.wav");
 			return true;
@@ -117,6 +120,18 @@ public class Villager extends MiddleLayerEntity implements Tickable{
 	public void setMoving(boolean moving) {
 		this.moving = moving;
 		stepCount = 0;
+	}
+	
+	
+	/**
+	 * Creates and returns a new VillagerView.
+	 * Registers the view as our listener.
+	 */
+	@Override
+	public EntityView createView() {
+		EntityView view = new VillagerView(x, y);
+		pcs.addPropertyChangeListener(view);
+		return view;
 	}
 	
 	
