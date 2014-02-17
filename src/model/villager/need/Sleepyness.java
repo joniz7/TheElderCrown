@@ -34,7 +34,7 @@ public class Sleepyness extends BasicNeed{
 	}
 	
 	private void triggerInsomnia() {
-		// TODO Auto-generated method stub
+		
 	}
 
 	

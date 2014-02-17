@@ -1,6 +1,6 @@
 package model.villager.intention;
 
-import resource.ObjectID;
+import resource.ObjectType;
 import resource.SoundP;
 import model.villager.Villager;
 import model.villager.brain.Brain;
@@ -12,7 +12,7 @@ public class Eat extends Intention{
 	
 	public void act(Brain brain){
 		if(!hasIssuedMove && !brain.getVillager().eat()){
-			brain.walkToObjectType(ObjectID.TREE);
+			brain.walkToObjectType(ObjectType.TREE);
 			hasIssuedMove = true;
 		}
 		

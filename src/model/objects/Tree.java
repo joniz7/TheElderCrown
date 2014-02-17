@@ -1,15 +1,15 @@
 package model.objects;
 
-import resource.ObjectID;
+import resource.ObjectType;
 import head.Tickable;
-import model.entity.TopLayerGraphicalEntity;
+import model.entity.TopLayerEntity;
 
 /**
  * A class to represent a tree.
  * 
  * @author Simon E
  */
-public class Tree extends TopLayerGraphicalEntity implements Tickable{
+public class Tree extends TopLayerEntity implements Tickable{
 	
 	private final int FRUIT_REGROWTH = 5000;
 	private int timer = 0;
@@ -22,7 +22,7 @@ public class Tree extends TopLayerGraphicalEntity implements Tickable{
 	 * @param tileY The row in which the tree will stand in.
 	 */
 	public Tree(int x, int y) {
-		super("tree2", x, y, ObjectID.TREE);
+		super("tree2", x, y, ObjectType.TREE);
 		updatePos(x-1, y-1);
 	}
 

@@ -1,9 +1,9 @@
 package model.path.criteria;
 
-import model.entity.GraphicalEntity;
+import model.entity.Entity;
 
 public interface Criteria{
 
-	public boolean match(GraphicalEntity ge);
+	public boolean match(Entity ge);
 	
 }

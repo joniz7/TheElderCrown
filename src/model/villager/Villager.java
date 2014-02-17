@@ -2,13 +2,13 @@ package model.villager;
 
 import head.Tickable;
 import model.TestWorld;
-import model.entity.MiddleLayerGraphicalEntity;
+import model.entity.MiddleLayerEntity;
 import model.path.FindObject;
 import model.villager.brain.Brain;
-import resource.ObjectID;
+import resource.ObjectType;
 import resource.SoundP;
 
-public class Villager extends MiddleLayerGraphicalEntity implements Tickable{
+public class Villager extends MiddleLayerEntity implements Tickable{
 
 	private Brain brain;
 	private TestWorld world;
@@ -17,7 +17,7 @@ public class Villager extends MiddleLayerGraphicalEntity implements Tickable{
 	private boolean moving = false;
 	
 	public Villager(TestWorld world, int x, int y){
-		super("villager", x , y, ObjectID.VILLAGER);
+		super("villager", x , y, ObjectType.VILLAGER);
 		this.world = world;
 		updatePos(x, y);
 		brain = new Brain(this, world);
@@ -56,7 +56,7 @@ public class Villager extends MiddleLayerGraphicalEntity implements Tickable{
 	}
 	
 	public boolean eat(){
-		if(FindObject.isAdjacentObject(world, ObjectID.TREE, tileX, tileY)){
+		if(FindObject.isAdjacentObject(world, ObjectType.TREE, tileX, tileY)){
 			if(world.getTree(tileX + 1, tileY) != null){
 				if(world.getTree(tileX + 1, tileY).hasFruit()){
 					world.getTree(tileX + 1, tileY).eaten();
@@ -97,7 +97,7 @@ public class Villager extends MiddleLayerGraphicalEntity implements Tickable{
 	}
 	
 	public boolean drink(){
-		if(FindObject.isAdjacentTile(world, ObjectID.WATER_TILE, tileX, tileY)){
+		if(FindObject.isAdjacentTile(world, ObjectType.WATER_TILE, tileX, tileY)){
 			brain.getBrainStem().getThirst().satisfy(5);
 			SoundP.playSound("ph", "drink.wav");
 			return true;
