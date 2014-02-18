@@ -112,10 +112,21 @@ public class GameSlick implements Game{
 		}
 	}
 	
+	/**
+	 * Getter for the graphics of the main frame.
+	 * 
+	 * @return the Graphics object of the current AppGameContainer
+	 * @see AppGameContainer
+	 */
 	public static Graphics getG(){
 		return appgc.getGraphics();
 	}
 	
+	/**
+	 * Getter for the AppGameContainer
+	 * 
+	 * @return the current AppGameContainer
+	 */
 	public static AppGameContainer getAppGC(){
 		return appgc;
 	}

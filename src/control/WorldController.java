@@ -15,7 +15,11 @@ public class WorldController extends Controller{
 	}
 
 	@Override
+	/**
+	 * The method that, so far, pans the view.
+	 */
 	public void tick() {
+		// multiple 'ifs' and not 'if else' due to that many should be active at once.
 		if(isWDown)
 			gameState.decViewY();
 		if(isSDown)
@@ -27,6 +31,9 @@ public class WorldController extends Controller{
 	}
 
 	@Override
+	/**
+	 * Sets booleans to 'true' if the corresponding button is pressed.
+	 */
 	public void keyPressed(int key, char e) {
 		if(e == 'w' || e == 'W')
 			isWDown = true;
@@ -43,6 +50,9 @@ public class WorldController extends Controller{
 	}
 
 	@Override
+	/**
+	 * Sets booleans to 'false' if the corresponding button is released.
+	 */
 	public void keyReleased(int key, char e) {
 		if(e == 'w' || e == 'W')
 			isWDown = false;
@@ -55,9 +65,11 @@ public class WorldController extends Controller{
 	}
 
 	@Override
+	/**
+	 * A method that triggers when input ends.
+	 */
 	public void inputEnded() {
 		// TODO Auto-generated method stub
-		
 	}
 
 	@Override
