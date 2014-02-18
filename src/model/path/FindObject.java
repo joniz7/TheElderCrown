@@ -194,7 +194,7 @@ public class FindObject {
 	public static Point findObject(TestWorld world, Criteria crit, ObjectType id, int startX, int startY){
 		HashMap<Point, MidEntity> mids = world.getMidObjects();
 		HashMap<Point, TopEntity> tops = world.getTopObjects();
-		
+
 		Point upperLeft = new Point(startX - 1, startY - 1);
 		Point lowerRight = new Point(startX + 1, startY + 1);
 				
