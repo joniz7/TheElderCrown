@@ -20,6 +20,7 @@ import util.Helper1;
 import util.Helper2;
 import util.ObjectType;
 import view.View;
+import view.entity.top.Helper1View;
 
 public class FindObject {
 	
@@ -73,12 +74,53 @@ public class FindObject {
 		return null;
 	}
 	
+	/**
+	 * FindTile 2 finds the nearest tile in the bottom layer of the specified type that also
+	 * has a possible path to it.
+	 * 
+	 * @author Simon Eliasson
+	 * 
+	 * @param world - The world representation
+	 * @param id - the type of the object looked for
+	 * @param startX - the villager X coordinate
+	 * @param startY - the villager y coordinate
+	 * @return The point representing the coordinates of the found tile
+	 */
 	public static Point findTile2(TestWorld world, ObjectType id, int startX, int startY){
+		/*
+		 * Understanding what these lists and hash-maps are used for is crucial in
+		 * order to understand the find-object-algorithm
+		 */
+		
+		/* visitedHash - Stores a boolean for each point in the world. it is true
+		 * if that point has been checked already, this map is used to make sure that
+		 * a point is never checked more than once.
+		 */
 		HashMap<Point, Boolean> visitedHash = new HashMap<Point, Boolean>();
+		/*
+		 * tiles - this is just the map of all the points in the world, this is what we
+		 * search through
+		 */
 		HashMap<Point, BottomEntity> tiles = world.getTiles();
 		
+		/*
+		 * visited - These are the points that we already visited. We loop over this
+		 * list in order to check all neighbors of already visited points.
+		 */
 		ArrayList<Point> visited = new ArrayList<Point>();
+		/*
+		 * toVisit - These are the points that are being checked for the object type
+		 * we search for. They are neighbors of previously visited points. and are
+		 * added to the list of visited points when checked. note that visited points
+		 * must be walkable
+		 */
 		ArrayList<Point> toVisit = new ArrayList<Point>();
+		/*
+		 * toCheck - These points are the same as toVisit, except that they are not
+		 * added to visited tiles when checked. These tiles are not walkable, for
+		 * example water tiles end up here.
+		 */
+		ArrayList<Point> toCheck = new ArrayList<Point>();
 		
 		visited.add(new Point(startX, startY));
 		
@@ -86,21 +128,34 @@ public class FindObject {
 		while(!found){
 			//Add neighbors to visit
 			toVisit = new ArrayList<Point>();
+			toCheck = new ArrayList<Point>();
 			for(Point p : visited){
 				if(visitedHash.get(new Point(p.x + 1, p.y)) == null){
-					toVisit.add(new Point(p.x + 1, p.y));
+					if(!world.blocked(null, p.x + 1, p.y))
+						toVisit.add(new Point(p.x + 1, p.y));
+					else
+						toCheck.add(new Point(p.x + 1, p.y));
 					visitedHash.put(new Point(p.x + 1, p.y), true);
 				}
 				if(visitedHash.get(new Point(p.x - 1, p.y)) == null){
-					toVisit.add(new Point(p.x - 1, p.y));
+					if(!world.blocked(null, p.x - 1, p.y))
+						toVisit.add(new Point(p.x - 1, p.y));
+					else
+						toCheck.add(new Point(p.x - 1, p.y));
 					visitedHash.put(new Point(p.x - 1, p.y), true);
 				}
 				if(visitedHash.get(new Point(p.x, p.y + 1)) == null){
-					toVisit.add(new Point(p.x, p.y + 1));
+					if(!world.blocked(null, p.x, p.y + 1))
+						toVisit.add(new Point(p.x, p.y + 1));
+					else
+						toCheck.add(new Point(p.x, p.y + 1));
 					visitedHash.put(new Point(p.x, p.y + 1), true);
 				}
 				if(visitedHash.get(new Point(p.x, p.y - 1)) == null){
-					toVisit.add(new Point(p.x, p.y - 1));
+					if(!world.blocked(null, p.x, p.y - 1))
+						toVisit.add(new Point(p.x, p.y - 1));
+					else
+						toCheck.add(new Point(p.x, p.y - 1));
 					visitedHash.put(new Point(p.x, p.y - 1), true);
 				}
 			}
@@ -110,9 +165,18 @@ public class FindObject {
 			for(Point p : toVisit)
 				if(tiles.get(p) != null && tiles.get(p).getObjectType() == id && PathFinder.getPathToAdjacent(p.x, p.y, startX, startY) != null)
 					return p;
-				else
+				else{
 					visited.add(p);
-				
+					View.addTopGraphic(new Helper1View(p.x, p.y));
+				}
+			
+			for(Point p : toCheck)
+				if(tiles.get(p) != null && tiles.get(p).getObjectType() == id && PathFinder.getPathToAdjacent(p.x, p.y, startX, startY) != null)
+					return p;
+				else{
+					visited.add(p);
+					View.addTopGraphic(new Helper1View(p.x, p.y));
+				}
 		}
 		return null;
 	}
@@ -274,13 +338,32 @@ public class FindObject {
 		return null;
 	}
 	
+	/**
+	 * FindTile 2 finds the nearest mid/top layer object of the specified type that also
+	 * has a possible path to it. A criteria can also be applied to the search.
+	 * 
+	 * @author Simon Eliasson
+	 * 
+	 * @param world - The world representation
+	 * @param crit - The criteria to be fulfilled by the object
+	 * @param id - the type of the object looked for
+	 * @param startX - the villager X coordinate
+	 * @param startY - the villager y coordinate
+	 * @return The point representing the coordinates of the found tile
+	 */
 	public static Point findObject2(TestWorld world, Criteria crit, ObjectType id, int startX, int startY){
+		/*
+		 * These lists and hash-maps are essentially the same as the ones in the
+		 * findTile2 method. The algorithm works in a similiar way, except that it
+		 * also takes the criteria into account
+		 */
 		HashMap<Point, Boolean> visitedHash = new HashMap<Point, Boolean>();
 		HashMap<Point, MidEntity> mids = world.getMidObjects();
 		HashMap<Point, TopEntity> tops = world.getTopObjects();
 		
 		ArrayList<Point> visited = new ArrayList<Point>();
 		ArrayList<Point> toVisit = new ArrayList<Point>();
+		ArrayList<Point> toCheck = new ArrayList<Point>();
 		
 		visited.add(new Point(startX, startY));
 		
@@ -288,21 +371,34 @@ public class FindObject {
 		while(!found){
 			//Add neighbors to visit
 			toVisit = new ArrayList<Point>();
+			toCheck = new ArrayList<Point>();
 			for(Point p : visited){
 				if(visitedHash.get(new Point(p.x + 1, p.y)) == null){
-					toVisit.add(new Point(p.x + 1, p.y));
+					if(!world.blocked(null, p.x + 1, p.y))
+						toVisit.add(new Point(p.x + 1, p.y));
+					else
+						toCheck.add(new Point(p.x + 1, p.y));
 					visitedHash.put(new Point(p.x + 1, p.y), true);
 				}
 				if(visitedHash.get(new Point(p.x - 1, p.y)) == null){
-					toVisit.add(new Point(p.x - 1, p.y));
+					if(!world.blocked(null, p.x - 1, p.y))
+						toVisit.add(new Point(p.x - 1, p.y));
+					else
+						toCheck.add(new Point(p.x - 1, p.y));
 					visitedHash.put(new Point(p.x - 1, p.y), true);
 				}
 				if(visitedHash.get(new Point(p.x, p.y + 1)) == null){
-					toVisit.add(new Point(p.x, p.y + 1));
+					if(!world.blocked(null, p.x, p.y + 1))
+						toVisit.add(new Point(p.x, p.y + 1));
+					else
+						toCheck.add(new Point(p.x, p.y + 1));
 					visitedHash.put(new Point(p.x, p.y + 1), true);
 				}
 				if(visitedHash.get(new Point(p.x, p.y - 1)) == null){
-					toVisit.add(new Point(p.x, p.y - 1));
+					if(!world.blocked(null, p.x, p.y - 1))
+						toVisit.add(new Point(p.x, p.y - 1));
+					else
+						toCheck.add(new Point(p.x, p.y - 1));
 					visitedHash.put(new Point(p.x, p.y - 1), true);
 				}
 			}
@@ -316,8 +412,21 @@ public class FindObject {
 				else if(tops.get(p) != null && tops.get(p).getObjectType() == id && tops.get(p).meetCriteria(crit) && 
 						PathFinder.getPathToAdjacent(p.x, p.y, startX, startY) != null)
 					return p;
-				else
+				else{
 					visited.add(p);
+					View.addTopGraphic(new Helper1View(p.x, p.y));
+				}
+			}
+			
+			for(Point p : toCheck){
+				if(mids.get(p) != null && mids.get(p).getObjectType() == id && mids.get(p).meetCriteria(crit) && 
+						PathFinder.getPathToAdjacent(p.x, p.y, startX, startY) != null)
+					return p;
+				else if(tops.get(p) != null && tops.get(p).getObjectType() == id && tops.get(p).meetCriteria(crit) && 
+						PathFinder.getPathToAdjacent(p.x, p.y, startX, startY) != null)
+					return p;
+				else
+					View.addTopGraphic(new Helper1View(p.x, p.y));
 			}
 		}
 		return null;
