@@ -6,8 +6,8 @@ import java.beans.PropertyChangeListener;
 import java.util.ArrayList;
 
 import model.entity.MidEntity;
-import model.entity.TopEntity;
 import model.entity.bottom.BottomEntity;
+import model.entity.top.TopEntity;
 
 import org.newdawn.slick.Graphics;
 

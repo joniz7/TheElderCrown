@@ -6,10 +6,11 @@ import java.util.HashMap;
 import java.util.Random;
 
 import model.entity.MidEntity;
-import model.entity.TopEntity;
 import model.entity.bottom.BottomEntity;
 import model.entity.bottom.GrassTile;
 import model.entity.bottom.WaterTile;
+import model.entity.top.House;
+import model.entity.top.TopEntity;
 import model.entity.top.Tree;
 import model.path.PathFinder;
 import model.villager.Villager;
@@ -17,17 +18,19 @@ import model.villager.Villager;
 import org.newdawn.slick.util.pathfinding.PathFindingContext;
 import org.newdawn.slick.util.pathfinding.TileBasedMap;
 
+import util.Constants;
 import util.ObjectType;
 
 public class TestWorld extends World implements TileBasedMap{
 	
 	private final int WIDTH = 200, HEIGHT = 200;
 	
-	private final int TREE_SPARSITY = 140, VILLAGER_SPAWN = 120;
+	private final int TREE_SPARSITY = 140, VILLAGER_SPAWN = 120, NBR_OF_HOUSES = 1;
 	private final int LAKE_COUNT = 3;
 	private final float LAKE_WEIGHT = 1f, LAKE_LOSS = 0.02f;
 
 	private ArrayList<Tree> trees = new ArrayList<Tree>();
+	private ArrayList<House> houses = new ArrayList<House>();
 	
 	private Random rnd = new Random();
 	
@@ -48,6 +51,7 @@ public class TestWorld extends World implements TileBasedMap{
 		initializeGrass();
 		initializeLakes();
 		initializeTrees();
+		initializeHouses();
 		
 		new PathFinder(this);
 		
@@ -145,6 +149,14 @@ public class TestWorld extends World implements TileBasedMap{
 					addEntity(pos, tree);
 				}
 			}
+		}
+	}
+	
+	private void initializeHouses() {
+		for(int i = 0; i < NBR_OF_HOUSES; i++){
+			House house = new House(VILLAGER_SPAWN + 3, VILLAGER_SPAWN + 2, Constants.LEFT_ENTRANCE);
+			houses.add(house);
+			addEntity(new Point(VILLAGER_SPAWN + 3, VILLAGER_SPAWN + 2), house);
 		}
 	}
 	

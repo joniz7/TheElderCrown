@@ -17,7 +17,7 @@ import view.View;
  */
 public class EntityView implements PropertyChangeListener {
 
-	private Image image;
+	protected Image image;
 	private String name;
 	
 	// View coordinates

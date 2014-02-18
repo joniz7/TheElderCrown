@@ -9,8 +9,8 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 import model.entity.MidEntity;
-import model.entity.TopEntity;
 import model.entity.bottom.BottomEntity;
+import model.entity.top.TopEntity;
 
 public abstract class World implements Tickable{
 

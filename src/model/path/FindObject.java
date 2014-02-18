@@ -10,8 +10,8 @@ import java.util.Queue;
 
 import model.TestWorld;
 import model.entity.MidEntity;
-import model.entity.TopEntity;
 import model.entity.bottom.BottomEntity;
+import model.entity.top.TopEntity;
 import model.path.criteria.Criteria;
 
 import org.newdawn.slick.util.pathfinding.Path;

@@ -1,11 +1,9 @@
 package model.entity.top;
 
+import head.Tickable;
 import util.ObjectType;
 import view.entity.EntityView;
-import view.entity.bot.WaterTileView;
 import view.entity.top.TreeView;
-import head.Tickable;
-import model.entity.TopEntity;
 
 /**
  * A class to represent a tree.

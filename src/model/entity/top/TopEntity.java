@@ -1,5 +1,6 @@
-package model.entity;
+package model.entity.top;
 
+import model.entity.Entity;
 import util.ObjectType;
 import view.View;
 import view.entity.EntityView;
