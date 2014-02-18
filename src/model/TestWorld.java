@@ -161,7 +161,7 @@ public class TestWorld extends World implements TileBasedMap{
 	}
 	
 	private void initializeVillagers() {
-		for(int i = 0; i < 15; i++){
+		for(int i = 0; i < 1; i++){
 			Point pos = new Point(VILLAGER_SPAWN, VILLAGER_SPAWN);
 			Villager villager = new Villager(this, VILLAGER_SPAWN, VILLAGER_SPAWN);
 			tickables.add(villager);
@@ -171,7 +171,14 @@ public class TestWorld extends World implements TileBasedMap{
 	
 	@Override
 	public boolean blocked(PathFindingContext pfc, int x, int y){
-		return botEntities.get(new Point(x, y)) instanceof WaterTile;
+		if(botEntities.get(new Point(x, y)) != null && botEntities.get(new Point(x, y)).isBlocking())
+			return true;
+		if(midEntities.get(new Point(x, y)) != null && midEntities.get(new Point(x, y)).isBlocking())
+			return true;
+		if(topEntities.get(new Point(x, y)) != null && topEntities.get(new Point(x, y)).isBlocking())
+			return true;
+		
+		return false;
 	}
 
 	@Override

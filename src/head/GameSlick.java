@@ -32,7 +32,7 @@ public class GameSlick implements Game{
 	private View view;
 	private static String title = "The Elder Crown";
 	private static boolean isExit;
-	private static final int TICK_INTERVAL = 20;
+	private static final int TICK_INTERVAL = 5;
 	
 	@Override
 	public boolean closeRequested() {

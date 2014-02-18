@@ -20,8 +20,8 @@ public abstract class BottomEntity extends Entity {
 	 * 
 	 * @param name The name of the image to be associated with this object.
 	 */
-	public BottomEntity(int x, int y, ObjectType id) {
-		super(x, y, id);
+	public BottomEntity(int x, int y, ObjectType id, boolean isBlocking) {
+		super(x, y, id, isBlocking);
 //		View.addBotGraphic(drawable);
 	}
 	

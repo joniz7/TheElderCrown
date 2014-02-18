@@ -22,7 +22,7 @@ public class House extends TopEntity {
 	 * @param orientation an integer that specifies what direction the entrance will be oriented in.
 	 */
 	public House(int x, int y, float orientation) {
-		super(x, y, ObjectType.HOUSE);
+		super(x, y, ObjectType.HOUSE, true);
 		this.orientation = orientation;
 		updatePos(x-1, y-1);
 	}

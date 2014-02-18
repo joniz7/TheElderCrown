@@ -20,19 +20,19 @@ public abstract class Entity {
 
 	protected ObjectType type;
 	protected PropertyChangeSupport pcs;
+	protected boolean isBlocking;
 	
 	/**
 	 * The general constructor.
 	 * 
 	 * @param name The name of the image to be assigned.
 	 */
-	public Entity(int x, int y, ObjectType type){
-		
+	public Entity(int x, int y, ObjectType type, boolean isBlocking){
 		pcs = new PropertyChangeSupport(this);
 		this.x = x;
 		this.y = y;
 		this.type = type;
-
+		this.isBlocking = isBlocking;
 	}
 	
 	/**
@@ -110,5 +110,24 @@ public abstract class Entity {
 	public ObjectType getObjectType(){
 		return type;
 	}
+
+	/**
+	 * Returns an indicator for whether this entity blocks movement or not
+	 * 
+	 * @return - true if entity blocks movement
+	 */
+	public boolean isBlocking() {
+		return isBlocking;
+	}
+
+	/**
+	 * Sets an indicator for whether this entity blocks movement or not
+	 * 
+	 * @param blocking
+	 */
+	public void setBlocking(boolean blocking) {
+		this.isBlocking = blocking;
+	}
+	
 	
 }

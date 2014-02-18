@@ -145,7 +145,6 @@ public class FindObject {
 		
 		boolean found = false;
 		while(!found){
-			//Add neighbors to visit
 			toVisit = new ArrayList<Point>();
 			toCheck = new ArrayList<Point>();
 			for(Point p : visited){

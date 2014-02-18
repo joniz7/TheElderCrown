@@ -7,7 +7,7 @@ import view.entity.bot.WaterTileView;
 public class WaterTile extends Tile{
 
 	public WaterTile(int x, int y) {
-		super(x, y, ObjectType.WATER_TILE);
+		super(x, y, ObjectType.WATER_TILE, true);
 		typeID = 1;
 	}
 

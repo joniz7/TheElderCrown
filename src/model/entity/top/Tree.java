@@ -23,7 +23,7 @@ public class Tree extends TopEntity implements Tickable{
 	 * @param tileY The row in which the tree will stand in.
 	 */
 	public Tree(int x, int y) {
-		super(x, y, ObjectType.TREE);
+		super(x, y, ObjectType.TREE, true);
 		updatePos(x-1, y-1);
 	}
 
