@@ -1,7 +1,8 @@
 package model.entity;
 
-import resource.ObjectID;
+import util.ObjectType;
 import view.View;
+import view.entity.EntityView;
 
 /**
  * A class representing all objects visible and above the villagers.
@@ -9,16 +10,17 @@ import view.View;
  * @author Teodor O
  *
  */
-public class TopLayerGraphicalEntity extends GraphicalEntity {
+public abstract class TopEntity extends Entity {
 
 	/**
 	 * General constructor for a graphical entity.
 	 * 
 	 * @param name The name of the image to be associated with this object.
 	 */
-	public TopLayerGraphicalEntity(String name, int x, int y, ObjectID id) {
-		super(name, x, y, id);
-		View.addTopGraphic(drawable);
+	public TopEntity(int x, int y, ObjectType id) {
+		super(x, y, id);
+		// View.addTopGraphic(drawable);
 	}
+
 
 }

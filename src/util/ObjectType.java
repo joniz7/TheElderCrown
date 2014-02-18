@@ -1,6 +1,6 @@
-package resource;
+package util;
 
-public enum ObjectID {
+public enum ObjectType {
 	GRASS_TILE, WATER_TILE,
 	VILLAGER,
 	TREE, HOUSE

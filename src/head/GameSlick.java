@@ -1,6 +1,6 @@
 package head;
 
-import model.GamePhase;
+import model.World;
 import model.TestWorld;
 
 import org.newdawn.slick.AppGameContainer;
@@ -9,8 +9,8 @@ import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.SlickException;
 
-import resource.ImageLoader;
 
+import util.ImageLoader;
 import view.View;
 
 import control.Controller;
@@ -28,7 +28,7 @@ public class GameSlick implements Game{
 
 	private static AppGameContainer appgc;
 	private Controller controller;
-	private GamePhase phase;
+	private World world;
 	private View view;
 	private static String title = "The Elder Crown";
 	private static boolean isExit;
@@ -56,13 +56,19 @@ public class GameSlick implements Game{
 	public void init(GameContainer arg0) throws SlickException {
 		new ImageLoader();
 		
-		phase = new TestWorld();
-		controller = new WorldController(this, phase);
+		world = new TestWorld();
 		
 		appgc.setDisplayMode(appgc.getScreenWidth(), appgc.getScreenHeight(), true);
-		appgc.getInput().addKeyListener(controller);
 		appgc.setTitle(getTitle());
+		
 		view = new View(appgc.getWidth(), appgc.getHeight());
+		controller = new WorldController(this, world, view);
+		appgc.getInput().addKeyListener(controller);
+		
+		// Set up View listening to World
+		world.addPropertyChangeListener(view);
+		
+		world.initialize();
 		
 		isExit = false;
 	}
@@ -72,16 +78,16 @@ public class GameSlick implements Game{
 	 * This function simply tells the 'View' to render all the things!!!
 	 */
 	public void render(GameContainer arg0, Graphics g) throws SlickException {
-		view.render(g, phase.getViewX(), phase.getViewY());
+		View.render(g);
 	}
 
 	@Override
 	/**
-	 * In this method we simply tell the active phase of the game to 'tick' one step ahead.
+	 * In this method we simply tell the active world of the game to 'tick' one step ahead.
 	 * Also if any part of the game has requested a shutdown, that is executed here.
 	 */
 	public void update(GameContainer arg0, int arg1) throws SlickException {
-		phase.tick();
+		world.tick();
 		controller.tick();
 		if(isExit){
 			appgc.destroy();

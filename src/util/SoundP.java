@@ -1,4 +1,4 @@
-package resource;
+package util;
 
 import javax.sound.sampled.AudioFormat;
 import javax.sound.sampled.AudioInputStream;

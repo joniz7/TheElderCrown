@@ -1,4 +1,4 @@
-package resource;
+package util;
 
 import java.util.Random;
 

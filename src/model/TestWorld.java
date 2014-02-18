@@ -5,81 +5,92 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Random;
 
-import model.objects.Tree;
+import model.entity.MidEntity;
+import model.entity.TopEntity;
+import model.entity.bottom.BottomEntity;
+import model.entity.bottom.GrassTile;
+import model.entity.bottom.WaterTile;
+import model.entity.top.Tree;
 import model.path.PathFinder;
-import model.tile.GrassTile;
-import model.tile.WaterTile;
 import model.villager.Villager;
-
-import model.entity.*;
 
 import org.newdawn.slick.util.pathfinding.PathFindingContext;
 import org.newdawn.slick.util.pathfinding.TileBasedMap;
 
-import resource.ObjectID;
+import util.ObjectType;
 
-public class TestWorld extends GamePhase implements TileBasedMap{
+public class TestWorld extends World implements TileBasedMap{
 	
 	private final int WIDTH = 200, HEIGHT = 200;
 	
 	private final int TREE_SPARSITY = 140, VILLAGER_SPAWN = 120;
 	private final int LAKE_COUNT = 3;
 	private final float LAKE_WEIGHT = 1f, LAKE_LOSS = 0.02f;
-	
-	private HashMap<Point, BottomLayerGraphicalEntity> tiles;
-	private HashMap<Point, MiddleLayerGraphicalEntity> midObjects;
-	private HashMap<Point, TopLayerGraphicalEntity> topObjects;
+
 	private ArrayList<Tree> trees = new ArrayList<Tree>();
 	
 	private Random rnd = new Random();
 	
+	/**
+	 * Creates a new instance of TestWorld.
+	 * Remember to call initialize() before use.
+	 */
 	public TestWorld(){
-		tiles = new HashMap<Point, BottomLayerGraphicalEntity>();
-		midObjects = new HashMap<Point, MiddleLayerGraphicalEntity>();
-		topObjects = new HashMap<Point, TopLayerGraphicalEntity>();
-		
-		for(int i = 0; i < WIDTH; i++)
-			for(int j = 0; j < HEIGHT; j++){
-				GrassTile gt = new GrassTile(i, j);
-				gt.setTileID(0);
-				tiles.put(new Point(i, j), gt);
-			}
-		
-		createLakes();
-		
-		for(int i = 0; i < WIDTH - 1; i++)
-			for(int j = 0; j < HEIGHT - 1; j++)
-				if(rnd.nextInt(TREE_SPARSITY) == 0 && tiles.get(new Point(i + 1, j + 1)).getObjectID() == ObjectID.GRASS_TILE){
-					Tree tree = new Tree(i + 1, j + 1);
-					trees.add(tree);
-					tickables.add(tree);
-					topObjects.put(new Point(i + 1, j + 1), tree);
-				}
+		super();
+	}
+	
+	/**
+	 * Initializes the world.
+	 * Generates the map, and creates objects and villagers.
+	 */
+	public void initialize() {
+
+		initializeGrass();
+		initializeLakes();
+		initializeTrees();
 		
 		new PathFinder(this);
 		
-		for(int i = 118; i < 123; i++)
-			for(int j = 118; j < 123; j++)
-				tiles.put(new Point(i, j), new GrassTile(i, j));
+		// TODO Add grass tiles again? why?
+		/*
+		for(int i = 118; i < 123; i++) {
+			for(int j = 118; j < 123; j++) {
+				Point pos = new Point(i, j);
+				GrassTile grass = new GrassTile(i, j);
+				addEntity(pos, grass);
+			}
+		}
+		*/
 		
-		viewX = (VILLAGER_SPAWN - 20) * 20;
-		viewY = (VILLAGER_SPAWN - 20) * 20;
-		
-		for(int i = 0; i < 15; i++){
-			Villager villager = new Villager(this, VILLAGER_SPAWN, VILLAGER_SPAWN);
-			tickables.add(villager);
+		// Send camera position update to view
+		Point pos = new Point(VILLAGER_SPAWN, VILLAGER_SPAWN);
+		pcs.firePropertyChange("camera", null, pos);
+
+		initializeVillagers();
+
+	}
+	
+	private void initializeGrass() {
+		for(int i = 0; i < WIDTH; i++) {
+			for(int j = 0; j < HEIGHT; j++) {
+				GrassTile grass = new GrassTile(i, j);
+				Point pos = new Point(i, j);
+				grass.setTileID(0);
+				addEntity(pos, grass);
+			}
 		}
 	}
 	
-	private void createLakes(){
+	private void initializeLakes(){
 		ArrayList<Point> centers = new ArrayList<Point>();
 		
 		//Create random centerpoints for lakes
 		for(int i = 0; i < LAKE_COUNT; i++){
 			int x = rnd.nextInt(WIDTH);
 			int y = rnd.nextInt(HEIGHT);
-			centers.add(new Point(x, y));
-			tiles.put(new Point(x, y), new WaterTile(x, y));
+			Point pos = new Point(x, y);
+			centers.add(pos);
+			addEntity(pos, new WaterTile(x, y));
 		}
 		
 		//weight and loss defines the sizes of lakes
@@ -94,26 +105,26 @@ public class TestWorld extends GamePhase implements TileBasedMap{
 			while(!lakeDone){
 				ArrayList<Point> newWater = new ArrayList<Point>();
 				for(Point p : oldWater){
-					if(rnd.nextFloat() < weight && p.x != 0 && tiles.get(new Point(p.x - 1, p.y)) instanceof GrassTile){
-						tiles.put(new Point(p.x-1, p.y), new WaterTile((p.x-1), p.y));
+					if(rnd.nextFloat() < weight && p.x != 0 && botEntities.get(new Point(p.x - 1, p.y)) instanceof GrassTile){
+						Point pos = new Point(p.x-1, p.y);
+						addEntity(pos, new WaterTile((p.x-1), p.y));
 						newWater.add(new Point(p.x-1, p.y));
 					}
-					if(rnd.nextFloat() < weight  && p.x != 79 && tiles.get(new Point(p.x + 1, p.y)) instanceof GrassTile){
-						tiles.put(new Point(p.x+1, p.y), new WaterTile((p.x+1), p.y));
+					if(rnd.nextFloat() < weight  && p.x != 79 && botEntities.get(new Point(p.x + 1, p.y)) instanceof GrassTile){
+						addEntity(new Point(p.x+1, p.y), new WaterTile((p.x+1), p.y));
 						newWater.add(new Point(p.x+1, p.y));
 					}	
-					if(rnd.nextFloat() < weight  && p.y != 0 && tiles.get(new Point(p.x, p.y - 1)) instanceof GrassTile){
-						tiles.put(new Point(p.x, p.y-1), new WaterTile(p.x, (p.y-1)));
+					if(rnd.nextFloat() < weight  && p.y != 0 && botEntities.get(new Point(p.x, p.y - 1)) instanceof GrassTile){
+						addEntity(new Point(p.x, p.y-1), new WaterTile(p.x, (p.y-1)));
 						newWater.add(new Point(p.x, p.y-1));
 					}
-					if(rnd.nextFloat() < weight  && p.y != 79 && tiles.get(new Point(p.x, p.y + 1)) instanceof GrassTile){
-						tiles.put(new Point(p.x, p.y+1), new WaterTile(p.x, (p.y+1)));
+					if(rnd.nextFloat() < weight  && p.y != 79 && botEntities.get(new Point(p.x, p.y + 1)) instanceof GrassTile){
+						addEntity(new Point(p.x, p.y+1), new WaterTile(p.x, (p.y+1)));
 						newWater.add(new Point(p.x, p.y+1));
 					}
 				}
 				
 				oldWater = newWater;
-				
 				
 				weight = weight - LAKE_LOSS;
 				if(weight <= 0)
@@ -123,9 +134,32 @@ public class TestWorld extends GamePhase implements TileBasedMap{
 		
 	}
 
+	private void initializeTrees() {
+		for(int i = 0; i < WIDTH - 1; i++) {
+			for(int j = 0; j < HEIGHT - 1; j++) {
+				if(rnd.nextInt(TREE_SPARSITY) == 0 && botEntities.get(new Point(i + 1, j + 1)).getObjectType() == ObjectType.GRASS_TILE){
+					Tree tree = new Tree(i + 1, j + 1);
+					trees.add(tree);
+					tickables.add(tree);
+					Point pos = new Point(i + 1, j + 1);
+					addEntity(pos, tree);
+				}
+			}
+		}
+	}
+	
+	private void initializeVillagers() {
+		for(int i = 0; i < 15; i++){
+			Point pos = new Point(VILLAGER_SPAWN, VILLAGER_SPAWN);
+			Villager villager = new Villager(this, VILLAGER_SPAWN, VILLAGER_SPAWN);
+			tickables.add(villager);
+			addEntity(pos, villager);
+		}
+	}
+	
 	@Override
 	public boolean blocked(PathFindingContext pfc, int x, int y){
-		return tiles.get(new Point(x, y)) instanceof WaterTile;
+		return botEntities.get(new Point(x, y)) instanceof WaterTile;
 	}
 
 	@Override
@@ -148,22 +182,22 @@ public class TestWorld extends GamePhase implements TileBasedMap{
 		
 	}
 
-	public HashMap<Point, BottomLayerGraphicalEntity> getTiles() {
-		return tiles;
+	public HashMap<Point, BottomEntity> getTiles() {
+		return botEntities;
 	}
 	
-	public HashMap<Point, MiddleLayerGraphicalEntity> getMidObjects(){
-		return midObjects;
+	public HashMap<Point, MidEntity> getMidObjects(){
+		return midEntities;
 	}
 	
-	public HashMap<Point, TopLayerGraphicalEntity> getTopObjects(){
-		return topObjects;
+	public HashMap<Point, TopEntity> getTopObjects(){
+		return topEntities;
 	}
 	
 	public Tree getTree(int tileX, int tileY){
-		if(topObjects.get(new Point(tileX, tileY)) != null &&
-				topObjects.get(new Point(tileX, tileY)) instanceof Tree)
-			return (Tree) topObjects.get(new Point(tileX, tileY));
+		if(topEntities.get(new Point(tileX, tileY)) != null &&
+				topEntities.get(new Point(tileX, tileY)) instanceof Tree)
+			return (Tree) topEntities.get(new Point(tileX, tileY));
 		else
 			return null;
 	}
@@ -178,7 +212,7 @@ public class TestWorld extends GamePhase implements TileBasedMap{
 		
 		for(int i = (int) upperLeft.getX(); i < lowerRight.getX(); i++){
 			for(int j = (int) upperLeft.getY(); j < lowerRight.getY(); j++){
-				System.out.print(tiles.get(new Point(i, j)).getObjectID() + "  -  ");
+				System.out.print(botEntities.get(new Point(i, j)).getObjectType() + "  -  ");
 			}
 			System.out.println("");
 		}
@@ -189,8 +223,8 @@ public class TestWorld extends GamePhase implements TileBasedMap{
 		
 		for(int i = (int) upperLeft.getX(); i < lowerRight.getX(); i++){
 			for(int j = (int) upperLeft.getY(); j < lowerRight.getY(); j++){
-				if(topObjects.get(new Point(i, j)) != null)
-					System.out.print(topObjects.get(new Point(i, j)).getObjectID() + "  -  ");
+				if(topEntities.get(new Point(i, j)) != null)
+					System.out.print(topEntities.get(new Point(i, j)).getObjectType() + "  -  ");
 				else
 					System.out.print("NULL  -  ");
 

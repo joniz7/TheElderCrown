@@ -2,9 +2,11 @@ package control;
 
 import org.newdawn.slick.KeyListener;
 
+import view.View;
+
 import head.Tickable;
 
-import model.GamePhase;
+import model.World;
 
 /**
  * The general (abstract) Controller class which is set up with slick2D
@@ -12,10 +14,12 @@ import model.GamePhase;
  */
 public abstract class Controller implements KeyListener/*, MouseListener, MouseMotionListener*/, Tickable{
 
-	protected GamePhase gameState;
+	protected World gameState;
+	protected View view;
 	
-	public Controller(GamePhase gameState){
+	public Controller(World gameState, View view){
 		this.gameState = gameState;
+		this.view = view;
 	}
 	
 }

@@ -1,7 +1,9 @@
-package model.entity;
+package model.entity.bottom;
 
-import resource.ObjectID;
+import model.entity.Entity;
+import util.ObjectType;
 import view.View;
+import view.entity.EntityView;
 
 /**
  * A class representing all objects visible and below the villagers.
@@ -9,7 +11,7 @@ import view.View;
  * @author Teodor O
  *
  */
-public class BottomLayerGraphicalEntity extends GraphicalEntity {
+public abstract class BottomEntity extends Entity {
 	
 	private int tileID;
 
@@ -18,9 +20,9 @@ public class BottomLayerGraphicalEntity extends GraphicalEntity {
 	 * 
 	 * @param name The name of the image to be associated with this object.
 	 */
-	public BottomLayerGraphicalEntity(String name, int x, int y, ObjectID id) {
-		super(name, x, y, id);
-		View.addBotGraphic(drawable);
+	public BottomEntity(int x, int y, ObjectType id) {
+		super(x, y, id);
+//		View.addBotGraphic(drawable);
 	}
 	
 	public void setTileID(int id){

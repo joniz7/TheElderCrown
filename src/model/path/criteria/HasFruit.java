@@ -1,12 +1,12 @@
 package model.path.criteria;
 
-import model.entity.GraphicalEntity;
-import model.objects.Tree;
+import model.entity.Entity;
+import model.entity.top.Tree;
 
 public class HasFruit implements Criteria{
 
 	@Override
-	public boolean match(GraphicalEntity ge){
+	public boolean match(Entity ge){
 		Tree tree = (Tree) ge;
 
 		if(tree.hasFruit())

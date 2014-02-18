@@ -1,16 +1,19 @@
 package control;
 
 import head.GameSlick;
-import model.GamePhase;
+import model.World;
+
 import org.newdawn.slick.Input;
+
+import view.View;
 
 public class WorldController extends Controller{
 
 	private boolean isWDown, isADown, isSDown, isDDown;
 	private GameSlick game;
 	
-	public WorldController(GameSlick game, GamePhase gameState) {
-		super(gameState);
+	public WorldController(GameSlick game, World gameState, View view) {
+		super(gameState, view);
 		this.game = game;
 	}
 
@@ -21,13 +24,13 @@ public class WorldController extends Controller{
 	public void tick() {
 		// multiple 'ifs' and not 'if else' due to that many should be active at once.
 		if(isWDown)
-			gameState.decViewY();
+			view.decY();
 		if(isSDown)
-			gameState.incViewY();
+			view.incY();
 		if(isADown)
-			gameState.decViewX();
+			view.decX();
 		if(isDDown)
-			gameState.incViewX();
+			view.incX();
 	}
 
 	@Override
@@ -79,13 +82,13 @@ public class WorldController extends Controller{
 
 	@Override
 	public boolean isAcceptingInput() {
-		// TODO Auto-generated method stub
+		
 		return true;
 	}
 
 	@Override
 	public void setInput(Input arg0) {
-		// TODO Auto-generated method stub
+		
 		
 	}
 
