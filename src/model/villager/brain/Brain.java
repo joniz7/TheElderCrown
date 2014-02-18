@@ -6,7 +6,10 @@ import java.util.LinkedList;
 import org.newdawn.slick.util.pathfinding.Path;
 
 import util.Helper1;
+import util.Helper3;
 import util.ObjectType;
+import view.View;
+import view.entity.top.Helper3View;
 import head.Tickable;
 import model.TestWorld;
 import model.entity.bottom.WaterTile;
@@ -95,7 +98,7 @@ public class Brain implements Tickable{
 		if(endTime - startTime > 100){
 			world.printArea(p);
 			world.setPaused(true);
-			new Helper1(villager.getX(), villager.getY());
+			View.addTopGraphic(new Helper3View(villager.getX(), villager.getY()));
 		}
 		
 		startTime = System.currentTimeMillis();
