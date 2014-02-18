@@ -21,15 +21,11 @@ public class Thirst extends BasicNeed{
 	public void tick() {
 		value = value - decay;
 		
-		cD = cD + 1;
-		if(cD > cDRoof)
-			cD = cDRoof;
-		
-		if(cD == cDRoof && value < 0 && RandomClass.getRandomInt(10, 0) == 0){
+		if(value < 0 && RandomClass.getRandomInt(10, 0) == 0){
 			triggerThirst();
 		}
 		
-		else if(cD == cDRoof && value < -75 && RandomClass.getRandomInt(10, 0) == 0){
+		else if(value < -75 && RandomClass.getRandomInt(10, 0) == 0){
 			triggerStarvation();
 		}
 	}
@@ -41,7 +37,6 @@ public class Thirst extends BasicNeed{
 	}
 
 	private void triggerThirst(){
-		cD = 0;
 		brain.input(new Instinct(new Drink()));
 	}
 	

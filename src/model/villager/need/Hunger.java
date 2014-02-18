@@ -20,15 +20,11 @@ public class Hunger extends BasicNeed{
 	@Override
 	public void tick() {
 		value = value - decay;
-		
-		cD = cD + 1;
-		if(cD > cDRoof)
-			cD = cDRoof;
-		
-		if(cD == cDRoof && value < 0.0f && RandomClass.getRandomInt(200, 0) == 0){
+
+		if(value < 0.0f && RandomClass.getRandomInt(200, 0) == 0){
 			triggerHunger();
 		}
-		else if(cD == cDRoof && value < -75.0f && RandomClass.getRandomInt(200, 0) == 0){
+		else if(value < -75.0f && RandomClass.getRandomInt(200, 0) == 0){
 			triggerStarvation();
 		}
 	}
@@ -40,12 +36,11 @@ public class Hunger extends BasicNeed{
 	}
 	
 	private void triggerHunger(){
-		cD = 0;
 		brain.input(new Instinct(new Eat()));
 	}
 	
 	private void triggerStarvation() {
-		cD = 0;
+		
 	}
 
 }

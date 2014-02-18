@@ -25,8 +25,8 @@ public class TestWorld extends World implements TileBasedMap{
 	
 	private final int WIDTH = 200, HEIGHT = 200;
 	
-	private final int TREE_SPARSITY = 140, VILLAGER_SPAWN = 120, NBR_OF_HOUSES = 1;
-	private final int LAKE_COUNT = 3;
+	private final int TREE_SPARSITY = 280, VILLAGER_SPAWN = 120, NBR_OF_HOUSES = 1;
+	private final int LAKE_COUNT = 8;
 	private final float LAKE_WEIGHT = 1f, LAKE_LOSS = 0.02f;
 
 	private ArrayList<Tree> trees = new ArrayList<Tree>();
