@@ -22,7 +22,7 @@ import control.WorldController;
  * Implemented with Slick2D.
  * 
  * @author Teodor O, Simon E
- * @version 0.0.05
+ * @version 0.01
  */
 public class GameSlick implements Game{
 

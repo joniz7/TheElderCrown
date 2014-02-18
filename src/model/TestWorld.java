@@ -25,7 +25,7 @@ public class TestWorld extends World implements TileBasedMap{
 	
 	private final int WIDTH = 200, HEIGHT = 200;
 	
-	private final int TREE_SPARSITY = 140, VILLAGER_SPAWN = 120, NBR_OF_HOUSES = 1;
+	private final int TREE_SPARSITY = 140, VILLAGER_SPAWN = 120;
 	private final int LAKE_COUNT = 3;
 	private final float LAKE_WEIGHT = 1f, LAKE_LOSS = 0.02f;
 
@@ -55,16 +55,13 @@ public class TestWorld extends World implements TileBasedMap{
 		
 		new PathFinder(this);
 		
-		// TODO Add grass tiles again? why?
-		/*
-		for(int i = 118; i < 123; i++) {
-			for(int j = 118; j < 123; j++) {
+		for(int i = 112; i < 128; i++) {
+			for(int j = 112; j < 128; j++) {
 				Point pos = new Point(i, j);
 				GrassTile grass = new GrassTile(i, j);
 				addEntity(pos, grass);
 			}
 		}
-		*/
 		
 		// Send camera position update to view
 		Point pos = new Point(VILLAGER_SPAWN, VILLAGER_SPAWN);
@@ -74,6 +71,9 @@ public class TestWorld extends World implements TileBasedMap{
 
 	}
 	
+	/**
+	 * Covers the whole map in grass.
+	 */
 	private void initializeGrass() {
 		for(int i = 0; i < WIDTH; i++) {
 			for(int j = 0; j < HEIGHT; j++) {
@@ -85,6 +85,9 @@ public class TestWorld extends World implements TileBasedMap{
 		}
 	}
 	
+	/**
+	 * A method to randomly generate a set number of lakes.
+	 */
 	private void initializeLakes(){
 		ArrayList<Point> centers = new ArrayList<Point>();
 		
@@ -138,6 +141,9 @@ public class TestWorld extends World implements TileBasedMap{
 		
 	}
 
+	/**
+	 * A method that spawns a tree with a set probability on each grass tile.
+	 */
 	private void initializeTrees() {
 		for(int i = 0; i < WIDTH - 1; i++) {
 			for(int j = 0; j < HEIGHT - 1; j++) {
@@ -152,12 +158,26 @@ public class TestWorld extends World implements TileBasedMap{
 		}
 	}
 	
+	/**
+	 * The method to initialise all the houses in the world.
+	 */
 	private void initializeHouses() {
-		for(int i = 0; i < NBR_OF_HOUSES; i++){
-			House house = new House(VILLAGER_SPAWN + 3, VILLAGER_SPAWN + 2, Constants.LEFT_ENTRANCE);
-			houses.add(house);
-			addEntity(new Point(VILLAGER_SPAWN + 3, VILLAGER_SPAWN + 2), house);
-		}
+		//TODO Draw houses in a nicer fashion
+		House house = new House(VILLAGER_SPAWN + 5, VILLAGER_SPAWN + 4, Constants.UP_ENTRANCE);
+		houses.add(house);
+		addEntity(new Point(VILLAGER_SPAWN + 5, VILLAGER_SPAWN + 2), house);
+		
+		house = new House(VILLAGER_SPAWN + 1, VILLAGER_SPAWN - 2, Constants.DOWN_ENTRANCE);
+		houses.add(house);
+		addEntity(new Point(VILLAGER_SPAWN + 1, VILLAGER_SPAWN - 2), house);
+		
+		house = new House(VILLAGER_SPAWN - 4, VILLAGER_SPAWN +1, Constants.RIGHT_ENTRANCE);
+		houses.add(house);
+		addEntity(new Point(VILLAGER_SPAWN - 4, VILLAGER_SPAWN +1), house);
+		
+		house = new House(VILLAGER_SPAWN + 2, VILLAGER_SPAWN + 4, Constants.UP_ENTRANCE);
+		houses.add(house);
+		addEntity(new Point(VILLAGER_SPAWN + 2, VILLAGER_SPAWN + 4), house);
 	}
 	
 	private void initializeVillagers() {
@@ -193,15 +213,27 @@ public class TestWorld extends World implements TileBasedMap{
 	public void pathFinderVisited(int x, int y){
 		
 	}
-
+	
+	/**
+	 * A method to get access to all the ground tiles.
+	 * @return a HashMap with all the tiles identified by their position.
+	 */
 	public HashMap<Point, BottomEntity> getTiles() {
 		return botEntities;
 	}
 	
+	/**
+	 * Returns all entities that are on the same level as villagers, including villagers.
+	 * @return a Hashmap with all entities in the 'middle' layer.
+	 */
 	public HashMap<Point, MidEntity> getMidObjects(){
 		return midEntities;
 	}
 	
+	/**
+	 * Returns all entities that are to be rendered on top of villagers.
+	 * @return a Hashmap with all entities above the villagers.
+	 */
 	public HashMap<Point, TopEntity> getTopObjects(){
 		return topEntities;
 	}
