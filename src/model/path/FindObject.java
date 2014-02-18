@@ -185,7 +185,7 @@ public class FindObject {
 					return p;
 				else{
 					visited.add(p);
-					View.addTopGraphic(new Helper1View(p.x, p.y));
+//					View.addTopGraphic(new Helper1View(p.x, p.y));
 				}
 			
 			for(Point p : toCheck)
@@ -193,7 +193,7 @@ public class FindObject {
 					return p;
 				else{
 					visited.add(p);
-					View.addTopGraphic(new Helper1View(p.x, p.y));
+//					View.addTopGraphic(new Helper1View(p.x, p.y));
 				}
 		}
 		return null;
@@ -225,14 +225,23 @@ public class FindObject {
 		Path p3 = null;
 		Path p4 = null;
 		
-		if(tiles.get(new Point((int) p.getX() - 1, (int) p.getY())).getTileID() == 0)
+		if(!world.blocked(null, p.x - 1, p.y))
 			p1 = PathFinder.getPath(startX, startY, (int) p.getX() - 1, (int) p.getY());
-		if(tiles.get(new Point((int) p.getX() + 1, (int) p.getY())).getTileID() == 0)
+		if(!world.blocked(null, p.x + 1, p.y))
 			p2 = PathFinder.getPath(startX, startY, (int) p.getX() + 1, (int) p.getY());
-		if(tiles.get(new Point((int) p.getX(), (int) p.getY() - 1)).getTileID() == 0)
+		if(!world.blocked(null, p.x, p.y - 1))
 			p3 = PathFinder.getPath(startX, startY, (int) p.getX(), (int) p.getY() - 1);
-		if(tiles.get(new Point((int) p.getX(), (int) p.getY() + 1)).getTileID() == 0)
+		if(!world.blocked(null, p.x, p.y + 1))
 			p4 = PathFinder.getPath(startX, startY, (int) p.getX(), (int) p.getY() + 1);
+		
+//		if(tiles.get(new Point((int) p.getX() - 1, (int) p.getY())).getTileID() == 0)
+//			p1 = PathFinder.getPath(startX, startY, (int) p.getX() - 1, (int) p.getY());
+//		if(tiles.get(new Point((int) p.getX() + 1, (int) p.getY())).getTileID() == 0)
+//			p2 = PathFinder.getPath(startX, startY, (int) p.getX() + 1, (int) p.getY());
+//		if(tiles.get(new Point((int) p.getX(), (int) p.getY() - 1)).getTileID() == 0)
+//			p3 = PathFinder.getPath(startX, startY, (int) p.getX(), (int) p.getY() - 1);
+//		if(tiles.get(new Point((int) p.getX(), (int) p.getY() + 1)).getTileID() == 0)
+//			p4 = PathFinder.getPath(startX, startY, (int) p.getX(), (int) p.getY() + 1);
 		
 		Path bestPath = null;
 		
@@ -461,7 +470,7 @@ public class FindObject {
 					return p;
 				else{
 					visited.add(p);
-					View.addTopGraphic(new Helper1View(p.x, p.y));
+//					View.addTopGraphic(new Helper1View(p.x, p.y));
 				}
 			}
 			
@@ -472,8 +481,8 @@ public class FindObject {
 				else if(tops.get(p) != null && tops.get(p).getObjectType() == id && tops.get(p).meetCriteria(crit) && 
 						PathFinder.getPathToAdjacent(p.x, p.y, startX, startY) != null)
 					return p;
-				else
-					View.addTopGraphic(new Helper1View(p.x, p.y));
+//				else
+//					View.addTopGraphic(new Helper1View(p.x, p.y));
 			}
 		}
 		return null;
@@ -504,14 +513,23 @@ public class FindObject {
 		Path p3 = null;
 		Path p4 = null;
 		
-		if(p.getX() > 0 && tiles.get(new Point((int) p.getX() - 1, (int) p.getY())).getTileID() == 0)
+		if(p.getX() > 0 && !world.blocked(null, p.x - 1, p.y))
 			p1 = PathFinder.getPath(startX, startY, (int) p.getX() - 1, (int) p.getY());
-		if(p.getX() < world.getWidthInTiles() - 1 && tiles.get(new Point((int) p.getX() + 1, (int) p.getY())).getTileID() == 0)
+		if(p.getX() < world.getWidthInTiles() - 1 && !world.blocked(null, p.x + 1, p.y))
 			p2 = PathFinder.getPath(startX, startY, (int) p.getX() + 1, (int) p.getY());
-		if(p.getY() > 0 && tiles.get(new Point((int) p.getX(), (int) p.getY() - 1)).getTileID() == 0)
+		if(p.getY() > 0 && !world.blocked(null, p.x, p.y - 1))
 			p3 = PathFinder.getPath(startX, startY, (int) p.getX(), (int) p.getY() - 1);
-		if(p.getY() < world.getHeightInTiles() - 1 && tiles.get(new Point((int) p.getX(), (int) p.getY() + 1)).getTileID() == 0)
+		if(p.getY() < world.getHeightInTiles() - 1 && !world.blocked(null, p.x, p.y + 1))
 			p4 = PathFinder.getPath(startX, startY, (int) p.getX(), (int) p.getY() + 1);
+		
+//		if(p.getX() > 0 && tiles.get(new Point((int) p.getX() - 1, (int) p.getY())).getTileID() == 0)
+//			p1 = PathFinder.getPath(startX, startY, (int) p.getX() - 1, (int) p.getY());
+//		if(p.getX() < world.getWidthInTiles() - 1 && tiles.get(new Point((int) p.getX() + 1, (int) p.getY())).getTileID() == 0)
+//			p2 = PathFinder.getPath(startX, startY, (int) p.getX() + 1, (int) p.getY());
+//		if(p.getY() > 0 && tiles.get(new Point((int) p.getX(), (int) p.getY() - 1)).getTileID() == 0)
+//			p3 = PathFinder.getPath(startX, startY, (int) p.getX(), (int) p.getY() - 1);
+//		if(p.getY() < world.getHeightInTiles() - 1 && tiles.get(new Point((int) p.getX(), (int) p.getY() + 1)).getTileID() == 0)
+//			p4 = PathFinder.getPath(startX, startY, (int) p.getX(), (int) p.getY() + 1);
 		
 		Path bestPath = null;
 		
