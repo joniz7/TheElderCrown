@@ -21,9 +21,27 @@ import util.Helper2;
 import util.ObjectType;
 import view.View;
 import view.entity.top.Helper1View;
+import view.entity.top.Helper3View;
 
+/**
+ * FindObject is part of the entity path finding. FindObject uses
+ * a world representation and start points in order to find the closest objects
+ * possible to that location.
+ * 
+ * @author Simon Eliasson
+ *
+ */
 public class FindObject {
 	
+	/*
+	 * Funderar på om man ska smälla ihop alla tre lager
+	 * i en enda algoritm. Har undvikit detta hittills eftersom
+	 * att just bottenlagret är ganska speciellt, då det enbart består av tiles.
+	 */
+	
+	/**
+	 * This did the job that findTile2 does now, saves this code, just in case
+	 */
 	public static Point findTile(TestWorld world, ObjectType id, int startX, int startY){
 		HashMap<Point, BottomEntity> tiles = world.getTiles();
 		
@@ -78,7 +96,8 @@ public class FindObject {
 	 * FindTile 2 finds the nearest tile in the bottom layer of the specified type that also
 	 * has a possible path to it.
 	 * 
-	 * @author Simon Eliasson
+	 * Note that this method does NOT find a path, it simply finds the object. The
+	 * path is then calculated later using the point given by this method.
 	 * 
 	 * @param world - The world representation
 	 * @param id - the type of the object looked for
@@ -181,6 +200,17 @@ public class FindObject {
 		return null;
 	}
 	
+	/**
+	 * In order to create a correct path, the villager wants to move to a unblocked tile adjacent
+	 * to the object. This method checks all 4 neighbors of
+	 * the object and returns the point with the shortest path.
+	 * 
+	 * @param world - the game world
+	 * @param id - the id of the object
+	 * @param startX - the villager x position
+	 * @param startY - the villager y position
+	 * @return - The Point to walk to in order to interact with object
+	 */
 	public static Point findTileNeighbour(TestWorld world, ObjectType id, int startX, int startY){
 		long startTime = System.currentTimeMillis();
 		
@@ -228,14 +258,25 @@ public class FindObject {
 			int finalY = bestPath.getStep(bestPath.getLength() - 1).getY();
 			return new Point(finalX, finalY);
 		}catch(NullPointerException e){
-			new Helper1(p.x, p.y);
-			new Helper2(startX, startY);
+			new Helper3View(startX, startY);
 			world.setPaused(true);
+			
+			e.printStackTrace();
 		}
 		
 		return null;
 	}
 	
+	/**
+	 * This method returns true if an object of the specified is adjacent to the point
+	 * specified
+	 * 
+	 * @param world - the game world
+	 * @param id - the id of the object
+	 * @param startX - the x position
+	 * @param startY - the y position
+	 * @return - true if object of type id is adjacent
+	 */
 	public static boolean isAdjacentTile(TestWorld world, ObjectType id, int startX, int startY){
 		HashMap<Point, BottomEntity> tiles = world.getTiles();
 		
@@ -255,6 +296,10 @@ public class FindObject {
 		return false;
 	}
 	
+	
+	/**
+	 * This did the job that findObject2 does now, saves this code, just in case
+	 */
 	public static Point findObject(TestWorld world, Criteria crit, ObjectType id, int startX, int startY){
 		HashMap<Point, MidEntity> mids = world.getMidObjects();
 		HashMap<Point, TopEntity> tops = world.getTopObjects();
@@ -339,8 +384,11 @@ public class FindObject {
 	}
 	
 	/**
-	 * FindTile 2 finds the nearest mid/top layer object of the specified type that also
+	 * FindObject2 finds the nearest mid/top layer object of the specified type that also
 	 * has a possible path to it. A criteria can also be applied to the search.
+	 * 
+	 * Note that this method does NOT find a path, it simply finds the object. The
+	 * path is then calculated later using the point given by this method.
 	 * 
 	 * @author Simon Eliasson
 	 * 
@@ -354,7 +402,7 @@ public class FindObject {
 	public static Point findObject2(TestWorld world, Criteria crit, ObjectType id, int startX, int startY){
 		/*
 		 * These lists and hash-maps are essentially the same as the ones in the
-		 * findTile2 method. The algorithm works in a similiar way, except that it
+		 * findTile2 method. The algorithm works in the same way, except that it
 		 * also takes the criteria into account
 		 */
 		HashMap<Point, Boolean> visitedHash = new HashMap<Point, Boolean>();
@@ -432,6 +480,17 @@ public class FindObject {
 		return null;
 	}
 	
+	/**
+	 * Same as findTileNeighbor. The difference is that findObject also uses a criteria
+	 * in order to find objects.
+	 * 
+	 * @param world - the game world
+	 * @param crit - a criteria to be matched by the object
+	 * @param id - the id of the object
+	 * @param startX - the villager x position
+	 * @param startY - the villager y position
+	 * @return - The Point to walk to in order to interact with object
+	 */
 	public static Point findObjectNeighbour(TestWorld world, Criteria crit, ObjectType id, int startX, int startY){
 		long startTime = System.currentTimeMillis();
 		Point p = findObject2(world, crit, id, startX, startY);
@@ -479,6 +538,16 @@ public class FindObject {
 		return new Point(finalX, finalY);
 	}
 	
+	/**
+	 * This method returns true if an object of the specified is adjacent to the point
+	 * specified
+	 * 
+	 * @param world - the game world
+	 * @param id - the id of the object
+	 * @param startX - the x position
+	 * @param startY - the y position
+	 * @return - true if object of type id is adjacent
+	 */
 	public static boolean isAdjacentObject(TestWorld world, ObjectType id, int startX, int startY){
 		HashMap<Point, MidEntity> mids = world.getMidObjects();
 		HashMap<Point, TopEntity> tops = world.getTopObjects();
