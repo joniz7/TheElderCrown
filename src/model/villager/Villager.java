@@ -134,6 +134,11 @@ public class Villager extends MidEntity implements Tickable, Agent{
 		pcs.addPropertyChangeListener(view);
 		return view;
 	}
+
+	public TestWorld getWorld() {
+		return world;
+	}
+	
 	
 	
 }
