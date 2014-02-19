@@ -6,7 +6,7 @@ import java.util.LinkedList;
 import org.newdawn.slick.util.pathfinding.Path;
 
 import util.Helper1;
-import util.ObjectType;
+import util.EntityType;
 import head.Tickable;
 import model.TestWorld;
 import model.entity.bottom.WaterTile;
@@ -65,7 +65,7 @@ public class Brain implements Tickable{
 	public void walkToTileType(int tileID){
 		long startTime = System.currentTimeMillis();
 
-		Point p = FindObject.findTileNeighbour(world, ObjectType.WATER_TILE, 
+		Point p = FindObject.findTileNeighbour(world, EntityType.WATER_TILE, 
 				villager.getX(), villager.getY());
 		
 		long endTime = System.currentTimeMillis();
@@ -84,7 +84,7 @@ public class Brain implements Tickable{
 		System.out.println("Brain, path-find time to water: " + (endTime - startTime));
 	}
 	
-	public void walkToObjectType(ObjectType id){
+	public void walkToObjectType(EntityType id){
 		long startTime = System.currentTimeMillis();
 		
 		Point p = FindObject.findObjectNeighbour(world, new HasFruit(), id, 

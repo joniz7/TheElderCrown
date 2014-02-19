@@ -1,12 +1,12 @@
 package model.entity.bottom;
 
-import util.ObjectType;
+import util.EntityType;
 
 public abstract class Tile extends BottomEntity{
 	
 	protected int typeID;
 
-	public Tile(int x, int y, ObjectType id) {
+	public Tile(int x, int y, EntityType id) {
 		super(x ,y, id);
 		updatePos(x,y);
 	}

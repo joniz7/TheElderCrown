@@ -1,13 +1,13 @@
 package model.entity.bottom;
 
-import util.ObjectType;
+import util.EntityType;
 import view.entity.EntityView;
 import view.entity.bot.WaterTileView;
 
 public class WaterTile extends Tile{
 
 	public WaterTile(int x, int y) {
-		super(x, y, ObjectType.WATER_TILE);
+		super(x, y, EntityType.WATER_TILE);
 		typeID = 1;
 	}
 

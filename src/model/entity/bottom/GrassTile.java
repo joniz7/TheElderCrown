@@ -1,13 +1,13 @@
 package model.entity.bottom;
 
-import util.ObjectType;
+import util.EntityType;
 import view.entity.EntityView;
 import view.entity.bot.GrassTileView;
 
 public class GrassTile extends Tile{
 
 	public GrassTile(int x, int y) {
-		super(x ,y, ObjectType.GRASS_TILE);
+		super(x ,y, EntityType.GRASS_TILE);
 		typeID = 0;		
 	}
 

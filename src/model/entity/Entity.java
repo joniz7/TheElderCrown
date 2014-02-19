@@ -4,7 +4,7 @@ import java.awt.Point;
 import java.beans.PropertyChangeSupport;
 
 import model.path.criteria.Criteria;
-import util.ObjectType;
+import util.EntityType;
 import view.entity.EntityView;
 
 /**
@@ -18,7 +18,7 @@ public abstract class Entity {
 	// This entity's belief of its position
 	protected int x, y;
 
-	protected ObjectType type;
+	protected EntityType type;
 	protected PropertyChangeSupport pcs;
 	
 	/**
@@ -26,7 +26,7 @@ public abstract class Entity {
 	 * 
 	 * @param name The name of the image to be assigned.
 	 */
-	public Entity(int x, int y, ObjectType type){
+	public Entity(int x, int y, EntityType type){
 		
 		pcs = new PropertyChangeSupport(this);
 		this.x = x;
@@ -107,7 +107,7 @@ public abstract class Entity {
 	/**
 	 * Returns the type of this Entity.
 	 */
-	public ObjectType getObjectType(){
+	public EntityType getEntityType(){
 		return type;
 	}
 	

@@ -1,6 +1,6 @@
 package model.entity;
 
-import util.ObjectType;
+import util.EntityType;
 import view.View;
 import view.entity.EntityView;
 
@@ -17,7 +17,7 @@ public abstract class MidEntity extends Entity {
 	 * 
 	 * @param name The name of the image to be associated with this object.
 	 */
-	public MidEntity(int x, int y, ObjectType id) {
+	public MidEntity(int x, int y, EntityType id) {
 		super(x, y, id);
 //		View.addMidGraphic(drawable);
 	}

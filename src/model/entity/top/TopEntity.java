@@ -1,7 +1,7 @@
 package model.entity.top;
 
 import model.entity.Entity;
-import util.ObjectType;
+import util.EntityType;
 import view.View;
 import view.entity.EntityView;
 
@@ -18,7 +18,7 @@ public abstract class TopEntity extends Entity {
 	 * 
 	 * @param name The name of the image to be associated with this object.
 	 */
-	public TopEntity(int x, int y, ObjectType id) {
+	public TopEntity(int x, int y, EntityType id) {
 		super(x, y, id);
 		// View.addTopGraphic(drawable);
 	}

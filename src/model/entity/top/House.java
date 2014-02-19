@@ -1,6 +1,6 @@
 package model.entity.top;
 
-import util.ObjectType;
+import util.EntityType;
 import view.entity.EntityView;
 import view.entity.top.HouseView;
 
@@ -22,7 +22,7 @@ public class House extends TopEntity {
 	 * @param orientation an integer that specifies what direction the entrance will be oriented in.
 	 */
 	public House(int x, int y, float orientation) {
-		super(x, y, ObjectType.HOUSE);
+		super(x, y, EntityType.HOUSE);
 		this.orientation = orientation;
 		updatePos(x-1, y-1);
 	}

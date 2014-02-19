@@ -1,7 +1,7 @@
 package model.entity.bottom;
 
 import model.entity.Entity;
-import util.ObjectType;
+import util.EntityType;
 import view.View;
 import view.entity.EntityView;
 
@@ -20,7 +20,7 @@ public abstract class BottomEntity extends Entity {
 	 * 
 	 * @param name The name of the image to be associated with this object.
 	 */
-	public BottomEntity(int x, int y, ObjectType id) {
+	public BottomEntity(int x, int y, EntityType id) {
 		super(x, y, id);
 //		View.addBotGraphic(drawable);
 	}
