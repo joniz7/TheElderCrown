@@ -3,14 +3,14 @@ package model.villager.intentions_Reloaded;
 import java.awt.Point;
 import java.util.LinkedList;
 
-import org.newdawn.slick.util.pathfinding.Path;
-
-import util.ObjectType;
-
 import model.path.FindObject;
 import model.path.PathFinder;
 import model.path.criteria.HasFruit;
 import model.villager.Villager;
+
+import org.newdawn.slick.util.pathfinding.Path;
+
+import util.EntityType;
 
 public class EatPlan extends Plan{
 
@@ -20,7 +20,7 @@ public class EatPlan extends Plan{
 		super(villager);
 		actionQueue = new LinkedList<Action>();
 		
-		Point p = FindObject.findObjectNeighbour(villager.getWorld(), new HasFruit(), ObjectType.TREE, 
+		Point p = FindObject.findObjectNeighbour(villager.getWorld(), new HasFruit(), EntityType.TREE, 
 				villager.getX(), villager.getY());
 		Path movePath = PathFinder.getPathToAdjacent(villager.getX(), villager.getY(), p.x, p.y);
 		
