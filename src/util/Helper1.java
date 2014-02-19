@@ -6,7 +6,7 @@ import model.entity.top.TopEntity;
 public class Helper1 extends TopEntity{
 
 	public Helper1(int x, int y) {
-		super(x * 20, y * 20, null);
+		super(x * 20, y * 20, null, false);
 		updatePos(x, y);
 	}
 	

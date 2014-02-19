@@ -20,7 +20,7 @@ public class Villager extends MidEntity implements Tickable{
 	private boolean moving = false;
 	
 	public Villager(TestWorld world, int x, int y){
-		super(x , y, ObjectType.VILLAGER);
+		super(x , y, ObjectType.VILLAGER, false);
 		this.world = world;
 		updatePos(x, y);
 		brain = new Brain(this, world);

@@ -18,8 +18,8 @@ public abstract class TopEntity extends Entity {
 	 * 
 	 * @param name The name of the image to be associated with this object.
 	 */
-	public TopEntity(int x, int y, ObjectType id) {
-		super(x, y, id);
+	public TopEntity(int x, int y, ObjectType id, boolean isBlocking) {
+		super(x, y, id, isBlocking);
 		// View.addTopGraphic(drawable);
 	}
 

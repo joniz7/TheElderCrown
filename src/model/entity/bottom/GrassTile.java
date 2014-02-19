@@ -7,7 +7,7 @@ import view.entity.bot.GrassTileView;
 public class GrassTile extends Tile{
 
 	public GrassTile(int x, int y) {
-		super(x ,y, ObjectType.GRASS_TILE);
+		super(x ,y, ObjectType.GRASS_TILE, false);
 		typeID = 0;		
 	}
 

@@ -2,6 +2,7 @@ package head;
 
 import model.World;
 import model.TestWorld;
+import model.villager.util.NameGen;
 
 import org.newdawn.slick.AppGameContainer;
 import org.newdawn.slick.Game;
@@ -10,9 +11,9 @@ import org.newdawn.slick.Graphics;
 import org.newdawn.slick.SlickException;
 
 
+
 import util.ImageLoader;
 import view.View;
-
 import control.Controller;
 import control.WorldController;
 
@@ -32,7 +33,7 @@ public class GameSlick implements Game{
 	private View view;
 	private static String title = "The Elder Crown";
 	private static boolean isExit;
-	private static final int TICK_INTERVAL = 20;
+	private static final int TICK_INTERVAL = 5;
 	
 	@Override
 	public boolean closeRequested() {

@@ -17,8 +17,8 @@ public abstract class MidEntity extends Entity {
 	 * 
 	 * @param name The name of the image to be associated with this object.
 	 */
-	public MidEntity(int x, int y, ObjectType id) {
-		super(x, y, id);
+	public MidEntity(int x, int y, ObjectType id, boolean isBlocking) {
+		super(x, y, id, isBlocking);
 //		View.addMidGraphic(drawable);
 	}
 
