@@ -3,6 +3,7 @@ package view;
 import java.awt.Point;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
+import java.beans.PropertyChangeSupport;
 import java.util.ArrayList;
 
 import model.entity.MidEntity;
@@ -86,7 +87,7 @@ public class View implements PropertyChangeListener {
 //		g.fillRect(0, 0, disp.getGraphicsDevice().getDisplayMode().getWidth(), 
 //				disp.getGraphicsDevice().getDisplayMode().getHeight());
 		
-		System.out.println(""+botGraphics.size()+" "+midGraphics.size()+" "+topGraphics.size());
+//		System.out.println(""+botGraphics.size()+" "+midGraphics.size()+" "+topGraphics.size());
 		
 		for(EntityView d : botGraphics)
 			d.draw(g, cameraX, cameraY, width, height);
@@ -130,6 +131,8 @@ public class View implements PropertyChangeListener {
 				view = new HouseView(house.getX(), house.getY(), house.getOrientation());
 				break;
 			}
+			PropertyChangeSupport pcs = entity.getPCS();
+			pcs.addPropertyChangeListener(view);
 			topGraphics.add(view);
 		}
 		else if (name.equals("addMidEntity")) {
@@ -141,6 +144,8 @@ public class View implements PropertyChangeListener {
 				view = new VillagerView(entity.getX(), entity.getY());
 				break;
 			}
+			PropertyChangeSupport pcs = entity.getPCS();
+			pcs.addPropertyChangeListener(view);
 			midGraphics.add(view);
 		} 
 		else if (name.equals("addBotEntity")) {
@@ -155,6 +160,8 @@ public class View implements PropertyChangeListener {
 				view = new WaterTileView(entity.getX(), entity.getY());
 				break;
 			}
+			PropertyChangeSupport pcs = entity.getPCS();
+			pcs.addPropertyChangeListener(view);
 			botGraphics.add(view);
 		}
 		else if (name.equals("removeTopEntity")) {

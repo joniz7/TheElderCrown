@@ -105,4 +105,12 @@ public abstract class Entity {
 		return type;
 	}
 	
+	/**
+	 * Use when you need something to listen to this.
+	 * @return the pcs of this entity.
+	 */
+	public PropertyChangeSupport getPCS(){
+		return pcs;
+	}
+	
 }
