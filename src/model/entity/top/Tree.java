@@ -1,7 +1,7 @@
 package model.entity.top;
 
-import head.Tickable;
 import util.EntityType;
+import util.Tickable;
 
 /**
  * A class to represent a tree.

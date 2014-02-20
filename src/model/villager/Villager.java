@@ -1,6 +1,5 @@
 package model.villager;
 
-import head.Tickable;
 import model.TestWorld;
 import model.entity.Agent;
 import model.entity.MidEntity;
@@ -8,6 +7,7 @@ import model.path.FindObject;
 import model.villager.brain.Brain;
 import util.EntityType;
 import util.SoundP;
+import util.Tickable;
 
 public class Villager extends MidEntity implements Tickable, Agent{
 

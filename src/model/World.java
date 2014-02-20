@@ -1,12 +1,13 @@
 package model;
 
-import head.Tickable;
 
 import java.awt.Point;
 import java.beans.PropertyChangeListener;
 import java.beans.PropertyChangeSupport;
 import java.util.ArrayList;
 import java.util.HashMap;
+
+import util.Tickable;
 
 import model.entity.Agent;
 import model.entity.MidEntity;

@@ -14,10 +14,12 @@ import model.entity.top.TopEntity;
 import org.newdawn.slick.Graphics;
 
 import util.EntityType;
-import view.entity.*;
-import view.entity.top.*;
-import view.entity.mid.*;
-import view.entity.bot.*;
+import view.entity.EntityView;
+import view.entity.bot.GrassTileView;
+import view.entity.bot.WaterTileView;
+import view.entity.mid.VillagerView;
+import view.entity.top.HouseView;
+import view.entity.top.TreeView;
 
 public class View implements PropertyChangeListener {
 
@@ -37,7 +39,7 @@ public class View implements PropertyChangeListener {
 	public static void addTopGraphic(EntityView d){
 		topGraphics.add(d);
 	}
-	
+
 	public static void removeTopGraphic(EntityView d){
 		topGraphics.remove(d);
 	}
@@ -45,7 +47,7 @@ public class View implements PropertyChangeListener {
 	public static void addMidGraphic(EntityView d){
 		midGraphics.add(d);
 	}
-	
+
 	public static void removeMidGraphic(EntityView d){
 		midGraphics.remove(d);
 	}
@@ -53,11 +55,11 @@ public class View implements PropertyChangeListener {
 	public static void addBotGraphic(EntityView d){
 		botGraphics.add(d);
 	}
-	
+
 	public static void removeBotGraphic(EntityView d){
 		botGraphics.remove(d);
 	}
-	
+
 	public int getX() {
 		return cameraX;
 	}
@@ -65,39 +67,39 @@ public class View implements PropertyChangeListener {
 	public int getY() {
 		return cameraY;
 	}
-	
+
 	public void incX(){
 		cameraX += SCROLL_SPEED;
 	}
-	
+
 	public void incY(){
 		cameraY += SCROLL_SPEED;
 	}
-	
+
 	public void decX(){
 		cameraX -= SCROLL_SPEED;
 	}
-	
+
 	public void decY(){
 		cameraY -= SCROLL_SPEED;
 	}
-	
+
 	public static void render(Graphics g){
-//		Display disp = new Display();
-//		g.fillRect(0, 0, disp.getGraphicsDevice().getDisplayMode().getWidth(), 
-//				disp.getGraphicsDevice().getDisplayMode().getHeight());
-		
-//		System.out.println(""+botGraphics.size()+" "+midGraphics.size()+" "+topGraphics.size());
-		
+		//		Display disp = new Display();
+		//		g.fillRect(0, 0, disp.getGraphicsDevice().getDisplayMode().getWidth(), 
+		//				disp.getGraphicsDevice().getDisplayMode().getHeight());
+
+		//		System.out.println(""+botGraphics.size()+" "+midGraphics.size()+" "+topGraphics.size());
+
 		for(EntityView d : botGraphics)
 			d.draw(g, cameraX, cameraY, width, height);
-			
+
 		for(EntityView d : midGraphics)
 			d.draw(g, cameraX, cameraY, width, height);
-			
+
 		for(EntityView d : topGraphics)
 			d.draw(g, cameraX, cameraY, width, height);
-			
+
 	}
 
 	/**
@@ -111,7 +113,7 @@ public class View implements PropertyChangeListener {
 	 */
 	@Override
 	public void propertyChange(PropertyChangeEvent event) {
-		
+
 		String name = event.getPropertyName();
 		if (name.equals("camera")) {
 			Point p = (Point)event.getNewValue();
@@ -175,7 +177,6 @@ public class View implements PropertyChangeListener {
 		else if (name.equals("removeBotEntity")) {
 			throw new UnsupportedOperationException();
 		}
-		
 	}
 	
 	/**
