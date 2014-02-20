@@ -1,19 +1,50 @@
 package model.villager;
 
+import java.awt.Point;
+
 import head.Tickable;
 import model.TestWorld;
+import model.World;
 import model.entity.Agent;
 import model.entity.MidEntity;
 import model.path.FindObject;
 import model.villager.brain.Brain;
+import model.villager.intentions_Reloaded.Plan;
 import util.EntityType;
 import util.SoundP;
 import view.entity.EntityView;
 import view.entity.mid.VillagerView;
 import view.entity.top.TreeView;
 
-public class Villager extends MidEntity implements Tickable, Agent{
+public class Villager extends MidEntity implements Agent{
 
+	public Villager(int x, int y, EntityType id) {
+		super(x, y, id);
+		// TODO Auto-generated constructor stub
+	}
+
+	private int hunger;
+	private TestWorld world;
+	
+	private Plan activePlan;
+	
+	public TestWorld getWorld() {
+		return world;
+	}
+
+	@Override
+	public EntityView createView() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public void update(Point pos) {
+		// TODO Auto-generated method stub
+		
+	}
+	
+	/*
 	private Brain brain;
 	private TestWorld world;
 
@@ -124,10 +155,7 @@ public class Villager extends MidEntity implements Tickable, Agent{
 	}
 	
 	
-	/**
-	 * Creates and returns a new VillagerView.
-	 * Registers the view as our listener.
-	 */
+
 	@Override
 	public EntityView createView() {
 		EntityView view = new VillagerView(x, y);
@@ -139,6 +167,8 @@ public class Villager extends MidEntity implements Tickable, Agent{
 		return world;
 	}
 	
-	
+	*/
+
+
 	
 }
