@@ -1,6 +1,5 @@
 package control;
 
-import head.GameSlick;
 import model.World;
 
 import org.newdawn.slick.Input;
@@ -10,11 +9,9 @@ import view.View;
 public class WorldController extends Controller{
 
 	private boolean isWDown, isADown, isSDown, isDDown;
-	private GameSlick game;
 	
-	public WorldController(GameSlick game, World gameState, View view) {
+	public WorldController(World gameState, View view) {
 		super(gameState, view);
-		this.game = game;
 	}
 
 	@Override
@@ -48,7 +45,7 @@ public class WorldController extends Controller{
 			isDDown = true;
 		if(key == Input.KEY_ESCAPE){
 //			System.exit(0);
-			game.closeRequested();
+			gameState.closeRequested();
 		}
 	}
 

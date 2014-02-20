@@ -8,9 +8,6 @@ import model.path.FindObject;
 import model.villager.brain.Brain;
 import util.EntityType;
 import util.SoundP;
-import view.entity.EntityView;
-import view.entity.mid.VillagerView;
-import view.entity.top.TreeView;
 
 public class Villager extends MidEntity implements Tickable, Agent{
 
@@ -121,18 +118,6 @@ public class Villager extends MidEntity implements Tickable, Agent{
 	public void setMoving(boolean moving) {
 		this.moving = moving;
 		stepCount = 0;
-	}
-	
-	
-	/**
-	 * Creates and returns a new VillagerView.
-	 * Registers the view as our listener.
-	 */
-	@Override
-	public EntityView createView() {
-		EntityView view = new VillagerView(x, y);
-		pcs.addPropertyChangeListener(view);
-		return view;
 	}
 
 	public TestWorld getWorld() {

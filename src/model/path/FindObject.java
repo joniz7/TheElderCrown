@@ -1,12 +1,8 @@
 package model.path;
 
-import head.GameSlick;
-
 import java.awt.Point;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Queue;
 
 import model.TestWorld;
 import model.entity.MidEntity;
@@ -16,10 +12,9 @@ import model.path.criteria.Criteria;
 
 import org.newdawn.slick.util.pathfinding.Path;
 
-import util.Helper1;
-import util.Helper2;
 import util.EntityType;
-import view.View;
+import debugging.Helper1;
+import debugging.Helper2;
 
 public class FindObject {
 	

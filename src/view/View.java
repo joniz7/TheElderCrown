@@ -7,11 +7,16 @@ import java.util.ArrayList;
 
 import model.entity.MidEntity;
 import model.entity.bottom.BottomEntity;
+import model.entity.top.House;
 import model.entity.top.TopEntity;
 
 import org.newdawn.slick.Graphics;
 
-import view.entity.EntityView;
+import util.EntityType;
+import view.entity.*;
+import view.entity.top.*;
+import view.entity.mid.*;
+import view.entity.bot.*;
 
 public class View implements PropertyChangeListener {
 
@@ -101,12 +106,11 @@ public class View implements PropertyChangeListener {
 	 * (Note that this is just for general model events -
 	 *  not for Entity position updates and such)
 	 *  
-	 * @Author Niklas
+	 * @Author Niklas & Teodor O
 	 */
 	@Override
 	public void propertyChange(PropertyChangeEvent event) {
 		
-		//TODO använda EntityType istället för att skapa nya views.
 		String name = event.getPropertyName();
 		if (name.equals("camera")) {
 			Point p = (Point)event.getNewValue();
@@ -115,17 +119,42 @@ public class View implements PropertyChangeListener {
 		}
 		else if (name.equals("addTopEntity")) {
 			TopEntity entity = (TopEntity) event.getNewValue();
-			EntityView view = entity.createView();
+			EntityType type = entity.getEntityType();
+			EntityView view = null;
+			switch(type){
+			case TREE:
+				view = new TreeView(entity.getX(), entity.getY());
+				break;
+			case HOUSE:
+				House house = (House) entity;
+				view = new HouseView(house.getX(), house.getY(), house.getOrientation());
+				break;
+			}
 			topGraphics.add(view);
 		}
 		else if (name.equals("addMidEntity")) {
 			MidEntity entity = (MidEntity) event.getNewValue();
-			EntityView view = entity.createView();
+			EntityType type = entity.getEntityType();
+			EntityView view = null;
+			switch(type){
+			case VILLAGER:
+				view = new VillagerView(entity.getX(), entity.getY());
+				break;
+			}
 			midGraphics.add(view);
 		} 
 		else if (name.equals("addBotEntity")) {
 			BottomEntity entity = (BottomEntity) event.getNewValue();
-			EntityView view = entity.createView();
+			EntityType type = entity.getEntityType();
+			EntityView view = null;
+			switch(type){
+			case GRASS_TILE:
+				view = new GrassTileView(entity.getX(), entity.getY());
+				break;
+			case WATER_TILE:
+				view = new WaterTileView(entity.getX(), entity.getY());
+				break;
+			}
 			botGraphics.add(view);
 		}
 		else if (name.equals("removeTopEntity")) {

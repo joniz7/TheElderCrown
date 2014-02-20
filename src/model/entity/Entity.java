@@ -5,7 +5,6 @@ import java.beans.PropertyChangeSupport;
 
 import model.path.criteria.Criteria;
 import util.EntityType;
-import view.entity.EntityView;
 
 /**
  * A class representing an object that is visible in the world.
@@ -61,13 +60,14 @@ public abstract class Entity {
 	 * @param interPolY The interpolation in y-axis
 	 */
 	protected void updatePos(int x, int y, int interPolX, int interPolY){
+		Point oldPos = new Point(x, y);
 		// Tell entity of its new position
 		this.x = x;
 		this.y = y;
 		// TODO should not exist!
 		//      interpolation is ideally handled in view (?)
 		Point pos = new Point((x*20) + interPolX, (y*20) + interPolY);
-		pcs.firePropertyChange("position", null, pos);		
+		pcs.firePropertyChange("position", oldPos, pos);		
 	}
 	
 	/**
@@ -97,12 +97,6 @@ public abstract class Entity {
 	public boolean meetCriteria(Criteria criteria){
 		return criteria.match(this);
 	}
-	
-	/**
-	 * Creates and returns a view for this Entity.
-	 * Sets up listeners between the Entity and its view.
-	 */
-	public abstract EntityView createView();
 	
 	/**
 	 * Returns the type of this Entity.

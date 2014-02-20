@@ -25,8 +25,10 @@ public abstract class World implements Tickable{
 	protected HashMap<Point, Agent> agents;
 	
 	protected boolean paused;
+	public boolean shouldExit;
 	
 	protected final PropertyChangeSupport pcs;
+	
     public void addPropertyChangeListener(PropertyChangeListener listener) {
         this.pcs.addPropertyChangeListener(listener);
     }
@@ -40,6 +42,7 @@ public abstract class World implements Tickable{
 		midEntities = new HashMap<Point, MidEntity>();
 		topEntities = new HashMap<Point, TopEntity>();
 		agents = new HashMap<Point, Agent>();
+		shouldExit = false;
 		}
 	
 	@Override
@@ -105,5 +108,12 @@ public abstract class World implements Tickable{
 	private void addAgent(Point point, Agent agent){
 		agents.put(point, agent);
 	}
-
+	
+	/**
+	 * A method to be called when the game is to exit.
+	 */
+	public void closeRequested() {
+		shouldExit = true;
+	}
+	
 }

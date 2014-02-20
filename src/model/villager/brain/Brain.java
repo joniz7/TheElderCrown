@@ -5,7 +5,8 @@ import java.util.LinkedList;
 
 import org.newdawn.slick.util.pathfinding.Path;
 
-import util.Helper1;
+import debugging.Helper1;
+
 import util.EntityType;
 import head.Tickable;
 import model.TestWorld;
