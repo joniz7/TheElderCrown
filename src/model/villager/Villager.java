@@ -9,6 +9,7 @@ import model.entity.Agent;
 import model.entity.MidEntity;
 import model.path.FindObject;
 import model.villager.brain.Brain;
+import model.villager.intentions_Reloaded.EatPlan;
 import model.villager.intentions_Reloaded.Plan;
 import util.EntityType;
 import util.SoundP;
@@ -18,14 +19,9 @@ import view.entity.top.TreeView;
 
 public class Villager extends MidEntity implements Agent{
 
-	public Villager(int x, int y, EntityType id) {
-		super(x, y, id);
-		// TODO Auto-generated constructor stub
-	}
-
-	private int hunger;
+	private int hunger, thirst;
 	private TestWorld world;
-	
+	private Point currentPos;
 	private Plan activePlan;
 	
 	public TestWorld getWorld() {
@@ -34,15 +30,44 @@ public class Villager extends MidEntity implements Agent{
 
 	@Override
 	public EntityView createView() {
-		// TODO Auto-generated method stub
-		return null;
+		EntityView view = new VillagerView(x, y);
+		pcs.addPropertyChangeListener(view);
+		return view;
 	}
 
 	@Override
 	public void update(Point pos) {
-		// TODO Auto-generated method stub
+		currentPos = pos;
 		
+		adjustNeeds();
+		plan();
 	}
+	
+	private void adjustNeeds() {
+		hunger--;
+		thirst--;
+	}
+	
+	private void plan() {
+		if(activePlan == null) {
+			if(hunger < 50) {
+				activePlan = new EatPlan(this);
+			}
+		}
+	}
+	
+	public Action getAction() {
+		return activePlan.getFirst();
+	}
+	
+	public void disposePlan() {
+		activePlan = null;
+	}
+	
+	public void actionDone() {
+		activePlan.actionDone();
+	}
+	
 	
 	/*
 	private Brain brain;
