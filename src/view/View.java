@@ -106,6 +106,7 @@ public class View implements PropertyChangeListener {
 	@Override
 	public void propertyChange(PropertyChangeEvent event) {
 		
+		//TODO använda EntityType istället för att skapa nya views.
 		String name = event.getPropertyName();
 		if (name.equals("camera")) {
 			Point p = (Point)event.getNewValue();

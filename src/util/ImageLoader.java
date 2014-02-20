@@ -5,6 +5,11 @@ import java.util.HashMap;
 import org.newdawn.slick.Image;
 import org.newdawn.slick.SlickException;
 
+/**
+ * A class to be used to load images using the Slick2D-architectire.
+ * @author Simon E
+ *  
+ */
 public class ImageLoader {
 	
 	private static HashMap<String, Image> imageLib = new HashMap<String, Image>();

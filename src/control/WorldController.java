@@ -47,7 +47,7 @@ public class WorldController extends Controller{
 		if(e == 'd' || e == 'D')
 			isDDown = true;
 		if(key == Input.KEY_ESCAPE){
-			System.exit(0);
+//			System.exit(0);
 			game.closeRequested();
 		}
 	}

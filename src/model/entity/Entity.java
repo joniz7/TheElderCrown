@@ -17,7 +17,6 @@ public abstract class Entity {
 	
 	// This entity's belief of its position
 	protected int x, y;
-
 	protected EntityType type;
 	protected PropertyChangeSupport pcs;
 	
@@ -42,13 +41,14 @@ public abstract class Entity {
 	 * @param y The new y-value of the entity.
 	 */
 	protected void updatePos(int x, int y){
+		Point oldPos = new Point(x, y);
 		// Tell entity of its new position
 		this.x = x;
 		this.y = y;
 		// TODO should send model coordinates!
 		//      fix when we fix view interpolation
 		Point pos = new Point(x*20, y*20);
-		pcs.firePropertyChange("position", null, pos);
+		pcs.firePropertyChange("position", oldPos, pos);
 	}
 	
 	/**
