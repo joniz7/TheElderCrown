@@ -1,6 +1,7 @@
 package control;
 
-import head.GameSlick;
+
+import head.MainGameState;
 import model.World;
 
 import org.newdawn.slick.Input;
@@ -10,11 +11,11 @@ import view.View;
 public class WorldController extends Controller{
 
 	private boolean isWDown, isADown, isSDown, isDDown;
-	private GameSlick game;
+	private MainGameState game;
 	
-	public WorldController(GameSlick game, World gameState, View view) {
+	public WorldController(MainGameState mainGameState, World gameState, View view) {
 		super(gameState, view);
-		this.game = game;
+		this.game = mainGameState;
 	}
 
 	@Override
