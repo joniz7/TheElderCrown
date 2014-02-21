@@ -308,6 +308,17 @@ public class TestWorld extends World implements TileBasedMap{
 		throw new NoPositionFoundException();
 	}
 	
+	public void moveVillager(Villager villager){
+		Point p;
+		try {
+			p = getPosition(villager);
+		} catch (NoPositionFoundException e) {
+			e.printStackTrace();
+		}
+		
+		
+	}
+	
 	/**
 	 * Debuggin purposes.
 	 * @param centerPoint
