@@ -1,30 +1,23 @@
 package head;
 
-import model.TestWorld;
-import model.World;
-
-import org.newdawn.slick.AppGameContainer;
+import org.newdawn.slick.Color;
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.Input;
 import org.newdawn.slick.SlickException;
 import org.newdawn.slick.state.GameState;
 import org.newdawn.slick.state.StateBasedGame;
+import org.newdawn.slick.state.transition.FadeInTransition;
+import org.newdawn.slick.state.transition.FadeOutTransition;
 
-import util.ImageLoader;
-import view.View;
-import control.Controller;
-import control.WorldController;
+import view.MainMenuView;
 
-public class MainGameState implements GameState {
-
-	private Controller controller;
-	private World world;
-	private View view;
-	private static boolean isExit;
-	private static GameContainer appgc;
-	private static StatedGame game;
+public class MainMenu implements GameState {
 	
+	MainMenuView view = new MainMenuView();
+	StateBasedGame game;
+
+
 	@Override
 	public void mouseClicked(int arg0, int arg1, int arg2, int arg3) {
 		// TODO Auto-generated method stub
@@ -76,7 +69,7 @@ public class MainGameState implements GameState {
 	@Override
 	public boolean isAcceptingInput() {
 		// TODO Auto-generated method stub
-		return false;
+		return true;
 	}
 
 	@Override
@@ -86,15 +79,40 @@ public class MainGameState implements GameState {
 	}
 
 	@Override
-	public void keyPressed(int arg0, char arg1) {
-		controller.keyPressed(arg0, arg1);
+	public void keyPressed(int key, char e) {
+		System.out.println("Nåt grej");
+		switch(key){
+		case Input.KEY_1:
+			game.enterState(2, new FadeOutTransition(Color.black), new FadeInTransition(Color.black));
+			System.out.println("Key 1 caught");
+			break;
+		case Input.KEY_2:
+			((StatedGame)game).exit();
+			System.out.println("Key 1 caught");
+			break;
+		default:
+			System.out.println(":(");
+			break;
+		}
 
 	}
 
 	@Override
-	public void keyReleased(int arg0, char arg1) {
-		controller.keyReleased(arg0, arg1);
-
+	public void keyReleased(int key, char e) {
+		System.out.println("Nåt grej");
+		switch(key){
+		case Input.KEY_1:
+			game.enterState(2, new FadeOutTransition(Color.black), new FadeInTransition(Color.black));
+			System.out.println("Key 1 caught");
+			break;
+		case Input.KEY_2:
+			((StatedGame)game).exit();
+			System.out.println("Key 1 caught");
+			break;
+		default:
+			System.out.println(":(");
+			break;
+		}
 	}
 
 	@Override
@@ -166,25 +184,13 @@ public class MainGameState implements GameState {
 
 	@Override
 	public int getID() {
-		return 2;
+		return 1;
 	}
 
 	@Override
-	public void init(GameContainer appgc, StateBasedGame game)
+	public void init(GameContainer arg0, StateBasedGame game)
 			throws SlickException {
-		this.game = (StatedGame)game;
-		this.appgc = appgc;
-		new ImageLoader();
-		
-		world = new TestWorld();
-		view = new View(appgc.getWidth(), appgc.getHeight());
-		controller = new WorldController(this, world, view);
-		appgc.getInput().addKeyListener(controller);
-		
-		// Set up View listening to World
-		world.addPropertyChangeListener(view);
-		world.initialize();
-		isExit = false;
+		this.game = game;
 
 	}
 
@@ -198,36 +204,14 @@ public class MainGameState implements GameState {
 	@Override
 	public void render(GameContainer arg0, StateBasedGame arg1, Graphics g)
 			throws SlickException {
-		View.render(g);
-
+		view.render(g);
 	}
 
 	@Override
 	public void update(GameContainer arg0, StateBasedGame arg1, int arg2)
 			throws SlickException {
-		world.tick();
-		controller.tick();
-		if(isExit){
-			appgc.exit();
-		}
+		// TODO Auto-generated method stub
 
 	}
-		
-	public boolean closeRequested() {
-		isExit = true;
-		return isExit;
-		}
 
-	public static Graphics getG(){
-		return appgc.getGraphics();
-	}
-	
-	public static GameContainer getGC(){
-		return appgc;
-	}
-	
-	public StatedGame getGame(){
-		return game;
-	}
-	
 }

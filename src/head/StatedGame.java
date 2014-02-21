@@ -12,14 +12,13 @@ import control.Controller;
 
 public class StatedGame extends StateBasedGame {
 	
-
-	private static AppGameContainer appgc;
+	
+	private static AppGameContainer app; 
 	
 	private static String title = "The Elder Crown";
 	private static final int TICK_INTERVAL = 5;
 	
     // Game state identifiers
-    public static final int SPLASHSCREEN = 0;
     public static final int MAINMENU     = 1;
     public static final int GAME         = 2;
 
@@ -40,14 +39,18 @@ public class StatedGame extends StateBasedGame {
     // Initialize your game states (calls init method of each gamestate, and set's the state ID)
     public void initStatesList(GameContainer gc) throws SlickException {
         // The first state added will be the one that is loaded first, when the application is launched
-        //this.addState(new MainMenu());
+        this.addState(new MainMenu());
         this.addState(new MainGameState());
+    }
+    
+    public void exit(){
+    	app.exit();
     }
 
     // Main Method
     public static void main(String[] args) {
         try {
-            AppGameContainer app = new AppGameContainer(new StatedGame());
+            app = new AppGameContainer(new StatedGame());
             app.setDisplayMode(WIDTH, HEIGHT, false);
             app.setTargetFrameRate(FPS);
             app.setShowFPS(true);

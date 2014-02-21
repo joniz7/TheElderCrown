@@ -4,7 +4,10 @@ package control;
 import head.MainGameState;
 import model.World;
 
+import org.newdawn.slick.Color;
 import org.newdawn.slick.Input;
+import org.newdawn.slick.state.transition.FadeInTransition;
+import org.newdawn.slick.state.transition.FadeOutTransition;
 
 import view.View;
 
@@ -48,8 +51,7 @@ public class WorldController extends Controller{
 		if(e == 'd' || e == 'D')
 			isDDown = true;
 		if(key == Input.KEY_ESCAPE){
-			System.exit(0);
-			game.closeRequested();
+			game.getGame().enterState(1, new FadeOutTransition(Color.black), new FadeInTransition(Color.black));
 		}
 	}
 
