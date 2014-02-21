@@ -1,12 +1,8 @@
 package model.path;
 
-import head.GameSlick;
-
 import java.awt.Point;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Queue;
 
 import model.TestWorld;
 import model.entity.MidEntity;
@@ -16,10 +12,9 @@ import model.path.criteria.Criteria;
 
 import org.newdawn.slick.util.pathfinding.Path;
 
-import util.Helper1;
-import util.Helper2;
 import util.EntityType;
-import view.View;
+import debugging.Helper1;
+import debugging.Helper2;
 
 public class FindObject {
 	
@@ -132,13 +127,13 @@ public class FindObject {
 		Path p3 = null;
 		Path p4 = null;
 		
-		if(tiles.get(new Point((int) p.getX() - 1, (int) p.getY())).getTileID() == 0)
+		if(tiles.get(new Point((int) p.getX() - 1, (int) p.getY())).getEntityType() == EntityType.GRASS_TILE)
 			p1 = PathFinder.getPath(startX, startY, (int) p.getX() - 1, (int) p.getY());
-		if(tiles.get(new Point((int) p.getX() + 1, (int) p.getY())).getTileID() == 0)
+		if(tiles.get(new Point((int) p.getX() + 1, (int) p.getY())).getEntityType() == EntityType.GRASS_TILE)
 			p2 = PathFinder.getPath(startX, startY, (int) p.getX() + 1, (int) p.getY());
-		if(tiles.get(new Point((int) p.getX(), (int) p.getY() - 1)).getTileID() == 0)
+		if(tiles.get(new Point((int) p.getX(), (int) p.getY() - 1)).getEntityType() == EntityType.GRASS_TILE)
 			p3 = PathFinder.getPath(startX, startY, (int) p.getX(), (int) p.getY() - 1);
-		if(tiles.get(new Point((int) p.getX(), (int) p.getY() + 1)).getTileID() == 0)
+		if(tiles.get(new Point((int) p.getX(), (int) p.getY() + 1)).getEntityType() == EntityType.GRASS_TILE)
 			p4 = PathFinder.getPath(startX, startY, (int) p.getX(), (int) p.getY() + 1);
 		
 		Path bestPath = null;
@@ -337,13 +332,13 @@ public class FindObject {
 		Path p3 = null;
 		Path p4 = null;
 		
-		if(p.getX() > 0 && tiles.get(new Point((int) p.getX() - 1, (int) p.getY())).getTileID() == 0)
+		if(p.getX() > 0 && tiles.get(new Point((int) p.getX() - 1, (int) p.getY())).getEntityType() == EntityType.GRASS_TILE)
 			p1 = PathFinder.getPath(startX, startY, (int) p.getX() - 1, (int) p.getY());
-		if(p.getX() < world.getWidthInTiles() - 1 && tiles.get(new Point((int) p.getX() + 1, (int) p.getY())).getTileID() == 0)
+		if(p.getX() < world.getWidthInTiles() - 1 && tiles.get(new Point((int) p.getX() + 1, (int) p.getY())).getEntityType() == EntityType.GRASS_TILE)
 			p2 = PathFinder.getPath(startX, startY, (int) p.getX() + 1, (int) p.getY());
-		if(p.getY() > 0 && tiles.get(new Point((int) p.getX(), (int) p.getY() - 1)).getTileID() == 0)
+		if(p.getY() > 0 && tiles.get(new Point((int) p.getX(), (int) p.getY() - 1)).getEntityType() == EntityType.GRASS_TILE)
 			p3 = PathFinder.getPath(startX, startY, (int) p.getX(), (int) p.getY() - 1);
-		if(p.getY() < world.getHeightInTiles() - 1 && tiles.get(new Point((int) p.getX(), (int) p.getY() + 1)).getTileID() == 0)
+		if(p.getY() < world.getHeightInTiles() - 1 && tiles.get(new Point((int) p.getX(), (int) p.getY() + 1)).getEntityType() == EntityType.GRASS_TILE)
 			p4 = PathFinder.getPath(startX, startY, (int) p.getX(), (int) p.getY() + 1);
 		
 		Path bestPath = null;

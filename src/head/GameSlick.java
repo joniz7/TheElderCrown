@@ -31,13 +31,12 @@ public class GameSlick implements Game{
 	private World world;
 	private View view;
 	private static String title = "The Elder Crown";
-	private static boolean isExit;
 	private static final int TICK_INTERVAL = 20;
 	
 	@Override
 	public boolean closeRequested() {
-		isExit = true;
-		return isExit;
+		//Unused method
+		return false;
 	}
 
 	@Override
@@ -62,15 +61,13 @@ public class GameSlick implements Game{
 		appgc.setTitle(getTitle());
 		
 		view = new View(appgc.getWidth(), appgc.getHeight());
-		controller = new WorldController(this, world, view);
+		controller = new WorldController(world, view);
 		appgc.getInput().addKeyListener(controller);
 		
 		// Set up View listening to World
 		world.addPropertyChangeListener(view);
 		
 		world.initialize();
-		
-		isExit = false;
 	}
 
 	@Override
@@ -87,18 +84,11 @@ public class GameSlick implements Game{
 	 * Also if any part of the game has requested a shutdown, that is executed here.
 	 */
 	public void update(GameContainer arg0, int arg1) throws SlickException {
+		if(world.shouldExit){
+			appgc.exit();
+		}
 		world.tick();
 		controller.tick();
-		if(isExit){
-			appgc.destroy();
-		}
-	}
-	
-	/**
-	 * A method to be called whenever someone wants to close down the program.
-	 */
-	public static void requestClose(){
-		isExit = true;
 	}
 	
 	/**

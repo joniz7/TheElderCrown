@@ -1,21 +1,19 @@
 package model.villager;
 
 import java.awt.Point;
-
-import head.Tickable;
 import model.TestWorld;
 import model.World;
 import model.entity.Agent;
 import model.entity.MidEntity;
 import model.path.FindObject;
 import model.villager.brain.Brain;
+import model.villager.intentions_Reloaded.Action;
 import model.villager.intentions_Reloaded.EatPlan;
 import model.villager.intentions_Reloaded.Plan;
 import util.EntityType;
 import util.SoundP;
+import util.Tickable;
 import view.entity.EntityView;
-import view.entity.mid.VillagerView;
-import view.entity.top.TreeView;
 
 public class Villager extends MidEntity implements Agent{
 
@@ -177,15 +175,6 @@ public class Villager extends MidEntity implements Agent{
 	public void setMoving(boolean moving) {
 		this.moving = moving;
 		stepCount = 0;
-	}
-	
-	
-
-	@Override
-	public EntityView createView() {
-		EntityView view = new VillagerView(x, y);
-		pcs.addPropertyChangeListener(view);
-		return view;
 	}
 
 	public TestWorld getWorld() {

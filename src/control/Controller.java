@@ -2,9 +2,9 @@ package control;
 
 import org.newdawn.slick.KeyListener;
 
+import util.Tickable;
 import view.View;
 
-import head.Tickable;
 
 import model.World;
 

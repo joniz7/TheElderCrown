@@ -5,9 +5,10 @@ import java.util.LinkedList;
 
 import org.newdawn.slick.util.pathfinding.Path;
 
-import util.Helper1;
+import debugging.Helper1;
+
 import util.EntityType;
-import head.Tickable;
+import util.Tickable;
 import model.TestWorld;
 import model.entity.bottom.WaterTile;
 import model.path.FindObject;

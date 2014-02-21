@@ -84,7 +84,6 @@ public class TestWorld extends World implements TileBasedMap{
 			for(int j = 0; j < HEIGHT; j++) {
 				GrassTile grass = new GrassTile(i, j);
 				Point pos = new Point(i, j);
-				grass.setTileID(0);
 				addEntity(pos, grass);
 			}
 		}
@@ -247,6 +246,12 @@ public class TestWorld extends World implements TileBasedMap{
 		return agents;
 	}
 	
+	/**
+	 * Call this when you want a reference to a Tree at a specific location.
+	 * @param tileX the x-coordinate of the Tree to be found.
+	 * @param tileY the y-coordinate of the Tree to be found
+	 * @return if there is a Tree at the specified location it is returned. Otherwise null.
+	 */
 	public Tree getTree(int tileX, int tileY){
 		if(topEntities.get(new Point(tileX, tileY)) != null &&
 				topEntities.get(new Point(tileX, tileY)) instanceof Tree)

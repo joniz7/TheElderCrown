@@ -1,8 +1,6 @@
 package model.entity.top;
 
 import util.EntityType;
-import view.entity.EntityView;
-import view.entity.top.HouseView;
 
 /**
  * The class representing a house in which villagers sleep.
@@ -28,14 +26,10 @@ public class House extends TopEntity {
 	}
 	
 	/**
-	 * Creates and returns a new HouseView.
-	 * Registers the view as our listener.
+	 * A getter for the housese orientation.
+	 * @return the float specifying the angle of the house in degrees.
 	 */
-	@Override
-	public EntityView createView() {
-		EntityView view = new HouseView(x, y, orientation);
-		pcs.addPropertyChangeListener(view);
-		return view;
+	public float getOrientation(){
+		return orientation;
 	}
-	
 }

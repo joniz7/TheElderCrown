@@ -1,6 +1,6 @@
 package model.villager.brain.stem;
 
-import head.Tickable;
+import util.Tickable;
 import model.villager.brain.Brain;
 import model.villager.need.Hunger;
 import model.villager.need.Sleepyness;

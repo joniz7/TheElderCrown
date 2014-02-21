@@ -5,7 +5,6 @@ import java.beans.PropertyChangeSupport;
 
 import model.path.criteria.Criteria;
 import util.EntityType;
-import view.entity.EntityView;
 
 /**
  * A class representing an object that is visible in the world.
@@ -17,7 +16,6 @@ public abstract class Entity {
 	
 	// This entity's belief of its position
 	protected int x, y;
-
 	protected EntityType type;
 	protected PropertyChangeSupport pcs;
 	
@@ -42,13 +40,14 @@ public abstract class Entity {
 	 * @param y The new y-value of the entity.
 	 */
 	protected void updatePos(int x, int y){
+		Point oldPos = new Point(x, y);
 		// Tell entity of its new position
 		this.x = x;
 		this.y = y;
 		// TODO should send model coordinates!
 		//      fix when we fix view interpolation
 		Point pos = new Point(x*20, y*20);
-		pcs.firePropertyChange("position", null, pos);
+		pcs.firePropertyChange("position", oldPos, pos);
 	}
 	
 	/**
@@ -61,13 +60,14 @@ public abstract class Entity {
 	 * @param interPolY The interpolation in y-axis
 	 */
 	protected void updatePos(int x, int y, int interPolX, int interPolY){
+		Point oldPos = new Point(x, y);
 		// Tell entity of its new position
 		this.x = x;
 		this.y = y;
 		// TODO should not exist!
 		//      interpolation is ideally handled in view (?)
 		Point pos = new Point((x*20) + interPolX, (y*20) + interPolY);
-		pcs.firePropertyChange("position", null, pos);		
+		pcs.firePropertyChange("position", oldPos, pos);		
 	}
 	
 	/**
@@ -99,16 +99,18 @@ public abstract class Entity {
 	}
 	
 	/**
-	 * Creates and returns a view for this Entity.
-	 * Sets up listeners between the Entity and its view.
-	 */
-	public abstract EntityView createView();
-	
-	/**
 	 * Returns the type of this Entity.
 	 */
 	public EntityType getEntityType(){
 		return type;
+	}
+	
+	/**
+	 * Use when you need something to listen to this.
+	 * @return the pcs of this entity.
+	 */
+	public PropertyChangeSupport getPCS(){
+		return pcs;
 	}
 	
 }
