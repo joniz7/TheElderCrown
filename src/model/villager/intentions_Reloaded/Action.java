@@ -12,5 +12,7 @@ public abstract class Action {
 	}
 	
 	public abstract void tick(TestWorld world);
+	protected abstract void actionFailed();
+	protected abstract void actionFinished();
 	
 }

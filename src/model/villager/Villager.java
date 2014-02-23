@@ -9,6 +9,7 @@ import model.path.FindObject;
 import model.villager.brain.Brain;
 import model.villager.intentions_Reloaded.Action;
 import model.villager.intentions_Reloaded.EatPlan;
+import model.villager.intentions_Reloaded.IntentionHandler;
 import model.villager.intentions_Reloaded.Plan;
 import util.EntityType;
 import util.SoundP;
@@ -17,10 +18,11 @@ import view.entity.EntityView;
 
 public class Villager extends MidEntity implements Agent {
 
-	private int hunger, thirst;
+	private int hunger, thirst, speed = 20;
 	private TestWorld world;
 	private Point currentPos;
 	private Plan activePlan;
+	private IntentionHandler IH = new IntentionHandler(this);
 	
 	public Villager(TestWorld world, int x, int y) {
 		super(x, y, EntityType.VILLAGER);
@@ -50,15 +52,20 @@ public class Villager extends MidEntity implements Agent {
 	
 	private void plan() {
 		if(activePlan == null) {
-			if(hunger < 50) {
-				activePlan = new EatPlan(this);
-			}
+//			if(hunger < 50) {
+//				activePlan = new EatPlan(this);
+//			}
+			activePlan = IH.getFirstPlan();
 		}
 	}
 	
 	/*
 	public Action getAction() {
 		return activePlan.getFirst();
+=======
+	public Action getAction(){
+		return activePlan.getActiveAction();
+>>>>>>> a855964baaab87672597117e0c18d5f94b655069
 	}
 	
 	public void disposePlan() {
@@ -68,7 +75,12 @@ public class Villager extends MidEntity implements Agent {
 	public void actionDone() {
 		activePlan.actionDone();
 	}
+<<<<<<< HEAD
 	*/
+
+	public int getSpeed() {
+		return speed;
+	}
 	
 	/*
 	private Brain brain;

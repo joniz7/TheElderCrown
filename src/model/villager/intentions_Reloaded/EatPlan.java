@@ -23,7 +23,8 @@ public class EatPlan extends Plan{
 		Point p = FindObject.findObjectNeighbour(villager.getWorld(), new HasFruit(), EntityType.TREE, 
 				villager.getX(), villager.getY());
 		Path movePath = PathFinder.getPathToAdjacent(villager.getX(), villager.getY(), p.x, p.y);
+		actionQueue.add(new MoveAction(villager, movePath));
 		
-		
+		actionQueue.addLast(new EatAction(villager));
 	}
 }

@@ -11,6 +11,18 @@ public class EatAction extends Action{
 
 	@Override
 	public void tick(TestWorld world) {
+		if(world.){
+			
+		}
+	}
+
+	@Override
+	protected void actionFailed() {
+		
+	}
+
+	@Override
+	protected void actionFinished() {
 		
 	}
 
