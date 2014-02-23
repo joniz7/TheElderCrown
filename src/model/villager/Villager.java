@@ -15,22 +15,20 @@ import util.SoundP;
 import util.Tickable;
 import view.entity.EntityView;
 
-public class Villager extends MidEntity implements Agent{
+public class Villager extends MidEntity implements Agent {
 
 	private int hunger, thirst;
 	private TestWorld world;
 	private Point currentPos;
 	private Plan activePlan;
 	
+	public Villager(TestWorld world, int x, int y) {
+		super(x, y, EntityType.VILLAGER);
+		this.world = world;
+	}
+	
 	public TestWorld getWorld() {
 		return world;
-	}
-
-	@Override
-	public EntityView createView() {
-		EntityView view = new VillagerView(x, y);
-		pcs.addPropertyChangeListener(view);
-		return view;
 	}
 
 	@Override
@@ -39,6 +37,10 @@ public class Villager extends MidEntity implements Agent{
 		
 		adjustNeeds();
 		plan();
+	}
+	
+	public void satisfyHunger(int hunger) {
+		this.hunger += hunger;
 	}
 	
 	private void adjustNeeds() {
@@ -54,6 +56,7 @@ public class Villager extends MidEntity implements Agent{
 		}
 	}
 	
+	/*
 	public Action getAction() {
 		return activePlan.getFirst();
 	}
@@ -65,7 +68,7 @@ public class Villager extends MidEntity implements Agent{
 	public void actionDone() {
 		activePlan.actionDone();
 	}
-	
+	*/
 	
 	/*
 	private Brain brain;

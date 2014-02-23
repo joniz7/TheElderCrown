@@ -6,9 +6,11 @@ import java.beans.PropertyChangeListener;
 import java.beans.PropertyChangeSupport;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Iterator;
+import java.util.Map;
+import java.util.Map.Entry;
 
 import util.Tickable;
-
 import model.entity.Agent;
 import model.entity.MidEntity;
 import model.entity.bottom.BottomEntity;
@@ -51,6 +53,12 @@ public abstract class World implements Tickable{
 		if(!paused) {
 			for(Tickable t : tickables){
 				t.tick();
+			}
+			
+			Iterator<Map.Entry<Point, Agent>> it = agents.entrySet().iterator();
+			while(it.hasNext()) {
+				Map.Entry<Point, Agent> e = (Map.Entry<Point, Agent>) it.next();
+				e.getValue().update(e.getKey());
 			}
 		}
 	}
