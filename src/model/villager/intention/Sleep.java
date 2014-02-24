@@ -1,6 +1,5 @@
 package model.villager.intention;
 
-import model.villager.Villager;
 import model.villager.brain.Brain;
 
 public class Sleep extends Intention{

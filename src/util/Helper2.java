@@ -1,7 +1,7 @@
 package util;
 
-import view.entity.EntityView;
 import model.entity.top.TopEntity;
+import view.entity.EntityView;
 
 public class Helper2 extends TopEntity{
 

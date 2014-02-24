@@ -80,18 +80,14 @@ public class MainMenu implements GameState {
 
 	@Override
 	public void keyPressed(int key, char e) {
-		System.out.println("Nåt grej");
 		switch(key){
 		case Input.KEY_1:
 			game.enterState(2, new FadeOutTransition(Color.black), new FadeInTransition(Color.black));
-			System.out.println("Key 1 caught");
 			break;
 		case Input.KEY_2:
 			((StatedGame)game).exit();
-			System.out.println("Key 1 caught");
 			break;
 		default:
-			System.out.println(":(");
 			break;
 		}
 
@@ -103,14 +99,11 @@ public class MainMenu implements GameState {
 		switch(key){
 		case Input.KEY_1:
 			game.enterState(2, new FadeOutTransition(Color.black), new FadeInTransition(Color.black));
-			System.out.println("Key 1 caught");
 			break;
 		case Input.KEY_2:
 			((StatedGame)game).exit();
-			System.out.println("Key 1 caught");
 			break;
 		default:
-			System.out.println(":(");
 			break;
 		}
 	}

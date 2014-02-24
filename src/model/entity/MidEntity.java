@@ -1,8 +1,6 @@
 package model.entity;
 
 import util.ObjectType;
-import view.View;
-import view.entity.EntityView;
 
 /**
  * A class representing all objects visible and at the same height as the villagers.

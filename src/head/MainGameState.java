@@ -3,7 +3,6 @@ package head;
 import model.TestWorld;
 import model.World;
 
-import org.newdawn.slick.AppGameContainer;
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.Input;
@@ -170,6 +169,9 @@ public class MainGameState implements GameState {
 	}
 
 	@Override
+	/**
+	 * Called when the state first in initialized by StatedGame
+	 */
 	public void init(GameContainer appgc, StateBasedGame game)
 			throws SlickException {
 		this.game = (StatedGame)game;
@@ -189,6 +191,9 @@ public class MainGameState implements GameState {
 	}
 
 	@Override
+	/**
+	 * Called every time the state is exited in favour of another state
+	 */
 	public void leave(GameContainer arg0, StateBasedGame arg1)
 			throws SlickException {
 		// TODO Auto-generated method stub
@@ -196,6 +201,9 @@ public class MainGameState implements GameState {
 	}
 
 	@Override
+	/**
+	 * Draws the game
+	 */
 	public void render(GameContainer arg0, StateBasedGame arg1, Graphics g)
 			throws SlickException {
 		View.render(g);
@@ -203,12 +211,15 @@ public class MainGameState implements GameState {
 	}
 
 	@Override
+	/**
+	 * Updates logic for the state. Runs continuously while state is entered
+	 */
 	public void update(GameContainer arg0, StateBasedGame arg1, int arg2)
 			throws SlickException {
 		world.tick();
 		controller.tick();
 		if(isExit){
-			appgc.exit();
+			getGame().exit();
 		}
 
 	}

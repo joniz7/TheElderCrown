@@ -9,7 +9,6 @@ import util.ObjectType;
 import util.SoundP;
 import view.entity.EntityView;
 import view.entity.mid.VillagerView;
-import view.entity.top.TreeView;
 
 public class Villager extends MidEntity implements Tickable{
 

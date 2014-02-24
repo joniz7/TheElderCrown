@@ -1,27 +1,23 @@
 package model.villager.brain;
 
+import head.Tickable;
+
 import java.awt.Point;
 import java.util.LinkedList;
 
-import org.newdawn.slick.util.pathfinding.Path;
-
-import util.Helper1;
-import util.Helper3;
-import util.ObjectType;
-import view.View;
-import view.entity.top.Helper3View;
-import head.Tickable;
 import model.TestWorld;
-import model.entity.bottom.WaterTile;
 import model.path.FindObject;
 import model.path.PathFinder;
 import model.path.criteria.HasFruit;
 import model.villager.Villager;
 import model.villager.brain.stem.BrainStem;
 import model.villager.intention.Intention;
-import model.villager.need.Hunger;
-import model.villager.need.Sleepyness;
-import model.villager.need.Thirst;
+
+import org.newdawn.slick.util.pathfinding.Path;
+
+import util.ObjectType;
+import view.View;
+import view.entity.top.Helper3View;
 
 public class Brain implements Tickable{
 	

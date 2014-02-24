@@ -1,12 +1,7 @@
 package view;
 
-import java.beans.PropertyChangeEvent;
-import java.beans.PropertyChangeListener;
-
 import org.newdawn.slick.Color;
 import org.newdawn.slick.Graphics;
-
-import view.entity.EntityView;
 
 public class MainMenuView{
 	

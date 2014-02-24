@@ -1,12 +1,8 @@
 package model.path;
 
-import head.MainGameState;
-
 import java.awt.Point;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Queue;
 
 import model.TestWorld;
 import model.entity.MidEntity;
@@ -16,11 +12,7 @@ import model.path.criteria.Criteria;
 
 import org.newdawn.slick.util.pathfinding.Path;
 
-import util.Helper1;
-import util.Helper2;
 import util.ObjectType;
-import view.View;
-import view.entity.top.Helper1View;
 import view.entity.top.Helper3View;
 
 /**

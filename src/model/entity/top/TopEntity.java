@@ -2,8 +2,6 @@ package model.entity.top;
 
 import model.entity.Entity;
 import util.ObjectType;
-import view.View;
-import view.entity.EntityView;
 
 /**
  * A class representing all objects visible and above the villagers.

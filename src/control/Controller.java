@@ -1,12 +1,11 @@
 package control;
 
+import head.Tickable;
+import model.World;
+
 import org.newdawn.slick.KeyListener;
 
 import view.View;
-
-import head.Tickable;
-
-import model.World;
 
 /**
  * The general (abstract) Controller class which is set up with slick2D
