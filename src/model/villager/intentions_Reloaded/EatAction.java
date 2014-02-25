@@ -1,6 +1,6 @@
 package model.villager.intentions_Reloaded;
 
-import model.TestWorld;
+import model.World;
 import model.villager.Villager;
 
 public class EatAction extends Action{
@@ -10,10 +10,10 @@ public class EatAction extends Action{
 	}
 
 	@Override
-	public void tick(TestWorld world) {
-		if(world.){
+	public void tick(World world) {
+		//if(world.){
 			
-		}
+		//}
 	}
 
 	@Override

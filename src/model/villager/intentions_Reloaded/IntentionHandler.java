@@ -6,7 +6,7 @@ import model.villager.Villager;
 
 public class IntentionHandler {
 
-	private PriorityQueue<Intent> pq;;
+	private PriorityQueue<Intent> pq;
 	
 	private EatIntent eatInt;
 	

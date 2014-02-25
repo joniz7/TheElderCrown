@@ -19,17 +19,17 @@ import view.entity.EntityView;
 public class Villager extends MidEntity implements Agent {
 
 	private int hunger, thirst, speed = 20;
-	private TestWorld world;
+	private World world;
 	private Point currentPos;
 	private Plan activePlan;
 	private IntentionHandler IH = new IntentionHandler(this);
 	
-	public Villager(TestWorld world, int x, int y) {
+	public Villager(World world, int x, int y) {
 		super(x, y, EntityType.VILLAGER);
 		this.world = world;
 	}
 	
-	public TestWorld getWorld() {
+	public World getWorld() {
 		return world;
 	}
 
@@ -39,6 +39,7 @@ public class Villager extends MidEntity implements Agent {
 		
 		adjustNeeds();
 		plan();
+		System.out.println("helo "+currentPos.getX()+"  "+currentPos.getY());
 	}
 	
 	public void satisfyHunger(int hunger) {
@@ -59,13 +60,9 @@ public class Villager extends MidEntity implements Agent {
 		}
 	}
 	
-	/*
+
 	public Action getAction() {
-		return activePlan.getFirst();
-=======
-	public Action getAction(){
 		return activePlan.getActiveAction();
->>>>>>> a855964baaab87672597117e0c18d5f94b655069
 	}
 	
 	public void disposePlan() {
@@ -75,8 +72,6 @@ public class Villager extends MidEntity implements Agent {
 	public void actionDone() {
 		activePlan.actionDone();
 	}
-<<<<<<< HEAD
-	*/
 
 	public int getSpeed() {
 		return speed;

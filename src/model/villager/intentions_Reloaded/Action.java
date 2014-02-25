@@ -1,6 +1,6 @@
 package model.villager.intentions_Reloaded;
 
-import model.TestWorld;
+import model.World;
 import model.villager.Villager;
 
 public abstract class Action {
@@ -11,7 +11,7 @@ public abstract class Action {
 		this.villager = villager;
 	}
 	
-	public abstract void tick(TestWorld world);
+	public abstract void tick(World world);
 	protected abstract void actionFailed();
 	protected abstract void actionFinished();
 	

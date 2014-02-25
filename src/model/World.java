@@ -5,16 +5,23 @@ import java.awt.Point;
 import java.beans.PropertyChangeListener;
 import java.beans.PropertyChangeSupport;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
 import java.util.Map.Entry;
 
+import org.newdawn.slick.util.pathfinding.PathFindingContext;
+
+import util.NoPositionFoundException;
 import util.Tickable;
 import model.entity.Agent;
+import model.entity.Entity;
 import model.entity.MidEntity;
 import model.entity.bottom.BottomEntity;
+import model.entity.bottom.WaterTile;
 import model.entity.top.TopEntity;
+import model.villager.Villager;
 
 public abstract class World implements Tickable{
 
@@ -59,10 +66,16 @@ public abstract class World implements Tickable{
 			while(it.hasNext()) {
 				Map.Entry<Point, Agent> e = (Map.Entry<Point, Agent>) it.next();
 				e.getValue().update(e.getKey());
+				e.getValue().getAction().tick(this);
 			}
 		}
 	}
 
+	
+	public boolean blocked(PathFindingContext pfc, int x, int y){
+		return botEntities.get(new Point(x, y)) instanceof WaterTile;
+	}
+	
 	public void setPaused(boolean paused) {
 		this.paused = paused;
 	}
@@ -123,6 +136,56 @@ public abstract class World implements Tickable{
 	 */
 	public void closeRequested() {
 		shouldExit = true;
+	}
+	
+	//TODO tillfällig?
+	public void moveVillager(Villager villager, Point pos){
+		Point p = null;
+		try {
+			p = getPosition(villager);
+		} catch (NoPositionFoundException e) {
+			e.printStackTrace();
+		}
+		
+		agents.put(pos, villager);
+		midEntities.put(pos, villager);
+		agents.remove(p);
+		midEntities.remove(p);
+	}
+	
+	//TODO Maybe might fail if things are moving at just the wrong time.
+	//It should be here and not in TestWorld right?
+	/**
+	 * Call this if you have an Entity and need to find its position in the world.
+	 * 
+	 * @param e the Entity to be located.
+	 * @return the Point in which the Entity resides.
+	 * @throws NoPositionFoundException if no point could be found.
+	 */
+	public Point getPosition(Entity e) throws NoPositionFoundException{
+		Point p = null;
+		Collection<Point> midKeys = midEntities.keySet();
+		Iterator<Point> midIterator = midKeys.iterator();
+		while(midIterator.hasNext()){
+			p = midIterator.next();
+			if(midEntities.get(p).equals(e))
+				return p;
+		}
+		Collection<Point> topKeys = topEntities.keySet();
+		Iterator<Point> topIterator = topKeys.iterator();
+		while(topIterator.hasNext()){
+			p = topIterator.next();
+			if(topEntities.get(p).equals(e))
+				return p;
+		}
+		Collection<Point> botKeys = botEntities.keySet();
+		Iterator<Point> botIterator = botKeys.iterator();
+		while(botIterator.hasNext()){
+			p = botIterator.next();
+			if(botEntities.get(p).equals(e))
+				return p;
+		}
+		throw new NoPositionFoundException();
 	}
 	
 }

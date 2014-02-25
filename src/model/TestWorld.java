@@ -188,10 +188,7 @@ public class TestWorld extends World implements TileBasedMap{
 		}
 	}
 	
-	@Override
-	public boolean blocked(PathFindingContext pfc, int x, int y){
-		return botEntities.get(new Point(x, y)) instanceof WaterTile;
-	}
+
 
 	@Override
 	public float getCost(PathFindingContext pfc, int x, int y){
@@ -276,51 +273,6 @@ public class TestWorld extends World implements TileBasedMap{
 		else
 			throw new NoSuchEntityException();
 		return e;
-	}
-	
-	//TODO Maybe might fail if things are moving at just the wrong time.
-	/**
-	 * Call this if you have an Entity and need to find its position in the world.
-	 * 
-	 * @param e the Entity to be located.
-	 * @return the Point in which the Entity resides.
-	 * @throws NoPositionFoundException if no point could be found.
-	 */
-	public Point getPosition(Entity e) throws NoPositionFoundException{
-		Point p = null;
-		Collection<Point> midKeys = midEntities.keySet();
-		Iterator<Point> midIterator = midKeys.iterator();
-		while(midIterator.hasNext()){
-			p = midIterator.next();
-			if(midEntities.get(p).equals(e))
-				return p;
-		}
-		Collection<Point> topKeys = topEntities.keySet();
-		Iterator<Point> topIterator = topKeys.iterator();
-		while(topIterator.hasNext()){
-			p = topIterator.next();
-			if(topEntities.get(p).equals(e))
-				return p;
-		}
-		Collection<Point> botKeys = botEntities.keySet();
-		Iterator<Point> botIterator = botKeys.iterator();
-		while(botIterator.hasNext()){
-			p = botIterator.next();
-			if(botEntities.get(p).equals(e))
-				return p;
-		}
-		throw new NoPositionFoundException();
-	}
-	
-	public void moveVillager(Villager villager){
-		Point p;
-		try {
-			p = getPosition(villager);
-		} catch (NoPositionFoundException e) {
-			e.printStackTrace();
-		}
-		
-		
 	}
 	
 	/**

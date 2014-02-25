@@ -4,7 +4,7 @@ import java.awt.Point;
 
 import org.newdawn.slick.util.pathfinding.Path;
 
-import model.TestWorld;
+import model.World;
 import model.villager.Villager;
 
 public class MoveAction extends Action{
@@ -19,7 +19,7 @@ public class MoveAction extends Action{
 	}
 
 	@Override
-	public void tick(TestWorld world) {
+	public void tick(World world) {
 		progress += villager.getSpeed();
 		
 		int interPolX = 0;
@@ -38,7 +38,8 @@ public class MoveAction extends Action{
         			path.getStep(stepCount).getY())){
         		Point newPos = new Point(path.getStep(stepCount).getX(), 
         				path.getStep(stepCount++).getY());
-        		villager.update(newPos);
+        		//villager.update(newPos);
+        		world.moveVillager(villager, newPos);
         	}else{
         		actionFailed();
         	}
