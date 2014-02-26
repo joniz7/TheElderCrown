@@ -16,6 +16,7 @@ public class Villager extends MidEntity implements Tickable, Agent{
 
 	private int speedCap = 240, progress = 0, speed = 20, stepCount = 0;
 	private boolean moving = false;
+	private String status;
 	
 	public Villager(TestWorld world, int x, int y){
 
@@ -55,6 +56,7 @@ public class Villager extends MidEntity implements Tickable, Agent{
         }
         
         updatePos(x, y, (interPolX * (progress/12)), (interPolY * (progress/12)));
+        updateStatus("awake");
 	}
 	
 	public boolean eat(){
@@ -95,10 +97,12 @@ public class Villager extends MidEntity implements Tickable, Agent{
 				}
 			}
 		}
+		updateStatus("awake");
 		return false;
 	}
 	
 	public boolean drink(){
+		updateStatus("awake");
 		if(FindObject.isAdjacentTile(world, EntityType.WATER_TILE, x, y)){
 			brain.getBrainStem().getThirst().satisfy(5);
 			SoundP.playSound("ph", "drink.wav");
@@ -110,6 +114,7 @@ public class Villager extends MidEntity implements Tickable, Agent{
 	public void sleep(){
 		brain.getBrainStem().getSleep().satisfy(100);
 		SoundP.playSound("ph", "sleep.wav");
+		updateStatus("sleeping");
 	}
 
 	public boolean isMoving() {
@@ -121,8 +126,27 @@ public class Villager extends MidEntity implements Tickable, Agent{
 		stepCount = 0;
 	}
 
+
 	public TestWorld getWorld() {
 		return world;
+}
+	
+	protected void updateStatus(String newStatus){
+		pcs.firePropertyChange("status", null, newStatus);
+		
+	}
+	
+	
+	/**
+	 * Creates and returns a new VillagerView.
+	 * Registers the view as our listener.
+	 */
+	@Override
+	public EntityView createView() {
+		EntityView view = new VillagerView(x, y);
+		pcs.addPropertyChangeListener(view);
+		return view;
+
 	}
 	
 	

@@ -51,6 +51,8 @@ public abstract class Entity {
 		pcs.firePropertyChange("position", oldPos, pos);
 	}
 	
+
+	
 	/**
 	 * The method used to update the position of this entity. Also includes an
 	 * interpolation value.

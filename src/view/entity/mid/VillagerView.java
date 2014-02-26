@@ -1,5 +1,9 @@
 package view.entity.mid;
 
+import java.awt.Point;
+import java.beans.PropertyChangeEvent;
+
+import util.ImageLoader;
 import view.entity.EntityView;
 
 /**
@@ -18,4 +22,25 @@ public class VillagerView extends EntityView {
 		super("villager", x, y);
 	}
 	
+	
+	@Override
+	/**
+	 * Is called when our associated model changes in any way.
+	 * 
+	 * @author Tux
+	 */
+	public void propertyChange(PropertyChangeEvent event) {
+		String name = event.getPropertyName();
+		if(name.compareTo("status")==0){
+			String status = (String)event.getNewValue();
+			if(status.compareTo("sleeping")==0){
+				setImage("villagersleeping");
+			}
+			if(status.compareTo("awake")==0){
+				setImage("villager");
+			}
+		}else{
+			super.propertyChange(event);
+		}
+	}
 }

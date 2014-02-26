@@ -26,6 +26,7 @@ public class ImageLoader {
 		
 		//Villager
 		imageLib.put("villager", loadImage("image", "villager.png"));
+		imageLib.put("villagersleeping", loadImage("image", "villagersleeping.png"));
 		
 		//Debugging
 		imageLib.put("helper", loadImage("image", "miss.png"));
