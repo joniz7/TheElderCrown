@@ -15,15 +15,15 @@ public abstract class Intent{
 	public abstract Plan getPlan();
 	public abstract void calculateDesire();
 	
-	public void adjustDesire(int difference){
-		desire = desire + difference;
+	public void adjustDesire(float f){
+		desire = desire + f;
 	}
 
 	public float getCost() {
 		return cost;
 	}
 
-	public void setCost(int cost) {
+	public void setCost(float cost) {
 		this.cost = cost;
 	}
 
@@ -31,7 +31,7 @@ public abstract class Intent{
 		return desire;
 	}
 
-	public void setDesire(int desire) {
+	public void setDesire(float desire) {
 		this.desire = desire;
 	}
 	

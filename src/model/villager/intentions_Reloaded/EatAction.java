@@ -9,6 +9,8 @@ import model.villager.Villager;
 
 public class EatAction extends Action{
 
+	private int stacks;
+	
 	public EatAction(Villager villager) {
 		super(villager);
 	}
@@ -20,7 +22,7 @@ public class EatAction extends Action{
 			Tree tree = (Tree) FindObject.getAdjacentObject(world, new HasFruit(), EntityType.TREE, villager.getX(),
 					villager.getY());
 			tree.eaten();
-			villager.satisfyHunger(50);
+			villager.satisfyHunger(0.1f);
 			actionFinished();
 		}else
 			actionFailed();

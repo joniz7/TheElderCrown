@@ -18,7 +18,7 @@ import view.entity.EntityView;
 
 public class Villager extends MidEntity implements Agent {
 
-	private int hunger = 250, thirst = 500, speed = 20;
+	private float hunger = 0f, thirst = 50f, speed = 20;
 	private World world;
 	private Point currentPos;
 	private Plan activePlan;
@@ -45,13 +45,13 @@ public class Villager extends MidEntity implements Agent {
 		plan();
 	}
 	
-	public void satisfyHunger(int hunger) {
-		this.hunger += hunger;
+	public void satisfyHunger(float f) {
+		this.hunger += f;
 	}
 	
 	private void adjustNeeds() {
-		hunger--;
-		thirst--;
+		hunger = hunger - 0.01f;
+		thirst = thirst - 0.01f;
 	}
 	
 	private void plan() {
@@ -78,15 +78,15 @@ public class Villager extends MidEntity implements Agent {
 			activePlan = null;
 	}
 
-	public int getSpeed() {
+	public float getSpeed() {
 		return speed;
 	}
 
-	public int getHunger() {
+	public float getHunger() {
 		return hunger;
 	}
 
-	public int getThirst() {
+	public float getThirst() {
 		return thirst;
 	}
 	
