@@ -13,6 +13,7 @@ public abstract class Intent{
 	}
 	
 	public abstract Plan getPlan();
+	public abstract void calculateDesire();
 	
 	public void adjustDesire(int difference){
 		desire = desire + difference;

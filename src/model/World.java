@@ -22,6 +22,7 @@ import model.entity.bottom.BottomEntity;
 import model.entity.bottom.WaterTile;
 import model.entity.top.TopEntity;
 import model.villager.Villager;
+import model.villager.intentions_Reloaded.Action;
 
 public abstract class World implements Tickable{
 
@@ -66,7 +67,11 @@ public abstract class World implements Tickable{
 			while(it.hasNext()) {
 				Map.Entry<Point, Agent> e = (Map.Entry<Point, Agent>) it.next();
 				e.getValue().update(e.getKey());
-				e.getValue().getAction().tick(this);
+				Action active = e.getValue().getAction();
+				if(active != null && !active.isFailed() && !active.isFinished())
+					active.tick(this);
+				else
+					e.getValue().actionDone();
 			}
 		}
 	}
@@ -187,5 +192,19 @@ public abstract class World implements Tickable{
 		}
 		throw new NoPositionFoundException();
 	}
+	
+	public HashMap<Point, BottomEntity> getBotEntities() {
+		return botEntities;
+	}
+	
+	public HashMap<Point, MidEntity> getMidEntities() {
+		return midEntities;
+	}
+	
+	public HashMap<Point, TopEntity> getTopEntities() {
+		return topEntities;
+	}
+	
+	
 	
 }

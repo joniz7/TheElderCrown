@@ -17,6 +17,10 @@ public class IntentionHandler {
 		pq.add(eatInt);
 	}
 	
+	public void update(){
+		eatInt.calculateDesire();
+	}
+	
 	public Plan getFirstPlan(){
 		return pq.peek().getPlan();
 	}
