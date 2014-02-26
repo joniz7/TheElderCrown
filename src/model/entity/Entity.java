@@ -18,19 +18,37 @@ public abstract class Entity {
 	protected int x, y;
 	protected EntityType type;
 	protected PropertyChangeSupport pcs;
+	private boolean blocking;
 	
 	/**
 	 * The general constructor.
 	 * 
-	 * @param name The name of the image to be assigned.
+	 * @param x the x-coordinate of the Entity.
+	 * @param y the y-coordinate of the Entity.
+	 * @param type the EntityType associated with the Entity.
 	 */
 	public Entity(int x, int y, EntityType type){
-		
 		pcs = new PropertyChangeSupport(this);
 		this.x = x;
 		this.y = y;
 		this.type = type;
-
+		this.blocking = true;
+	}
+	
+	/**
+	 * A constructor with added functionality to set the Entity to blocking or not.
+	 * 
+	 * @param x the x-coordinate of the Entity.
+	 * @param y the y-coordinate of the Entity.
+	 * @param type the EntityType associated with the Entity.
+	 * @param blocking a boolean representing whether or not this Entity would block movement on its tile.
+	 */
+	public Entity(int x, int y, EntityType type, boolean blocking){
+		pcs = new PropertyChangeSupport(this);
+		this.x = x;
+		this.y = y;
+		this.type = type;
+		this.blocking = blocking;
 	}
 	
 	/**
@@ -111,6 +129,10 @@ public abstract class Entity {
 	 */
 	public PropertyChangeSupport getPCS(){
 		return pcs;
+	}
+	
+	public boolean isBlocking(){
+		return blocking;
 	}
 	
 }
