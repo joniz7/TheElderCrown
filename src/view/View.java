@@ -27,9 +27,11 @@ public class View implements PropertyChangeListener {
 	private static ArrayList<EntityView> midGraphics = new ArrayList<EntityView>();
 	private static ArrayList<EntityView> botGraphics = new ArrayList<EntityView>();
 	private static final int SCROLL_SPEED = 8;
-	private static final int TILE_OFFSET = 20;
 	private static int width, height;
 	private static int cameraX, cameraY;
+	
+	// The size of each tile in pixels (?)
+	public static final int TILE_OFFSET = 20;
 
 	public View(int width, int height) {
 		View.width = width;

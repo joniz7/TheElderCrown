@@ -5,6 +5,7 @@ import java.beans.PropertyChangeSupport;
 
 import model.path.criteria.Criteria;
 import util.EntityType;
+import util.InterpolPosition;
 
 /**
  * A class representing an object that is visible in the world.
@@ -58,49 +59,46 @@ public abstract class Entity {
 	 * @param y The new y-value of the entity.
 	 */
 	protected void updatePos(int x, int y){
-		Point oldPos = new Point(x, y);
+		
+		Point oldPos = new Point(this.x, this.y);
 		// Tell entity of its new position
 		this.x = x;
 		this.y = y;
-		// TODO should send model coordinates!
-		//      fix when we fix view interpolation
-		Point pos = new Point(x*20, y*20);
+		// Send new position to view
+		Point pos = new Point(x, y);
+		
+		if (!pos.equals(oldPos)) System.out.println("new position: "+x+","+y);
+		
 		pcs.firePropertyChange("position", oldPos, pos);
 	}
 	
 	/**
-	 * The method used to update the position of this entity. Also includes an
-	 * interpolation value.
+	 * Moves the view of this entity in the specified direction
+	 * by 'progress' percent.
+	 * Changes nothing in the model - is used merely for view interpolation
 	 * 
-	 * @param x The new x-value of the entity.
-	 * @param y The new y-value of the entity.
-	 * @param interPolX The interpolation in x-axis
-	 * @param interPolY The interpolation in y-axis
+	 * @param dx usually -1, 0 or 1 
+	 * @param dy usually -1, 0 or 1
+	 * @param progress how far the entity has come in a move action [0,1]
 	 */
-	protected void updatePos(int x, int y, int interPolX, int interPolY){
-		Point oldPos = new Point(x, y);
-		// Tell entity of its new position
-		this.x = x;
-		this.y = y;
-		// TODO should not exist!
-		//      interpolation is ideally handled in view (?)
-		Point pos = new Point((x*20) + interPolX, (y*20) + interPolY);
-		pcs.firePropertyChange("position", oldPos, pos);		
+	public void updateViewPosition(int dx, int dy, double progress){
+		InterpolPosition p = new InterpolPosition(x, y, dx, dy, progress);
+		pcs.firePropertyChange("interpolPosition", null, p);
 	}
 	
 	/**
-	 * A method to find the column of the GraphicalEntity.
+	 * A method to find the column of the Entity.
 	 * 
-	 * @return the column in which the GraphicalEntity is.
+	 * @return the column in which the Entity is.
 	 */
 	public int getX() {
 		return x;
 	}
 
 	/**
-	 * A method to find the row of the GraphicalEntity.
+	 * A method to find the row of the Entity.
 	 * 
-	 * @return the row in which the GraphicalEntity is.
+	 * @return the row in which the Entity is.
 	 */
 	public int getY() {
 		return y;

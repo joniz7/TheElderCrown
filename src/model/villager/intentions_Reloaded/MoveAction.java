@@ -2,10 +2,12 @@ package model.villager.intentions_Reloaded;
 
 import java.awt.Point;
 
-import org.newdawn.slick.util.pathfinding.Path;
-
 import model.World;
 import model.villager.Villager;
+
+import org.newdawn.slick.util.pathfinding.Path;
+
+import util.InterpolPosition;
 
 public class MoveAction extends Action{
 
@@ -22,20 +24,7 @@ public class MoveAction extends Action{
 	public void tick(World world) {
 		progress += villager.getSpeed();
 		
-//		int interPolX = 0;
-//		int interPolY = 0;
-		
-//		System.out.println("StepCount MoveACtion: " + stepCount);
-//		System.out.println("Path Length MoveACtion: " + path.getLength());
-//		System.out.println("Progress MoveACtion: " + progress);
-		
-//		if(stepCount < path.getLength()){
-//			interPolX = path.getStep(stepCount).getX() - villager.getX();
-//			interPolY = path.getStep(stepCount).getY() - villager.getY();
-//		}else{
-//			setMoving(false);
-//		}
-		
+		// Should move one step
         if(progress > speedCap && stepCount < path.getLength()){
         	progress = 0;
         	if(!world.blocked(null, path.getStep(stepCount).getX(), 
@@ -45,13 +34,23 @@ public class MoveAction extends Action{
         		Point newPos = new Point(path.getStep(stepCount).getX(), 
         				path.getStep(stepCount++).getY());
         		world.moveVillager(villager, newPos);
-        	}else{
+        	} else {
 //        		System.out.println("Move FAILED!!!");
         		actionFailed();
         	}
-        }else if(stepCount >= path.getLength()){
+        } // Has finished moving
+        else if(stepCount >= path.getLength()){
 //        	System.out.println("Move FINISHED!!!");
         	actionFinished();
+        }
+        // Not enough progress to move one tile yet
+        else {
+        	// Calculate in which direction we're moving, and how far we've come
+			int dx = path.getStep(stepCount).getX() - villager.getX();
+			int dy = path.getStep(stepCount).getY() - villager.getY();
+			double progressPercent = (double)progress/speedCap;
+			// Send this interpolation information to view
+			villager.updateViewPosition(dx, dy, progressPercent);
         }
 	}
 	
