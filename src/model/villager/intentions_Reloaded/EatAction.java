@@ -16,7 +16,7 @@ public class EatAction extends Action{
 	@Override
 	public void tick(World world){
 		if(FindObject.getAdjacentObject(world, new HasFruit(), EntityType.TREE, villager.getX(),
-				villager.getY()) != null){
+				villager.getY()) != null) {
 			Tree tree = (Tree) FindObject.getAdjacentObject(world, new HasFruit(), EntityType.TREE, villager.getX(),
 					villager.getY());
 			tree.eaten();
@@ -27,14 +27,4 @@ public class EatAction extends Action{
 
 	}
 
-	@Override
-	protected void actionFailed() {
-		isFailed = true;
-	}
-
-	@Override
-	protected void actionFinished() {
-		isFinished = true;
-	}
-
-}
+ }

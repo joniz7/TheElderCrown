@@ -63,7 +63,9 @@ public abstract class World implements Tickable{
 				t.tick();
 			}
 			
-			Iterator<Map.Entry<Point, Agent>> it = agents.entrySet().iterator();
+			HashMap<Point, Agent> temp = (HashMap<Point, Agent>)agents.clone();
+			Iterator<Map.Entry<Point, Agent>> it = temp.entrySet().iterator();
+			
 			while(it.hasNext()) {
 				Map.Entry<Point, Agent> e = (Map.Entry<Point, Agent>) it.next();
 				e.getValue().update(e.getKey());
@@ -79,6 +81,10 @@ public abstract class World implements Tickable{
 	
 	public boolean blocked(PathFindingContext pfc, int x, int y){
 		return botEntities.get(new Point(x, y)) instanceof WaterTile;
+	}
+	
+	public boolean blockedMid(Point pos) {
+		return midEntities.containsKey(pos);
 	}
 	
 	public void setPaused(boolean paused) {
@@ -152,10 +158,12 @@ public abstract class World implements Tickable{
 			e.printStackTrace();
 		}
 		
-		agents.put(pos, villager);
-		midEntities.put(pos, villager);
-		agents.remove(p);
-		midEntities.remove(p);
+		if(!blockedMid(pos)) {
+			agents.put(pos, villager);
+			midEntities.put(pos, villager);
+			agents.remove(p);
+			midEntities.remove(p);
+		}
 	}
 	
 	//TODO Maybe might fail if things are moving at just the wrong time.

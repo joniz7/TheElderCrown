@@ -29,6 +29,7 @@ public class Villager extends MidEntity implements Agent {
 	public Villager(World world, int x, int y) {
 		super(x, y, EntityType.VILLAGER);
 		this.world = world;
+		System.out.println("New villager created: "+x+"  "+y);
 	}
 	
 	public World getWorld() {

@@ -13,8 +13,6 @@ public abstract class Action {
 	}
 	
 	public abstract void tick(World world);
-	protected abstract void actionFailed();
-	protected abstract void actionFinished();
 	
 	public boolean isFinished() {
 		return isFinished;
@@ -22,5 +20,13 @@ public abstract class Action {
 
 	public boolean isFailed() {
 		return isFailed;
+	}
+	
+	protected void actionFailed() {
+		isFailed = true;
+	}
+
+	protected void actionFinished() {
+		isFinished = true;
 	}
 }
