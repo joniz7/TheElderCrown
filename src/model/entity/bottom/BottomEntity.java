@@ -1,36 +1,25 @@
 package model.entity.bottom;
 
 import model.entity.Entity;
-import util.ObjectType;
-import view.View;
-import view.entity.EntityView;
+import util.EntityType;
 
 /**
- * A class representing all objects visible and below the villagers.
+ * A class representing all objects below the villagers.
  * 
  * @author Teodor O
  *
  */
 public abstract class BottomEntity extends Entity {
 	
-	private int tileID;
-
 	/**
-	 * General constructor for a graphical entity.
-	 * 
-	 * @param name The name of the image to be associated with this object.
+	 * The constructor simply relays all the indata to the superconstructor.
+	 * @param x the x-coordinate of the Entity.
+	 * @param y the y-coordinate of the Entity.
+	 * @param id The EntityType enum of the Entity.
 	 */
-	public BottomEntity(int x, int y, ObjectType id, boolean isBlocking) {
-		super(x, y, id, isBlocking);
-//		View.addBotGraphic(drawable);
-	}
-	
-	public void setTileID(int id){
-		tileID = id;
-	}
-	
-	public int getTileID(){
-		return tileID;
+
+	public BottomEntity(int x, int y, EntityType id) {
+		super(x, y, id);
 	}
 
 }

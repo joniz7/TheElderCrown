@@ -1,17 +1,16 @@
 package model.entity.bottom;
 
-import util.ObjectType;
+import util.EntityType;
 
+/**
+ * A representation of a square of the ground.
+ * @author Teodor O
+ *
+ */
 public abstract class Tile extends BottomEntity{
 	
-	protected int typeID;
-
-	public Tile(int x, int y, ObjectType id, boolean isBlocking) {
-		super(x ,y, id, isBlocking);
+	public Tile(int x, int y, EntityType id) {
+		super(x ,y, id);
 		updatePos(x,y);
-	}
-
-	public int getTypeID() {
-		return typeID;
 	}
 }

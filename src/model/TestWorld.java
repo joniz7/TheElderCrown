@@ -2,9 +2,13 @@ package model;
 
 import java.awt.Point;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.Random;
 
+import model.entity.Agent;
+import model.entity.Entity;
 import model.entity.MidEntity;
 import model.entity.bottom.BottomEntity;
 import model.entity.bottom.GrassTile;
@@ -19,7 +23,9 @@ import org.newdawn.slick.util.pathfinding.PathFindingContext;
 import org.newdawn.slick.util.pathfinding.TileBasedMap;
 
 import util.Constants;
-import util.ObjectType;
+import util.NoPositionFoundException;
+import util.NoSuchEntityException;
+import util.EntityType;
 
 public class TestWorld extends World implements TileBasedMap{
 	
@@ -31,7 +37,6 @@ public class TestWorld extends World implements TileBasedMap{
 	private final float LAKE_WEIGHT = 1f, LAKE_LOSS = 0.02f;
 
 	private ArrayList<Tree> trees = new ArrayList<Tree>();
-	private ArrayList<House> houses = new ArrayList<House>();
 	
 	private Random rnd = new Random();
 	
@@ -80,7 +85,6 @@ public class TestWorld extends World implements TileBasedMap{
 			for(int j = 0; j < HEIGHT; j++) {
 				GrassTile grass = new GrassTile(i, j);
 				Point pos = new Point(i, j);
-				grass.setTileID(0);
 				addEntity(pos, grass);
 			}
 		}
@@ -102,7 +106,7 @@ public class TestWorld extends World implements TileBasedMap{
 		}
 		
 		//weight and loss defines the sizes of lakes
-		float weight = LAKE_WEIGHT, loss = LAKE_LOSS;
+		float weight = LAKE_WEIGHT;
 		ArrayList<Point> oldWater = new ArrayList<Point>();
 		for(Point c : centers){
 			boolean lakeDone = false;
@@ -148,7 +152,7 @@ public class TestWorld extends World implements TileBasedMap{
 	private void initializeTrees() {
 		for(int i = 0; i < WIDTH - 1; i++) {
 			for(int j = 0; j < HEIGHT - 1; j++) {
-				if(rnd.nextInt(TREE_SPARSITY) == 0 && botEntities.get(new Point(i + 1, j + 1)).getObjectType() == ObjectType.GRASS_TILE){
+				if(rnd.nextInt(TREE_SPARSITY) == 0 && botEntities.get(new Point(i + 1, j + 1)).getEntityType() == EntityType.GRASS_TILE){
 					Tree tree = new Tree(i + 1, j + 1);
 					trees.add(tree);
 					tickables.add(tree);
@@ -164,20 +168,17 @@ public class TestWorld extends World implements TileBasedMap{
 	 */
 	private void initializeHouses() {
 		//TODO Draw houses in a nicer fashion
-		House house = new House(VILLAGER_SPAWN + 8, VILLAGER_SPAWN - 1, Constants.LEFT_ENTRANCE);
-		houses.add(house);
-		addEntity(new Point(VILLAGER_SPAWN + 8, VILLAGER_SPAWN - 1), house);
+
+		House house = new House(VILLAGER_SPAWN + 5, VILLAGER_SPAWN + 4, Constants.UP_ENTRANCE);
+		addEntity(new Point(VILLAGER_SPAWN + 5, VILLAGER_SPAWN + 2), house);
 		
 		house = new House(VILLAGER_SPAWN + 1, VILLAGER_SPAWN - 2, Constants.DOWN_ENTRANCE);
-		houses.add(house);
 		addEntity(new Point(VILLAGER_SPAWN + 1, VILLAGER_SPAWN - 2), house);
 		
 		house = new House(VILLAGER_SPAWN - 4, VILLAGER_SPAWN +1, Constants.RIGHT_ENTRANCE);
-		houses.add(house);
 		addEntity(new Point(VILLAGER_SPAWN - 4, VILLAGER_SPAWN +1), house);
 		
 		house = new House(VILLAGER_SPAWN + 2, VILLAGER_SPAWN + 4, Constants.UP_ENTRANCE);
-		houses.add(house);
 		addEntity(new Point(VILLAGER_SPAWN + 2, VILLAGER_SPAWN + 4), house);
 	}
 	
@@ -246,6 +247,20 @@ public class TestWorld extends World implements TileBasedMap{
 		return topEntities;
 	}
 	
+	/**
+	 * Returns all entities who are also agents.
+	 * @return a HashMap of all the Agents in the game.
+	 */
+	public HashMap<Point, Agent> getAgents(){
+		return agents;
+	}
+	
+	/**
+	 * Call this when you want a reference to a Tree at a specific location.
+	 * @param tileX the x-coordinate of the Tree to be found.
+	 * @param tileY the y-coordinate of the Tree to be found
+	 * @return if there is a Tree at the specified location it is returned. Otherwise null.
+	 */
 	public Tree getTree(int tileX, int tileY){
 		if(topEntities.get(new Point(tileX, tileY)) != null &&
 				topEntities.get(new Point(tileX, tileY)) instanceof Tree)
@@ -254,6 +269,63 @@ public class TestWorld extends World implements TileBasedMap{
 			return null;
 	}
 	
+	/**
+	 * Call this when you want a reference to a specific entity at a specific position.
+	 * 
+	 * @param pos the position in which you want to find the Entity.
+	 * @param type the Entity type desired.
+	 * @return the entity of the desired type at the specified Point
+	 * @throws NoSuchEntityException if there is no Entity of the specified type at the specified Point.
+	 */
+	public Entity getEntity(Point pos, EntityType type) throws NoSuchEntityException{
+		Entity e = null;
+		if(midEntities.get(pos).getEntityType() == type)
+			e = midEntities.get(pos);
+		else if(topEntities.get(pos).getEntityType() == type)
+			e = topEntities.get(pos);
+		else
+			throw new NoSuchEntityException();
+		return e;
+	}
+	
+	//TODO Maybe might fail if things are moving at just the wrong time.
+	/**
+	 * Call this if you have an Entity and need to find its position in the world.
+	 * 
+	 * @param e the Entity to be located.
+	 * @return the Point in which the Entity resides.
+	 * @throws NoPositionFoundException if no point could be found.
+	 */
+	public Point getPosition(Entity e) throws NoPositionFoundException{
+		Point p = null;
+		Collection<Point> midKeys = midEntities.keySet();
+		Iterator<Point> midIterator = midKeys.iterator();
+		while(midIterator.hasNext()){
+			p = midIterator.next();
+			if(midEntities.get(p).equals(e))
+				return p;
+		}
+		Collection<Point> topKeys = topEntities.keySet();
+		Iterator<Point> topIterator = topKeys.iterator();
+		while(topIterator.hasNext()){
+			p = topIterator.next();
+			if(topEntities.get(p).equals(e))
+				return p;
+		}
+		Collection<Point> botKeys = botEntities.keySet();
+		Iterator<Point> botIterator = botKeys.iterator();
+		while(botIterator.hasNext()){
+			p = botIterator.next();
+			if(botEntities.get(p).equals(e))
+				return p;
+		}
+		throw new NoPositionFoundException();
+	}
+	
+	/**
+	 * Debuggin purposes.
+	 * @param centerPoint
+	 */
 	public void printArea(Point centerPoint){
 		Point upperLeft = new Point(centerPoint.x - 4, centerPoint.y - 4);
 		Point lowerRight = new Point(centerPoint.x + 3, centerPoint.y + 3);
@@ -264,7 +336,7 @@ public class TestWorld extends World implements TileBasedMap{
 		
 		for(int i = (int) upperLeft.getX(); i < lowerRight.getX(); i++){
 			for(int j = (int) upperLeft.getY(); j < lowerRight.getY(); j++){
-				System.out.print(botEntities.get(new Point(i, j)).getObjectType() + "  -  ");
+				System.out.print(botEntities.get(new Point(i, j)).getEntityType() + "  -  ");
 			}
 			System.out.println("");
 		}
@@ -276,7 +348,7 @@ public class TestWorld extends World implements TileBasedMap{
 		for(int i = (int) upperLeft.getX(); i < lowerRight.getX(); i++){
 			for(int j = (int) upperLeft.getY(); j < lowerRight.getY(); j++){
 				if(topEntities.get(new Point(i, j)) != null)
-					System.out.print(topEntities.get(new Point(i, j)).getObjectType() + "  -  ");
+					System.out.print(topEntities.get(new Point(i, j)).getEntityType() + "  -  ");
 				else
 					System.out.print("NULL  -  ");
 

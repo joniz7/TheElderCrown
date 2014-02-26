@@ -1,9 +1,7 @@
 package model.entity.top;
 
-import head.Tickable;
-import util.ObjectType;
-import view.entity.EntityView;
-import view.entity.top.TreeView;
+import util.EntityType;
+import util.Tickable;
 
 /**
  * A class to represent a tree.
@@ -23,7 +21,7 @@ public class Tree extends TopEntity implements Tickable{
 	 * @param tileY The row in which the tree will stand in.
 	 */
 	public Tree(int x, int y) {
-		super(x, y, ObjectType.TREE, true);
+		super(x, y, EntityType.TREE);
 		updatePos(x-1, y-1);
 	}
 
@@ -58,17 +56,6 @@ public class Tree extends TopEntity implements Tickable{
 	 */
 	public boolean hasFruit() {
 		return fruit;
-	}
-	
-	/**
-	 * Creates and returns a new TreeView.
-	 * Registers the view as our listener.
-	 */
-	@Override
-	public EntityView createView() {
-		EntityView view = new TreeView(x, y);
-		pcs.addPropertyChangeListener(view);
-		return view;
 	}
 	
 }

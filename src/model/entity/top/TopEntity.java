@@ -1,9 +1,7 @@
 package model.entity.top;
 
 import model.entity.Entity;
-import util.ObjectType;
-import view.View;
-import view.entity.EntityView;
+import util.EntityType;
 
 /**
  * A class representing all objects visible and above the villagers.
@@ -18,8 +16,9 @@ public abstract class TopEntity extends Entity {
 	 * 
 	 * @param name The name of the image to be associated with this object.
 	 */
-	public TopEntity(int x, int y, ObjectType id, boolean isBlocking) {
-		super(x, y, id, isBlocking);
+
+	public TopEntity(int x, int y, EntityType id) {
+		super(x, y, id);
 		// View.addTopGraphic(drawable);
 	}
 

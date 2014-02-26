@@ -1,7 +1,7 @@
 package model.villager.need;
 
+import util.Tickable;
 import model.villager.brain.Brain;
-import head.Tickable;
 
 /**
  * Super class for all the basic needs such as thirst and hunger

@@ -1,6 +1,5 @@
 package model;
 
-import head.Tickable;
 
 import java.awt.Point;
 import java.beans.PropertyChangeListener;
@@ -8,6 +7,9 @@ import java.beans.PropertyChangeSupport;
 import java.util.ArrayList;
 import java.util.HashMap;
 
+import util.Tickable;
+
+import model.entity.Agent;
 import model.entity.MidEntity;
 import model.entity.bottom.BottomEntity;
 import model.entity.top.TopEntity;
@@ -21,10 +23,13 @@ public abstract class World implements Tickable{
 	protected HashMap<Point, BottomEntity> botEntities;
 	protected HashMap<Point, MidEntity> midEntities;
 	protected HashMap<Point, TopEntity> topEntities;
+	protected HashMap<Point, Agent> agents;
 	
 	protected boolean paused;
+	public boolean shouldExit;
 	
 	protected final PropertyChangeSupport pcs;
+	
     public void addPropertyChangeListener(PropertyChangeListener listener) {
         this.pcs.addPropertyChangeListener(listener);
     }
@@ -37,7 +42,9 @@ public abstract class World implements Tickable{
 		botEntities = new HashMap<Point, BottomEntity>();
 		midEntities = new HashMap<Point, MidEntity>();
 		topEntities = new HashMap<Point, TopEntity>();
-    }
+		agents = new HashMap<Point, Agent>();
+		shouldExit = false;
+		}
 	
 	@Override
 	public void tick(){
@@ -81,6 +88,9 @@ public abstract class World implements Tickable{
 	public void addEntity(Point point, MidEntity entity) {
 		midEntities.put(point, entity);
 		pcs.firePropertyChange("addMidEntity", null, entity);
+		if(entity instanceof Agent){
+			addAgent(point, (Agent) entity);
+		}
 	}
 
 	/**
@@ -95,5 +105,16 @@ public abstract class World implements Tickable{
 		topEntities.put(point, entity);
 		pcs.firePropertyChange("addTopEntity", null, entity);
 	}
-
+	
+	private void addAgent(Point point, Agent agent){
+		agents.put(point, agent);
+	}
+	
+	/**
+	 * A method to be called when the game is to exit.
+	 */
+	public void closeRequested() {
+		shouldExit = true;
+	}
+	
 }

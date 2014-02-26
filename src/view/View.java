@@ -3,15 +3,23 @@ package view;
 import java.awt.Point;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
+import java.beans.PropertyChangeSupport;
 import java.util.ArrayList;
 
 import model.entity.MidEntity;
 import model.entity.bottom.BottomEntity;
+import model.entity.top.House;
 import model.entity.top.TopEntity;
 
 import org.newdawn.slick.Graphics;
 
+import util.EntityType;
 import view.entity.EntityView;
+import view.entity.bot.GrassTileView;
+import view.entity.bot.WaterTileView;
+import view.entity.mid.VillagerView;
+import view.entity.top.HouseView;
+import view.entity.top.TreeView;
 
 public class View implements PropertyChangeListener {
 
@@ -31,7 +39,7 @@ public class View implements PropertyChangeListener {
 	public static void addTopGraphic(EntityView d){
 		topGraphics.add(d);
 	}
-	
+
 	public static void removeTopGraphic(EntityView d){
 		topGraphics.remove(d);
 	}
@@ -39,7 +47,7 @@ public class View implements PropertyChangeListener {
 	public static void addMidGraphic(EntityView d){
 		midGraphics.add(d);
 	}
-	
+
 	public static void removeMidGraphic(EntityView d){
 		midGraphics.remove(d);
 	}
@@ -47,11 +55,11 @@ public class View implements PropertyChangeListener {
 	public static void addBotGraphic(EntityView d){
 		botGraphics.add(d);
 	}
-	
+
 	public static void removeBotGraphic(EntityView d){
 		botGraphics.remove(d);
 	}
-	
+
 	public int getX() {
 		return cameraX;
 	}
@@ -59,39 +67,39 @@ public class View implements PropertyChangeListener {
 	public int getY() {
 		return cameraY;
 	}
-	
+
 	public void incX(){
 		cameraX += SCROLL_SPEED;
 	}
-	
+
 	public void incY(){
 		cameraY += SCROLL_SPEED;
 	}
-	
+
 	public void decX(){
 		cameraX -= SCROLL_SPEED;
 	}
-	
+
 	public void decY(){
 		cameraY -= SCROLL_SPEED;
 	}
-	
+
 	public static void render(Graphics g){
-//		Display disp = new Display();
-//		g.fillRect(0, 0, disp.getGraphicsDevice().getDisplayMode().getWidth(), 
-//				disp.getGraphicsDevice().getDisplayMode().getHeight());
-		
-		System.out.println(""+botGraphics.size()+" "+midGraphics.size()+" "+topGraphics.size());
-		
+		//		Display disp = new Display();
+		//		g.fillRect(0, 0, disp.getGraphicsDevice().getDisplayMode().getWidth(), 
+		//				disp.getGraphicsDevice().getDisplayMode().getHeight());
+
+		//		System.out.println(""+botGraphics.size()+" "+midGraphics.size()+" "+topGraphics.size());
+
 		for(EntityView d : botGraphics)
 			d.draw(g, cameraX, cameraY, width, height);
-			
+
 		for(EntityView d : midGraphics)
 			d.draw(g, cameraX, cameraY, width, height);
-			
+
 		for(EntityView d : topGraphics)
 			d.draw(g, cameraX, cameraY, width, height);
-			
+
 	}
 
 	/**
@@ -101,11 +109,11 @@ public class View implements PropertyChangeListener {
 	 * (Note that this is just for general model events -
 	 *  not for Entity position updates and such)
 	 *  
-	 * @Author Niklas
+	 * @Author Niklas & Teodor O
 	 */
 	@Override
 	public void propertyChange(PropertyChangeEvent event) {
-		
+
 		String name = event.getPropertyName();
 		if (name.equals("camera")) {
 			Point p = (Point)event.getNewValue();
@@ -114,17 +122,48 @@ public class View implements PropertyChangeListener {
 		}
 		else if (name.equals("addTopEntity")) {
 			TopEntity entity = (TopEntity) event.getNewValue();
-			EntityView view = entity.createView();
+			EntityType type = entity.getEntityType();
+			EntityView view = null;
+			switch(type){
+			case TREE:
+				view = new TreeView(entity.getX(), entity.getY());
+				break;
+			case HOUSE:
+				House house = (House) entity;
+				view = new HouseView(house.getX(), house.getY(), house.getOrientation());
+				break;
+			}
+			PropertyChangeSupport pcs = entity.getPCS();
+			pcs.addPropertyChangeListener(view);
 			topGraphics.add(view);
 		}
 		else if (name.equals("addMidEntity")) {
 			MidEntity entity = (MidEntity) event.getNewValue();
-			EntityView view = entity.createView();
+			EntityType type = entity.getEntityType();
+			EntityView view = null;
+			switch(type){
+			case VILLAGER:
+				view = new VillagerView(entity.getX(), entity.getY());
+				break;
+			}
+			PropertyChangeSupport pcs = entity.getPCS();
+			pcs.addPropertyChangeListener(view);
 			midGraphics.add(view);
 		} 
 		else if (name.equals("addBotEntity")) {
 			BottomEntity entity = (BottomEntity) event.getNewValue();
-			EntityView view = entity.createView();
+			EntityType type = entity.getEntityType();
+			EntityView view = null;
+			switch(type){
+			case GRASS_TILE:
+				view = new GrassTileView(entity.getX(), entity.getY());
+				break;
+			case WATER_TILE:
+				view = new WaterTileView(entity.getX(), entity.getY());
+				break;
+			}
+			PropertyChangeSupport pcs = entity.getPCS();
+			pcs.addPropertyChangeListener(view);
 			botGraphics.add(view);
 		}
 		else if (name.equals("removeTopEntity")) {
@@ -138,7 +177,6 @@ public class View implements PropertyChangeListener {
 		else if (name.equals("removeBotEntity")) {
 			throw new UnsupportedOperationException();
 		}
-		
 	}
 	
 	/**

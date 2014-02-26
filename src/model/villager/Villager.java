@@ -1,17 +1,15 @@
 package model.villager;
 
-import head.Tickable;
 import model.TestWorld;
+import model.entity.Agent;
 import model.entity.MidEntity;
 import model.path.FindObject;
 import model.villager.brain.Brain;
-import util.ObjectType;
+import util.EntityType;
 import util.SoundP;
-import view.entity.EntityView;
-import view.entity.mid.VillagerView;
-import view.entity.top.TreeView;
+import util.Tickable;
 
-public class Villager extends MidEntity implements Tickable{
+public class Villager extends MidEntity implements Tickable, Agent{
 
 	private Brain brain;
 	private TestWorld world;
@@ -20,7 +18,8 @@ public class Villager extends MidEntity implements Tickable{
 	private boolean moving = false;
 	
 	public Villager(TestWorld world, int x, int y){
-		super(x , y, ObjectType.VILLAGER, false);
+
+		super(x , y, EntityType.VILLAGER);
 		this.world = world;
 		updatePos(x, y);
 		brain = new Brain(this, world);
@@ -59,7 +58,7 @@ public class Villager extends MidEntity implements Tickable{
 	}
 	
 	public boolean eat(){
-		if(FindObject.isAdjacentObject(world, ObjectType.TREE, x, y)){
+		if(FindObject.isAdjacentObject(world, EntityType.TREE, x, y)){
 			if(world.getTree(x + 1, y) != null){
 				if(world.getTree(x + 1, y).hasFruit()){
 					world.getTree(x + 1, y).eaten();
@@ -100,7 +99,7 @@ public class Villager extends MidEntity implements Tickable{
 	}
 	
 	public boolean drink(){
-		if(FindObject.isAdjacentTile(world, ObjectType.WATER_TILE, x, y)){
+		if(FindObject.isAdjacentTile(world, EntityType.WATER_TILE, x, y)){
 			brain.getBrainStem().getThirst().satisfy(5);
 			SoundP.playSound("ph", "drink.wav");
 			return true;
@@ -121,18 +120,11 @@ public class Villager extends MidEntity implements Tickable{
 		this.moving = moving;
 		stepCount = 0;
 	}
-	
-	
-	/**
-	 * Creates and returns a new VillagerView.
-	 * Registers the view as our listener.
-	 */
-	@Override
-	public EntityView createView() {
-		EntityView view = new VillagerView(x, y);
-		pcs.addPropertyChangeListener(view);
-		return view;
+
+	public TestWorld getWorld() {
+		return world;
 	}
+	
 	
 	
 }
