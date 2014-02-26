@@ -17,9 +17,12 @@ public abstract class BottomEntity extends Entity {
 	 * @param y the y-coordinate of the Entity.
 	 * @param id The EntityType enum of the Entity.
 	 */
-
 	public BottomEntity(int x, int y, EntityType id) {
 		super(x, y, id);
+	}
+	
+	public BottomEntity(int x, int y, EntityType id, boolean isBlocking) {
+		super(x, y, id, isBlocking);
 	}
 
 }

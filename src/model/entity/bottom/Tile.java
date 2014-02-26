@@ -13,4 +13,9 @@ public abstract class Tile extends BottomEntity{
 		super(x ,y, id);
 		updatePos(x,y);
 	}
+	
+	public Tile(int x, int y, EntityType id, boolean isBlocking) {
+		super(x ,y, id, isBlocking);
+		updatePos(x,y);
+	}
 }

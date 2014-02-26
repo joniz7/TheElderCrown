@@ -478,10 +478,12 @@ public static Point findTile2(TestWorld world, EntityType id, int startX, int st
 	 * @return - The Point to walk to in order to interact with object
 	 */
 	public static Point findObjectNeighbour(TestWorld world, Criteria crit, EntityType id, int startX, int startY){
-
+		
+		System.out.println("FindObjectNEighbor: TICK ");
 		long startTime = System.currentTimeMillis();
 		Point p = findObject2(world, crit, id, startX, startY);
 		
+		System.out.println("FindObjectNEighbor: TICK 2");
 		long endTime = System.currentTimeMillis();
 		System.out.println("FindObject, find Tree tile: " + (endTime - startTime));
 		

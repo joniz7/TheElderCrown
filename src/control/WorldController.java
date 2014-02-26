@@ -20,6 +20,10 @@ public class WorldController extends Controller{
 		super(gameState, view);
 		this.game = mainGameState;
 	}
+	
+	public WorldController(World gameState, View view) {
+		super(gameState, view);
+	}
 
 	@Override
 	/**
@@ -51,7 +55,6 @@ public class WorldController extends Controller{
 		if(e == 'd' || e == 'D')
 			isDDown = true;
 		if(key == Input.KEY_ESCAPE){
-
 			game.getGame().enterState(1, new FadeOutTransition(Color.black), new FadeInTransition(Color.black));
 		}
 	}

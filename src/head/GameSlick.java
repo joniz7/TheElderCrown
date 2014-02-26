@@ -61,8 +61,8 @@ public class GameSlick implements Game{
 		appgc.setTitle(getTitle());
 		
 		view = new View(appgc.getWidth(), appgc.getHeight());
-//		controller = new WorldController(world, view);
-//		appgc.getInput().addKeyListener(controller);
+		controller = new WorldController(world, view);
+		appgc.getInput().addKeyListener(controller);
 		
 		// Set up View listening to World
 		world.addPropertyChangeListener(view);

@@ -9,7 +9,7 @@ public class EatIntent extends Intent{
 	}
 
 	@Override
-	public Plan getPlan() {
+	public Plan getPlan(){
 		return new EatPlan(villager);
 	}
 
