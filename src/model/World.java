@@ -66,15 +66,23 @@ public abstract class World implements Tickable{
 			HashMap<Point, Agent> temp = (HashMap<Point, Agent>)agents.clone();
 			Iterator<Map.Entry<Point, Agent>> it = temp.entrySet().iterator();
 			
+			System.out.println("World: TICK");
+			
 			while(it.hasNext()) {
+				System.out.println("World: TICK 2");
 				Map.Entry<Point, Agent> e = (Map.Entry<Point, Agent>) it.next();
+				System.out.println("World: TICK 3 " + e.getValue());
 				e.getValue().update(e.getKey());
+				System.out.println("World: TICK 4");
 				Action active = e.getValue().getAction();
+				System.out.println("World: TICK 5");
 				if(active != null && !active.isFailed() && !active.isFinished())
 					active.tick(this);
 				else
 					e.getValue().actionDone();
+				System.out.println("World: TICK 6");
 			}
+			System.out.println("World: TICK 7");
 		}
 	}
 

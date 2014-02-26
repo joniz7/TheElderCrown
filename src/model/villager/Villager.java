@@ -43,8 +43,11 @@ public class Villager extends MidEntity implements Agent {
 		currentPos = pos;
 		updatePos(pos.x, pos.y);
 		
+		System.out.println("Villager: TICK");
 		adjustNeeds();
+		System.out.println("Villager: TICK 2");
 		plan();
+		System.out.println("Villager: TICK 3");
 	}
 	
 	public void satisfyHunger(float f) {
@@ -61,11 +64,14 @@ public class Villager extends MidEntity implements Agent {
 	}
 	
 	private void plan() {
+		System.out.println("Villager plan: TICK");
 		IH.update();
+		System.out.println("Villager plan: TICK 2");
 		if(activePlan == null) {
 			activePlan = IH.getFirstPlan();
 			System.out.println(activePlan);
 		}
+		System.out.println("Villager plan: TICK 3");
 	}
 	
 
