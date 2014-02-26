@@ -18,7 +18,7 @@ import view.entity.EntityView;
 
 public class Villager extends MidEntity implements Agent {
 
-	private int hunger, thirst, speed = 20;
+	private int hunger = 250, thirst = 500, speed = 20;
 	private World world;
 	private Point currentPos;
 	private Plan activePlan;
@@ -38,6 +38,7 @@ public class Villager extends MidEntity implements Agent {
 	@Override
 	public void update(Point pos) {
 		currentPos = pos;
+		updatePos(pos.x, pos.y);
 		
 		adjustNeeds();
 		plan();
@@ -53,11 +54,10 @@ public class Villager extends MidEntity implements Agent {
 	}
 	
 	private void plan() {
+		IH.update();
 		if(activePlan == null) {
-//			if(hunger < 50) {
-//				activePlan = new EatPlan(this);
-//			}
 			activePlan = IH.getFirstPlan();
+			System.out.println(activePlan);
 		}
 	}
 	
@@ -70,13 +70,26 @@ public class Villager extends MidEntity implements Agent {
 		activePlan = null;
 	}
 	
-	public void actionDone() {
-		activePlan.actionDone();
+	public void actionDone(){
+		if(!activePlan.isFinished())
+			activePlan.actionDone();
+		else
+			activePlan = null;
 	}
 
 	public int getSpeed() {
 		return speed;
 	}
+
+	public int getHunger() {
+		return hunger;
+	}
+
+	public int getThirst() {
+		return thirst;
+	}
+	
+	
 	
 	/*
 	private Brain brain;

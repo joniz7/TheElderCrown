@@ -31,7 +31,7 @@ public class TestWorld extends World implements TileBasedMap{
 	
 	private final int WIDTH = 200, HEIGHT = 200;
 	
-	private final int TREE_SPARSITY = 140, VILLAGER_SPAWN = 120;
+	private final int TREE_SPARSITY = 500, VILLAGER_SPAWN = 120;
 	private final int LAKE_COUNT = 3;
 	private final float LAKE_WEIGHT = 1f, LAKE_LOSS = 0.02f;
 
