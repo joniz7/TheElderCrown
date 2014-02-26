@@ -9,12 +9,7 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
-import java.util.Map.Entry;
 
-import org.newdawn.slick.util.pathfinding.PathFindingContext;
-
-import util.NoPositionFoundException;
-import util.Tickable;
 import model.entity.Agent;
 import model.entity.Entity;
 import model.entity.MidEntity;
@@ -23,6 +18,11 @@ import model.entity.bottom.WaterTile;
 import model.entity.top.TopEntity;
 import model.villager.Villager;
 import model.villager.intentions_Reloaded.Action;
+
+import org.newdawn.slick.util.pathfinding.PathFindingContext;
+
+import util.NoPositionFoundException;
+import util.Tickable;
 
 public abstract class World implements Tickable{
 
@@ -80,7 +80,15 @@ public abstract class World implements Tickable{
 
 	
 	public boolean blocked(PathFindingContext pfc, int x, int y){
-		return botEntities.get(new Point(x, y)) instanceof WaterTile;
+		boolean blocked = false;
+		Point p = new Point(x, y);
+		if(botEntities.get(p) instanceof WaterTile)
+			blocked = true;
+		if(midEntities.get(p) != null)
+			blocked = midEntities.get(p).isBlocking();
+		if(topEntities.get(p) != null)
+			blocked = topEntities.get(p).isBlocking();
+		return blocked;
 	}
 	
 	public boolean blockedMid(Point pos) {
