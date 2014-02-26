@@ -30,12 +30,15 @@ public class VillagerView extends EntityView {
 	 * @author Tux
 	 */
 	public void propertyChange(PropertyChangeEvent event) {
-		
 		String name = event.getPropertyName();
-		if (name.equals("sleeping")) {
-			setImage("sleepingVillager");
-		}else if(name.equals("awake")){
-			setImage("villager");
+		if(name.compareTo("status")==0){
+			String status = (String)event.getNewValue();
+			if(status.compareTo("sleeping")==0){
+				setImage("villagersleeping");
+			}
+			if(status.compareTo("awake")==0){
+				setImage("villager");
+			}
 		}else{
 			super.propertyChange(event);
 		}

@@ -81,7 +81,7 @@ public class View implements PropertyChangeListener {
 //		g.fillRect(0, 0, disp.getGraphicsDevice().getDisplayMode().getWidth(), 
 //				disp.getGraphicsDevice().getDisplayMode().getHeight());
 		
-		System.out.println(""+botGraphics.size()+" "+midGraphics.size()+" "+topGraphics.size());
+		//System.out.println(""+botGraphics.size()+" "+midGraphics.size()+" "+topGraphics.size());
 		
 		for(EntityView d : botGraphics)
 			d.draw(g, cameraX, cameraY, width, height);

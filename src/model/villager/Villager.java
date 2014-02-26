@@ -56,6 +56,7 @@ public class Villager extends MidEntity implements Tickable{
         }
         
         updatePos(x, y, (interPolX * (progress/12)), (interPolY * (progress/12)));
+        updateStatus("awake");
 	}
 	
 	public boolean eat(){
@@ -96,10 +97,12 @@ public class Villager extends MidEntity implements Tickable{
 				}
 			}
 		}
+		updateStatus("awake");
 		return false;
 	}
 	
 	public boolean drink(){
+		updateStatus("awake");
 		if(FindObject.isAdjacentTile(world, ObjectType.WATER_TILE, x, y)){
 			brain.getBrainStem().getThirst().satisfy(5);
 			SoundP.playSound("ph", "drink.wav");
@@ -111,6 +114,7 @@ public class Villager extends MidEntity implements Tickable{
 	public void sleep(){
 		brain.getBrainStem().getSleep().satisfy(100);
 		SoundP.playSound("ph", "sleep.wav");
+		updateStatus("sleeping");
 	}
 
 	public boolean isMoving() {
@@ -123,9 +127,7 @@ public class Villager extends MidEntity implements Tickable{
 	}
 	
 	protected void updateStatus(String newStatus){
-		
-		status = newStatus;
-		pcs.firePropertyChange(status, null, null);
+		pcs.firePropertyChange("status", null, newStatus);
 		
 	}
 	
