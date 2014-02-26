@@ -17,6 +17,7 @@ public class Villager extends MidEntity implements Tickable{
 
 	private int speedCap = 240, progress = 0, speed = 20, stepCount = 0;
 	private boolean moving = false;
+	private String status;
 	
 	public Villager(TestWorld world, int x, int y){
 		super(x , y, ObjectType.VILLAGER, false);
@@ -119,6 +120,13 @@ public class Villager extends MidEntity implements Tickable{
 	public void setMoving(boolean moving) {
 		this.moving = moving;
 		stepCount = 0;
+	}
+	
+	protected void updateStatus(String newStatus){
+		
+		status = newStatus;
+		pcs.firePropertyChange(status, null, null);
+		
 	}
 	
 	
