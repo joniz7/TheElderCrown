@@ -18,6 +18,5 @@ public class EatIntent extends Intent{
 		if(villager.getHunger() < 0)
 			this.setDesire(-villager.getHunger());
 	}
-
 	
 }
