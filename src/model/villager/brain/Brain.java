@@ -83,29 +83,6 @@ public class Brain implements Tickable{
 	}
 	
 	public void walkToObjectType(EntityType id){
-<<<<<<< HEAD
-		long startTime = System.currentTimeMillis();
-		
-		Point p = FindObject.findObjectNeighbour(world, new HasFruit(), id, 
-				villager.getX(), villager.getY());
-		
-		long endTime = System.currentTimeMillis();
-		System.out.println("Brain, find Tree time: " + (endTime - startTime) + " : Point: " + p.toString());
-		if(endTime - startTime > 100){
-			world.printArea(p);
-			world.setPaused(true);
-			View.addTopGraphic(new Helper3View(villager.getX(), villager.getY()));
-		}
-		
-		startTime = System.currentTimeMillis();
-		
-		currentPath = PathFinder.getPath(villager.getX(), villager.getY(), 
-				(int) p.getX(), (int) p.getY());
-		villager.setMoving(true);
-		
-		endTime = System.currentTimeMillis();
-		System.out.println("Brain, path-find time to Tree: " + (endTime - startTime));
-=======
 //		long startTime = System.currentTimeMillis();
 //		
 //		Point p = FindObject.findObjectNeighbour(world, new HasFruit(), id, 
@@ -116,18 +93,17 @@ public class Brain implements Tickable{
 //		if(endTime - startTime > 100){
 //			world.printArea(p);
 //			world.setPaused(true);
-//			new Helper1(villager.getX(), villager.getY());
+//			View.addTopGraphic(new Helper3View(villager.getX(), villager.getY()));
 //		}
 //		
 //		startTime = System.currentTimeMillis();
 //		
 //		currentPath = PathFinder.getPath(villager.getX(), villager.getY(), 
 //				(int) p.getX(), (int) p.getY());
-//		villager.setMoving(true);
+////		villager.setMoving(true);
 //		
 //		endTime = System.currentTimeMillis();
 //		System.out.println("Brain, path-find time to Tree: " + (endTime - startTime));
->>>>>>> origin/new-villager
 	}
 	
 	public void activeTaskDone(){

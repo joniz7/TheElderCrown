@@ -1,6 +1,7 @@
 package model.villager;
 
 import java.awt.Point;
+
 import model.TestWorld;
 import model.World;
 import model.entity.Agent;
@@ -15,6 +16,7 @@ import util.EntityType;
 import util.SoundP;
 import util.Tickable;
 import view.entity.EntityView;
+import view.entity.mid.VillagerView;
 
 public class Villager extends MidEntity implements Agent {
 
@@ -227,15 +229,12 @@ public class Villager extends MidEntity implements Agent {
 	 * Creates and returns a new VillagerView.
 	 * Registers the view as our listener.
 	 */
-	@Override
 	public EntityView createView() {
 		EntityView view = new VillagerView(x, y);
 		pcs.addPropertyChangeListener(view);
 		return view;
 
 	}
-	
-	*/
 
 
 	

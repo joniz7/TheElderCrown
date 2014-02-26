@@ -263,24 +263,8 @@ public static Point findTile2(TestWorld world, EntityType id, int startX, int st
 		return null;
 	}
 	
-<<<<<<< HEAD
-	/**
-	 * This method returns true if an object of the specified is adjacent to the point
-	 * specified
-	 * 
-	 * @param world - the game world
-	 * @param id - the id of the object
-	 * @param startX - the x position
-	 * @param startY - the y position
-	 * @return - true if object of type id is adjacent
-	 */
-	public static boolean isAdjacentTile(TestWorld world, EntityType id, int startX, int startY){
-
-		HashMap<Point, BottomEntity> tiles = world.getTiles();
-=======
 	public static boolean isAdjacentTile(World world, EntityType id, int startX, int startY){
 		HashMap<Point, BottomEntity> tiles = world.getBotEntities();
->>>>>>> origin/new-villager
 		
 		try{
 			if(tiles.get(new Point((int) startX - 1, (int) startY)).getEntityType() == id)
@@ -550,26 +534,10 @@ public static Point findTile2(TestWorld world, EntityType id, int startX, int st
 		return new Point(finalX, finalY);
 	}
 	
-<<<<<<< HEAD
-	/**
-	 * This method returns true if an object of the specified is adjacent to the point
-	 * specified
-	 * 
-	 * @param world - the game world
-	 * @param id - the id of the object
-	 * @param startX - the x position
-	 * @param startY - the y position
-	 * @return - true if object of type id is adjacent
-	 */
-	public static boolean isAdjacentObject(TestWorld world, EntityType id, int startX, int startY){
 
-		HashMap<Point, MidEntity> mids = world.getMidObjects();
-		HashMap<Point, TopEntity> tops = world.getTopObjects();
-=======
 	public static Entity getAdjacentObject(World world, Criteria crit, EntityType id, int startX, int startY){
 		HashMap<Point, MidEntity> mids = world.getMidEntities();
 		HashMap<Point, TopEntity> tops = world.getTopEntities();
->>>>>>> origin/new-villager
 		
 		try{
 			if(mids.get(new Point(startX - 1, startY)) != null &&

@@ -5,6 +5,7 @@ import java.beans.PropertyChangeSupport;
 
 import model.path.criteria.Criteria;
 import util.EntityType;
+import view.entity.EntityView;
 
 /**
  * A class representing an object that is visible in the world.
@@ -18,11 +19,7 @@ public abstract class Entity {
 	protected int x, y;
 	protected EntityType type;
 	protected PropertyChangeSupport pcs;
-<<<<<<< HEAD
 	protected boolean isBlocking;
-=======
-	private boolean blocking;
->>>>>>> origin/new-villager
 	
 	/**
 	 * The general constructor.
@@ -37,9 +34,7 @@ public abstract class Entity {
 		this.x = x;
 		this.y = y;
 		this.type = type;
-<<<<<<< HEAD
-=======
-		this.blocking = true;
+		this.isBlocking = true;
 	}
 	
 	/**
@@ -55,8 +50,7 @@ public abstract class Entity {
 		this.x = x;
 		this.y = y;
 		this.type = type;
-		this.blocking = blocking;
->>>>>>> origin/new-villager
+		this.isBlocking = blocking;
 	}
 	
 	/**
@@ -154,11 +148,6 @@ public abstract class Entity {
 	 */
 	public void setBlocking(boolean blocking) {
 		this.isBlocking = blocking;
-	}
-	
-	
-	public boolean isBlocking(){
-		return blocking;
 	}
 	
 }
