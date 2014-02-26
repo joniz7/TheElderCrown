@@ -73,12 +73,20 @@ public class EntityView implements PropertyChangeListener {
 		String name = event.getPropertyName();
 		if (name.equals("position")) {
 			Point p = (Point)event.getNewValue();
-			x = (int)p.getX();
-			y = (int)p.getY();
-			// TODO should send model coordinates here!
-			// Fix when we do view interpolation
-//			x = View.convertCoordinate(p.getX());
-//			y = View.convertCoordinate(p.getY());
+			x = View.convertCoordinate(p.getX());
+			y = View.convertCoordinate(p.getY());
+		}
+		else if (name.equals("interpolPosition")) {
+//			InterpolPosition p = (InterpolPosition) event.getNewValue();
+//			// Change in view coordinates
+//			int dx = (int) (p.getDx()*p.getProgress()*View.TILE_OFFSET);
+//			int dy = (int) (p.getDy()*p.getProgress()*View.TILE_OFFSET);
+//			// Originating view coordinates (i.e. tile we're moving from)
+//			int x = View.convertCoordinate(p.getX());
+//			int y = View.convertCoordinate(p.getY());
+//			// Apply change
+//			this.x = x + dx;
+//			this.y = y + dy;
 		}
 
 	}

@@ -4,7 +4,7 @@ import model.villager.Villager;
 
 public abstract class Intent{
 
-	protected int cost, desire;
+	protected float cost, desire;
 	protected Villager villager;
 	
 	public Intent(int cost, Villager villager){
@@ -13,24 +13,25 @@ public abstract class Intent{
 	}
 	
 	public abstract Plan getPlan();
+	public abstract void calculateDesire();
 	
-	public void adjustDesire(int difference){
-		desire = desire + difference;
+	public void adjustDesire(float f){
+		desire = desire + f;
 	}
 
-	public int getCost() {
+	public float getCost() {
 		return cost;
 	}
 
-	public void setCost(int cost) {
+	public void setCost(float cost) {
 		this.cost = cost;
 	}
 
-	public int getDesire() {
+	public float getDesire() {
 		return desire;
 	}
 
-	public void setDesire(int desire) {
+	public void setDesire(float desire) {
 		this.desire = desire;
 	}
 	

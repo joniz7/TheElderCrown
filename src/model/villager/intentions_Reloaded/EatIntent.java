@@ -5,7 +5,7 @@ import model.villager.Villager;
 public class EatIntent extends Intent{
 
 	public EatIntent(Villager villager) {
-		super(250, villager);
+		super(0, villager);
 	}
 
 	@Override
@@ -13,4 +13,10 @@ public class EatIntent extends Intent{
 		return new EatPlan(villager);
 	}
 
+	@Override
+	public void calculateDesire() {
+		setDesire(-villager.getHunger() * 4);
+//		System.out.println("EatIntent: " + desire);
+	}
+	
 }

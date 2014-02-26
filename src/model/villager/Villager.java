@@ -1,16 +1,102 @@
 package model.villager;
 
+import java.awt.Point;
 import model.TestWorld;
+import model.World;
 import model.entity.Agent;
 import model.entity.MidEntity;
 import model.path.FindObject;
 import model.villager.brain.Brain;
+import model.villager.intentions_Reloaded.Action;
+import model.villager.intentions_Reloaded.EatPlan;
+import model.villager.intentions_Reloaded.IntentionHandler;
+import model.villager.intentions_Reloaded.Plan;
 import util.EntityType;
 import util.SoundP;
 import util.Tickable;
+import view.entity.EntityView;
 
-public class Villager extends MidEntity implements Tickable, Agent{
+public class Villager extends MidEntity implements Agent {
 
+	private float hunger = -15f, thirst = 2f, speed = 20;
+	private World world;
+	private Point currentPos;
+	private Plan activePlan;
+	private IntentionHandler IH = new IntentionHandler(this);
+	
+	private int test = 0;
+	
+	public Villager(World world, int x, int y) {
+		super(x, y, EntityType.VILLAGER);
+		this.world = world;
+		System.out.println("New villager created: "+x+"  "+y);
+	}
+	
+	public World getWorld() {
+		return world;
+	}
+
+	@Override
+	public void update(Point pos) {
+		currentPos = pos;
+		updatePos(pos.x, pos.y);
+		
+		adjustNeeds();
+		plan();
+	}
+	
+	public void satisfyHunger(float f) {
+		this.hunger += f;
+	}
+	
+	public void satisfyThirst(float f) {
+		this.thirst += f;
+	}
+	
+	private void adjustNeeds() {
+		hunger = hunger - 0.01f;
+		thirst = thirst - 0.01f;
+	}
+	
+	private void plan() {
+		IH.update();
+		if(activePlan == null) {
+			activePlan = IH.getFirstPlan();
+			System.out.println(activePlan);
+		}
+	}
+	
+
+	public Action getAction() {
+		return activePlan.getActiveAction();
+	}
+	
+	public void disposePlan() {
+		activePlan = null;
+	}
+	
+	public void actionDone(){
+		if(!activePlan.isFinished())
+			activePlan.actionDone();
+		else
+			activePlan = null;
+	}
+
+	public float getSpeed() {
+		return speed;
+	}
+
+	public float getHunger() {
+		return hunger;
+	}
+
+	public float getThirst() {
+		return thirst;
+	}
+	
+	
+	
+	/*
 	private Brain brain;
 	private TestWorld world;
 
@@ -149,6 +235,8 @@ public class Villager extends MidEntity implements Tickable, Agent{
 
 	}
 	
-	
+	*/
+
+
 	
 }

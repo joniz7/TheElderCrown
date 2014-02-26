@@ -5,6 +5,8 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 import model.TestWorld;
+import model.World;
+import model.entity.Entity;
 import model.entity.MidEntity;
 import model.entity.bottom.BottomEntity;
 import model.entity.top.TopEntity;
@@ -261,6 +263,7 @@ public static Point findTile2(TestWorld world, EntityType id, int startX, int st
 		return null;
 	}
 	
+<<<<<<< HEAD
 	/**
 	 * This method returns true if an object of the specified is adjacent to the point
 	 * specified
@@ -274,6 +277,10 @@ public static Point findTile2(TestWorld world, EntityType id, int startX, int st
 	public static boolean isAdjacentTile(TestWorld world, EntityType id, int startX, int startY){
 
 		HashMap<Point, BottomEntity> tiles = world.getTiles();
+=======
+	public static boolean isAdjacentTile(World world, EntityType id, int startX, int startY){
+		HashMap<Point, BottomEntity> tiles = world.getBotEntities();
+>>>>>>> origin/new-villager
 		
 		try{
 			if(tiles.get(new Point((int) startX - 1, (int) startY)).getEntityType() == id)
@@ -543,6 +550,7 @@ public static Point findTile2(TestWorld world, EntityType id, int startX, int st
 		return new Point(finalX, finalY);
 	}
 	
+<<<<<<< HEAD
 	/**
 	 * This method returns true if an object of the specified is adjacent to the point
 	 * specified
@@ -557,42 +565,55 @@ public static Point findTile2(TestWorld world, EntityType id, int startX, int st
 
 		HashMap<Point, MidEntity> mids = world.getMidObjects();
 		HashMap<Point, TopEntity> tops = world.getTopObjects();
+=======
+	public static Entity getAdjacentObject(World world, Criteria crit, EntityType id, int startX, int startY){
+		HashMap<Point, MidEntity> mids = world.getMidEntities();
+		HashMap<Point, TopEntity> tops = world.getTopEntities();
+>>>>>>> origin/new-villager
 		
 		try{
 			if(mids.get(new Point(startX - 1, startY)) != null &&
-					mids.get(new Point(startX - 1, startY)).getEntityType() == id)
-				return true;
+					mids.get(new Point(startX - 1, startY)).getEntityType() == id &&
+					mids.get(new Point(startX - 1, startY)).meetCriteria(crit))
+				return mids.get(new Point(startX - 1, startY));
 			if(mids.get(new Point(startX + 1, startY)) != null && 
-					mids.get(new Point(startX + 1, startY)).getEntityType() == id)
-				return true;
+					mids.get(new Point(startX + 1, startY)).getEntityType() == id &&
+					mids.get(new Point(startX + 1, startY)).meetCriteria(crit))
+				return mids.get(new Point(startX + 1, startY));
 			if(mids.get(new Point(startX, startY - 1)) != null &&
-					mids.get(new Point(startX, startY - 1)).getEntityType() == id)
-				return true;
+					mids.get(new Point(startX, startY - 1)).getEntityType() == id &&
+					mids.get(new Point(startX, startY - 1)).meetCriteria(crit))
+				return mids.get(new Point(startX, startY - 1));
 			if(mids.get(new Point(startX, startY + 1)) != null &&
-					mids.get(new Point(startX, startY + 1)).getEntityType() == id)
-				return true;
+					mids.get(new Point(startX, startY + 1)).getEntityType() == id &&
+					mids.get(new Point(startX, startY + 1)).meetCriteria(crit))
+				return mids.get(new Point(startX, startY + 1));
 		}catch(ArrayIndexOutOfBoundsException e){
 			
 		}
 		
 		try{
 			if(tops.get(new Point(startX - 1, startY)) != null &&
-					tops.get(new Point(startX - 1, startY)).getEntityType() == id)
-				return true;
+					tops.get(new Point(startX - 1, startY)).getEntityType() == id &&
+					tops.get(new Point(startX - 1, startY)).meetCriteria(crit))
+				return tops.get(new Point(startX - 1, startY));
 			if(tops.get(new Point(startX + 1, startY)) != null &&
-					tops.get(new Point(startX + 1, startY)).getEntityType() == id)
-				return true;
+					tops.get(new Point(startX + 1, startY)).getEntityType() == id &&
+					tops.get(new Point(startX + 1, startY)).meetCriteria(crit))
+				return tops.get(new Point(startX + 1, startY));
 			if(tops.get(new Point(startX, startY - 1)) != null &&
-					tops.get(new Point(startX, startY - 1)).getEntityType() == id)
-				return true;
+					tops.get(new Point(startX, startY - 1)).getEntityType() == id &&
+					tops.get(new Point(startX, startY - 1)).meetCriteria(crit))
+				return tops.get(new Point(startX, startY - 1));
 			if(tops.get(new Point(startX, startY + 1)) != null &&
-					tops.get(new Point(startX, startY + 1)).getEntityType() == id)
-				return true;
+					tops.get(new Point(startX, startY + 1)).getEntityType() == id &&
+					tops.get(new Point(startX, startY + 1)).meetCriteria(crit))
+				return tops.get(new Point(startX, startY + 1));
 		}catch(ArrayIndexOutOfBoundsException e){
 			
 		}
 		
-		return false;
+		return null;
 	}
 	
 	

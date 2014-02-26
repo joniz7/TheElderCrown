@@ -30,10 +30,16 @@ import util.EntityType;
 public class TestWorld extends World implements TileBasedMap{
 	
 	private final int WIDTH = 200, HEIGHT = 200;
+<<<<<<< HEAD
 
 	private final int TREE_SPARSITY = 280, VILLAGER_SPAWN = 40, NBR_OF_HOUSES = 1;
 	private final int LAKE_COUNT = 8;
 
+=======
+	
+	private final int TREE_SPARSITY = 500, VILLAGER_SPAWN = 120;
+	private final int LAKE_COUNT = 3;
+>>>>>>> origin/new-villager
 	private final float LAKE_WEIGHT = 1f, LAKE_LOSS = 0.02f;
 
 	private ArrayList<Tree> trees = new ArrayList<Tree>();
@@ -74,7 +80,6 @@ public class TestWorld extends World implements TileBasedMap{
 		pcs.firePropertyChange("camera", null, pos);
 
 		initializeVillagers();
-
 	}
 	
 	/**
@@ -183,14 +188,21 @@ public class TestWorld extends World implements TileBasedMap{
 	}
 	
 	private void initializeVillagers() {
+<<<<<<< HEAD
 		for(int i = 0; i < 100; i++){
 			Point pos = new Point(VILLAGER_SPAWN, VILLAGER_SPAWN);
 			Villager villager = new Villager(this, VILLAGER_SPAWN, VILLAGER_SPAWN);
 			tickables.add(villager);
+=======
+		for(int i = 0; i < 1; i++) {
+			Point pos = new Point(VILLAGER_SPAWN, VILLAGER_SPAWN+i);
+			Villager villager = new Villager(this, VILLAGER_SPAWN, VILLAGER_SPAWN+i);
+>>>>>>> origin/new-villager
 			addEntity(pos, villager);
 		}
 	}
 	
+<<<<<<< HEAD
 	@Override
 	public boolean blocked(PathFindingContext pfc, int x, int y){
 		if(botEntities.get(new Point(x, y)) != null && botEntities.get(new Point(x, y)).isBlocking())
@@ -202,6 +214,9 @@ public class TestWorld extends World implements TileBasedMap{
 		
 		return false;
 	}
+=======
+
+>>>>>>> origin/new-villager
 
 	@Override
 	public float getCost(PathFindingContext pfc, int x, int y){
@@ -286,40 +301,6 @@ public class TestWorld extends World implements TileBasedMap{
 		else
 			throw new NoSuchEntityException();
 		return e;
-	}
-	
-	//TODO Maybe might fail if things are moving at just the wrong time.
-	/**
-	 * Call this if you have an Entity and need to find its position in the world.
-	 * 
-	 * @param e the Entity to be located.
-	 * @return the Point in which the Entity resides.
-	 * @throws NoPositionFoundException if no point could be found.
-	 */
-	public Point getPosition(Entity e) throws NoPositionFoundException{
-		Point p = null;
-		Collection<Point> midKeys = midEntities.keySet();
-		Iterator<Point> midIterator = midKeys.iterator();
-		while(midIterator.hasNext()){
-			p = midIterator.next();
-			if(midEntities.get(p).equals(e))
-				return p;
-		}
-		Collection<Point> topKeys = topEntities.keySet();
-		Iterator<Point> topIterator = topKeys.iterator();
-		while(topIterator.hasNext()){
-			p = topIterator.next();
-			if(topEntities.get(p).equals(e))
-				return p;
-		}
-		Collection<Point> botKeys = botEntities.keySet();
-		Iterator<Point> botIterator = botKeys.iterator();
-		while(botIterator.hasNext()){
-			p = botIterator.next();
-			if(botEntities.get(p).equals(e))
-				return p;
-		}
-		throw new NoPositionFoundException();
 	}
 	
 	/**

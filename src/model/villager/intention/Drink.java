@@ -9,14 +9,14 @@ public class Drink extends Intention{
 	
 	
 	public void act(Brain brain){
-		if(!hasIssuedMove && !brain.getVillager().drink()){
-			brain.walkToTileType(1);
-			hasIssuedMove = true;
-		}
-		
-		if(brain.getVillager().drink()){
-			brain.activeTaskDone();
-		}
+//		if(!hasIssuedMove && !brain.getVillager().drink()){
+//			brain.walkToTileType(1);
+//			hasIssuedMove = true;
+//		}
+//		
+//		if(brain.getVillager().drink()){
+//			brain.activeTaskDone();
+//		}
 	}
 	
 }

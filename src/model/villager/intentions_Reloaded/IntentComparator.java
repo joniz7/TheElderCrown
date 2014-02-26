@@ -6,10 +6,16 @@ public class IntentComparator implements Comparator<Intent>{
 
 	@Override
 	public int compare(Intent i1, Intent i2) {
-		int i1Total = i1.getCost() + i1.getDesire();
-		int i2Total = i2.getCost() + i2.getDesire();
+		float i1Total = i1.getCost() + i1.getDesire();
+		float i2Total = i2.getCost() + i2.getDesire();
 		
-		return i1Total - i2Total;
+		if(i1Total < i2Total)
+			return 1;
+		else if(i1Total == i2Total)
+			return 0;
+		else
+			return -1;
+		
 	}
 
 }
