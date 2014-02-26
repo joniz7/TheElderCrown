@@ -169,8 +169,8 @@ public class FindObject {
 		return null;
 	}
 	
-	public static boolean isAdjacentTile(TestWorld world, EntityType id, int startX, int startY){
-		HashMap<Point, BottomEntity> tiles = world.getTiles();
+	public static boolean isAdjacentTile(World world, EntityType id, int startX, int startY){
+		HashMap<Point, BottomEntity> tiles = world.getBotEntities();
 		
 		try{
 			if(tiles.get(new Point((int) startX - 1, (int) startY)).getEntityType() == id)

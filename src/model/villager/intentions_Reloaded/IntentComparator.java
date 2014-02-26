@@ -9,7 +9,7 @@ public class IntentComparator implements Comparator<Intent>{
 		float i1Total = i1.getCost() + i1.getDesire();
 		float i2Total = i2.getCost() + i2.getDesire();
 		
-		if(i1Total > i2Total)
+		if(i1Total < i2Total)
 			return 1;
 		else if(i1Total == i2Total)
 			return 0;

@@ -5,7 +5,6 @@ import java.beans.PropertyChangeSupport;
 
 import model.path.criteria.Criteria;
 import util.EntityType;
-import util.InterpolPosition;
 
 /**
  * A class representing an object that is visible in the world.
@@ -82,8 +81,8 @@ public abstract class Entity {
 	 * @param progress how far the entity has come in a move action [0,1]
 	 */
 	public void updateViewPosition(int dx, int dy, double progress){
-		InterpolPosition p = new InterpolPosition(x, y, dx, dy, progress);
-		pcs.firePropertyChange("interpolPosition", null, p);
+//		InterpolPosition p = new InterpolPosition(x, y, dx, dy, progress);
+//		pcs.firePropertyChange("interpolPosition", null, p);
 	}
 	
 	/**

@@ -7,8 +7,6 @@ import model.villager.Villager;
 
 import org.newdawn.slick.util.pathfinding.Path;
 
-import util.InterpolPosition;
-
 public class MoveAction extends Action{
 
 	private Path path;

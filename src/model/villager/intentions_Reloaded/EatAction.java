@@ -9,10 +9,11 @@ import model.villager.Villager;
 
 public class EatAction extends Action{
 
-	private int stacks;
+	private int stacks, stacksToEat;
 	
 	public EatAction(Villager villager) {
 		super(villager);
+		stacksToEat = 500;
 	}
 
 	@Override
@@ -23,7 +24,10 @@ public class EatAction extends Action{
 					villager.getY());
 			tree.eaten();
 			villager.satisfyHunger(0.1f);
-			actionFinished();
+			stacks++;
+			System.out.println("EatAction: stacks " + stacks);
+			if(stacks > stacksToEat)
+				actionFinished();
 		}else
 			actionFailed();
 

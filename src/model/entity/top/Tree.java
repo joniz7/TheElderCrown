@@ -10,8 +10,8 @@ import util.Tickable;
  */
 public class Tree extends TopEntity implements Tickable{
 	
-	private final int FRUIT_REGROWTH = 5000;
-	private int timer = 0;
+	private final int FRUIT_REGROWTH = 50000;
+	private int timer = 0, foodTicks = 1500;
 	private boolean fruit = true;
 	
 	/**
@@ -45,8 +45,12 @@ public class Tree extends TopEntity implements Tickable{
 	 */
 	public void eaten(){
 		// Send update to view
-		pcs.firePropertyChange("fruit", true, false);
-		fruit = false;
+		foodTicks--;
+		if(foodTicks <= 0){
+			pcs.firePropertyChange("fruit", true, false);
+			fruit = false;
+			timer = 0;
+		}
 	}
 
 	/**
