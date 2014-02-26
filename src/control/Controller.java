@@ -1,12 +1,12 @@
 package control;
 
+import model.World;
+
 import org.newdawn.slick.KeyListener;
 
 import util.Tickable;
 import view.View;
 
-
-import model.World;
 
 /**
  * The general (abstract) Controller class which is set up with slick2D

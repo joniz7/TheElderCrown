@@ -1,9 +1,7 @@
 package model.villager.intention;
 
-import util.EntityType;
-import util.SoundP;
-import model.villager.Villager;
 import model.villager.brain.Brain;
+import util.EntityType;
 
 public class Eat extends Intention{
 

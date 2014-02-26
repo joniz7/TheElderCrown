@@ -28,9 +28,9 @@ import debugging.Helper2;
 public class FindObject {
 	
 	/*
-	 * Funderar på om man ska smälla ihop alla tre lager
+	 * Funderar pï¿½ om man ska smï¿½lla ihop alla tre lager
 	 * i en enda algoritm. Har undvikit detta hittills eftersom
-	 * att just bottenlagret är ganska speciellt, då det enbart består av tiles.
+	 * att just bottenlagret ï¿½r ganska speciellt, dï¿½ det enbart bestï¿½r av tiles.
 	 */
 	
 	/**
