@@ -24,6 +24,8 @@ public class Villager extends MidEntity implements Agent {
 	private Plan activePlan;
 	private IntentionHandler IH = new IntentionHandler(this);
 	
+	private int test = 0;
+	
 	public Villager(World world, int x, int y) {
 		super(x, y, EntityType.VILLAGER);
 		this.world = world;
@@ -39,7 +41,6 @@ public class Villager extends MidEntity implements Agent {
 		
 		adjustNeeds();
 		plan();
-		System.out.println("helo "+currentPos.getX()+"  "+currentPos.getY());
 	}
 	
 	public void satisfyHunger(int hunger) {
