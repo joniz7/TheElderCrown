@@ -72,19 +72,19 @@ public class View implements PropertyChangeListener {
 	}
 
 	public void incX(){
-		cameraX += SCROLL_SPEED;
+			cameraX += SCROLL_SPEED;
 	}
 
 	public void incY(){
-		cameraY += SCROLL_SPEED;
+			cameraY += SCROLL_SPEED;
 	}
 
 	public void decX(){
-		cameraX -= SCROLL_SPEED;
+			cameraX -= SCROLL_SPEED;
 	}
 
 	public void decY(){
-		cameraY -= SCROLL_SPEED;
+			cameraY -= SCROLL_SPEED;
 	}
 
 	public static void render(Graphics g){

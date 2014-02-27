@@ -60,6 +60,7 @@ public class VillagerView extends EntityView {
 		return false;
 	}
 	
+
 	@Override
 	/**
 	 * Is called when our associated model changes in any way.
@@ -81,4 +82,6 @@ public class VillagerView extends EntityView {
 			super.propertyChange(event);
 		}
 	}
+	
+
 }
