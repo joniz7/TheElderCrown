@@ -167,7 +167,6 @@ public class TestWorld extends World implements TileBasedMap{
 	 */
 	private void initializeHouses() {
 		//TODO Draw houses in a nicer fashion
-
 		House house = new House(VILLAGER_SPAWN + 5, VILLAGER_SPAWN + 4, Constants.UP_ENTRANCE);
 		addEntity(new Point(VILLAGER_SPAWN + 5, VILLAGER_SPAWN + 2), house);
 		

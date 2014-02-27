@@ -2,19 +2,14 @@ package model.villager;
 
 import java.awt.Point;
 
-import model.TestWorld;
 import model.World;
 import model.entity.Agent;
 import model.entity.MidEntity;
-import model.path.FindObject;
 import model.villager.intentions.Action;
-import model.villager.intentions.EatPlan;
 import model.villager.intentions.IntentionHandler;
 import model.villager.intentions.Plan;
 import util.EntityType;
 import util.RandomClass;
-import util.SoundP;
-import util.Tickable;
 import view.entity.EntityView;
 import view.entity.mid.VillagerView;
 
@@ -22,7 +17,6 @@ public class Villager extends MidEntity implements Agent {
 
 	private float hunger = -15f, thirst = 2f, speed = 20;
 	private World world;
-	private Point currentPos;
 	private Plan activePlan;
 	private IntentionHandler IH = new IntentionHandler(this);
 	
@@ -42,7 +36,6 @@ public class Villager extends MidEntity implements Agent {
 
 	@Override
 	public void update(Point pos) {
-		currentPos = pos;
 		updatePos(pos.x, pos.y);
 		
 		adjustNeeds();
