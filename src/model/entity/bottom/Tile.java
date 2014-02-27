@@ -9,8 +9,8 @@ import util.EntityType;
  */
 public abstract class Tile extends BottomEntity{
 	
-	public Tile(int x, int y, EntityType id) {
-		super(x ,y, id);
+	public Tile(int x, int y, EntityType id, boolean blocking) {
+		super(x ,y, id, blocking);
 		updatePos(x,y);
 	}
 }

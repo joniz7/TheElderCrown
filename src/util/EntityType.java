@@ -8,5 +8,5 @@ package util;
 public enum EntityType {
 	GRASS_TILE, WATER_TILE,
 	VILLAGER,
-	TREE, HOUSE
+	TREE, HOUSE_DOOR, HOUSE_WALL, HOUSE_FLOOR;
 }

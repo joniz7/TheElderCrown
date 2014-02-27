@@ -8,8 +8,9 @@ import java.util.ArrayList;
 
 import model.entity.MidEntity;
 import model.entity.bottom.BottomEntity;
-import model.entity.top.House;
+import model.entity.bottom.HouseFloor;
 import model.entity.top.TopEntity;
+import model.entity.top.house.*;
 
 import org.newdawn.slick.Graphics;
 
@@ -18,8 +19,8 @@ import view.entity.EntityView;
 import view.entity.bot.GrassTileView;
 import view.entity.bot.WaterTileView;
 import view.entity.mid.VillagerView;
-import view.entity.top.HouseView;
 import view.entity.top.TreeView;
+import view.entity.top.house.*;
 
 public class View implements PropertyChangeListener {
 
@@ -128,9 +129,13 @@ public class View implements PropertyChangeListener {
 			case TREE:
 				view = new TreeView(entity.getX(), entity.getY());
 				break;
-			case HOUSE:
-				House house = (House) entity;
-				view = new HouseView(house.getX(), house.getY(), house.getOrientation());
+			case HOUSE_DOOR:
+				HouseDoor door = (HouseDoor) entity;
+				view = new HouseDoorView(door.getX(), door.getY(), door.getOrientation());
+				break;
+			case HOUSE_WALL:
+				HouseWall wall = (HouseWall) entity;
+				view = new HouseWallView(wall.getX(), wall.getY(), wall.getOrientation());
 				break;
 			}
 			PropertyChangeSupport pcs = entity.getPCS();
@@ -160,6 +165,10 @@ public class View implements PropertyChangeListener {
 				break;
 			case WATER_TILE:
 				view = new WaterTileView(entity.getX(), entity.getY());
+				break;
+			case HOUSE_FLOOR:
+				HouseFloor floor = (HouseFloor) entity;
+				view = new HouseFloorView(floor.getX(), floor.getY());
 				break;
 			}
 			PropertyChangeSupport pcs = entity.getPCS();

@@ -6,6 +6,7 @@ package util;
  *
  */
 public class Constants {
-	public static final float DOWN_ENTRANCE = 0.0f, LEFT_ENTRANCE = 90f,
-			UP_ENTRANCE = 180f, RIGHT_ENTRANCE = 270f; 
+	public static final int DOWN_ENTRANCE = 0, LEFT_ENTRANCE = 90,
+			UP_ENTRANCE = 180, RIGHT_ENTRANCE = 270,
+			ROTATE_CLOCKWISE = 90, ROTATE_HALF_TURN = 180, ROTATE_COUNTERCLOCKWISE = 270;
 }

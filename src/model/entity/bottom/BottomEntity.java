@@ -18,8 +18,8 @@ public abstract class BottomEntity extends Entity {
 	 * @param id The EntityType enum of the Entity.
 	 */
 
-	public BottomEntity(int x, int y, EntityType id) {
-		super(x, y, id);
+	public BottomEntity(int x, int y, EntityType id, boolean blocking) {
+		super(x, y, id, blocking);
 	}
 
 }

@@ -32,8 +32,17 @@ public abstract class Entity {
 		this.x = x;
 		this.y = y;
 		this.type = type;
+		this.isBlocking = true;
 	}
 	
+	public Entity(int x, int y, EntityType type, boolean blocking) {
+		pcs = new PropertyChangeSupport(this);
+		this.x = x;
+		this.y = y;
+		this.type = type;
+		isBlocking = blocking;
+	}
+
 	/**
 	 * The method used to update the position of this entity.
 	 * 
