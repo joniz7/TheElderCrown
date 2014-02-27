@@ -34,28 +34,14 @@ public class TestWorld extends World implements TileBasedMap{
 	// -- World configuration --
 	// Size of world
 	private final int WIDTH = 200, HEIGHT = 200;
-<<<<<<< HEAD
-<<<<<<< HEAD
 
-	private final int TREE_SPARSITY = 500, VILLAGER_SPAWN = 120;
-	private final int LAKE_COUNT = 3, VILLAGER_COUNT = 1;
-
-	private final float LAKE_WEIGHT = 1f, LAKE_LOSS = 0.02f;
-
-=======
-=======
->>>>>>> 9458fd4e72badb761ab3e4456c015b728b237516
 	// Villagers
 	private final int VILLAGER_SPAWN_POS = 40, VILLAGER_COUNT = 1;
 	// Lakes 
 	private final float LAKE_COUNT = 8, LAKE_WEIGHT = 1f, LAKE_LOSS = 0.02f;
 	// Trees
 	private final int TREE_SPARSITY = 280;
-	
-<<<<<<< HEAD
->>>>>>> 0257d5661caf944ac965f901b74b221887846371
-=======
->>>>>>> 9458fd4e72badb761ab3e4456c015b728b237516
+
 	private ArrayList<Tree> trees = new ArrayList<Tree>();
 	
 	private Random rnd = new Random();
