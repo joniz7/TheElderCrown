@@ -32,7 +32,6 @@ public class IntentionHandler {
 	}
 	
 	public Plan getFirstPlan(){
-		System.out.println("IntentionH: TICK " + pq.peek());
 		return pq.peek().getPlan();
 	}
 

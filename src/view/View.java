@@ -10,6 +10,7 @@ import model.entity.MidEntity;
 import model.entity.bottom.BottomEntity;
 import model.entity.top.House;
 import model.entity.top.TopEntity;
+import model.villager.Villager;
 
 import org.newdawn.slick.Graphics;
 
@@ -146,7 +147,9 @@ public class View implements PropertyChangeListener {
 			EntityView view = null;
 			switch(type){
 			case VILLAGER:
-				view = new VillagerView(entity.getX(), entity.getY());
+				Villager villager = (Villager) entity;
+				view = new VillagerView(entity.getX(), entity.getY(), 
+						villager.getHeight(), villager.getWeight());
 				break;
 			}
 			PropertyChangeSupport pcs = entity.getPCS();

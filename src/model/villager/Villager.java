@@ -13,6 +13,7 @@ import model.villager.intentions_Reloaded.EatPlan;
 import model.villager.intentions_Reloaded.IntentionHandler;
 import model.villager.intentions_Reloaded.Plan;
 import util.EntityType;
+import util.RandomClass;
 import util.SoundP;
 import util.Tickable;
 import view.entity.EntityView;
@@ -26,12 +27,14 @@ public class Villager extends MidEntity implements Agent {
 	private Plan activePlan;
 	private IntentionHandler IH = new IntentionHandler(this);
 	
-	private int test = 0;
+	private int test = 0, height, weight;
 	
 	public Villager(World world, int x, int y) {
 		super(x, y, EntityType.VILLAGER);
 		this.world = world;
-		System.out.println("New villager created: "+x+"  "+y);
+		height = 140 + RandomClass.getRandomInt(50, 0);
+		weight = height / 4 + RandomClass.getRandomInt(height/4, 0);
+		System.out.println("New villager created: "+height+"  "+weight);
 	}
 	
 	public World getWorld() {
@@ -43,11 +46,8 @@ public class Villager extends MidEntity implements Agent {
 		currentPos = pos;
 		updatePos(pos.x, pos.y);
 		
-		System.out.println("Villager: TICK");
 		adjustNeeds();
-		System.out.println("Villager: TICK 2");
 		plan();
-		System.out.println("Villager: TICK 3");
 	}
 	
 	public void satisfyHunger(float f) {
@@ -64,14 +64,11 @@ public class Villager extends MidEntity implements Agent {
 	}
 	
 	private void plan() {
-		System.out.println("Villager plan: TICK");
 		IH.update();
-		System.out.println("Villager plan: TICK 2");
 		if(activePlan == null) {
 			activePlan = IH.getFirstPlan();
 			System.out.println(activePlan);
 		}
-		System.out.println("Villager plan: TICK 3");
 	}
 	
 
@@ -104,6 +101,14 @@ public class Villager extends MidEntity implements Agent {
 	
 	
 	
+	public int getHeight() {
+		return height;
+	}
+
+	public int getWeight() {
+		return weight;
+	}
+
 	/*
 	private Brain brain;
 	private TestWorld world;
@@ -236,10 +241,9 @@ public class Villager extends MidEntity implements Agent {
 	 * Registers the view as our listener.
 	 */
 	public EntityView createView() {
-		EntityView view = new VillagerView(x, y);
+		EntityView view = new VillagerView(x, y, height, weight);
 		pcs.addPropertyChangeListener(view);
 		return view;
-
 	}
 
 

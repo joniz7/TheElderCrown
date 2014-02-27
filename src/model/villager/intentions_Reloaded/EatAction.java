@@ -25,7 +25,6 @@ public class EatAction extends Action{
 			tree.eaten();
 			villager.satisfyHunger(0.1f);
 			stacks++;
-			System.out.println("EatAction: stacks " + stacks);
 			if(stacks > stacksToEat)
 				actionFinished();
 		}else
