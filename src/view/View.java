@@ -131,8 +131,8 @@ public class View implements PropertyChangeListener {
 		String name = event.getPropertyName();
 		if (name.equals("camera")) {
 			Point p = (Point)event.getNewValue();
-			cameraX = convertCoordinate(p.getX());
-			cameraY = convertCoordinate(p.getY());
+			cameraX = convertCoordinate(p.getX()) - width/2;
+			cameraY = convertCoordinate(p.getY()) - height/2;
 		}
 		else if(name.equals("worldsize")){
 			Point size = (Point) event.getNewValue();
