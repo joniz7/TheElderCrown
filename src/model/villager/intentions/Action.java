@@ -1,4 +1,4 @@
-package model.villager.intentions_Reloaded;
+package model.villager.intentions;
 
 import model.World;
 import model.villager.Villager;

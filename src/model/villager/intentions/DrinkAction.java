@@ -1,4 +1,4 @@
-package model.villager.intentions_Reloaded;
+package model.villager.intentions;
 
 import util.EntityType;
 import model.World;

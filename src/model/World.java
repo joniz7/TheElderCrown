@@ -17,7 +17,7 @@ import model.entity.bottom.BottomEntity;
 import model.entity.bottom.WaterTile;
 import model.entity.top.TopEntity;
 import model.villager.Villager;
-import model.villager.intentions_Reloaded.Action;
+import model.villager.intentions.Action;
 
 import org.newdawn.slick.util.pathfinding.PathFindingContext;
 
