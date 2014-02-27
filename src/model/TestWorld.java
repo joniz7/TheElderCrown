@@ -32,7 +32,7 @@ public class TestWorld extends World implements TileBasedMap{
 	private final int WIDTH = 200, HEIGHT = 200;
 
 	private final int TREE_SPARSITY = 500, VILLAGER_SPAWN = 120;
-	private final int LAKE_COUNT = 3;
+	private final int LAKE_COUNT = 3, VILLAGER_COUNT = 10;
 
 	private final float LAKE_WEIGHT = 1f, LAKE_LOSS = 0.02f;
 
@@ -182,7 +182,7 @@ public class TestWorld extends World implements TileBasedMap{
 	}
 	
 	private void initializeVillagers() {
-		for(int i = 0; i < 4; i++) {
+		for(int i = 0; i < VILLAGER_COUNT; i++) {
 			Point pos = new Point(VILLAGER_SPAWN, VILLAGER_SPAWN+i);
 			Villager villager = new Villager(this, VILLAGER_SPAWN, VILLAGER_SPAWN+i);
 			addEntity(pos, villager);
