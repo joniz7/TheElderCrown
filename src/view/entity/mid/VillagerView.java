@@ -7,6 +7,7 @@ import org.newdawn.slick.Color;
 import org.newdawn.slick.Graphics;
 
 import util.ImageLoader;
+import util.RandomClass;
 import view.entity.EntityView;
 
 /**
@@ -17,6 +18,7 @@ import view.entity.EntityView;
 public class VillagerView extends EntityView {
 
 	private int height, weight;
+	private Color c;
 	
 	/**
 	 * Creates a new VillagerView.
@@ -27,6 +29,8 @@ public class VillagerView extends EntityView {
 		super("villager", x, y);
 		this.height = height;
 		this.weight = weight;
+		c = new Color(RandomClass.getRandomInt(200, 25), RandomClass.getRandomInt(200, 50), 
+				RandomClass.getRandomInt(200, 25));
 	}
 
 	@Override
@@ -42,9 +46,9 @@ public class VillagerView extends EntityView {
 				float BMI = (float) (weight * 4) / (float) height;
 				int diameter = ((int) (BMI * 13)) + 10;
 				
-				g.drawImage(image, transposedX, transposedY);
+//				g.drawImage(image, transposedX, transposedY);
 				
-				g.setColor(new Color(125, 125, 125));
+				g.setColor(c);
 				g.fillOval(transposedX + (20 - diameter)/2, transposedY + (20 - diameter)/2,
 						diameter, diameter);
 				g.setColor(new Color(0, 0, 0));
