@@ -1,5 +1,7 @@
 package head;
 
+import org.lwjgl.opengl.Display;
+import org.lwjgl.opengl.DisplayMode;
 import org.newdawn.slick.AppGameContainer;
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.SlickException;
@@ -15,13 +17,16 @@ public class StatedGame extends StateBasedGame {
     public static final int GAME         = 2;
 
     // Application Properties
-    public static final int WIDTH   = 1024;
-    public static final int HEIGHT  = 768;
+    public static int WIDTH   = 800;
+    public static int HEIGHT  = 600;
+    private static int nativeHeight, nativeWidth;
+    
     public static final int FPS     = 60;
     public static final double VERSION = 0.01;
 	private static String title = "The Elder Crown";
 	private static final int TICK_INTERVAL = 5;
-
+ 
+	
     
 	// Class Constructor
 	public StatedGame() {
@@ -45,6 +50,21 @@ public class StatedGame extends StateBasedGame {
     // Main Method
     public static void main(String[] args) {
         try {
+        	
+            try {
+                for(DisplayMode displayMode : Display.getAvailableDisplayModes()) {
+                  if (displayMode.getBitsPerPixel() == 32 || displayMode.getBitsPerPixel() == 24
+                      && (displayMode.getWidth() > WIDTH
+                          || displayMode.getHeight() > HEIGHT)) {
+                	nativeWidth = displayMode.getWidth();
+                	nativeHeight = displayMode.getHeight();
+                    
+                  }
+                } 
+              } catch(Throwable t) {
+                throw new SlickException("Error finding native monitor resolution.", t);
+              }
+            
             app = new AppGameContainer(new StatedGame());
             app.setDisplayMode(WIDTH, HEIGHT, false);
             app.setTargetFrameRate(FPS);
@@ -57,4 +77,13 @@ public class StatedGame extends StateBasedGame {
             e.printStackTrace();
         }
     }
+    
+    public int getNativeWidth(){
+    	return nativeWidth;
+    }
+    
+    public int getNativeHeight(){
+    	return nativeHeight;
+    }
+    
 }

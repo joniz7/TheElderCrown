@@ -72,19 +72,27 @@ public class View implements PropertyChangeListener {
 	}
 
 	public void incX(){
+		if(cameraX<convertCoordinate(150))
 			cameraX += SCROLL_SPEED;
+			System.out.println("CameraX: "+cameraX);
 	}
 
 	public void incY(){
+		if(cameraY<convertCoordinate(150))
 			cameraY += SCROLL_SPEED;
+			System.out.println("CameraY: "+cameraY);
 	}
 
 	public void decX(){
+		if(cameraX>convertCoordinate(0))
 			cameraX -= SCROLL_SPEED;
+			System.out.println("CameraX: "+cameraX);
 	}
 
 	public void decY(){
+		if(cameraY>convertCoordinate(0))
 			cameraY -= SCROLL_SPEED;
+			System.out.println("CameraY: "+cameraY);
 	}
 
 	public static void render(Graphics g){
@@ -203,5 +211,10 @@ public class View implements PropertyChangeListener {
 	 */
 	public static int convertCoordinate(double worldCoordinate) {
 		return (int)worldCoordinate*TILE_OFFSET;
+	}
+	
+	public void setSize(int width, int height){
+		this.height = height;
+		this.width = width;
 	}
 }
