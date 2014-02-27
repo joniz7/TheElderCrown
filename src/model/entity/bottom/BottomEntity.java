@@ -12,17 +12,26 @@ import util.EntityType;
 public abstract class BottomEntity extends Entity {
 	
 	/**
-	 * The constructor simply relays all the indata to the superconstructor.
+	 * Constructs a new, non-blocking BottomEntity.
+	 * 
 	 * @param x the x-coordinate of the Entity.
 	 * @param y the y-coordinate of the Entity.
 	 * @param id The EntityType enum of the Entity.
 	 */
 	public BottomEntity(int x, int y, EntityType id) {
-		super(x, y, id);
+		super(x, y, id, false);
 	}
-	
-	public BottomEntity(int x, int y, EntityType id, boolean isBlocking) {
-		super(x, y, id, isBlocking);
+
+	/**
+	 * Constructs a new BottomEntity.
+	 * 
+	 * @param x the x-coordinate of the Entity.
+	 * @param y the y-coordinate of the Entity.
+	 * @param id The EntityType enum of the Entity.
+	 * @param blocking whether this entity should hinder the movement of other villagers
+	 */
+	public BottomEntity(int x, int y, EntityType id, boolean blocking) {
+		super(x, y, id, blocking);
 	}
 
 }

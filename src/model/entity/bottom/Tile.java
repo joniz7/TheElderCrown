@@ -8,14 +8,15 @@ import util.EntityType;
  *
  */
 public abstract class Tile extends BottomEntity{
-	
+
 	public Tile(int x, int y, EntityType id) {
 		super(x ,y, id);
 		updatePos(x,y);
 	}
 	
-	public Tile(int x, int y, EntityType id, boolean isBlocking) {
-		super(x ,y, id, isBlocking);
+	public Tile(int x, int y, EntityType id, boolean blocking) {
+		super(x ,y, id, blocking);
 		updatePos(x,y);
 	}
+
 }

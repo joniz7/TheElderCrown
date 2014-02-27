@@ -23,28 +23,13 @@ public abstract class Entity {
 	protected boolean isBlocking;
 	
 	/**
-	 * The general constructor.
-	 * 
-	 * @param x the x-coordinate of the Entity.
-	 * @param y the y-coordinate of the Entity.
-	 * @param type the EntityType associated with the Entity.
-	 */
-
-	public Entity(int x, int y, EntityType type){
-		pcs = new PropertyChangeSupport(this);
-		this.x = x;
-		this.y = y;
-		this.type = type;
-		this.isBlocking = true;
-	}
-	
-	/**
 	 * A constructor with added functionality to set the Entity to blocking or not.
 	 * 
 	 * @param x the x-coordinate of the Entity.
 	 * @param y the y-coordinate of the Entity.
 	 * @param type the EntityType associated with the Entity.
-	 * @param blocking a boolean representing whether or not this Entity would block movement on its tile.
+	 * @param blocking a boolean representing whether or not
+	 *        this Entity would block movement on its tile.
 	 */
 	public Entity(int x, int y, EntityType type, boolean blocking){
 		pcs = new PropertyChangeSupport(this);
@@ -52,8 +37,9 @@ public abstract class Entity {
 		this.y = y;
 		this.type = type;
 		this.isBlocking = blocking;
+
 	}
-	
+
 	/**
 	 * The method used to update the position of this entity.
 	 * 
