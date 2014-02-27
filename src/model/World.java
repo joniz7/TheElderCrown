@@ -221,6 +221,20 @@ public abstract class World implements Tickable{
 		return topEntities;
 	}
 	
+	public void removeAgent(Agent agent) {
+		Iterator<Map.Entry<Point, Agent>> it = agents.entrySet().iterator();
+		
+		while(it.hasNext()) {
+			Map.Entry<Point, Agent> e = (Map.Entry<Point, Agent>) it.next();
+			e.getValue().update(e.getKey());
+			Action active = e.getValue().getAction();
+			if(active != null && !active.isFailed() && !active.isFinished())
+				active.tick(this);
+			else
+				e.getValue().actionDone();
+		}
+	}
+	
 	
 	
 }

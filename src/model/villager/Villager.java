@@ -16,6 +16,7 @@ import view.entity.mid.VillagerView;
 public class Villager extends MidEntity implements Agent {
 
 	private float hunger = -15f, thirst = 2f, speed = 20;
+	private boolean dead = false;
 	private World world;
 	private Plan activePlan;
 	private IntentionHandler IH = new IntentionHandler(this);
@@ -39,6 +40,7 @@ public class Villager extends MidEntity implements Agent {
 		updatePos(pos.x, pos.y);
 		
 		adjustNeeds();
+		seeIfDead();
 		plan();
 	}
 	
@@ -53,6 +55,12 @@ public class Villager extends MidEntity implements Agent {
 	private void adjustNeeds() {
 		hunger = hunger - 0.01f;
 		thirst = thirst - 0.01f;
+	}
+	
+	private void seeIfDead() {
+		if(hunger < -100 && thirst < -100) {
+			dead = true;
+		}
 	}
 	
 	private void plan() {
@@ -117,6 +125,11 @@ public class Villager extends MidEntity implements Agent {
 		EntityView view = new VillagerView(x, y, height, weight);
 		pcs.addPropertyChangeListener(view);
 		return view;
+	}
+
+	@Override
+	public boolean isDead() {
+		return dead;
 	}
 
 
