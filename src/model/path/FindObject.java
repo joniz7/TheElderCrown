@@ -401,8 +401,10 @@ public static Point findTile2(TestWorld world, EntityType id, int startX, int st
 		
 		visited.add(new Point(startX, startY));
 		
+		int stacks = 0;
 		boolean found = false;
 		while(!found){
+			stacks++;
 			//Add neighbors to visit
 			toVisit = new ArrayList<Point>();
 			toCheck = new ArrayList<Point>();
@@ -461,6 +463,11 @@ public static Point findTile2(TestWorld world, EntityType id, int startX, int st
 					return p;
 //				else
 //					View.addTopGraphic(new Helper1View(p.x, p.y));
+			}
+			if(stacks > 1000){
+				Exception e = new Exception();
+				e.printStackTrace();
+				System.exit(0);
 			}
 		}
 		return null;

@@ -41,7 +41,6 @@ public class TestWorld extends World implements TileBasedMap{
 	// Trees
 	private final int TREE_SPARSITY = 280;
 	
-	
 	private ArrayList<Tree> trees = new ArrayList<Tree>();
 	
 	private Random rnd = new Random();
