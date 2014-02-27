@@ -108,6 +108,17 @@ public class Villager extends MidEntity implements Agent {
 	public int getWeight() {
 		return weight;
 	}
+	
+	/**
+	 * Method for updating the view (and thus set villager looks) after what they are currently doing.
+	 * Should probably be called in the *Action-classes
+	 * 
+	 * @param The new status for the villager. Currently only "sleeping" or "awake".
+	 */
+	protected void updateStatus(String newStatus){
+		pcs.firePropertyChange("status", null, newStatus);
+		
+	}
 
 	/*
 	private Brain brain;
@@ -229,11 +240,6 @@ public class Villager extends MidEntity implements Agent {
 	public TestWorld getWorld() {
 		return world;
 }
-	
-	protected void updateStatus(String newStatus){
-		pcs.firePropertyChange("status", null, newStatus);
-		
-	}
 	
 	
 	/**

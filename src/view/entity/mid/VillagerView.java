@@ -63,8 +63,9 @@ public class VillagerView extends EntityView {
 	@Override
 	/**
 	 * Is called when our associated model changes in any way.
+	 * Either updated the villager image, or defers to the superclass.
 	 * 
-	 * @author Tux
+	 * @author Tux, Denise
 	 */
 	public void propertyChange(PropertyChangeEvent event) {
 		String name = event.getPropertyName();
