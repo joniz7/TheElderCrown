@@ -464,10 +464,18 @@ public static Point findTile2(TestWorld world, EntityType id, int startX, int st
 //				else
 //					View.addTopGraphic(new Helper1View(p.x, p.y));
 			}
-			if(stacks > 1000){
+			
+			if(visited.size() == 0){
 				Exception e = new Exception();
 				e.printStackTrace();
-				System.exit(0);
+				return null;
+			}
+			
+			if(stacks > 1000){
+				System.out.println("FindObject: " + visited.size());
+				Exception e = new Exception();
+				e.printStackTrace();
+				return null;
 			}
 		}
 		return null;

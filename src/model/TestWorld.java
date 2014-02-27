@@ -32,7 +32,7 @@ public class TestWorld extends World implements TileBasedMap{
 	private final int WIDTH = 200, HEIGHT = 200;
 
 	private final int TREE_SPARSITY = 500, VILLAGER_SPAWN = 120;
-	private final int LAKE_COUNT = 3, VILLAGER_COUNT = 10;
+	private final int LAKE_COUNT = 3, VILLAGER_COUNT = 1;
 
 	private final float LAKE_WEIGHT = 1f, LAKE_LOSS = 0.02f;
 
@@ -61,13 +61,29 @@ public class TestWorld extends World implements TileBasedMap{
 		
 		new PathFinder(this);
 		
-		for(int i = 112; i < 128; i++) {
-			for(int j = 112; j < 128; j++) {
-				Point pos = new Point(i, j);
-				GrassTile grass = new GrassTile(i, j);
-				addEntity(pos, grass);
-			}
-		}
+//		for(int i = 112; i < 128; i++) {
+//			for(int j = 112; j < 128; j++) {
+//				Point pos = new Point(i, j);
+//				GrassTile grass = new GrassTile(i, j);
+//				addEntity(pos, grass);
+//			}
+//		}
+		
+		Point posG1 = new Point(120, 121);
+		GrassTile grass = new GrassTile(120, 121);
+		addEntity(posG1, grass);
+		
+		Point posG2 = new Point(121, 120);
+		GrassTile grass2 = new GrassTile(121, 120);
+		addEntity(posG2, grass2);
+		
+		Point posG3 = new Point(119, 120);
+		GrassTile grass3 = new GrassTile(119, 120);
+		addEntity(posG3, grass3);
+		
+		Point posG4 = new Point(120, 119);
+		GrassTile grass4 = new GrassTile(120, 119);
+		addEntity(posG4, grass4);
 		
 		// Send camera position update to view
 		Point pos = new Point(VILLAGER_SPAWN, VILLAGER_SPAWN);
