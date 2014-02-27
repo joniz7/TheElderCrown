@@ -1,4 +1,4 @@
-package model.villager.intentions_Reloaded;
+package model.villager.intentions;
 
 import java.awt.Point;
 import java.util.LinkedList;
@@ -13,17 +13,17 @@ import org.newdawn.slick.util.pathfinding.Path;
 
 import util.EntityType;
 
-public class EatPlan extends Plan{
+public class DrinkPlan extends Plan{
 
-	public EatPlan(Villager villager){
+	public DrinkPlan(Villager villager){
 		super(villager);
 		actionQueue = new LinkedList<Action>();
 		
-		Point p = FindObject.findObjectNeighbour((TestWorld)villager.getWorld(), new HasFruit(), EntityType.TREE, 
+		Point p = FindObject.findTileNeighbour((TestWorld)villager.getWorld(), EntityType.WATER_TILE, 
 				villager.getX(), villager.getY());
 		Path movePath = PathFinder.getPathToAdjacent(villager.getX(), villager.getY(), p.x, p.y);
-
 		actionQueue.add(new MoveAction(villager, movePath));
-		actionQueue.addLast(new EatAction(villager));
+		
+		actionQueue.addLast(new DrinkAction(villager));
 	}
 }

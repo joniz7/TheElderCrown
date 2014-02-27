@@ -2,7 +2,7 @@ package model.entity;
 
 import java.awt.Point;
 
-import model.villager.intentions_Reloaded.Action;
+import model.villager.intentions.Action;
 
 public interface Agent {
 	public void update(Point pos);
