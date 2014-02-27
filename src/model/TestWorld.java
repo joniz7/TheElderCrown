@@ -77,6 +77,8 @@ public class TestWorld extends World implements TileBasedMap{
 		// Send camera position update to view
 		Point pos = new Point(VILLAGER_SPAWN_POS, VILLAGER_SPAWN_POS);
 		pcs.firePropertyChange("camera", null, pos);
+		Point size = new Point(WIDTH,HEIGHT);
+		pcs.firePropertyChange("worldsize",null,size);
 
 		initializeVillagers();
 	}

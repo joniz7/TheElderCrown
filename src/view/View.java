@@ -31,6 +31,7 @@ public class View implements PropertyChangeListener {
 	private static final int SCROLL_SPEED = 8;
 	private static int width, height;
 	private static int cameraX, cameraY;
+	private static int worldXSize, worldYSize;
 	
 	// The size of each tile in pixels (?)
 	public static final int TILE_OFFSET = 20;
@@ -73,13 +74,13 @@ public class View implements PropertyChangeListener {
 	}
 
 	public void incX(){
-		if(cameraX<convertCoordinate(150))
+		if(cameraX<worldXSize-1000)
 			cameraX += SCROLL_SPEED;
 			System.out.println("CameraX: "+cameraX);
 	}
 
 	public void incY(){
-		if(cameraY<convertCoordinate(150))
+		if(cameraY<worldYSize-1000)
 			cameraY += SCROLL_SPEED;
 			System.out.println("CameraY: "+cameraY);
 	}
@@ -97,7 +98,7 @@ public class View implements PropertyChangeListener {
 	}
 
 	public static void render(Graphics g){
-
+		System.out.println("Size: "+botGraphics.size());
 		//		Display disp = new Display();
 		//		g.fillRect(0, 0, disp.getGraphicsDevice().getDisplayMode().getWidth(), 
 		//				disp.getGraphicsDevice().getDisplayMode().getHeight());
@@ -132,6 +133,11 @@ public class View implements PropertyChangeListener {
 			Point p = (Point)event.getNewValue();
 			cameraX = convertCoordinate(p.getX());
 			cameraY = convertCoordinate(p.getY());
+		}
+		else if(name.equals("worldsize")){
+			Point size = (Point) event.getNewValue();
+			worldXSize = convertCoordinate((int) size.getX());
+			worldYSize = convertCoordinate((int) size.getY());
 		}
 		else if (name.equals("addTopEntity")) {
 			TopEntity entity = (TopEntity) event.getNewValue();
