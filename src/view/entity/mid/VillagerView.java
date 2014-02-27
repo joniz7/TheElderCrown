@@ -41,7 +41,6 @@ public class VillagerView extends EntityView {
 			if(transposedY + imageHeight > 0 && transposedY < height){
 				float BMI = (float) (weight * 4) / (float) height;
 				int diameter = ((int) (BMI * 13)) + 10;
-				System.out.println(diameter);
 				
 				g.drawImage(image, transposedX, transposedY);
 				
