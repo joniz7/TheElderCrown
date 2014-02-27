@@ -1,5 +1,6 @@
-package model.entity.top;
+package model.entity.top.house;
 
+import model.entity.top.TopEntity;
 import util.EntityType;
 
 /**
@@ -8,10 +9,8 @@ import util.EntityType;
  * @author Teodor O
  *
  */
-public class House extends TopEntity {
+public abstract class HousePart extends TopEntity {
 	
-	private float orientation;
-
 	/**
 	 * The constructor which creates the house and orients it properly.
 	 * 
@@ -19,18 +18,8 @@ public class House extends TopEntity {
 	 * @param y the y-coordinate of the top left corner of the house.
 	 * @param orientation an integer that specifies what direction the entrance will be oriented in.
 	 */
-	public House(int x, int y, float orientation) {
-
-		super(x, y, EntityType.HOUSE);
-		this.orientation = orientation;
-		updatePos(x-1, y-1);
-	}
-	
-	/**
-	 * A getter for the housese orientation.
-	 * @return the float specifying the angle of the house in degrees.
-	 */
-	public float getOrientation(){
-		return orientation;
+	public HousePart(int x, int y, EntityType type, boolean blocking) {
+		super(x, y, type, blocking);
+		updatePos(x, y);
 	}
 }

@@ -1,5 +1,6 @@
 package head;
 
+import org.newdawn.slick.AppGameContainer;
 import org.newdawn.slick.Color;
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
@@ -14,8 +15,10 @@ import view.MainMenuView;
 
 public class MainMenu implements GameState {
 	
-	MainMenuView view = new MainMenuView();
-	StateBasedGame game;
+	private static MainMenuView view = new MainMenuView();
+	private static StateBasedGame game;
+	private static AppGameContainer container;
+	private boolean isFullscreen = false;
 
 
 	@Override
@@ -80,32 +83,44 @@ public class MainMenu implements GameState {
 
 	@Override
 	public void keyPressed(int key, char e) {
-		switch(key){
-		case Input.KEY_1:
-			game.enterState(2, new FadeOutTransition(Color.black), new FadeInTransition(Color.black));
-			break;
-		case Input.KEY_2:
-			((StatedGame)game).exit();
-			break;
-		default:
-			break;
-		}
-
+		// TODO: Anything to do here?
 	}
 
 	@Override
 	public void keyReleased(int key, char e) {
-		System.out.println("Nåt grej");
 		switch(key){
 		case Input.KEY_1:
 			game.enterState(2, new FadeOutTransition(Color.black), new FadeInTransition(Color.black));
 			break;
 		case Input.KEY_2:
+			if(!isFullscreen){
+				int w =((StatedGame)game).getNativeWidth();
+				int h =((StatedGame)game).getNativeHeight();
+				try {
+					container.setDisplayMode(w, h, true);
+					isFullscreen = true;
+				} catch (SlickException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
+			}else{
+				try {
+					container.setDisplayMode(800, 600, false);
+					isFullscreen = false;
+				} catch (SlickException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
+			}
+			
+			break;
+		case Input.KEY_3:
 			((StatedGame)game).exit();
 			break;
 		default:
 			break;
 		}
+
 	}
 
 	@Override
@@ -181,9 +196,10 @@ public class MainMenu implements GameState {
 	}
 
 	@Override
-	public void init(GameContainer arg0, StateBasedGame game)
+	public void init(GameContainer container, StateBasedGame game)
 			throws SlickException {
 		this.game = game;
+		this.container = (AppGameContainer)container;
 
 	}
 
