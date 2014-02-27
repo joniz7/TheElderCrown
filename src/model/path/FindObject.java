@@ -448,7 +448,7 @@ public static Point findTile2(TestWorld world, EntityType id, int startX, int st
 				else if(tops.get(p) != null && tops.get(p).getEntityType() == id && tops.get(p).meetCriteria(crit) && 
 						PathFinder.getPathToAdjacent(p.x, p.y, startX, startY) != null)
 					return p;
-				else{
+				else {
 					visited.add(p);
 //					View.addTopGraphic(new Helper1View(p.x, p.y));
 				}
