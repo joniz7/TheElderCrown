@@ -60,8 +60,9 @@ public class TestWorld extends World implements TileBasedMap{
 	 */
 	public void initialize() {
 
-		initializeGrass();
+
 		initializeLakes();
+		initializeGrass();
 		initializeHouses();
 		initializeTrees();
 		
@@ -106,9 +107,11 @@ public class TestWorld extends World implements TileBasedMap{
 	private void initializeGrass() {
 		for(int i = 0; i < WIDTH; i++) {
 			for(int j = 0; j < HEIGHT; j++) {
-				GrassTile grass = new GrassTile(i, j);
 				Point pos = new Point(i, j);
+				if(!botEntities.containsKey(pos)){
+				GrassTile grass = new GrassTile(i, j);
 				addEntity(pos, grass);
+				}
 			}
 		}
 	}
@@ -140,27 +143,27 @@ public class TestWorld extends World implements TileBasedMap{
 			while(!lakeDone){
 				ArrayList<Point> newWater = new ArrayList<Point>();
 				for(Point p : oldWater){
-					if(rnd.nextFloat() < weight && p.x != 0 && botEntities.get(new Point(p.x - 1, p.y)) instanceof GrassTile){
+					if(rnd.nextFloat() < weight && p.x != 0 && !(botEntities.get(new Point(p.x - 1, p.y)) instanceof WaterTile)){
 						Point pos = new Point(p.x-1, p.y);
 						addEntity(pos, new WaterTile((p.x-1), p.y));
 						newWater.add(new Point(p.x-1, p.y));
 					}
-					if(rnd.nextFloat() < weight  && p.x != 79 && botEntities.get(new Point(p.x + 1, p.y)) instanceof GrassTile){
+					if(rnd.nextFloat() < weight  && p.x != 79 && !(botEntities.get(new Point(p.x + 1, p.y)) instanceof WaterTile)){
 						addEntity(new Point(p.x+1, p.y), new WaterTile((p.x+1), p.y));
 						newWater.add(new Point(p.x+1, p.y));
 					}	
-					if(rnd.nextFloat() < weight  && p.y != 0 && botEntities.get(new Point(p.x, p.y - 1)) instanceof GrassTile){
+					if(rnd.nextFloat() < weight  && p.y != 0 && !(botEntities.get(new Point(p.x, p.y - 1)) instanceof WaterTile)){
 						addEntity(new Point(p.x, p.y-1), new WaterTile(p.x, (p.y-1)));
 						newWater.add(new Point(p.x, p.y-1));
 					}
-					if(rnd.nextFloat() < weight  && p.y != 79 && botEntities.get(new Point(p.x, p.y + 1)) instanceof GrassTile){
+					if(rnd.nextFloat() < weight  && p.y != 79 && !(botEntities.get(new Point(p.x, p.y + 1)) instanceof WaterTile)){
 						addEntity(new Point(p.x, p.y+1), new WaterTile(p.x, (p.y+1)));
 						newWater.add(new Point(p.x, p.y+1));
 					}
 				}
 				
 				oldWater = newWater;
-				
+				System.out.println("Generating lakes");
 				weight = weight - LAKE_LOSS;
 				if(weight <= 0)
 					lakeDone = true;
