@@ -16,7 +16,7 @@ public class SleepIntent extends Intent {
 
 	@Override
 	public void calculateDesire() {
-		setDesire(-villager.getSleepiness() * 2);
+		setDesire(-villager.getSleepiness() * 3);
 //		System.out.println("SleepIntent: " + desire);
 
 	}
