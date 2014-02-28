@@ -3,14 +3,14 @@ package model.villager.intentions;
 import util.EntityType;
 import model.TestWorld;
 import model.World;
-import model.entity.top.Tree;
+import model.entity.bottom.HouseFloor;
 import model.path.FindObject;
-import model.path.criteria.HasFruit;
 import model.villager.Villager;
 
 public class SleepAction extends Action {
 
 	private float stacks, sleepToGet;
+	private HouseFloor floor;
 	
 	public SleepAction(Villager villager) {
 		super(villager);
