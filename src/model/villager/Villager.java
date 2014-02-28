@@ -15,7 +15,7 @@ import view.entity.mid.VillagerView;
 
 public class Villager extends MidEntity implements Agent {
 
-	private float hunger = -15f, thirst = 2f, speed = 20;
+	private float hunger = -15f, thirst = 2f, speed = 20, sleepiness = 5f ;
 	private World world;
 	private Plan activePlan;
 	private IntentionHandler IH = new IntentionHandler(this);
@@ -50,9 +50,14 @@ public class Villager extends MidEntity implements Agent {
 		this.thirst += f;
 	}
 	
+	public void satisfySleep(float f){
+		this.sleepiness += f;
+	}
+	
 	private void adjustNeeds() {
 		hunger = hunger - 0.01f;
 		thirst = thirst - 0.01f;
+		sleepiness = sleepiness - 0.01f;
 	}
 	
 	private void plan() {
@@ -90,6 +95,10 @@ public class Villager extends MidEntity implements Agent {
 		return thirst;
 	}
 	
+	public float getSleepiness(){
+		return sleepiness;
+	}
+	
 	public int getHeight() {
 		return height;
 	}
@@ -103,6 +112,8 @@ public class Villager extends MidEntity implements Agent {
 	 * Should probably be called in the *Action-classes
 	 * 
 	 * @param The new status for the villager. Currently only "sleeping" or "awake".
+	 * 
+	 * @author Tux
 	 */
 	protected void updateStatus(String newStatus){
 		pcs.firePropertyChange("status", null, newStatus);
