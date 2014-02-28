@@ -22,7 +22,8 @@ public class SleepPlan extends Plan {
 		Point floorPos = FindObject.findTile2((TestWorld)villager.getWorld(),EntityType.HOUSE_FLOOR, villager.getX(),villager.getY());
 
 		if(floorPos != null){
-			if(villager.getWorld().getBotEntities().get(floorPos) instanceof HouseFloor){
+			Point villPos = new Point(villager.getX(),villager.getY());
+			if(villager.getWorld().getBotEntities().get(villPos) instanceof HouseFloor){
 				actionQueue.addLast(new SleepAction(villager));
 			}else{
 			Path movePath = PathFinder.getPath(villager.getX(), villager.getY(), floorPos.x, floorPos.y);

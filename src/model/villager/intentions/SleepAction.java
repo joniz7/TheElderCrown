@@ -14,14 +14,14 @@ public class SleepAction extends Action {
 	
 	public SleepAction(Villager villager) {
 		super(villager);
-		sleepToGet = villager.getSleepiness();
+		sleepToGet = 250; // villager.getSleepiness();
 	}
 
 	@Override
 	public void tick(World world){
 		if(FindObject.findTile2((TestWorld) world, EntityType.HOUSE_FLOOR, villager.getX(), villager.getY()) != null) {
 			villager.satisfySleep(0.1f);
-			stacks = stacks + 0.1f;
+			stacks = stacks + 0.2f;
 			if(stacks > sleepToGet)
 				actionFinished();
 		}else
