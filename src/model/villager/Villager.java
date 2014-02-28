@@ -57,7 +57,7 @@ public class Villager extends MidEntity implements Agent {
 	private void adjustNeeds() {
 		hunger = hunger - 0.01f;
 		thirst = thirst - 0.01f;
-		sleepiness = sleepiness - 0.005f;
+		sleepiness = sleepiness - 0.003f;
 	}
 	
 	private void plan() {
