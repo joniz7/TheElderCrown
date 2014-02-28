@@ -22,13 +22,22 @@ public class EatAction extends Action{
 				villager.getY()) != null) {
 			Tree tree = (Tree) FindObject.getAdjacentObject(world, new HasFruit(), EntityType.TREE, villager.getX(),
 					villager.getY());
+			villager.updateStatus("eating");
 			tree.eaten();
 			villager.satisfyHunger(0.1f);
 			stacks++;
-			if(stacks > stacksToEat)
+			if(stacks > stacksToEat){
+				villager.updateStatus("statusEnd");
 				actionFinished();
-		}else
+			}else if(!tree.hasFruit()){
+				villager.updateStatus("statusEnd");
+			}
+				
+		}else{
+			villager.updateStatus("statusEnd");
 			actionFailed();
+		}
+			
 
 	}
 
