@@ -12,10 +12,12 @@ import model.entity.Entity;
 import model.entity.MidEntity;
 import model.entity.bottom.BottomEntity;
 import model.entity.bottom.GrassTile;
+import model.entity.bottom.HouseFloor;
 import model.entity.bottom.WaterTile;
-import model.entity.top.House;
 import model.entity.top.TopEntity;
 import model.entity.top.Tree;
+import model.entity.top.house.HouseDoor;
+import model.entity.top.house.HouseWall;
 import model.path.PathFinder;
 import model.villager.Villager;
 
@@ -23,18 +25,22 @@ import org.newdawn.slick.util.pathfinding.PathFindingContext;
 import org.newdawn.slick.util.pathfinding.TileBasedMap;
 
 import util.Constants;
+import util.EntityType;
 import util.NoPositionFoundException;
 import util.NoSuchEntityException;
-import util.EntityType;
 
 public class TestWorld extends World implements TileBasedMap{
 	
+	// -- World configuration --
+	// Size of world
 	private final int WIDTH = 200, HEIGHT = 200;
 
-	private final int TREE_SPARSITY = 500, VILLAGER_SPAWN = 120;
-	private final int LAKE_COUNT = 3;
-
-	private final float LAKE_WEIGHT = 1f, LAKE_LOSS = 0.02f;
+	// Villagers
+	private final int VILLAGER_SPAWN_POS = 40, VILLAGER_COUNT = 1;
+	// Lakes 
+	private final float LAKE_COUNT = 8, LAKE_WEIGHT = 1f, LAKE_LOSS = 0.02f;
+	// Trees
+	private final int TREE_SPARSITY = 280;
 
 	private ArrayList<Tree> trees = new ArrayList<Tree>();
 	
@@ -54,24 +60,43 @@ public class TestWorld extends World implements TileBasedMap{
 	 */
 	public void initialize() {
 
-		initializeGrass();
+
 		initializeLakes();
-		initializeTrees();
+		initializeGrass();
 		initializeHouses();
+		initializeTrees();
 		
 		new PathFinder(this);
 		
-		for(int i = 112; i < 128; i++) {
-			for(int j = 112; j < 128; j++) {
-				Point pos = new Point(i, j);
-				GrassTile grass = new GrassTile(i, j);
-				addEntity(pos, grass);
-			}
-		}
+//		for(int i = 112; i < 128; i++) {
+//			for(int j = 112; j < 128; j++) {
+//				Point pos = new Point(i, j);
+//				GrassTile grass = new GrassTile(i, j);
+//				addEntity(pos, grass);
+//			}
+//		}
+		
+		Point posG1 = new Point(120, 121);
+		GrassTile grass = new GrassTile(120, 121);
+		addEntity(posG1, grass);
+		
+		Point posG2 = new Point(121, 120);
+		GrassTile grass2 = new GrassTile(121, 120);
+		addEntity(posG2, grass2);
+		
+		Point posG3 = new Point(119, 120);
+		GrassTile grass3 = new GrassTile(119, 120);
+		addEntity(posG3, grass3);
+		
+		Point posG4 = new Point(120, 119);
+		GrassTile grass4 = new GrassTile(120, 119);
+		addEntity(posG4, grass4);
 		
 		// Send camera position update to view
-		Point pos = new Point(VILLAGER_SPAWN, VILLAGER_SPAWN);
+		Point pos = new Point(VILLAGER_SPAWN_POS, VILLAGER_SPAWN_POS);
 		pcs.firePropertyChange("camera", null, pos);
+		Point size = new Point(WIDTH,HEIGHT);
+		pcs.firePropertyChange("worldsize",null,size);
 
 		initializeVillagers();
 	}
@@ -82,9 +107,11 @@ public class TestWorld extends World implements TileBasedMap{
 	private void initializeGrass() {
 		for(int i = 0; i < WIDTH; i++) {
 			for(int j = 0; j < HEIGHT; j++) {
-				GrassTile grass = new GrassTile(i, j);
 				Point pos = new Point(i, j);
+				if(!botEntities.containsKey(pos)){
+				GrassTile grass = new GrassTile(i, j);
 				addEntity(pos, grass);
+				}
 			}
 		}
 	}
@@ -116,27 +143,27 @@ public class TestWorld extends World implements TileBasedMap{
 			while(!lakeDone){
 				ArrayList<Point> newWater = new ArrayList<Point>();
 				for(Point p : oldWater){
-					if(rnd.nextFloat() < weight && p.x != 0 && botEntities.get(new Point(p.x - 1, p.y)) instanceof GrassTile){
+					if(rnd.nextFloat() < weight && p.x != 0 && !(botEntities.get(new Point(p.x - 1, p.y)) instanceof WaterTile)){
 						Point pos = new Point(p.x-1, p.y);
 						addEntity(pos, new WaterTile((p.x-1), p.y));
 						newWater.add(new Point(p.x-1, p.y));
 					}
-					if(rnd.nextFloat() < weight  && p.x != 79 && botEntities.get(new Point(p.x + 1, p.y)) instanceof GrassTile){
+					if(rnd.nextFloat() < weight  && p.x != 79 && !(botEntities.get(new Point(p.x + 1, p.y)) instanceof WaterTile)){
 						addEntity(new Point(p.x+1, p.y), new WaterTile((p.x+1), p.y));
 						newWater.add(new Point(p.x+1, p.y));
 					}	
-					if(rnd.nextFloat() < weight  && p.y != 0 && botEntities.get(new Point(p.x, p.y - 1)) instanceof GrassTile){
+					if(rnd.nextFloat() < weight  && p.y != 0 && !(botEntities.get(new Point(p.x, p.y - 1)) instanceof WaterTile)){
 						addEntity(new Point(p.x, p.y-1), new WaterTile(p.x, (p.y-1)));
 						newWater.add(new Point(p.x, p.y-1));
 					}
-					if(rnd.nextFloat() < weight  && p.y != 79 && botEntities.get(new Point(p.x, p.y + 1)) instanceof GrassTile){
+					if(rnd.nextFloat() < weight  && p.y != 79 && !(botEntities.get(new Point(p.x, p.y + 1)) instanceof WaterTile)){
 						addEntity(new Point(p.x, p.y+1), new WaterTile(p.x, (p.y+1)));
 						newWater.add(new Point(p.x, p.y+1));
 					}
 				}
 				
 				oldWater = newWater;
-				
+				System.out.println("Generating lakes");
 				weight = weight - LAKE_LOSS;
 				if(weight <= 0)
 					lakeDone = true;
@@ -166,25 +193,108 @@ public class TestWorld extends World implements TileBasedMap{
 	 * The method to initialise all the houses in the world.
 	 */
 	private void initializeHouses() {
-		//TODO Draw houses in a nicer fashion
+		
+		for(int i=-18;i<18;i++){
+			for(int j=-10;j<10;j++){
+				GrassTile grass = new GrassTile(VILLAGER_SPAWN_POS+i, VILLAGER_SPAWN_POS+j);
+				Point pos = new Point(VILLAGER_SPAWN_POS+i, VILLAGER_SPAWN_POS+j);
+				addEntity(pos, grass);
+			}
+		}
 
-		House house = new House(VILLAGER_SPAWN + 5, VILLAGER_SPAWN + 4, Constants.UP_ENTRANCE);
-		addEntity(new Point(VILLAGER_SPAWN + 5, VILLAGER_SPAWN + 2), house);
+		buildHouse(VILLAGER_SPAWN_POS - 5, VILLAGER_SPAWN_POS + 4, 3, 2, Constants.UP_ENTRANCE);
+		buildHouse(VILLAGER_SPAWN_POS - 12, VILLAGER_SPAWN_POS, 3, 3, Constants.RIGHT_ENTRANCE);
+		buildHouse(VILLAGER_SPAWN_POS - 6, VILLAGER_SPAWN_POS - 3, 2, 3, Constants.DOWN_ENTRANCE);
+		buildHouse(VILLAGER_SPAWN_POS - 2, VILLAGER_SPAWN_POS, 4, 4, Constants.LEFT_ENTRANCE);
 		
-		house = new House(VILLAGER_SPAWN + 1, VILLAGER_SPAWN - 2, Constants.DOWN_ENTRANCE);
-		addEntity(new Point(VILLAGER_SPAWN + 1, VILLAGER_SPAWN - 2), house);
-		
-		house = new House(VILLAGER_SPAWN - 4, VILLAGER_SPAWN +1, Constants.RIGHT_ENTRANCE);
-		addEntity(new Point(VILLAGER_SPAWN - 4, VILLAGER_SPAWN +1), house);
-		
-		house = new House(VILLAGER_SPAWN + 2, VILLAGER_SPAWN + 4, Constants.UP_ENTRANCE);
-		addEntity(new Point(VILLAGER_SPAWN + 2, VILLAGER_SPAWN + 4), house);
 	}
 	
+	/**
+	 * A method to build a house.
+	 * 
+	 * @param x the x-coordinate of the door to the house.
+	 * @param y the y-coordinate of the door to the house.
+	 * @param i the width, relative to the door, of the floor.
+	 * @param j the depth, relative to the door, of the floor.
+	 * @param orientation the direction in which the door will face.
+	 */
+	private void buildHouse(int x, int y, int i, int j, int orientation) {
+		Point p = new Point(x,y);
+		int outerWidth = i+2; // +2 to account for the thickness of the walls.
+		int outerHeight = j+2;
+		switch (orientation){
+		case Constants.DOWN_ENTRANCE:
+			p = new Point(x-(outerWidth/2), y-outerHeight+1);
+			break;
+		case Constants.LEFT_ENTRANCE:
+			outerWidth = j+2; // +2 because of the walls
+			outerHeight = i+2;
+			p = new Point(x, y-(outerHeight/2));
+			break;
+		case Constants.RIGHT_ENTRANCE:
+			outerWidth = j+2;  // +2 because of the walls
+			outerHeight = i+2;
+			p = new Point(x-outerWidth+1, y-(outerHeight/2));
+			break;
+		case Constants.UP_ENTRANCE:
+			p = new Point(x-(outerWidth/2), y);
+			break;
+		}
+		//BUILD WALLS
+		HouseWall wall;
+		for(int k=1; k<outerWidth; k++){
+			if(p.x != x || p.y != y){
+				wall = new HouseWall(p.x, p.y, Constants.UP_ENTRANCE);
+				addEntity(new Point(p.x, p.y), wall);
+			}
+			p.translate(1, 0);
+		}
+		for(int k=1; k<outerHeight; k++){
+			if(p.x != x || p.y != y){
+				wall = new HouseWall(p.x, p.y, Constants.RIGHT_ENTRANCE);
+				addEntity(new Point(p.x, p.y), wall);
+			}
+			p.translate(0, 1);
+		}
+		for(int k=1; k<outerWidth; k++){
+			if(p.x != x || p.y != y){
+				wall = new HouseWall(p.x, p.y, Constants.DOWN_ENTRANCE);
+				addEntity(new Point(p.x, p.y), wall);
+			}
+			p.translate(-1, 0);
+		}
+		for(int k=1; k<outerHeight; k++){
+			if(p.x != x || p.y != y){
+				wall = new HouseWall(p.x, p.y, Constants.LEFT_ENTRANCE);
+				addEntity(new Point(p.x, p.y), wall);
+			}
+			p.translate(0, -1);
+		}
+		p.translate(1, 1);
+		//ADD FLOOR
+		HouseFloor floor;
+		for(int k=0; k<outerWidth-2; k++){
+			for(int l=0; l<outerHeight-2; l++){
+				floor = new HouseFloor(p.x, p.y);
+				addEntity(new Point(p.x, p.y), floor);
+				p.translate(0, 1);
+			}
+			p.translate(1, -(outerHeight-2)); //-2 to accoun for the absence of walls in this case.
+		}
+		//ADD DOOR
+		Point doorPoint = new Point(x, y);
+		floor = new HouseFloor(x, y);
+		addEntity(doorPoint, floor);
+		topEntities.remove(doorPoint);
+		HouseDoor door = new HouseDoor(x, y, orientation);
+		addEntity(doorPoint, door);
+		
+	}
+
 	private void initializeVillagers() {
-		for(int i = 0; i < 4; i++) {
-			Point pos = new Point(VILLAGER_SPAWN, VILLAGER_SPAWN+i);
-			Villager villager = new Villager(this, VILLAGER_SPAWN, VILLAGER_SPAWN+i);
+		for(int i = 0; i < VILLAGER_COUNT; i++) {
+			Point pos = new Point(VILLAGER_SPAWN_POS, VILLAGER_SPAWN_POS+i);
+			Villager villager = new Villager(this, VILLAGER_SPAWN_POS, VILLAGER_SPAWN_POS+i);
 			addEntity(pos, villager);
 		}
 	}

@@ -401,8 +401,10 @@ public static Point findTile2(TestWorld world, EntityType id, int startX, int st
 		
 		visited.add(new Point(startX, startY));
 		
+		int stacks = 0;
 		boolean found = false;
 		while(!found){
+			stacks++;
 			//Add neighbors to visit
 			toVisit = new ArrayList<Point>();
 			toCheck = new ArrayList<Point>();
@@ -446,7 +448,7 @@ public static Point findTile2(TestWorld world, EntityType id, int startX, int st
 				else if(tops.get(p) != null && tops.get(p).getEntityType() == id && tops.get(p).meetCriteria(crit) && 
 						PathFinder.getPathToAdjacent(p.x, p.y, startX, startY) != null)
 					return p;
-				else{
+				else {
 					visited.add(p);
 //					View.addTopGraphic(new Helper1View(p.x, p.y));
 				}
@@ -461,6 +463,19 @@ public static Point findTile2(TestWorld world, EntityType id, int startX, int st
 					return p;
 //				else
 //					View.addTopGraphic(new Helper1View(p.x, p.y));
+			}
+			
+			if(visited.size() == 0){
+				Exception e = new Exception();
+				e.printStackTrace();
+				return null;
+			}
+			
+			if(stacks > 1000){
+				System.out.println("FindObject: " + visited.size());
+				Exception e = new Exception();
+				e.printStackTrace();
+				return null;
 			}
 		}
 		return null;

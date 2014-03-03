@@ -4,6 +4,7 @@ import java.awt.Point;
 import java.util.LinkedList;
 
 import model.TestWorld;
+import model.entity.top.Tree;
 import model.path.FindObject;
 import model.path.PathFinder;
 import model.path.criteria.HasFruit;
@@ -19,11 +20,19 @@ public class EatPlan extends Plan{
 		super(villager);
 		actionQueue = new LinkedList<Action>();
 		
-		Point p = FindObject.findObjectNeighbour((TestWorld)villager.getWorld(), new HasFruit(), EntityType.TREE, 
-				villager.getX(), villager.getY());
-		Path movePath = PathFinder.getPathToAdjacent(villager.getX(), villager.getY(), p.x, p.y);
+		Tree tree = (Tree) FindObject.getAdjacentObject(villager.getWorld(), new HasFruit(), 
+				EntityType.TREE, villager.getX(), villager.getY());
+		
+		if(tree != null){
+			actionQueue.addLast(new EatAction(villager));
+		}else{
+			Point p = FindObject.findObjectNeighbour((TestWorld)villager.getWorld(), new HasFruit(), EntityType.TREE, 
+					villager.getX(), villager.getY());
+			Path movePath = PathFinder.getPathToAdjacent(villager.getX(), villager.getY(), p.x, p.y);
 
-		actionQueue.add(new MoveAction(villager, movePath));
-		actionQueue.addLast(new EatAction(villager));
+			actionQueue.add(new MoveAction(villager, movePath));
+			actionQueue.addLast(new EatAction(villager));
+		}
+		
 	}
 }

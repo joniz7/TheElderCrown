@@ -20,36 +20,37 @@ public class MoveAction extends Action{
 
 	@Override
 	public void tick(World world) {
-		progress += villager.getSpeed();
-		
-		// Should move one step
-        if(progress > speedCap && stepCount < path.getLength()){
-        	progress = 0;
-        	if(!world.blocked(null, path.getStep(stepCount).getX(), 
-        			path.getStep(stepCount).getY())){
-//        		System.out.println("Step to: " + path.getStep(stepCount).getX()
-//        				+ ":" + path.getStep(stepCount).getY());
-        		Point newPos = new Point(path.getStep(stepCount).getX(), 
-        				path.getStep(stepCount++).getY());
-        		world.moveVillager(villager, newPos);
-        	} else {
-//        		System.out.println("Move FAILED!!!");
-        		actionFailed();
-        	}
-        } // Has finished moving
-        else if(stepCount >= path.getLength()){
-//        	System.out.println("Move FINISHED!!!");
-        	actionFinished();
-        }
-        // Not enough progress to move one tile yet
-        else {
-        	// Calculate in which direction we're moving, and how far we've come
-			int dx = path.getStep(stepCount).getX() - villager.getX();
-			int dy = path.getStep(stepCount).getY() - villager.getY();
-			double progressPercent = (double)progress/speedCap;
-			// Send this interpolation information to view
-			villager.updateViewPosition(dx, dy, progressPercent);
-        }
+		if(stepCount >= path.getLength()) {
+			//        	System.out.println("Move FINISHED!!!");
+	    	actionFinished();
+	    } else if(!world.blocked(null, path.getStep(stepCount).getX(), 
+    			path.getStep(stepCount).getY())){
+			progress += villager.getSpeed();
+			
+			// Should move one step
+		    if(progress > speedCap && stepCount < path.getLength()){
+		    	progress = 0;
+			
+		//        		System.out.println("Step to: " + path.getStep(stepCount).getX()
+		//        				+ ":" + path.getStep(stepCount).getY());
+				Point newPos = new Point(path.getStep(stepCount).getX(),
+						path.getStep(stepCount).getY());
+				world.moveVillager(villager, newPos);
+				stepCount++;
+		    } // Has finished moving
+		    
+		    // Not enough progress to move one tile yet
+		    else {
+		    	// Calculate in which direction we're moving, and how far we've come
+				int dx = path.getStep(stepCount).getX() - villager.getX();
+				int dy = path.getStep(stepCount).getY() - villager.getY();
+				double progressPercent = (double)progress/speedCap;
+				// Send this interpolation information to view
+				villager.updateViewPosition(dx, dy, progressPercent);
+		    }
+		} else {
+			actionFailed();
+		}
 	}
 	
 //	public boolean isMoving() {

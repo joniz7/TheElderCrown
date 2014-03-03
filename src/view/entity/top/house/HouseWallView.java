@@ -1,27 +1,27 @@
-package view.entity.top;
+package view.entity.top.house;
 
 import org.newdawn.slick.Graphics;
-
 import view.entity.EntityView;
 
 /**
- * The view representation of a house.
+ * The view representation of a wall of a house.
  * 
  * @author Karl-Agnes
  *
  */
-public class HouseView extends EntityView {
-	
+public class HouseWallView extends EntityView {
+
 	private float rotation;
 
 	/**
-	 * Creates a new HouseView
+	 * Creates a new HouseWallView
 	 * 
-	 * @param x the x-coordinate for the top left corner of the house.
-	 * @param y the y-coordinate for the top left corner of the house.
+	 * @param x the x-coordinate for the wall.
+	 * @param y the y-coordinate for the wall.
+	 * @param rotation an int to give the orientation.
 	 */
-	public HouseView(int x, int y, float rotation) {
-		super("hut", x, y);
+	public HouseWallView(int x, int y, int rotation) {
+		super("wall", x, y);
 		this.rotation = rotation;
 	}
 

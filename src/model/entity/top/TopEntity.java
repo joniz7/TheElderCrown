@@ -12,15 +12,26 @@ import util.EntityType;
 public abstract class TopEntity extends Entity {
 
 	/**
-	 * General constructor for a graphical entity.
+	 * Constructs a new, non-blocking TopEntity.
 	 * 
-	 * @param name The name of the image to be associated with this object.
+	 * @param x the x-coordinate of the topEntity.
+	 * @param y the y-coordinate of the topEntity.
+	 * @param type the EntityType to be assiciated with the Entity.
 	 */
-
-	public TopEntity(int x, int y, EntityType id) {
-		super(x, y, id);
-		// View.addTopGraphic(drawable);
+	public TopEntity(int x, int y, EntityType type) {
+		super(x, y, type, false);
 	}
-
+	
+	/**
+	 * Constructs a new TopEntity.
+	 * 
+	 * @param x the x-coordinate of the topEntity.
+	 * @param y the y-coordinate of the topEntity.
+	 * @param id the EntityType to be assiciated with the Entity.
+	 * @param blocking a boolean to set whether or not the Entity should block its square.
+	 */
+	public TopEntity(int x, int y, EntityType id, boolean blocking) {
+		super(x, y, id, blocking);
+	}
 
 }

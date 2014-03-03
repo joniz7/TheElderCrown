@@ -20,7 +20,9 @@ public class ImageLoader {
 		imageLib.put("water", loadImage("image", "water.png"));
 		
 		// World Entities
-		imageLib.put("hut", loadImage("image", "hut.png"));
+		imageLib.put("floor", loadImage("image", "floor.png"));
+		imageLib.put("door", loadImage("image", "door.png"));
+		imageLib.put("wall", loadImage("image", "wall.png"));
 		imageLib.put("tree", loadImage("image", "tree.png"));
 		imageLib.put("tree2", loadImage("image", "tree2.png"));
 		

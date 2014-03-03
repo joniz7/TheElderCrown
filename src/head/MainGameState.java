@@ -157,9 +157,11 @@ public class MainGameState implements GameState {
 	}
 
 	@Override
-	public void enter(GameContainer arg0, StateBasedGame arg1)
+	public void enter(GameContainer container, StateBasedGame game)
 			throws SlickException {
-		// TODO Auto-generated method stub
+		int h = container.getHeight();
+		int w = container.getWidth();
+		view.setSize(w, h);
 
 	}
 
