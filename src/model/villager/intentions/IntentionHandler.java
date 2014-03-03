@@ -11,6 +11,7 @@ public class IntentionHandler {
 	private EatIntent eatInt;
 	private DrinkIntent drinkInt;
 	private SleepIntent sleepInt;
+	private IdleIntent idleInt;
 	
 	public IntentionHandler(Villager villager){
 		pq = new PriorityQueue<Intent>(5, new IntentComparator());
@@ -18,10 +19,12 @@ public class IntentionHandler {
 		eatInt = new EatIntent(villager);
 		drinkInt = new DrinkIntent(villager);
 		sleepInt = new SleepIntent(villager);
+		idleInt = new IdleIntent(villager);
 		
 		pq.add(eatInt);
 		pq.add(drinkInt);
 		pq.add(sleepInt);
+		pq.add(idleInt);
 	}
 	
 	public void update(){

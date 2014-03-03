@@ -7,6 +7,13 @@ import model.entity.bottom.HouseFloor;
 import model.path.FindObject;
 import model.villager.Villager;
 
+/**
+ * The sleeping action. Villager checks if on a HOUSE_FLOOR tile and rests there for a while.
+ * 
+ * @author Tux
+ *
+ */
+
 public class SleepAction extends Action {
 
 	private float stacks, sleepToGet;

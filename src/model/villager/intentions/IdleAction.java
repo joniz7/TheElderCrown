@@ -7,6 +7,13 @@ import model.path.FindObject;
 import model.path.criteria.HasFruit;
 import model.villager.Villager;
 
+/**
+ * Class for handling the actual "action" to perform when idle.
+ * Currently only sets a new status and a timeout.
+ * 
+ * @author Tux
+ *
+ */
 public class IdleAction extends Action {
 
 	private int stacks, idleTime;
@@ -20,7 +27,9 @@ public class IdleAction extends Action {
 	@Override
 	public void tick(World world){
 		if(firstTick) {
+			System.out.println("Idling");
 			villager.updateStatus("idling");
+			firstTick = false;
 		}
 		stacks++;
 		if(stacks > idleTime){

@@ -13,6 +13,14 @@ import org.newdawn.slick.util.pathfinding.Path;
 
 import util.EntityType;
 
+/**
+ * Class to plan sleep.
+ * Villager will find closest HOUSE_FLOOR tile and the perform SleepAction
+ * .
+ * @author Tux
+ *
+ */
+
 public class SleepPlan extends Plan {
 
 	public SleepPlan(Villager villager){
