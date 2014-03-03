@@ -4,20 +4,17 @@ import java.awt.Point;
 import java.util.ArrayList;
 import java.util.HashMap;
 
-import model.TestWorld;
-import model.World;
 import model.entity.Entity;
 import model.entity.MidEntity;
 import model.entity.bottom.BottomEntity;
 import model.entity.top.TopEntity;
 import model.path.criteria.Criteria;
+import model.villager.VillagersWorldPerception;
 
 import org.newdawn.slick.util.pathfinding.Path;
 
 import util.EntityType;
 import view.entity.top.Helper3View;
-import debugging.Helper1;
-import debugging.Helper2;
 
 /**
  * FindObject is part of the entity path finding. FindObject uses
@@ -38,8 +35,8 @@ public class FindObject {
 	/**
 	 * This did the job that findTile2 does now, saves this code, just in case
 	 */
-	public static Point findTile(TestWorld world, EntityType id, int startX, int startY){
-		HashMap<Point, BottomEntity> tiles = world.getTiles();
+	public static Point findTile(VillagersWorldPerception world, EntityType id, int startX, int startY){
+		HashMap<Point, BottomEntity> tiles = world.getBotEntities();
 		
 		Point upperLeft = new Point(startX - 1, startY - 1);
 		Point lowerRight  = new Point(startX + 1, startY + 1);
@@ -101,7 +98,7 @@ public class FindObject {
 	 * @param startY - the villager y coordinate
 	 * @return The point representing the coordinates of the found tile
 	 */
-public static Point findTile2(TestWorld world, EntityType id, int startX, int startY){
+public static Point findTile2(VillagersWorldPerception world, EntityType id, int startX, int startY){
 		/*
 		 * Understanding what these lists and hash-maps are used for is crucial in
 		 * order to understand the find-object-algorithm
@@ -116,7 +113,7 @@ public static Point findTile2(TestWorld world, EntityType id, int startX, int st
 		 * tiles - this is just the map of all the points in the world, this is what we
 		 * search through
 		 */
-		HashMap<Point, BottomEntity> tiles = world.getTiles();
+		HashMap<Point, BottomEntity> tiles = world.getBotEntities();
 		
 		/*
 		 * visited - These are the points that we already visited. We loop over this
@@ -206,7 +203,7 @@ public static Point findTile2(TestWorld world, EntityType id, int startX, int st
 	 * @param startY - the villager y position
 	 * @return - The Point to walk to in order to interact with object
 	 */
-	public static Point findTileNeighbour(TestWorld world, EntityType id, int startX, int startY){
+	public static Point findTileNeighbour(VillagersWorldPerception world, EntityType id, int startX, int startY){
 
 		long startTime = System.currentTimeMillis();
 		
@@ -215,7 +212,7 @@ public static Point findTile2(TestWorld world, EntityType id, int startX, int st
 		long endTime = System.currentTimeMillis();
 		System.out.println("FindObject, find water tile: " + (endTime - startTime));
 		
-		HashMap<Point, BottomEntity> tiles = world.getTiles();
+		HashMap<Point, BottomEntity> tiles = world.getBotEntities();
 		
 		Path p1 = null;
 		Path p2 = null;
@@ -263,7 +260,7 @@ public static Point findTile2(TestWorld world, EntityType id, int startX, int st
 		return null;
 	}
 	
-	public static boolean isAdjacentTile(World world, EntityType id, int startX, int startY){
+	public static boolean isAdjacentTile(VillagersWorldPerception world, EntityType id, int startX, int startY){
 		HashMap<Point, BottomEntity> tiles = world.getBotEntities();
 		
 		try{
@@ -286,9 +283,9 @@ public static Point findTile2(TestWorld world, EntityType id, int startX, int st
 	/**
 	 * This did the job that findObject2 does now, saves this code, just in case
 	 */
-	public static Point findObject(TestWorld world, Criteria crit, EntityType id, int startX, int startY){
-		HashMap<Point, MidEntity> mids = world.getMidObjects();
-		HashMap<Point, TopEntity> tops = world.getTopObjects();
+	public static Point findObject(VillagersWorldPerception world, Criteria crit, EntityType id, int startX, int startY){
+		HashMap<Point, MidEntity> mids = world.getMidEntities();
+		HashMap<Point, TopEntity> tops = world.getTopEntities();
 
 		Point upperLeft = new Point(startX - 1, startY - 1);
 		Point lowerRight = new Point(startX + 1, startY + 1);
@@ -385,15 +382,15 @@ public static Point findTile2(TestWorld world, EntityType id, int startX, int st
 	 * @param startY - the villager y coordinate
 	 * @return The point representing the coordinates of the found tile
 	 */
-	public static Point findObject2(TestWorld world, Criteria crit, EntityType id, int startX, int startY){
+	public static Point findObject2(VillagersWorldPerception world, Criteria crit, EntityType id, int startX, int startY){
 		/*
 		 * These lists and hash-maps are essentially the same as the ones in the
 		 * findTile2 method. The algorithm works in the same way, except that it
 		 * also takes the criteria into account
 		 */
 		HashMap<Point, Boolean> visitedHash = new HashMap<Point, Boolean>();
-		HashMap<Point, MidEntity> mids = world.getMidObjects();
-		HashMap<Point, TopEntity> tops = world.getTopObjects();
+		HashMap<Point, MidEntity> mids = world.getMidEntities();
+		HashMap<Point, TopEntity> tops = world.getTopEntities();
 		
 		ArrayList<Point> visited = new ArrayList<Point>();
 		ArrayList<Point> toVisit = new ArrayList<Point>();
@@ -492,14 +489,14 @@ public static Point findTile2(TestWorld world, EntityType id, int startX, int st
 	 * @param startY - the villager y position
 	 * @return - The Point to walk to in order to interact with object
 	 */
-	public static Point findObjectNeighbour(TestWorld world, Criteria crit, EntityType id, int startX, int startY){
+	public static Point findObjectNeighbour(VillagersWorldPerception world, Criteria crit, EntityType id, int startX, int startY){
 		long startTime = System.currentTimeMillis();
 		Point p = findObject2(world, crit, id, startX, startY);
 		
 		long endTime = System.currentTimeMillis();
 		System.out.println("FindObject, find Tree tile: " + (endTime - startTime));
 		
-		HashMap<Point, BottomEntity> tiles = world.getTiles();
+		HashMap<Point, BottomEntity> tiles = world.getBotEntities();
 		
 		Path p1 = null;
 		Path p2 = null;
@@ -549,7 +546,7 @@ public static Point findTile2(TestWorld world, EntityType id, int startX, int st
 	}
 	
 
-	public static Entity getAdjacentObject(World world, Criteria crit, EntityType id, int startX, int startY){
+	public static Entity getAdjacentObject(VillagersWorldPerception world, Criteria crit, EntityType id, int startX, int startY){
 		HashMap<Point, MidEntity> mids = world.getMidEntities();
 		HashMap<Point, TopEntity> tops = world.getTopEntities();
 		

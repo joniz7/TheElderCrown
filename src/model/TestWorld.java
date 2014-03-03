@@ -2,19 +2,14 @@ package model;
 
 import java.awt.Point;
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.Random;
 
 import model.entity.Agent;
 import model.entity.Entity;
-import model.entity.MidEntity;
-import model.entity.bottom.BottomEntity;
 import model.entity.bottom.GrassTile;
 import model.entity.bottom.HouseFloor;
 import model.entity.bottom.WaterTile;
-import model.entity.top.TopEntity;
 import model.entity.top.Tree;
 import model.entity.top.house.HouseDoor;
 import model.entity.top.house.HouseWall;
@@ -22,19 +17,14 @@ import model.path.PathFinder;
 import model.villager.Villager;
 
 import org.newdawn.slick.util.pathfinding.PathFindingContext;
-import org.newdawn.slick.util.pathfinding.TileBasedMap;
 
 import util.Constants;
 import util.EntityType;
-import util.NoPositionFoundException;
 import util.NoSuchEntityException;
 
-public class TestWorld extends World implements TileBasedMap{
+public class TestWorld extends World{
 	
 	// -- World configuration --
-	// Size of world
-	private final int WIDTH = 200, HEIGHT = 200;
-
 	// Villagers
 	private final int VILLAGER_SPAWN_POS = 40, VILLAGER_COUNT = 1;
 	// Lakes 
@@ -95,7 +85,7 @@ public class TestWorld extends World implements TileBasedMap{
 		// Send camera position update to view
 		Point pos = new Point(VILLAGER_SPAWN_POS, VILLAGER_SPAWN_POS);
 		pcs.firePropertyChange("camera", null, pos);
-		Point size = new Point(WIDTH,HEIGHT);
+		Point size = new Point(Constants.WORLD_WIDTH,Constants.WORLD_HEIGHT);
 		pcs.firePropertyChange("worldsize",null,size);
 
 		initializeVillagers();
@@ -105,8 +95,8 @@ public class TestWorld extends World implements TileBasedMap{
 	 * Covers the whole map in grass.
 	 */
 	private void initializeGrass() {
-		for(int i = 0; i < WIDTH; i++) {
-			for(int j = 0; j < HEIGHT; j++) {
+		for(int i = 0; i < Constants.WORLD_WIDTH; i++) {
+			for(int j = 0; j < Constants.WORLD_HEIGHT; j++) {
 				Point pos = new Point(i, j);
 				if(!botEntities.containsKey(pos)){
 				GrassTile grass = new GrassTile(i, j);
@@ -124,8 +114,8 @@ public class TestWorld extends World implements TileBasedMap{
 		
 		//Create random centerpoints for lakes
 		for(int i = 0; i < LAKE_COUNT; i++){
-			int x = rnd.nextInt(WIDTH);
-			int y = rnd.nextInt(HEIGHT);
+			int x = rnd.nextInt(Constants.WORLD_WIDTH);
+			int y = rnd.nextInt(Constants.WORLD_HEIGHT);
 			Point pos = new Point(x, y);
 			centers.add(pos);
 			addEntity(pos, new WaterTile(x, y));
@@ -176,8 +166,8 @@ public class TestWorld extends World implements TileBasedMap{
 	 * A method that spawns a tree with a set probability on each grass tile.
 	 */
 	private void initializeTrees() {
-		for(int i = 0; i < WIDTH - 1; i++) {
-			for(int j = 0; j < HEIGHT - 1; j++) {
+		for(int i = 0; i < Constants.WORLD_WIDTH - 1; i++) {
+			for(int j = 0; j < Constants.WORLD_HEIGHT - 1; j++) {
 				if(rnd.nextInt(TREE_SPARSITY) == 0 && botEntities.get(new Point(i + 1, j + 1)).getEntityType() == EntityType.GRASS_TILE){
 					Tree tree = new Tree(i + 1, j + 1);
 					trees.add(tree);
@@ -294,7 +284,7 @@ public class TestWorld extends World implements TileBasedMap{
 	private void initializeVillagers() {
 		for(int i = 0; i < VILLAGER_COUNT; i++) {
 			Point pos = new Point(VILLAGER_SPAWN_POS, VILLAGER_SPAWN_POS+i);
-			Villager villager = new Villager(this, VILLAGER_SPAWN_POS, VILLAGER_SPAWN_POS+i);
+			Villager villager = new Villager(VILLAGER_SPAWN_POS, VILLAGER_SPAWN_POS+i);
 			addEntity(pos, villager);
 		}
 	}
@@ -318,41 +308,17 @@ public class TestWorld extends World implements TileBasedMap{
 
 	@Override
 	public int getHeightInTiles(){
-		return HEIGHT;
+		return Constants.WORLD_HEIGHT;
 	}
 
 	@Override
 	public int getWidthInTiles(){
-		return WIDTH;
+		return Constants.WORLD_WIDTH;
 	}
 
 	@Override
 	public void pathFinderVisited(int x, int y){
 		
-	}
-	
-	/**
-	 * A method to get access to all the ground tiles.
-	 * @return a HashMap with all the tiles identified by their position.
-	 */
-	public HashMap<Point, BottomEntity> getTiles() {
-		return botEntities;
-	}
-	
-	/**
-	 * Returns all entities that are on the same level as villagers, including villagers.
-	 * @return a Hashmap with all entities in the 'middle' layer.
-	 */
-	public HashMap<Point, MidEntity> getMidObjects(){
-		return midEntities;
-	}
-	
-	/**
-	 * Returns all entities that are to be rendered on top of villagers.
-	 * @return a Hashmap with all entities above the villagers.
-	 */
-	public HashMap<Point, TopEntity> getTopObjects(){
-		return topEntities;
 	}
 	
 	/**

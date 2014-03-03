@@ -1,8 +1,5 @@
 package model.villager;
 
-import java.awt.Point;
-
-import model.World;
 import model.entity.Agent;
 import model.entity.MidEntity;
 import model.villager.intentions.Action;
@@ -16,32 +13,34 @@ import view.entity.mid.VillagerView;
 public class Villager extends MidEntity implements Agent {
 
 	private float hunger = -15f, thirst = 2f, speed = 20, sleepiness = 2f ;
-	private World world;
+	private VillagerWorld world;
 	private Plan activePlan;
 	private IntentionHandler IH = new IntentionHandler(this);
 	
 	private int height, weight;
 	
-	public Villager(World world, int x, int y) {
+	public Villager(int x, int y) {
 		super(x, y, EntityType.VILLAGER);
-		this.world = world;
+		world = new VillagerWorld();
 		height = 140 + RandomClass.getRandomInt(50, 0);
 		weight = height / 4 + RandomClass.getRandomInt(height/4, 0);
 		System.out.println("New villager created: "+height+"  "+weight);
 	}
 	
-	public World getWorld() {
+	public VillagersWorldPerception getWorld() {
 		return world;
 	}
 
 	@Override
-	public void update(Point pos) {
-		updatePos(pos.x, pos.y);
-		
+	public void update(Perception p) {
+		updatePos(p.position.x, p.position.y);
+		world.updateBotEntities(p.botEntities);
+		world.updateMidEntities(p.midEntities);
+		world.updateTopEntities(p.topEntities);
 		adjustNeeds();
 		plan();
 	}
-	
+
 	public void satisfyHunger(float f) {
 		this.hunger += f;
 	}

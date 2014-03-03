@@ -3,7 +3,6 @@ package model.villager.intentions;
 import java.awt.Point;
 import java.util.LinkedList;
 
-import model.TestWorld;
 import model.entity.top.Tree;
 import model.path.FindObject;
 import model.path.PathFinder;
@@ -26,7 +25,7 @@ public class EatPlan extends Plan{
 		if(tree != null){
 			actionQueue.addLast(new EatAction(villager));
 		}else{
-			Point p = FindObject.findObjectNeighbour((TestWorld)villager.getWorld(), new HasFruit(), EntityType.TREE, 
+			Point p = FindObject.findObjectNeighbour(villager.getWorld(), new HasFruit(), EntityType.TREE, 
 					villager.getX(), villager.getY());
 			Path movePath = PathFinder.getPathToAdjacent(villager.getX(), villager.getY(), p.x, p.y);
 
