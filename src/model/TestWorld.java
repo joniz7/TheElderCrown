@@ -30,7 +30,6 @@ import util.NoPositionFoundException;
 import util.NoSuchEntityException;
 
 public class TestWorld extends World implements TileBasedMap{
-	
 	// -- World configuration --
 	// Size of world
 	private final int WIDTH = 200, HEIGHT = 200;
@@ -62,8 +61,8 @@ public class TestWorld extends World implements TileBasedMap{
 
 
 		initializeLakes();
-		initializeGrass();
 		initializeHouses();
+		initializeGrass();
 		initializeTrees();
 		
 		new PathFinder(this);
@@ -102,7 +101,7 @@ public class TestWorld extends World implements TileBasedMap{
 	}
 	
 	/**
-	 * Covers the whole map in grass.
+	 * Covers the whole map in grass, except for where there is water.
 	 */
 	private void initializeGrass() {
 		for(int i = 0; i < WIDTH; i++) {
@@ -163,7 +162,6 @@ public class TestWorld extends World implements TileBasedMap{
 				}
 				
 				oldWater = newWater;
-				System.out.println("Generating lakes");
 				weight = weight - LAKE_LOSS;
 				if(weight <= 0)
 					lakeDone = true;
