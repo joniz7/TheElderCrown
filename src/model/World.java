@@ -8,6 +8,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Iterator;
+import java.util.List;
 import java.util.Map;
 
 import model.entity.Agent;
@@ -18,6 +19,7 @@ import model.entity.bottom.WaterTile;
 import model.entity.top.TopEntity;
 import model.villager.Villager;
 import model.villager.intentions.Action;
+import model.villager.order.Order;
 
 import org.newdawn.slick.util.pathfinding.PathFindingContext;
 
@@ -27,7 +29,7 @@ import util.Tickable;
 public abstract class World implements Tickable{
 
 	// Tickable objects (e.g. trees)
-	protected ArrayList<Tickable> tickables = new ArrayList<Tickable>();
+	protected List<Tickable> tickables = new ArrayList<Tickable>();
 	
 	// Agents (e.g. villagers)
 	protected HashMap<Point, Agent> agents;
@@ -36,6 +38,9 @@ public abstract class World implements Tickable{
 	protected HashMap<Point, BottomEntity> botEntities;
 	protected HashMap<Point, MidEntity> midEntities;
 	protected HashMap<Point, TopEntity> topEntities;
+	
+	// Orders to agents, that should be processed in the next update
+	private List<Order> orders;
 	
 	protected boolean paused;
 	public boolean shouldExit;
@@ -69,12 +74,30 @@ public abstract class World implements Tickable{
 			// Update all villagers
 			HashMap<Point, Agent> temp = (HashMap<Point, Agent>)agents.clone();
 			Iterator<Map.Entry<Point, Agent>> it = temp.entrySet().iterator();
+			boolean hasOrders = orders.isEmpty();
 			
 			while(it.hasNext()) {
 				Map.Entry<Point, Agent> e = (Map.Entry<Point, Agent>) it.next();
 				Point pos = e.getKey();
 				Agent agent = e.getValue();
+				// TODO better relationship between Agent and Entity types.
+				// All agents are also entities? Seems reasonable
+				Entity entity = (Entity)agent;
+				
+				// Has this agent been given an order?
+				if (hasOrders) {
+					for(Order o : orders) {
+						if (o.getToId() == entity.getId()) {
+							// Update agent with position AND new order
+							// (should ideally be changed to Perception later)
+							orders.remove(o);
+							agent.update(pos, o);
+						}
+					}
+				}
+				// Update agent with position only
 				agent.update(pos);
+				
 				Action activeAction = agent.getAction();
 				if(activeAction != null && !activeAction.isFailed() && !activeAction.isFinished())
 					activeAction.tick(this);

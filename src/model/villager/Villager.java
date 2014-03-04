@@ -8,6 +8,7 @@ import model.entity.MidEntity;
 import model.villager.intentions.Action;
 import model.villager.intentions.IntentionHandler;
 import model.villager.intentions.Plan;
+import model.villager.order.Order;
 import util.EntityType;
 import util.RandomClass;
 import view.entity.EntityView;
@@ -35,10 +36,20 @@ public class Villager extends MidEntity implements Agent {
 	}
 
 	@Override
-	public void update(Point pos) {
+	/**
+	 * Update this villager's needs and plans for the future.
+	 * 
+	 * The villager is given information about her position,
+	 * 		and possibly an order she should obey.
+	 */
+	public void update(Point pos, Order o) {
 		updatePos(pos.x, pos.y);
-		
 		adjustNeeds();
+		
+		if (o != null) {
+			// TODO think of our new order
+		}
+		
 		plan();
 	}
 	

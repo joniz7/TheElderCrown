@@ -178,7 +178,7 @@ public class TestWorld extends World implements TileBasedMap{
 	private void initializeTrees() {
 		for(int i = 0; i < WIDTH - 1; i++) {
 			for(int j = 0; j < HEIGHT - 1; j++) {
-				if(rnd.nextInt(TREE_SPARSITY) == 0 && botEntities.get(new Point(i + 1, j + 1)).getEntityType() == EntityType.GRASS_TILE){
+				if(rnd.nextInt(TREE_SPARSITY) == 0 && botEntities.get(new Point(i + 1, j + 1)).getType() == EntityType.GRASS_TILE){
 					Tree tree = new Tree(i + 1, j + 1);
 					trees.add(tree);
 					tickables.add(tree);
@@ -387,9 +387,9 @@ public class TestWorld extends World implements TileBasedMap{
 	 */
 	public Entity getEntity(Point pos, EntityType type) throws NoSuchEntityException{
 		Entity e = null;
-		if(midEntities.get(pos).getEntityType() == type)
+		if(midEntities.get(pos).getType() == type)
 			e = midEntities.get(pos);
-		else if(topEntities.get(pos).getEntityType() == type)
+		else if(topEntities.get(pos).getType() == type)
 			e = topEntities.get(pos);
 		else
 			throw new NoSuchEntityException();
@@ -410,7 +410,7 @@ public class TestWorld extends World implements TileBasedMap{
 		
 		for(int i = (int) upperLeft.getX(); i < lowerRight.getX(); i++){
 			for(int j = (int) upperLeft.getY(); j < lowerRight.getY(); j++){
-				System.out.print(botEntities.get(new Point(i, j)).getEntityType() + "  -  ");
+				System.out.print(botEntities.get(new Point(i, j)).getType() + "  -  ");
 			}
 			System.out.println("");
 		}
@@ -422,7 +422,7 @@ public class TestWorld extends World implements TileBasedMap{
 		for(int i = (int) upperLeft.getX(); i < lowerRight.getX(); i++){
 			for(int j = (int) upperLeft.getY(); j < lowerRight.getY(); j++){
 				if(topEntities.get(new Point(i, j)) != null)
-					System.out.print(topEntities.get(new Point(i, j)).getEntityType() + "  -  ");
+					System.out.print(topEntities.get(new Point(i, j)).getType() + "  -  ");
 				else
 					System.out.print("NULL  -  ");
 

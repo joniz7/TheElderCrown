@@ -141,7 +141,7 @@ public class View implements PropertyChangeListener {
 		}
 		else if (name.equals("addTopEntity")) {
 			TopEntity entity = (TopEntity) event.getNewValue();
-			EntityType type = entity.getEntityType();
+			EntityType type = entity.getType();
 			EntityView view = null;
 			switch(type){
 			case TREE:
@@ -162,7 +162,7 @@ public class View implements PropertyChangeListener {
 		}
 		else if (name.equals("addMidEntity")) {
 			MidEntity entity = (MidEntity) event.getNewValue();
-			EntityType type = entity.getEntityType();
+			EntityType type = entity.getType();
 			EntityView view = null;
 			switch(type){
 			case VILLAGER:
@@ -177,7 +177,7 @@ public class View implements PropertyChangeListener {
 		} 
 		else if (name.equals("addBotEntity")) {
 			BottomEntity entity = (BottomEntity) event.getNewValue();
-			EntityType type = entity.getEntityType();
+			EntityType type = entity.getType();
 			EntityView view = null;
 			switch(type){
 			case GRASS_TILE:

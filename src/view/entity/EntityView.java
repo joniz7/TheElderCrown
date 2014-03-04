@@ -39,7 +39,6 @@ public class EntityView implements PropertyChangeListener {
 		this.name = name;
 	}
 	
-	
 	public boolean draw(Graphics g, int cameraX, int cameraY, int width, int height){
 		int imageWidth = image.getWidth();
 		int imageHeight = image.getHeight();
