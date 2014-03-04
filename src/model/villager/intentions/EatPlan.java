@@ -22,10 +22,14 @@ public class EatPlan extends Plan{
 		
 		Tree tree = (Tree) FindObject.getAdjacentObject(villager.getWorld(), new HasFruit(), 
 				EntityType.TREE, villager.getX(), villager.getY());
-		
+
+		// We're next to a tree. Eat!
 		if(tree != null){
 			actionQueue.addLast(new EatAction(villager));
-		}else{
+		}
+		
+		// We need to move, and then eat
+		else{
 			Point p = FindObject.findObjectNeighbour((TestWorld)villager.getWorld(), new HasFruit(), EntityType.TREE, 
 					villager.getX(), villager.getY());
 			Path movePath = PathFinder.getPathToAdjacent(villager.getX(), villager.getY(), p.x, p.y);

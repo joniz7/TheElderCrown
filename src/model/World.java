@@ -26,14 +26,16 @@ import util.Tickable;
 
 public abstract class World implements Tickable{
 
-	// The agents of this world (villagers)
+	// Tickable objects (e.g. trees)
 	protected ArrayList<Tickable> tickables = new ArrayList<Tickable>();
 	
-	// The entities of this world (grass, trees, villagers, ...)
+	// Agents (e.g. villagers)
+	protected HashMap<Point, Agent> agents;
+	
+	// All entities of this world (grass, trees, villagers, ...)
 	protected HashMap<Point, BottomEntity> botEntities;
 	protected HashMap<Point, MidEntity> midEntities;
 	protected HashMap<Point, TopEntity> topEntities;
-	protected HashMap<Point, Agent> agents;
 	
 	protected boolean paused;
 	public boolean shouldExit;
@@ -59,21 +61,26 @@ public abstract class World implements Tickable{
 	@Override
 	public void tick(){
 		if(!paused) {
+			// Update all tickables
 			for(Tickable t : tickables){
 				t.tick();
 			}
 			
+			// Update all villagers
 			HashMap<Point, Agent> temp = (HashMap<Point, Agent>)agents.clone();
 			Iterator<Map.Entry<Point, Agent>> it = temp.entrySet().iterator();
 			
 			while(it.hasNext()) {
 				Map.Entry<Point, Agent> e = (Map.Entry<Point, Agent>) it.next();
-				e.getValue().update(e.getKey());
-				Action active = e.getValue().getAction();
-				if(active != null && !active.isFailed() && !active.isFinished())
-					active.tick(this);
+				Point pos = e.getKey();
+				Agent agent = e.getValue();
+				agent.update(pos);
+				Action activeAction = agent.getAction();
+				if(activeAction != null && !activeAction.isFailed() && !activeAction.isFinished())
+					activeAction.tick(this);
 				else
-					e.getValue().actionDone();
+					// 
+					agent.actionDone();
 			}
 		}
 	}
