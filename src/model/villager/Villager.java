@@ -74,6 +74,7 @@ public class Villager extends MidEntity implements Agent {
 				activePlan = ih.getFirstPlan();
 				System.out.println(activePlan);
 			}else{
+				System.out.println("Creating ExplorePlan");
 				activePlan=new ExplorePlan(this);
 				mustExplore = false;
 			}

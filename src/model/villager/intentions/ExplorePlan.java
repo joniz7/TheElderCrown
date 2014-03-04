@@ -20,8 +20,9 @@ public class ExplorePlan extends Plan {
 	public ExplorePlan(Villager villager){
 		super(villager);
 		actionQueue = new LinkedList<Action>();
-		while(path == null || p == null){
-			p = new Point(randInt((villager.getX()-10000),(villager.getY()-10000)),randInt((villager.getX()-10000),(villager.getY()-10000)));
+		while(path == null){
+			System.out.println("Finding point to explore");
+			p = new Point(randInt((villager.getX()-5),(villager.getX()+5)),randInt((villager.getY()-5),(villager.getY()+5)));
 			if(p != null){
 				path = PathFinder.getPathToAdjacent(villager.getX(),villager.getY(),p.x,p.y);
 			}
@@ -33,10 +34,17 @@ public class ExplorePlan extends Plan {
 	public static int randInt(int min, int max) {
 
 	    Random rand = new Random();
-
+	    if(max<=0){
+	    	max = 1;
+	    }else if(min <=0){
+	    	min=1;
+	    }
 	    // nextInt is normally exclusive of the top value,
 	    // so add 1 to make it inclusive
 	    int randomNum = rand.nextInt((max - min) + 1) + min;
+	    if(randomNum<1){
+	    	return 1;
+	    }
 
 	    return randomNum;
 		
