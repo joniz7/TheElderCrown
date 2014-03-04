@@ -15,7 +15,7 @@ import view.entity.mid.VillagerView;
 
 public class Villager extends MidEntity implements Agent {
 
-	private float hunger = -15f, thirst = 2f, speed = 20, sleepiness = 2f ;
+	private float hunger = -15f, thirst = 2f, speed = 20, sleepiness = 2f, social=10f ;
 	private World world;
 	private Plan activePlan;
 	private IntentionHandler IH = new IntentionHandler(this);
@@ -54,10 +54,15 @@ public class Villager extends MidEntity implements Agent {
 		this.sleepiness += f;
 	}
 	
+	public void satisfySocial(float f){
+		this.social += f;
+	}
+	
 	private void adjustNeeds() {
 		hunger = hunger - 0.01f;
 		thirst = thirst - 0.01f;
 		sleepiness = sleepiness - 0.003f;
+		social -= 0.01f;
 	}
 	
 	private void plan() {
@@ -93,6 +98,10 @@ public class Villager extends MidEntity implements Agent {
 
 	public float getThirst() {
 		return thirst;
+	}
+	
+	public float getSocial() {
+		return social;
 	}
 	
 	public float getSleepiness(){
