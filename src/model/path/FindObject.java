@@ -142,6 +142,7 @@ public static Point findTile2(TestWorld world, EntityType id, int startX, int st
 		
 		visited.add(new Point(startX, startY));
 		
+		int stacks = 0;
 		boolean found = false;
 		while(!found){
 			toVisit = new ArrayList<Point>();
@@ -194,10 +195,26 @@ public static Point findTile2(TestWorld world, EntityType id, int startX, int st
 					visited.add(p);
 //					View.addTopGraphic(new Helper1View(p.x, p.y));
 				}
+			
+			if(stacks > 100 || visited.size() == 0){
+				System.out.println("FindObject: " + visited.size());
+				Exception e = new Exception();
+				e.printStackTrace();
+				return null;
+			}
 		}
 		return null;
 	}
 	
+	public static boolean standingOnTile(TestWorld world, EntityType id, int startX, int startY){
+		HashMap<Point, BottomEntity> tiles = world.getTiles();
+		
+		if(tiles.get(new Point(startX, startY)) != null && tiles.get(new Point(startX, startY)).getEntityType() == id)
+			return true;
+		
+		return false;
+	}
+
 	/**
 	 * In order to create a correct path, the villager wants to move to a unblocked tile adjacent
 	 * to the object. This method checks all 4 neighbors of
@@ -472,7 +489,7 @@ public static Point findTile2(TestWorld world, EntityType id, int startX, int st
 //					View.addTopGraphic(new Helper1View(p.x, p.y));
 			}
 			
-			if(stacks > 100){
+			if(stacks > 100 || visited.size() == 0){
 				System.out.println("FindObject: " + visited.size());
 				Exception e = new Exception();
 				e.printStackTrace();
