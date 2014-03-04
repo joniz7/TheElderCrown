@@ -18,7 +18,7 @@ public class Villager extends MidEntity implements Agent {
 	private float hunger = -15f, thirst = 2f, speed = 20, sleepiness = 2f, laziness = 1f ;
 	private World world;
 	private Plan activePlan;
-	private IntentionHandler IH = new IntentionHandler(this);
+	private IntentionHandler ih = new IntentionHandler(this);
 	
 	private int height, weight;
 	
@@ -61,9 +61,9 @@ public class Villager extends MidEntity implements Agent {
 	}
 	
 	private void plan() {
-		IH.update();
+		ih.update();
 		if(activePlan == null) {
-			activePlan = IH.getFirstPlan();
+			activePlan = ih.getFirstPlan();
 			System.out.println(activePlan);
 		}
 	}

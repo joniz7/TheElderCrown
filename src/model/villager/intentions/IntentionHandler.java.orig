@@ -7,6 +7,26 @@ import model.villager.Villager;
 public class IntentionHandler {
 
 	private PriorityQueue<Intent> pq;
+<<<<<<< HEAD
+	
+	private EatIntent eatInt;
+	private DrinkIntent drinkInt;
+	private SleepIntent sleepInt;
+	private IdleIntent idleInt;
+	
+	public IntentionHandler(Villager villager){
+		pq = new PriorityQueue<Intent>(5, new IntentComparator());
+	
+		eatInt = new EatIntent(villager);
+		drinkInt = new DrinkIntent(villager);
+		sleepInt = new SleepIntent(villager);
+		idleInt = new IdleIntent(villager);
+		
+		pq.add(eatInt);
+		pq.add(drinkInt);
+		pq.add(sleepInt);
+		pq.add(idleInt);
+=======
 	private IntentComparator intentComparator;
 	
 	public IntentionHandler(Villager villager){
@@ -19,7 +39,7 @@ public class IntentionHandler {
 		pq.add(new EatIntent(villager));
 		pq.add(new DrinkIntent(villager));
 		pq.add(new SleepIntent(villager));
-		pq.add(new IdleIntent(villager));
+>>>>>>> dev
 	}
 	
 	public void update(){
