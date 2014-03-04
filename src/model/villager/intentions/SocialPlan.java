@@ -17,7 +17,7 @@ public class SocialPlan extends Plan{
 	public SocialPlan(Villager villager) {
 		super(villager);
 		
-		Point p = FindObject.findTileNeighbour((TestWorld)villager.getWorld(), EntityType.Villager, 
+		Point p = FindObject.findTileNeighbour((TestWorld)villager.getWorld(), EntityType.VILLAGER, 
 				villager.getX(), villager.getY());
 		Path movePath = PathFinder.getPathToAdjacent(villager.getX(), villager.getY(), p.x, p.y);
 		
