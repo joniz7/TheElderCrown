@@ -8,6 +8,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Iterator;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
@@ -29,7 +30,7 @@ import util.Tickable;
 public abstract class World implements Tickable{
 
 	// Tickable objects (e.g. trees)
-	protected List<Tickable> tickables = new ArrayList<Tickable>();
+	protected List<Tickable> tickables;
 	
 	// Agents (e.g. villagers)
 	protected HashMap<Point, Agent> agents;
@@ -56,10 +57,15 @@ public abstract class World implements Tickable{
     
     public World() {
     	pcs = new PropertyChangeSupport(this);
-		botEntities = new HashMap<Point, BottomEntity>();
+		
+    	botEntities = new HashMap<Point, BottomEntity>();
 		midEntities = new HashMap<Point, MidEntity>();
 		topEntities = new HashMap<Point, TopEntity>();
+		
+		tickables  = new ArrayList<Tickable>();
 		agents = new HashMap<Point, Agent>();
+		orders = new LinkedList<Order>();
+		
 		shouldExit = false;
 		}
 	
@@ -70,41 +76,52 @@ public abstract class World implements Tickable{
 			for(Tickable t : tickables){
 				t.tick();
 			}
+			updateAgents();
+		}
+	}
+
+	/**
+	 * Updates all agents in the system, and resolves their actions.
+	 * 
+	 * Goes through all agents and:
+	 * 1. Sends them input
+	 * 2. Gets and resolves their action
+	 */
+	private void updateAgents() {
+
+		HashMap<Point, Agent> temp = (HashMap<Point, Agent>)agents.clone();
+		Iterator<Map.Entry<Point, Agent>> it = temp.entrySet().iterator();
+		boolean hasOrders = orders.isEmpty();
+		
+		while(it.hasNext()) {
+			Map.Entry<Point, Agent> e = (Map.Entry<Point, Agent>) it.next();
+			Point pos = e.getKey();
+			Agent agent = e.getValue();
+			// TODO better relationship between Agent and Entity types.
+			// All agents are also entities? Seems reasonable
+			Entity entity = (Entity)agent;
 			
-			// Update all villagers
-			HashMap<Point, Agent> temp = (HashMap<Point, Agent>)agents.clone();
-			Iterator<Map.Entry<Point, Agent>> it = temp.entrySet().iterator();
-			boolean hasOrders = orders.isEmpty();
-			
-			while(it.hasNext()) {
-				Map.Entry<Point, Agent> e = (Map.Entry<Point, Agent>) it.next();
-				Point pos = e.getKey();
-				Agent agent = e.getValue();
-				// TODO better relationship between Agent and Entity types.
-				// All agents are also entities? Seems reasonable
-				Entity entity = (Entity)agent;
-				
-				// Has this agent been given an order?
-				if (hasOrders) {
-					for(Order o : orders) {
-						if (o.getToId() == entity.getId()) {
-							// Update agent with position AND new order
-							// (should ideally be changed to Perception later)
-							orders.remove(o);
-							agent.update(pos, o);
-						}
+			// Has this agent been given an order?
+			Order order = null;
+			if (hasOrders) {
+				for(Order o : orders) {
+					if (o.getToId() == entity.getId()) {
+						// Send order information in update 
+						// (should ideally be changed to Perception later)
+						order = o;
+						orders.remove(o);
+						
 					}
 				}
-				// Update agent with position only
-				agent.update(pos);
-				
-				Action activeAction = agent.getAction();
-				if(activeAction != null && !activeAction.isFailed() && !activeAction.isFinished())
-					activeAction.tick(this);
-				else
-					// 
-					agent.actionDone();
 			}
+			// Update agent with position and possibly an order
+			agent.update(pos, order);
+			
+			Action activeAction = agent.getAction();
+			if(activeAction != null && !activeAction.isFailed() && !activeAction.isFinished())
+				activeAction.tick(this);
+			else
+				agent.actionDone();
 		}
 	}
 
@@ -237,6 +254,13 @@ public abstract class World implements Tickable{
 				return p;
 		}
 		throw new NoPositionFoundException();
+	}
+	
+	/**
+	 * Add an order to be processed by the world in the next update
+	 */
+	public void addOrder(Order o) {
+		orders.add(o);
 	}
 	
 	public HashMap<Point, BottomEntity> getBotEntities() {
