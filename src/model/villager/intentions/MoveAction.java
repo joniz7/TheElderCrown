@@ -20,6 +20,10 @@ public class MoveAction extends Action{
 
 	@Override
 	public void tick(World world) {
+		if(path == null){
+			actionFailed();
+			return;
+		}
 		if(stepCount >= path.getLength()) {
 			//        	System.out.println("Move FINISHED!!!");
 	    	actionFinished();
