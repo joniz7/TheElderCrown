@@ -7,29 +7,29 @@ import model.villager.Villager;
 public class IntentionHandler {
 
 	private PriorityQueue<Intent> pq;
-	
-	private EatIntent eatInt;
-	private DrinkIntent drinkInt;
-	private SleepIntent sleepInt;
+	private IntentComparator intentComparator;
 	
 	public IntentionHandler(Villager villager){
-		pq = new PriorityQueue<Intent>(5, new IntentComparator());
+
+		// Initialize intention queue (= planning algorithm)
+		intentComparator = new IntentComparator();
+		pq = new PriorityQueue<Intent>(5, intentComparator);
 	
-		eatInt = new EatIntent(villager);
-		drinkInt = new DrinkIntent(villager);
-		sleepInt = new SleepIntent(villager);
-		
-		pq.add(eatInt);
-		pq.add(drinkInt);
-		pq.add(sleepInt);
+		// Add primitive intents
+		pq.add(new EatIntent(villager));
+		pq.add(new DrinkIntent(villager));
+		pq.add(new SleepIntent(villager));
 	}
 	
 	public void update(){
-		eatInt.calculateDesire();
-		drinkInt.calculateDesire();
-		sleepInt.calculateDesire();
 		
-		PriorityQueue<Intent> newPQ = new PriorityQueue<Intent>(5, new IntentComparator());
+		// Calculate all intent's desires
+		for (Intent p : pq) {
+			p.calculateDesire();
+		}
+		
+		//  Update order of intents
+		PriorityQueue<Intent> newPQ = new PriorityQueue<Intent>(5, intentComparator);
 		while(!pq.isEmpty())
 			newPQ.add(pq.poll());
 		pq = newPQ;
@@ -38,11 +38,5 @@ public class IntentionHandler {
 	public Plan getFirstPlan(){
 		return pq.peek().getPlan();
 	}
-
-	public EatIntent getEatInt() {
-		return eatInt;
-	}
-	
-	
 	
 }

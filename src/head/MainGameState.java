@@ -12,8 +12,8 @@ import org.newdawn.slick.state.StateBasedGame;
 
 import util.ImageLoader;
 import view.View;
-import control.Controller;
-import control.WorldController;
+import controller.Controller;
+import controller.WorldController;
 
 public class MainGameState implements GameState {
 
