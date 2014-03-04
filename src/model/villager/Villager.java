@@ -6,6 +6,7 @@ import model.World;
 import model.entity.Agent;
 import model.entity.MidEntity;
 import model.villager.intentions.Action;
+import model.villager.intentions.ExplorePlan;
 import model.villager.intentions.IntentionHandler;
 import model.villager.intentions.Plan;
 import util.EntityType;
@@ -19,6 +20,7 @@ public class Villager extends MidEntity implements Agent {
 	private World world;
 	private Plan activePlan;
 	private IntentionHandler ih = new IntentionHandler(this);
+	private boolean mustExplore = false;
 	
 	private int height, weight;
 	
@@ -54,6 +56,10 @@ public class Villager extends MidEntity implements Agent {
 		this.sleepiness += f;
 	}
 	
+	public void setExplore(){
+		mustExplore=true;
+	}
+	
 	private void adjustNeeds() {
 		hunger = hunger - 0.01f;
 		thirst = thirst - 0.01f;
@@ -63,8 +69,13 @@ public class Villager extends MidEntity implements Agent {
 	private void plan() {
 		ih.update();
 		if(activePlan == null) {
-			activePlan = ih.getFirstPlan();
-			System.out.println(activePlan);
+			if(!mustExplore){
+				activePlan = ih.getFirstPlan();
+				System.out.println(activePlan);
+			}else{
+				activePlan=new ExplorePlan(this);
+				mustExplore = false;
+			}
 		}
 	}
 
@@ -110,6 +121,8 @@ public class Villager extends MidEntity implements Agent {
 	public int getWeight() {
 		return weight;
 	}
+	
+	
 	
 	/**
 	 * Method for updating the view (and thus set villager looks) after what they are currently doing.
