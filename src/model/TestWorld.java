@@ -28,7 +28,7 @@ public class TestWorld extends World{
 	
 	// -- World configuration --
 	// Villagers
-	private final int VILLAGER_SPAWN_POS = 40, VILLAGER_COUNT = 1;
+	private final int VILLAGER_SPAWN_POS = 40, VILLAGER_COUNT = 10;
 	// Lakes 
 	private final float LAKE_COUNT = 8, LAKE_WEIGHT = 1f, LAKE_LOSS = 0.02f;
 	// Trees
@@ -285,8 +285,8 @@ public class TestWorld extends World{
 
 	private void initializeVillagers() {
 		for(int i = 0; i < VILLAGER_COUNT; i++) {
-			Point pos = new Point(VILLAGER_SPAWN_POS, VILLAGER_SPAWN_POS+i);
-			Villager villager = new Villager(VILLAGER_SPAWN_POS, VILLAGER_SPAWN_POS+i);
+			Point pos = new Point(VILLAGER_SPAWN_POS + 5, VILLAGER_SPAWN_POS+i);
+			Villager villager = new Villager(VILLAGER_SPAWN_POS + 5, VILLAGER_SPAWN_POS+i);
 			addEntity(pos, villager);
 			villager.getPCS().addPropertyChangeListener(this);
 		}

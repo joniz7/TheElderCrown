@@ -18,7 +18,8 @@ public class SleepAction extends Action {
 
 	@Override
 	public void tick(VillagersWorldPerception world){
-		if(FindObject.findTile2(world, EntityType.HOUSE_FLOOR, villager.getX(), villager.getY()) != null) {
+//		if(FindObject.findTile2((TestWorld) world, EntityType.HOUSE_FLOOR, villager.getX(), villager.getY()) != null) {
+		if(FindObject.standingOnTile(world, EntityType.HOUSE_FLOOR, villager.getX(), villager.getY())){
 			villager.satisfySleep(0.1f);
 			stacks = stacks + 0.2f;
 			if(stacks > sleepToGet)

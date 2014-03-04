@@ -26,14 +26,16 @@ import util.Tickable;
 
 public abstract class World implements Tickable, VillagersWorldPerception, PropertyChangeListener{
 
-	// The agents of this world (villagers)
+	// Tickable objects (e.g. trees)
 	protected ArrayList<Tickable> tickables = new ArrayList<Tickable>();
 	
-	// The entities of this world (grass, trees, villagers, ...)
+	// Agents (e.g. villagers)
+	protected HashMap<Point, Agent> agents;
+	
+	// All entities of this world (grass, trees, villagers, ...)
 	protected HashMap<Point, BottomEntity> botEntities;
 	protected HashMap<Point, MidEntity> midEntities;
 	protected HashMap<Point, TopEntity> topEntities;
-	protected HashMap<Point, Agent> agents;
 	
 	protected boolean paused;
 	public boolean shouldExit;
@@ -62,6 +64,12 @@ public abstract class World implements Tickable, VillagersWorldPerception, Prope
 	@Override
 	public void tick(){
 		if(!paused) {
+			// Update all tickables
+			for(Tickable t : tickables){
+				t.tick();
+			}
+			
+			// Update all villagers
 			HashMap<Point, Agent> temp = (HashMap<Point, Agent>)agents.clone();
 			Iterator<Map.Entry<Point, Agent>> it = temp.entrySet().iterator();
 			
@@ -95,11 +103,8 @@ public abstract class World implements Tickable, VillagersWorldPerception, Prope
 				if(active != null && !active.isFailed() && !active.isFinished())
 					active.tick(this);
 				else
+					// 
 					e.getValue().actionDone();
-			}
-			
-			for(Tickable t : tickables){
-				t.tick();
 			}
 		}
 	}

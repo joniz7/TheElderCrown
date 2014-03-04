@@ -115,6 +115,9 @@ public static Point findTile2(VillagersWorldPerception world, EntityType id, int
 		 */
 		HashMap<Point, BottomEntity> tiles = world.getBotEntities();
 		
+		if(tiles.get(new Point(startX, startY)).getEntityType() == id)
+			return new Point(startX, startY);
+		
 		/*
 		 * visited - These are the points that we already visited. We loop over this
 		 * list in order to check all neighbors of already visited points.
@@ -136,6 +139,7 @@ public static Point findTile2(VillagersWorldPerception world, EntityType id, int
 		
 		visited.add(new Point(startX, startY));
 		
+		int stacks = 0;
 		boolean found = false;
 		while(!found){
 			toVisit = new ArrayList<Point>();
@@ -188,10 +192,26 @@ public static Point findTile2(VillagersWorldPerception world, EntityType id, int
 					visited.add(p);
 //					View.addTopGraphic(new Helper1View(p.x, p.y));
 				}
+			
+			if(stacks > 100 || visited.size() == 0){
+				System.out.println("FindObject: " + visited.size());
+				Exception e = new Exception();
+				e.printStackTrace();
+				return null;
+			}
 		}
 		return null;
 	}
 	
+	public static boolean standingOnTile(VillagersWorldPerception world, EntityType id, int startX, int startY){
+		HashMap<Point, BottomEntity> tiles = world.getBotEntities();
+		
+		if(tiles.get(new Point(startX, startY)) != null && tiles.get(new Point(startX, startY)).getEntityType() == id)
+			return true;
+		
+		return false;
+	}
+
 	/**
 	 * In order to create a correct path, the villager wants to move to a unblocked tile adjacent
 	 * to the object. This method checks all 4 neighbors of
@@ -204,8 +224,12 @@ public static Point findTile2(VillagersWorldPerception world, EntityType id, int
 	 * @return - The Point to walk to in order to interact with object
 	 */
 	public static Point findTileNeighbour(VillagersWorldPerception world, EntityType id, int startX, int startY){
-
 		long startTime = System.currentTimeMillis();
+		
+		if(isStuck(world, startX, startY)){
+			System.out.println("STUCK");
+			return null;
+		}
 		
 		Point p = findTile2(world, id, startX, startY);
 		
@@ -462,13 +486,7 @@ public static Point findTile2(VillagersWorldPerception world, EntityType id, int
 //					View.addTopGraphic(new Helper1View(p.x, p.y));
 			}
 			
-			if(visited.size() == 0){
-				Exception e = new Exception();
-				e.printStackTrace();
-				return null;
-			}
-			
-			if(stacks > 1000){
+			if(stacks > 100 || visited.size() == 0){
 				System.out.println("FindObject: " + visited.size());
 				Exception e = new Exception();
 				e.printStackTrace();
@@ -491,6 +509,12 @@ public static Point findTile2(VillagersWorldPerception world, EntityType id, int
 	 */
 	public static Point findObjectNeighbour(VillagersWorldPerception world, Criteria crit, EntityType id, int startX, int startY){
 		long startTime = System.currentTimeMillis();
+		
+		if(isStuck(world, startX, startY)){
+			System.out.println("STUCK");
+			return null;
+		}
+		
 		Point p = findObject2(world, crit, id, startX, startY);
 		
 		long endTime = System.currentTimeMillis();
@@ -503,6 +527,9 @@ public static Point findTile2(VillagersWorldPerception world, EntityType id, int
 		Path p3 = null;
 		Path p4 = null;
 		
+		if(p == null)
+			return null;
+			
 		if(p.getX() > 0 && tiles.get(new Point((int) p.getX() - 1, (int) p.getY())).getEntityType() == EntityType.GRASS_TILE)
 			p1 = PathFinder.getPath(startX, startY, (int) p.getX() - 1, (int) p.getY());
 		if(p.getX() < world.getWidthInTiles() - 1 && tiles.get(new Point((int) p.getX() + 1, (int) p.getY())).getEntityType() == EntityType.GRASS_TILE)
@@ -595,5 +622,12 @@ public static Point findTile2(VillagersWorldPerception world, EntityType id, int
 		return null;
 	}
 	
-	
+	private static boolean isStuck(VillagersWorldPerception world, int startX, int startY){
+		if(world.blocked(null, startX + 1, startY))
+			if(world.blocked(null, startX - 1, startY))
+				if(world.blocked(null, startX, startY + 1))
+					if(world.blocked(null, startX, startY - 1))
+						return true;
+		return false;
+	}
 }

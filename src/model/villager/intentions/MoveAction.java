@@ -11,7 +11,7 @@ public class MoveAction extends Action{
 
 	private Path path;
 	private int progress, stepCount = 1, speedCap = 240;
-	
+	private int waitTime = 0;
 	
 	public MoveAction(Villager villager, Path path) {
 		super(villager);
@@ -20,11 +20,16 @@ public class MoveAction extends Action{
 
 	@Override
 	public void tick(VillagersWorldPerception world) {
+		if(path == null){
+			actionFailed();
+			return;
+		}
 		if(stepCount >= path.getLength()) {
 			//        	System.out.println("Move FINISHED!!!");
 	    	actionFinished();
-	    } else if(!world.blocked(null, path.getStep(stepCount).getX(), 
+	    }else if(!world.blocked(null, path.getStep(stepCount).getX(), 
     			path.getStep(stepCount).getY())){
+	    	waitTime = 0;
 			progress += villager.getSpeed();
 			
 			// Should move one step
@@ -49,7 +54,11 @@ public class MoveAction extends Action{
 				villager.updateViewPosition(dx, dy, progressPercent);
 		    }
 		} else {
-			actionFailed();
+			waitTime++;
+			if(waitTime > 40){
+				actionFailed();
+				System.out.println("WAIT!");
+			}
 		}
 	}
 	
