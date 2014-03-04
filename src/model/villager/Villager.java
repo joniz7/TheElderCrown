@@ -1,5 +1,7 @@
 package model.villager;
 
+import java.awt.Point;
+
 import model.entity.Agent;
 import model.entity.MidEntity;
 import model.villager.intentions.Action;
@@ -7,8 +9,6 @@ import model.villager.intentions.IntentionHandler;
 import model.villager.intentions.Plan;
 import util.EntityType;
 import util.RandomClass;
-import view.entity.EntityView;
-import view.entity.mid.VillagerView;
 
 public class Villager extends MidEntity implements Agent {
 
@@ -115,17 +115,8 @@ public class Villager extends MidEntity implements Agent {
 	public void updateStatus(String newStatus){
 		pcs.firePropertyChange("status", null, newStatus);		
 	}
-	
-	/**
-	 * Creates and returns a new VillagerView.
-	 * Registers the view as our listener.
-	 */
-	public EntityView createView() {
-		EntityView view = new VillagerView(x, y, height, weight);
-		pcs.addPropertyChangeListener(view);
-		return view;
+
+	public void attemptMove(Point newPos) {
+		pcs.firePropertyChange("move", null, newPos);
 	}
-
-
-	
 }

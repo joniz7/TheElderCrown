@@ -58,14 +58,12 @@ public class VillagerWorld implements VillagersWorldPerception {
 
 	@Override
 	public int getWidthInTiles() {
-		// TODO Auto-generated method stub
-		return 0;
+		return Constants.WORLD_WIDTH;
 	}
 
 	@Override
 	public int getHeightInTiles() {
-		// TODO Auto-generated method stub
-		return 0;
+		return Constants.WORLD_HEIGHT;
 	}
 
 	@Override

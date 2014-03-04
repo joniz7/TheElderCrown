@@ -1,6 +1,5 @@
 package model;
 
-
 import java.awt.Point;
 import java.beans.PropertyChangeListener;
 import java.beans.PropertyChangeSupport;
@@ -17,7 +16,6 @@ import model.entity.bottom.BottomEntity;
 import model.entity.bottom.WaterTile;
 import model.entity.top.TopEntity;
 import model.villager.Perception;
-import model.villager.Villager;
 import model.villager.VillagersWorldPerception;
 import model.villager.intentions.Action;
 
@@ -26,7 +24,7 @@ import org.newdawn.slick.util.pathfinding.PathFindingContext;
 import util.NoPositionFoundException;
 import util.Tickable;
 
-public abstract class World implements Tickable, VillagersWorldPerception{
+public abstract class World implements Tickable, VillagersWorldPerception, PropertyChangeListener{
 
 	// The agents of this world (villagers)
 	protected ArrayList<Tickable> tickables = new ArrayList<Tickable>();
@@ -40,7 +38,7 @@ public abstract class World implements Tickable, VillagersWorldPerception{
 	protected boolean paused;
 	public boolean shouldExit;
 	
-	private final int VIEW_DISTANCE = 4;
+	private final int VIEW_DISTANCE = 5;
 	
 	protected final PropertyChangeSupport pcs;
 	
@@ -64,10 +62,6 @@ public abstract class World implements Tickable, VillagersWorldPerception{
 	@Override
 	public void tick(){
 		if(!paused) {
-			for(Tickable t : tickables){
-				t.tick();
-			}
-			
 			HashMap<Point, Agent> temp = (HashMap<Point, Agent>)agents.clone();
 			Iterator<Map.Entry<Point, Agent>> it = temp.entrySet().iterator();
 			
@@ -102,6 +96,10 @@ public abstract class World implements Tickable, VillagersWorldPerception{
 					active.tick(this);
 				else
 					e.getValue().actionDone();
+			}
+			
+			for(Tickable t : tickables){
+				t.tick();
 			}
 		}
 	}
@@ -183,23 +181,6 @@ public abstract class World implements Tickable, VillagersWorldPerception{
 	 */
 	public void closeRequested() {
 		shouldExit = true;
-	}
-	
-	//TODO tillfällig?
-	public void moveVillager(Villager villager, Point pos){
-		Point p = null;
-		try {
-			p = getPosition(villager);
-		} catch (NoPositionFoundException e) {
-			e.printStackTrace();
-		}
-		
-		if(!blockedMid(pos)) {
-			agents.put(pos, villager);
-			midEntities.put(pos, villager);
-			agents.remove(p);
-			midEntities.remove(p);
-		}
 	}
 	
 	//TODO Maybe might fail if things are moving at just the wrong time.

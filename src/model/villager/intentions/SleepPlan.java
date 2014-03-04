@@ -3,7 +3,6 @@ package model.villager.intentions;
 import java.awt.Point;
 import java.util.LinkedList;
 
-import model.TestWorld;
 import model.entity.bottom.HouseFloor;
 import model.path.FindObject;
 import model.path.PathFinder;
@@ -19,7 +18,7 @@ public class SleepPlan extends Plan {
 		super(villager);
 		actionQueue = new LinkedList<Action>();
 		
-		Point floorPos = FindObject.findTile2((TestWorld)villager.getWorld(),EntityType.HOUSE_FLOOR, villager.getX(),villager.getY());
+		Point floorPos = FindObject.findTile2(villager.getWorld(),EntityType.HOUSE_FLOOR, villager.getX(),villager.getY());
 
 		if(floorPos != null){
 			Point villPos = new Point(villager.getX(),villager.getY());

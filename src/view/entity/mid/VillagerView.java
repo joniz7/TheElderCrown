@@ -1,12 +1,10 @@
 package view.entity.mid;
 
-import java.awt.Point;
 import java.beans.PropertyChangeEvent;
 
 import org.newdawn.slick.Color;
 import org.newdawn.slick.Graphics;
 
-import util.ImageLoader;
 import util.RandomClass;
 import view.entity.EntityView;
 

@@ -1,11 +1,11 @@
 package model.villager.intentions;
 
-import util.EntityType;
-import model.World;
 import model.entity.top.Tree;
 import model.path.FindObject;
 import model.path.criteria.HasFruit;
 import model.villager.Villager;
+import model.villager.VillagersWorldPerception;
+import util.EntityType;
 
 public class EatAction extends Action{
 
@@ -17,7 +17,7 @@ public class EatAction extends Action{
 	}
 
 	@Override
-	public void tick(World world){
+	public void tick(VillagersWorldPerception world){
 		if(FindObject.getAdjacentObject(world, new HasFruit(), EntityType.TREE, villager.getX(),
 				villager.getY()) != null) {
 			Tree tree = (Tree) FindObject.getAdjacentObject(world, new HasFruit(), EntityType.TREE, villager.getX(),

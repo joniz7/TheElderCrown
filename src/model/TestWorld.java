@@ -1,6 +1,7 @@
 package model;
 
 import java.awt.Point;
+import java.beans.PropertyChangeEvent;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Random;
@@ -20,6 +21,7 @@ import org.newdawn.slick.util.pathfinding.PathFindingContext;
 
 import util.Constants;
 import util.EntityType;
+import util.NoPositionFoundException;
 import util.NoSuchEntityException;
 
 public class TestWorld extends World{
@@ -286,6 +288,7 @@ public class TestWorld extends World{
 			Point pos = new Point(VILLAGER_SPAWN_POS, VILLAGER_SPAWN_POS+i);
 			Villager villager = new Villager(VILLAGER_SPAWN_POS, VILLAGER_SPAWN_POS+i);
 			addEntity(pos, villager);
+			villager.getPCS().addPropertyChangeListener(this);
 		}
 	}
 	
@@ -400,6 +403,26 @@ public class TestWorld extends World{
 		System.out.println("");
 		System.out.println("");
 	}
-	
-	
+
+	@Override
+	public void propertyChange(PropertyChangeEvent event) {
+		String name = event.getPropertyName();
+		
+		if(name.equals("move")){
+			Point p = null;
+			Point pos = (Point) event.getNewValue();
+			Villager villager = (Villager) event.getSource();
+			try {
+				p = getPosition(villager);
+			} catch (NoPositionFoundException e) {
+				e.printStackTrace();
+			}
+			if(!blockedMid(pos)) {
+				agents.put(pos, villager);
+				midEntities.put(pos, villager);
+				agents.remove(p);
+				midEntities.remove(p);
+			}
+		}
+	}
 }
