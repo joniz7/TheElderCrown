@@ -1,6 +1,5 @@
 package model;
 
-
 import java.awt.Point;
 import java.beans.PropertyChangeListener;
 import java.beans.PropertyChangeSupport;
@@ -16,7 +15,8 @@ import model.entity.MidEntity;
 import model.entity.bottom.BottomEntity;
 import model.entity.bottom.WaterTile;
 import model.entity.top.TopEntity;
-import model.villager.Villager;
+import model.villager.Perception;
+import model.villager.VillagersWorldPerception;
 import model.villager.intentions.Action;
 
 import org.newdawn.slick.util.pathfinding.PathFindingContext;
@@ -24,7 +24,7 @@ import org.newdawn.slick.util.pathfinding.PathFindingContext;
 import util.NoPositionFoundException;
 import util.Tickable;
 
-public abstract class World implements Tickable{
+public abstract class World implements Tickable, VillagersWorldPerception, PropertyChangeListener{
 
 	// Tickable objects (e.g. trees)
 	protected ArrayList<Tickable> tickables = new ArrayList<Tickable>();
@@ -39,6 +39,8 @@ public abstract class World implements Tickable{
 	
 	protected boolean paused;
 	public boolean shouldExit;
+	
+	private final int VIEW_DISTANCE = 5;
 	
 	protected final PropertyChangeSupport pcs;
 	
@@ -58,6 +60,7 @@ public abstract class World implements Tickable{
 		shouldExit = false;
 		}
 	
+	@SuppressWarnings("unchecked")
 	@Override
 	public void tick(){
 		if(!paused) {
@@ -70,17 +73,38 @@ public abstract class World implements Tickable{
 			HashMap<Point, Agent> temp = (HashMap<Point, Agent>)agents.clone();
 			Iterator<Map.Entry<Point, Agent>> it = temp.entrySet().iterator();
 			
+			HashMap<Point, BottomEntity> tempBotEnt;
+			HashMap<Point, MidEntity> tempMidEnt;
+			HashMap<Point, TopEntity> tempTopEnt;
+			Perception perception;
+			
 			while(it.hasNext()) {
+				tempBotEnt = new HashMap<Point, BottomEntity>();
+				tempMidEnt = new HashMap<Point, MidEntity>();
+				tempTopEnt = new HashMap<Point, TopEntity>();
+				perception = new Perception();
 				Map.Entry<Point, Agent> e = (Map.Entry<Point, Agent>) it.next();
-				Point pos = e.getKey();
-				Agent agent = e.getValue();
-				agent.update(pos);
-				Action activeAction = agent.getAction();
-				if(activeAction != null && !activeAction.isFailed() && !activeAction.isFinished())
-					activeAction.tick(this);
+				perception.position = e.getKey();
+				for(int i=(-VIEW_DISTANCE); i<VIEW_DISTANCE*2; i++){
+					for(int j=(-VIEW_DISTANCE); j<VIEW_DISTANCE*2; j++){
+						Point p = new Point(perception.position.x+i,perception.position.y+j);
+						tempBotEnt.put(p, botEntities.get(p));
+						if(midEntities.get(p) != null)
+							tempMidEnt.put(p, midEntities.get(p));
+						if(topEntities.get(p) != null)
+							tempTopEnt.put(p, topEntities.get(p));
+					}
+				}
+				perception.botEntities = tempBotEnt;
+				perception.midEntities = tempMidEnt;
+				perception.topEntities = tempTopEnt;
+				e.getValue().update(perception);
+				Action active = e.getValue().getAction();
+				if(active != null && !active.isFailed() && !active.isFinished())
+					active.tick(this);
 				else
 					// 
-					agent.actionDone();
+					e.getValue().actionDone();
 			}
 		}
 	}
@@ -162,23 +186,6 @@ public abstract class World implements Tickable{
 	 */
 	public void closeRequested() {
 		shouldExit = true;
-	}
-	
-	//TODO tillfällig?
-	public void moveVillager(Villager villager, Point pos){
-		Point p = null;
-		try {
-			p = getPosition(villager);
-		} catch (NoPositionFoundException e) {
-			e.printStackTrace();
-		}
-		
-		if(!blockedMid(pos)) {
-			agents.put(pos, villager);
-			midEntities.put(pos, villager);
-			agents.remove(p);
-			midEntities.remove(p);
-		}
 	}
 	
 	//TODO Maybe might fail if things are moving at just the wrong time.

@@ -6,7 +6,6 @@ import java.beans.PropertyChangeSupport;
 import model.path.criteria.Criteria;
 import util.EntityType;
 import util.InterpolPosition;
-import view.entity.EntityView;
 
 /**
  * A class representing an object that is visible in the world.

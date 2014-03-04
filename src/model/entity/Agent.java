@@ -1,11 +1,10 @@
 package model.entity;
 
-import java.awt.Point;
-
+import model.villager.Perception;
 import model.villager.intentions.Action;
 
 public interface Agent {
-	public void update(Point pos);
 	public Action getAction();
 	public void actionDone();
+	void update(Perception p);
 }

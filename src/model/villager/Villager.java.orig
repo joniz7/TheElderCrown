@@ -2,7 +2,6 @@ package model.villager;
 
 import java.awt.Point;
 
-import model.World;
 import model.entity.Agent;
 import model.entity.MidEntity;
 import model.villager.intentions.Action;
@@ -11,16 +10,20 @@ import model.villager.intentions.IntentionHandler;
 import model.villager.intentions.Plan;
 import util.EntityType;
 import util.RandomClass;
-import view.entity.EntityView;
-import view.entity.mid.VillagerView;
 
 public class Villager extends MidEntity implements Agent {
 
+<<<<<<< HEAD
 	private float hunger = -15f, thirst = 2f, speed = 20, sleepiness = 2f, laziness = 1f ;
+	private World world;
+=======
+	private float hunger = -15f, thirst = 2f, speed = 20, sleepiness = 2f ;
 	private VillagerWorld world;
+>>>>>>> perception
 	private Plan activePlan;
 	private IntentionHandler ih = new IntentionHandler(this);
-	private boolean mustExplore;
+	private boolean mustExplore = false;
+	
 	private int height, weight;
 	
 	public Villager(int x, int y) {
@@ -134,20 +137,8 @@ public class Villager extends MidEntity implements Agent {
 	public void updateStatus(String newStatus){
 		pcs.firePropertyChange("status", null, newStatus);		
 	}
-	
-	/**
-	 * Creates and returns a new VillagerView.
-	 * Registers the view as our listener.
-	 */
-	public EntityView createView() {
-		EntityView view = new VillagerView(x, y, height, weight);
-		pcs.addPropertyChangeListener(view);
-		return view;
-	}
 
 	public void attemptMove(Point newPos) {
 		pcs.firePropertyChange("move", null, newPos);
 	}
-
-	
 }

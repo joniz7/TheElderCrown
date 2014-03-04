@@ -6,6 +6,7 @@ import model.entity.top.Tree;
 import model.path.FindObject;
 import model.path.criteria.HasFruit;
 import model.villager.Villager;
+import model.villager.VillagersWorldPerception;
 
 /**
  * Class for handling the actual "action" to perform when idle.
@@ -25,7 +26,7 @@ public class IdleAction extends Action {
 	}
 
 	@Override
-	public void tick(World world){
+	public void tick(VillagersWorldPerception world){
 		if(firstTick) {
 			System.out.println("Idling");
 			villager.updateStatus("idling");

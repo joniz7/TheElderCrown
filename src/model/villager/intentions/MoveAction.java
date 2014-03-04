@@ -2,8 +2,8 @@ package model.villager.intentions;
 
 import java.awt.Point;
 
-import model.World;
 import model.villager.Villager;
+import model.villager.VillagersWorldPerception;
 
 import org.newdawn.slick.util.pathfinding.Path;
 
@@ -19,7 +19,7 @@ public class MoveAction extends Action{
 	}
 
 	@Override
-	public void tick(World world) {
+	public void tick(VillagersWorldPerception world) {
 		if(path == null){
 			actionFailed();
 			return;
@@ -40,7 +40,7 @@ public class MoveAction extends Action{
 		//        				+ ":" + path.getStep(stepCount).getY());
 				Point newPos = new Point(path.getStep(stepCount).getX(),
 						path.getStep(stepCount).getY());
-				world.moveVillager(villager, newPos);
+				villager.attemptMove(newPos);
 				stepCount++;
 		    } // Has finished moving
 		    

@@ -8,12 +8,9 @@ import java.util.Random;
 
 import model.entity.Agent;
 import model.entity.Entity;
-import model.entity.MidEntity;
-import model.entity.bottom.BottomEntity;
 import model.entity.bottom.GrassTile;
 import model.entity.bottom.HouseFloor;
 import model.entity.bottom.WaterTile;
-import model.entity.top.TopEntity;
 import model.entity.top.Tree;
 import model.entity.top.house.HouseDoor;
 import model.entity.top.house.HouseWall;
@@ -27,8 +24,12 @@ import util.EntityType;
 import util.NoPositionFoundException;
 import util.NoSuchEntityException;
 
+<<<<<<< HEAD
+public class TestWorld extends World implements TileBasedMap{
+=======
 public class TestWorld extends World{
 	
+>>>>>>> perception
 	// -- World configuration --
 	// Villagers
 	private final int VILLAGER_SPAWN_POS = 40, VILLAGER_COUNT = 10;
@@ -158,7 +159,6 @@ public class TestWorld extends World{
 				}
 				
 				oldWater = newWater;
-				System.out.println("Generating lakes");
 				weight = weight - LAKE_LOSS;
 				if(weight <= 0)
 					lakeDone = true;
@@ -328,30 +328,6 @@ public class TestWorld extends World{
 	}
 	
 	/**
-	 * A method to get access to all the ground tiles.
-	 * @return a HashMap with all the tiles identified by their position.
-	 */
-	public HashMap<Point, BottomEntity> getTiles() {
-		return botEntities;
-	}
-	
-	/**
-	 * Returns all entities that are on the same level as villagers, including villagers.
-	 * @return a Hashmap with all entities in the 'middle' layer.
-	 */
-	public HashMap<Point, MidEntity> getMidObjects(){
-		return midEntities;
-	}
-	
-	/**
-	 * Returns all entities that are to be rendered on top of villagers.
-	 * @return a Hashmap with all entities above the villagers.
-	 */
-	public HashMap<Point, TopEntity> getTopObjects(){
-		return topEntities;
-	}
-	
-	/**
 	 * Returns all entities who are also agents.
 	 * @return a HashMap of all the Agents in the game.
 	 */
@@ -434,7 +410,7 @@ public class TestWorld extends World{
 	@Override
 	public void propertyChange(PropertyChangeEvent event) {
 		String name = event.getPropertyName();
-
+		
 		if(name.equals("move")){
 			Point p = null;
 			Point pos = (Point) event.getNewValue();
