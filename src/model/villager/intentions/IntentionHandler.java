@@ -29,6 +29,7 @@ public class IntentionHandler {
 		}
 		
 		//  Update order of intents
+		// TODO necessary to use PQ like this? quite resource intensive
 		PriorityQueue<Intent> newPQ = new PriorityQueue<Intent>(5, intentComparator);
 		while(!pq.isEmpty())
 			newPQ.add(pq.poll());
@@ -37,6 +38,14 @@ public class IntentionHandler {
 	
 	public Plan getFirstPlan(){
 		return pq.peek().getPlan();
+	}
+	
+	/**
+	 * Adds an intent to do something,
+	 * which will be considered in the next update.
+	 */
+	public void addIntent(Intent i) {
+		pq.add(i);
 	}
 	
 }

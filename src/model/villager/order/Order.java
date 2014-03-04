@@ -1,10 +1,10 @@
 package model.villager.order;
 
-import java.awt.Desktop.Action;
+import model.villager.intentions.Intent;
 
 /**
  * An order given to an Agent.
- * Consists of an action, and the sender/receiver of the order.
+ * Consists of an intent, and the sender/receiver of the order.
  * 
  * @author Niklas
  */
@@ -13,13 +13,13 @@ public class Order {
 	// Sender and receiver of order
 	private int fromId, toId;
 
-	// TODO should probably consist of more than an action
-	private Action action;
+	// TODO should probably consist of more than an intent
+	private Intent intent;
 	
-	public Order(int fromId, int toId, Action action) {
+	public Order(int fromId, int toId, Intent intent) {
 		this.fromId = fromId;
 		this.toId = toId;
-		this.action = action;
+		this.intent = intent;
 	}
 
 	public int getFromId() {
@@ -30,8 +30,8 @@ public class Order {
 		return toId;
 	}
 
-	public Action getAction() {
-		return action;
+	public Intent getIntent() {
+		return intent;
 	}
 	
 	

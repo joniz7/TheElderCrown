@@ -98,7 +98,7 @@ public class View implements PropertyChangeListener {
 	}
 
 	public static void render(Graphics g){
-		System.out.println("Size: "+botGraphics.size());
+//		System.out.println("Size: "+botGraphics.size());
 		//		Display disp = new Display();
 		//		g.fillRect(0, 0, disp.getGraphicsDevice().getDisplayMode().getWidth(), 
 		//				disp.getGraphicsDevice().getDisplayMode().getHeight());

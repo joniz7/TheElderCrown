@@ -6,6 +6,7 @@ import model.World;
 import model.entity.Agent;
 import model.entity.MidEntity;
 import model.villager.intentions.Action;
+import model.villager.intentions.Intent;
 import model.villager.intentions.IntentionHandler;
 import model.villager.intentions.Plan;
 import model.villager.order.Order;
@@ -46,11 +47,23 @@ public class Villager extends MidEntity implements Agent {
 		updatePos(pos.x, pos.y);
 		adjustNeeds();
 		
+		// If order was received, take it into consideration when planning
 		if (o != null) {
-			// TODO think of our new order
+			addOrder(o);
 		}
 		
 		plan();
+	}
+	
+	/**
+	 * Adds an order to our intent handler,
+	 * which then will be considered the next time we plan.
+	 */
+	private void addOrder(Order o) {
+		Intent i = o.getIntent();
+		// TODO modify intent desire before adding,
+		//      based on obedience and other parameters
+		ih.addIntent(i);
 	}
 	
 	public void satisfyHunger(float f) {
