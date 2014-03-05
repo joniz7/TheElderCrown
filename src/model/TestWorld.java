@@ -14,6 +14,7 @@ import model.entity.bottom.GrassTile;
 import model.entity.bottom.HouseFloor;
 import model.entity.bottom.WaterTile;
 import model.entity.top.Tree;
+import model.entity.top.house.HouseCorner;
 import model.entity.top.house.HouseDoor;
 import model.entity.top.house.HouseWall;
 import model.path.PathFinder;
@@ -236,34 +237,64 @@ public class TestWorld extends World{
 		}
 		//BUILD WALLS
 		HouseWall wall;
+		HouseCorner corner;
+		boolean cornerPut = false;
 		for(int k=1; k<outerWidth; k++){
 			if(p.x != x || p.y != y){
-				wall = new HouseWall(p.x, p.y, Constants.UP_ENTRANCE);
-				addEntity(new Point(p.x, p.y), wall);
+				if(cornerPut){
+					wall = new HouseWall(p.x, p.y, Constants.UP_ENTRANCE);
+					addEntity(new Point(p.x, p.y), wall);
+				}else{
+					corner = new HouseCorner(p.x, p.y, Constants.UP_ENTRANCE);
+					addEntity(new Point(p.x, p.y), corner);
+					cornerPut = true;
+				}
 			}
 			p.translate(1, 0);
 		}
+		cornerPut = false;
 		for(int k=1; k<outerHeight; k++){
 			if(p.x != x || p.y != y){
-				wall = new HouseWall(p.x, p.y, Constants.RIGHT_ENTRANCE);
-				addEntity(new Point(p.x, p.y), wall);
+				if(cornerPut){
+					wall = new HouseWall(p.x, p.y, Constants.RIGHT_ENTRANCE);
+					addEntity(new Point(p.x, p.y), wall);
+				}else{
+					corner = new HouseCorner(p.x, p.y, Constants.RIGHT_ENTRANCE);
+					addEntity(new Point(p.x, p.y), corner);
+					cornerPut = true;
+				}
 			}
 			p.translate(0, 1);
 		}
+		cornerPut = false;
 		for(int k=1; k<outerWidth; k++){
 			if(p.x != x || p.y != y){
-				wall = new HouseWall(p.x, p.y, Constants.DOWN_ENTRANCE);
-				addEntity(new Point(p.x, p.y), wall);
+				if(cornerPut){
+					wall = new HouseWall(p.x, p.y, Constants.DOWN_ENTRANCE);
+					addEntity(new Point(p.x, p.y), wall);
+				}else{
+					corner = new HouseCorner(p.x, p.y, Constants.DOWN_ENTRANCE);
+					addEntity(new Point(p.x, p.y), corner);
+					cornerPut = true;
+				}
 			}
 			p.translate(-1, 0);
 		}
+		cornerPut = false;
 		for(int k=1; k<outerHeight; k++){
 			if(p.x != x || p.y != y){
-				wall = new HouseWall(p.x, p.y, Constants.LEFT_ENTRANCE);
-				addEntity(new Point(p.x, p.y), wall);
+				if(cornerPut){
+					wall = new HouseWall(p.x, p.y, Constants.LEFT_ENTRANCE);
+					addEntity(new Point(p.x, p.y), wall);
+				}else{
+					corner = new HouseCorner(p.x, p.y, Constants.LEFT_ENTRANCE);
+					addEntity(new Point(p.x, p.y), corner);
+					cornerPut = true;
+				}
 			}
 			p.translate(0, -1);
 		}
+		cornerPut = false;
 		p.translate(1, 1);
 		//ADD FLOOR
 		HouseFloor floor;

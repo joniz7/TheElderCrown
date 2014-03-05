@@ -39,8 +39,16 @@ public class VillagerWorld implements VillagersWorldPerception {
 	}
 	
 	@Override
-	public boolean blocked(PathFindingContext arg0, int arg1, int arg2) {
-		// TODO Auto-generated method stub
+	public boolean blocked(PathFindingContext arg0, int x, int y) {
+		if(botEntities.get(new Point(x, y)) != null && botEntities.get(new Point(x, y)).isBlocking()){
+			return true;
+		}
+		if(midEntities.get(new Point(x, y)) != null && midEntities.get(new Point(x, y)).isBlocking()){
+			return true;
+		}
+		if(topEntities.get(new Point(x, y)) != null && topEntities.get(new Point(x, y)).isBlocking()){
+			return true;
+		}
 		return false;
 	}
 

@@ -40,7 +40,7 @@ public abstract class World implements Tickable, VillagersWorldPerception, Prope
 	protected boolean paused;
 	public boolean shouldExit;
 	
-	private final int VIEW_DISTANCE = 5;
+	private final int VIEW_DISTANCE = 10;
 	
 	protected final PropertyChangeSupport pcs;
 	
@@ -88,11 +88,15 @@ public abstract class World implements Tickable, VillagersWorldPerception, Prope
 				for(int i=(-VIEW_DISTANCE); i<VIEW_DISTANCE*2; i++){
 					for(int j=(-VIEW_DISTANCE); j<VIEW_DISTANCE*2; j++){
 						Point p = new Point(perception.position.x+i,perception.position.y+j);
-						tempBotEnt.put(p, botEntities.get(p));
-						if(midEntities.get(p) != null)
+						if(botEntities.get(p) != null){
+							tempBotEnt.put(p, botEntities.get(p));
+						}
+						if(midEntities.get(p) != null){
 							tempMidEnt.put(p, midEntities.get(p));
-						if(topEntities.get(p) != null)
+						}
+						if(topEntities.get(p) != null){
 							tempTopEnt.put(p, topEntities.get(p));
+						}
 					}
 				}
 				perception.botEntities = tempBotEnt;

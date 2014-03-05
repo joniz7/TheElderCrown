@@ -155,6 +155,10 @@ public class View implements PropertyChangeListener {
 				HouseWall wall = (HouseWall) entity;
 				view = new HouseWallView(wall.getX(), wall.getY(), wall.getOrientation());
 				break;
+			case HOUSE_CORNER:
+				HouseCorner corner = (HouseCorner) entity;
+				view = new HouseCornerView(corner.getX(), corner.getY(), corner.getOrientation());
+				break;
 			}
 			PropertyChangeSupport pcs = entity.getPCS();
 			pcs.addPropertyChangeListener(view);
