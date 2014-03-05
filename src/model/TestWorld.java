@@ -328,31 +328,7 @@ public class TestWorld extends World{
 	public void pathFinderVisited(int x, int y){
 		
 	}
-	
-	/**
-	 * A method to get access to all the ground tiles.
-	 * @return a HashMap with all the tiles identified by their position.
-	 */
-	public HashMap<Point, BottomEntity> getTiles() {
-		return botEntities;
-	}
-	
-	/**
-	 * Returns all entities that are on the same level as villagers, including villagers.
-	 * @return a Hashmap with all entities in the 'middle' layer.
-	 */
-	public HashMap<Point, MidEntity> getMidObjects(){
-		return midEntities;
-	}
-	
-	/**
-	 * Returns all entities that are to be rendered on top of villagers.
-	 * @return a Hashmap with all entities above the villagers.
-	 */
-	public HashMap<Point, TopEntity> getTopObjects(){
-		return topEntities;
-	}
-	
+		
 	/**
 	 * Returns all entities who are also agents.
 	 * @return a HashMap of all the Agents in the game.
