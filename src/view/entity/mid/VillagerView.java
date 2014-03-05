@@ -66,6 +66,8 @@ public class VillagerView extends EntityView {
 						setImage("villagerDrinking");
 					}else if(currentStatus.compareTo("eating")==0){
 						setImage("villagerEating");
+					}else if(currentStatus.compareTo("talking")==0){
+						setImage("villagerTalking");
 					}
 					g.drawImage(image, transposedX, transposedY);
 				}
@@ -99,8 +101,10 @@ public class VillagerView extends EntityView {
 			}else if(status.compareTo("drinking")==0){
 				drawImage=true;
 				currentStatus="drinking";
+			}else if(status.compareTo("talking")==0){
+				drawImage=true;
+				currentStatus="talking";
 			}else if(status.compareTo("statusEnd")==0){
-				System.out.println("Status ended\n");
 				currentStatus="moving";
 				drawImage=false;
 			}

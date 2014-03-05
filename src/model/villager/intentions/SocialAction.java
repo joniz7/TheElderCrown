@@ -17,11 +17,9 @@ public class SocialAction extends Action{
 
 	@Override
 	public void tick(World world) {
-		if(FindObject.getAdjacentObject(world, new HasFruit(), EntityType.VILLAGER, villager.getX(),
-				villager.getY()) != null) {
-			Tree tree = (Tree) FindObject.getAdjacentObject(world, new HasFruit(), EntityType.VILLAGER, villager.getX(),
-					villager.getY());
-			villager.updateStatus("speaking");
+		if(FindObject.isAdjacentTile(world, EntityType.VILLAGER, villager.getX(),
+				villager.getY())){
+			villager.updateStatus("talking");
 			villager.satisfySocial(0.1f);
 			stacks++;
 			if(stacks > stacksToSocial){
