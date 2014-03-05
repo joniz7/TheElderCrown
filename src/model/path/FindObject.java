@@ -629,7 +629,7 @@ public static Point findTile2(VillagersWorldPerception world, EntityType id, int
 		return null;
 	}
 	
-	private static boolean isStuck(VillagersWorldPerception world, int startX, int startY){
+	public static boolean isStuck(VillagersWorldPerception world, int startX, int startY){
 		if(world.blocked(null, startX + 1, startY))
 			if(world.blocked(null, startX - 1, startY))
 				if(world.blocked(null, startX, startY + 1))

@@ -19,7 +19,7 @@ public class IntentionHandler {
 		pq.add(new EatIntent(villager));
 		pq.add(new DrinkIntent(villager));
 		pq.add(new SleepIntent(villager));
-		//pq.add(new IdleIntent(villager));
+		pq.add(new IdleIntent(villager));
 		//pq.add(new ExploreIntent(villager));
 	}
 	
