@@ -293,8 +293,8 @@ public class TestWorld extends World implements TileBasedMap{
 
 	private void initializeVillagers() {
 		for(int i = 0; i < VILLAGER_COUNT; i++) {
-			Point pos = new Point(VILLAGER_SPAWN_POS, VILLAGER_SPAWN_POS+i);
-			Villager villager = new Villager(this, VILLAGER_SPAWN_POS, VILLAGER_SPAWN_POS+i);
+			Point pos = new Point(VILLAGER_SPAWN_POS + 5, VILLAGER_SPAWN_POS+i);
+			Villager villager = new Villager(this, VILLAGER_SPAWN_POS + 5, VILLAGER_SPAWN_POS+i);
 			addEntity(pos, villager);
 		}
 	}

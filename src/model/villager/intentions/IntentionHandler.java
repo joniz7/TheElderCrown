@@ -36,8 +36,18 @@ public class IntentionHandler {
 		pq = newPQ;
 	}
 	
+	/**
+	 * Gets the topmost Intent's Plan.
+	 * 
+	 * Also removes the intent from the queue (unless it's a primitive intent)
+	 * @author Niklas
+	 */
 	public Plan getFirstPlan(){
-		return pq.peek().getPlan();
+		Intent i = pq.peek();
+		if (!(i instanceof PrimitiveIntent)) {
+			pq.poll();
+		}
+		return i.getPlan();
 	}
 	
 	/**

@@ -2,7 +2,7 @@ package model.villager.intentions;
 
 import model.villager.Villager;
 
-public class SleepIntent extends Intent {
+public class SleepIntent extends PrimitiveIntent {
 
 	public SleepIntent(Villager villager) {
 		super(0, villager);

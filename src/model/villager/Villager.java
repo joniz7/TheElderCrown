@@ -6,6 +6,7 @@ import model.World;
 import model.entity.Agent;
 import model.entity.MidEntity;
 import model.villager.intentions.Action;
+import model.villager.intentions.DieAction;
 import model.villager.intentions.Intent;
 import model.villager.intentions.IntentionHandler;
 import model.villager.intentions.Plan;
@@ -18,6 +19,8 @@ import view.entity.mid.VillagerView;
 public class Villager extends MidEntity implements Agent {
 
 	private float hunger = -15f, thirst = 2f, speed = 20, sleepiness = 2f ;
+	private boolean dead = false;
+
 	private World world;
 	private Plan activePlan;
 	private IntentionHandler ih = new IntentionHandler(this);
@@ -52,6 +55,7 @@ public class Villager extends MidEntity implements Agent {
 			addOrder(o);
 		}
 		
+		seeIfDead();
 		plan();
 	}
 	
@@ -84,6 +88,12 @@ public class Villager extends MidEntity implements Agent {
 		sleepiness = sleepiness - 0.003f;
 	}
 	
+	private void seeIfDead() {
+		if(hunger < -100.f || thirst < -100.f) {
+			dead = true;
+		}
+	}
+	
 	private void plan() {
 		ih.update();
 		if(activePlan == null) {
@@ -93,6 +103,9 @@ public class Villager extends MidEntity implements Agent {
 	}
 
 	public Action getAction() {
+		if(dead) {
+			return new DieAction(this);
+		}
 		return activePlan.getActiveAction();
 	}
 	
@@ -140,17 +153,14 @@ public class Villager extends MidEntity implements Agent {
 	public void updateStatus(String newStatus){
 		pcs.firePropertyChange("status", null, newStatus);		
 	}
-	
-	/**
-	 * Creates and returns a new VillagerView.
-	 * Registers the view as our listener.
-	 */
-	public EntityView createView() {
-		EntityView view = new VillagerView(x, y, height, weight);
-		pcs.addPropertyChangeListener(view);
-		return view;
+
+	@Override
+	public boolean isDead() {
+		return dead;
 	}
 
-
+	public void kill() {
+		pcs.firePropertyChange("status", null, "dead");
+	}
 	
 }

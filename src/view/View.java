@@ -76,25 +76,25 @@ public class View implements PropertyChangeListener {
 	public void incX(){
 		if(cameraX<modelToViewCoordinate(150))
 			cameraX += SCROLL_SPEED;
-			System.out.println("CameraX: "+cameraX);
+//			System.out.println("CameraX: "+cameraX);
 	}
 
 	public void incY(){
 		if(cameraY<modelToViewCoordinate(150))
 			cameraY += SCROLL_SPEED;
-			System.out.println("CameraY: "+cameraY);
+//			System.out.println("CameraY: "+cameraY);
 	}
 
 	public void decX(){
 		if(cameraX>modelToViewCoordinate(0))
 			cameraX -= SCROLL_SPEED;
-			System.out.println("CameraX: "+cameraX);
+//			System.out.println("CameraX: "+cameraX);
 	}
 
 	public void decY(){
 		if(cameraY>modelToViewCoordinate(0))
 			cameraY -= SCROLL_SPEED;
-			System.out.println("CameraY: "+cameraY);
+//			System.out.println("CameraY: "+cameraY);
 	}
 
 	public static void render(Graphics g){

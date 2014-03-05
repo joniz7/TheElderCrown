@@ -10,4 +10,5 @@ public interface Agent {
 	public void update(Point pos, Order o);
 	public Action getAction();
 	public void actionDone();
+	public boolean isDead();
 }
