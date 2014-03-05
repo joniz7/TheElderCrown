@@ -7,4 +7,5 @@ public interface Agent {
 	public Action getAction();
 	public void actionDone();
 	void update(Perception p);
+	public boolean isDead();
 }

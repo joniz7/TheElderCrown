@@ -235,6 +235,4 @@ public abstract class World implements Tickable, VillagersWorldPerception, Prope
 		return topEntities;
 	}
 	
-	
-	
 }

@@ -4,6 +4,8 @@ import java.awt.Point;
 import java.beans.PropertyChangeEvent;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Iterator;
+import java.util.Map;
 import java.util.Random;
 
 import model.entity.Agent;
@@ -422,6 +424,19 @@ public class TestWorld extends World{
 				midEntities.put(pos, villager);
 				agents.remove(p);
 				midEntities.remove(p);
+			}
+		}else if(name.equals("status")){
+			String evtString = (String) event.getNewValue();
+			if(evtString.equals("dead")){
+				Iterator<Map.Entry<Point, Agent>> it = agents.entrySet().iterator();
+				Agent agent = (Agent) event.getSource();
+				while(it.hasNext()) {
+					Map.Entry<Point, Agent> e = (Map.Entry<Point, Agent>) it.next();
+					if(e.getValue() == agent) {
+						agents.remove(e.getKey());
+						break;
+					}
+				}
 			}
 		}
 	}
