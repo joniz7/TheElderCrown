@@ -11,7 +11,7 @@ import util.Tickable;
 public class Tree extends TopEntity implements Tickable{
 	
 	private final int FRUIT_REGROWTH = 50000;
-	private int timer = 0, foodTicks = 1500;
+	private int timer = 0, foodTicks = 1;
 	private boolean fruit = true;
 	
 	/**

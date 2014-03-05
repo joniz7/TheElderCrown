@@ -6,6 +6,7 @@ import model.World;
 import model.entity.Agent;
 import model.entity.MidEntity;
 import model.villager.intentions.Action;
+import model.villager.intentions.DieAction;
 import model.villager.intentions.IntentionHandler;
 import model.villager.intentions.Plan;
 import util.EntityType;
@@ -42,10 +43,11 @@ public class Villager extends MidEntity implements Agent {
 		adjustNeeds();
 		seeIfDead();
 		plan();
+		System.out.println("Hunger: " + hunger);
 	}
 	
 	public void satisfyHunger(float f) {
-		this.hunger += f;
+		//this.hunger += f;
 	}
 	
 	public void satisfyThirst(float f) {
@@ -58,7 +60,7 @@ public class Villager extends MidEntity implements Agent {
 	}
 	
 	private void seeIfDead() {
-		if(hunger < -100 && thirst < -100) {
+		if(hunger < -20.f || thirst < -100.f) {
 			dead = true;
 		}
 	}
@@ -72,6 +74,9 @@ public class Villager extends MidEntity implements Agent {
 	}
 
 	public Action getAction() {
+		if(dead) {
+			return new DieAction(this);
+		}
 		return activePlan.getActiveAction();
 	}
 	
@@ -132,6 +137,8 @@ public class Villager extends MidEntity implements Agent {
 		return dead;
 	}
 
-
+	public void kill() {
+		pcs.firePropertyChange("status", null, "dead");
+	}
 	
 }

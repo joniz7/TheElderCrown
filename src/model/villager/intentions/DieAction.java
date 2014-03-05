@@ -13,6 +13,7 @@ public class DieAction extends Action{
 	@Override
 	public void tick(World world) {
 		world.removeAgent(villager);
+		villager.kill();
 	}
 
 }

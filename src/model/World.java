@@ -226,12 +226,9 @@ public abstract class World implements Tickable{
 		
 		while(it.hasNext()) {
 			Map.Entry<Point, Agent> e = (Map.Entry<Point, Agent>) it.next();
-			e.getValue().update(e.getKey());
-			Action active = e.getValue().getAction(); 
-			if(active != null && !active.isFailed() && !active.isFinished())
-				active.tick(this);
-			else
-				e.getValue().actionDone();
+			if(e.getValue() == agent) {
+				agents.remove(e.getKey());
+			}
 		}
 	}
 	
