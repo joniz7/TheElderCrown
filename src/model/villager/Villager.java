@@ -6,19 +6,24 @@ import model.entity.Agent;
 import model.entity.MidEntity;
 import model.villager.intentions.Action;
 import model.villager.intentions.DieAction;
+import model.villager.intentions.Intent;
+import model.villager.intentions.ExplorePlan;
 import model.villager.intentions.IntentionHandler;
 import model.villager.intentions.Plan;
+import model.villager.order.Order;
 import util.EntityType;
 import util.RandomClass;
+import view.entity.EntityView;
+import view.entity.mid.VillagerView;
 
 public class Villager extends MidEntity implements Agent {
 
-	private float hunger = -15f, thirst = 2f, speed = 20, sleepiness = 2f ;
+	private float hunger = -15f, thirst = 2f, speed = 20, sleepiness = 2f, laziness = 1f ;
 	private VillagerWorld world;
 	private boolean dead = false;
 	private Plan activePlan;
 	private IntentionHandler ih = new IntentionHandler(this);
-	
+	private boolean mustExplore;
 	private int height, weight;
 	
 	public Villager(int x, int y) {
@@ -34,14 +39,38 @@ public class Villager extends MidEntity implements Agent {
 	}
 
 	@Override
+	/**
+	 * Update this villager's needs and plans for the future.
+	 * 
+	 * The villager is given a perception, which includes information
+	 * about her position, and possibly an order she should obey.
+	 */
 	public void update(Perception p) {
 		updatePos(p.position.x, p.position.y);
 		world.updateBotEntities(p.botEntities);
 		world.updateMidEntities(p.midEntities);
 		world.updateTopEntities(p.topEntities);
+
 		adjustNeeds();
+		
+		// If order was received, take it into consideration when planning
+		if (p.order != null) {
+			addOrder(p.order);
+		}
+		
 		seeIfDead();
 		plan();
+	}
+
+	/**
+	 * Adds an order to our intent handler,
+	 * which then will be considered the next time we plan.
+	 */
+	private void addOrder(Order o) {
+		Intent i = o.getIntent();
+		// TODO modify intent desire before adding,
+		//      based on obedience and other parameters
+		ih.addIntent(i);
 	}
 
 	public void satisfyHunger(float f) {
@@ -54,6 +83,10 @@ public class Villager extends MidEntity implements Agent {
 	
 	public void satisfySleep(float f){
 		this.sleepiness += f;
+	}
+	
+	public void setExplore(){
+		mustExplore=true;
 	}
 	
 	private void adjustNeeds() {
@@ -71,8 +104,14 @@ public class Villager extends MidEntity implements Agent {
 	private void plan() {
 		ih.update();
 		if(activePlan == null) {
-			activePlan = ih.getFirstPlan();
-			System.out.println(activePlan);
+			if(!mustExplore){
+				activePlan = ih.getFirstPlan();
+				System.out.println(activePlan);
+			}else{
+				System.out.println("Creating ExplorePlan");
+				activePlan=new ExplorePlan(this);
+				mustExplore = false;
+			}
 		}
 	}
 
@@ -110,6 +149,10 @@ public class Villager extends MidEntity implements Agent {
 		return sleepiness;
 	}
 	
+	public float getLaziness(){
+		return laziness;
+	}
+	
 	public int getHeight() {
 		return height;
 	}
@@ -117,6 +160,8 @@ public class Villager extends MidEntity implements Agent {
 	public int getWeight() {
 		return weight;
 	}
+	
+	
 	
 	/**
 	 * Method for updating the view (and thus set villager looks) after what they are currently doing.
@@ -127,6 +172,16 @@ public class Villager extends MidEntity implements Agent {
 	public void updateStatus(String newStatus){
 		pcs.firePropertyChange("status", null, newStatus);		
 	}
+	
+	/**
+	 * Creates and returns a new VillagerView.
+	 * Registers the view as our listener.
+	 */
+	public EntityView createView() {
+		EntityView view = new VillagerView(x, y, height, weight);
+		pcs.addPropertyChangeListener(view);
+		return view;
+	}
 
 	public void attemptMove(Point newPos) {
 		pcs.firePropertyChange("move", null, newPos);
@@ -135,9 +190,5 @@ public class Villager extends MidEntity implements Agent {
 	@Override
 	public boolean isDead() {
 		return dead;
-	}
-
-	public void kill() {
-		pcs.firePropertyChange("status", null, "dead");
 	}
 }

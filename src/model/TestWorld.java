@@ -10,9 +10,12 @@ import java.util.Random;
 
 import model.entity.Agent;
 import model.entity.Entity;
+import model.entity.MidEntity;
+import model.entity.bottom.BottomEntity;
 import model.entity.bottom.GrassTile;
 import model.entity.bottom.HouseFloor;
 import model.entity.bottom.WaterTile;
+import model.entity.top.TopEntity;
 import model.entity.top.Tree;
 import model.entity.top.house.HouseCorner;
 import model.entity.top.house.HouseDoor;
@@ -31,7 +34,7 @@ public class TestWorld extends World{
 	
 	// -- World configuration --
 	// Villagers
-	private final int VILLAGER_SPAWN_POS = 40, VILLAGER_COUNT = 10;
+	private final int VILLAGER_SPAWN_POS = 40, VILLAGER_COUNT = 1;
 	// Lakes 
 	private final float LAKE_COUNT = 8, LAKE_WEIGHT = 1f, LAKE_LOSS = 0.02f;
 	// Trees
@@ -57,8 +60,8 @@ public class TestWorld extends World{
 
 
 		initializeLakes();
-		initializeGrass();
 		initializeHouses();
+		initializeGrass();
 		initializeTrees();
 		
 		new PathFinder(this);
@@ -97,7 +100,7 @@ public class TestWorld extends World{
 	}
 	
 	/**
-	 * Covers the whole map in grass.
+	 * Covers the whole map in grass, except for where there is water.
 	 */
 	private void initializeGrass() {
 		for(int i = 0; i < Constants.WORLD_WIDTH; i++) {
@@ -173,7 +176,7 @@ public class TestWorld extends World{
 	private void initializeTrees() {
 		for(int i = 0; i < Constants.WORLD_WIDTH - 1; i++) {
 			for(int j = 0; j < Constants.WORLD_HEIGHT - 1; j++) {
-				if(rnd.nextInt(TREE_SPARSITY) == 0 && botEntities.get(new Point(i + 1, j + 1)).getEntityType() == EntityType.GRASS_TILE){
+				if(rnd.nextInt(TREE_SPARSITY) == 0 && botEntities.get(new Point(i + 1, j + 1)).getType() == EntityType.GRASS_TILE){
 					Tree tree = new Tree(i + 1, j + 1);
 					trees.add(tree);
 					tickables.add(tree);
@@ -356,13 +359,37 @@ public class TestWorld extends World{
 	public void pathFinderVisited(int x, int y){
 		
 	}
-	
+		
 	/**
 	 * Returns all entities who are also agents.
 	 * @return a HashMap of all the Agents in the game.
 	 */
 	public HashMap<Point, Agent> getAgents(){
 		return agents;
+	}
+
+	/**
+	 * A method to get access to all the ground tiles.
+	 * @return a HashMap with all the tiles identified by their position.
+	 */
+	public HashMap<Point, BottomEntity> getTiles() {
+		return botEntities;
+	}
+	
+	/**
+	 * Returns all entities that are on the same level as villagers, including villagers.
+	 * @return a Hashmap with all entities in the 'middle' layer.
+	 */
+	public HashMap<Point, MidEntity> getMidObjects(){
+		return midEntities;
+	}
+	
+	/**
+	 * Returns all entities that are to be rendered on top of villagers.
+	 * @return a Hashmap with all entities above the villagers.
+	 */
+	public HashMap<Point, TopEntity> getTopObjects(){
+		return topEntities;
 	}
 	
 	/**
@@ -389,9 +416,9 @@ public class TestWorld extends World{
 	 */
 	public Entity getEntity(Point pos, EntityType type) throws NoSuchEntityException{
 		Entity e = null;
-		if(midEntities.get(pos).getEntityType() == type)
+		if(midEntities.get(pos).getType() == type)
 			e = midEntities.get(pos);
-		else if(topEntities.get(pos).getEntityType() == type)
+		else if(topEntities.get(pos).getType() == type)
 			e = topEntities.get(pos);
 		else
 			throw new NoSuchEntityException();
@@ -412,7 +439,7 @@ public class TestWorld extends World{
 		
 		for(int i = (int) upperLeft.getX(); i < lowerRight.getX(); i++){
 			for(int j = (int) upperLeft.getY(); j < lowerRight.getY(); j++){
-				System.out.print(botEntities.get(new Point(i, j)).getEntityType() + "  -  ");
+				System.out.print(botEntities.get(new Point(i, j)).getType() + "  -  ");
 			}
 			System.out.println("");
 		}
@@ -424,7 +451,7 @@ public class TestWorld extends World{
 		for(int i = (int) upperLeft.getX(); i < lowerRight.getX(); i++){
 			for(int j = (int) upperLeft.getY(); j < lowerRight.getY(); j++){
 				if(topEntities.get(new Point(i, j)) != null)
-					System.out.print(topEntities.get(new Point(i, j)).getEntityType() + "  -  ");
+					System.out.print(topEntities.get(new Point(i, j)).getType() + "  -  ");
 				else
 					System.out.print("NULL  -  ");
 
@@ -440,7 +467,7 @@ public class TestWorld extends World{
 	@Override
 	public void propertyChange(PropertyChangeEvent event) {
 		String name = event.getPropertyName();
-		
+
 		if(name.equals("move")){
 			Point p = null;
 			Point pos = (Point) event.getNewValue();

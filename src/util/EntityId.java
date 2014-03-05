@@ -2,12 +2,12 @@ package util;
 
 /**
  * Handles the assignment of GUIDs (globally unique identifiers).
- * (Not used atm, but this class might/should be used in the future)
+ * Use nextId() to get the next available Id. 
  * @author Niklas
  */
-public class ObjectGuid {
+public class EntityId {
 
-	private ObjectGuid() {}
+	private EntityId() {}
 	
 	private static int nextId = 0;
 	/**

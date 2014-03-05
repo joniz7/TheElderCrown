@@ -2,20 +2,21 @@ package model.villager.intentions;
 
 import model.villager.Villager;
 
-public class EatIntent extends PrimitiveIntent {
+public class ExploreIntent extends Intent {
 
-	public EatIntent(Villager villager) {
+
+	public ExploreIntent(Villager villager) {
 		super(0, villager);
 	}
 
 	@Override
 	public Plan getPlan(){
-		return new EatPlan(villager);
+		return new ExplorePlan(villager);
 	}
 
 	@Override
 	public void calculateDesire() {
-		setDesire(-villager.getHunger() * 4);
+		setDesire(-villager.getLaziness());
 //		System.out.println("EatIntent: " + desire);
 	}
 	

@@ -19,9 +19,14 @@ public class DrinkPlan extends Plan{
 		
 		Point p = FindObject.findTileNeighbour(villager.getWorld(), EntityType.WATER_TILE, 
 				villager.getX(), villager.getY());
-		Path movePath = PathFinder.getPathToAdjacent(villager.getX(), villager.getY(), p.x, p.y);
-		actionQueue.add(new MoveAction(villager, movePath));
-		
-		actionQueue.addLast(new DrinkAction(villager));
+		if(p!=null){
+			System.out.println(""+p.toString());
+			Path movePath = PathFinder.getPathToAdjacent(villager.getX(), villager.getY(), p.x, p.y);
+			actionQueue.add(new MoveAction(villager, movePath));
+			actionQueue.addLast(new DrinkAction(villager));
+		}else{
+			villager.setExplore();
+			isFinished=true;
+		}
 	}
 }

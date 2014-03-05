@@ -12,7 +12,7 @@ public class DieAction extends Action{
 
 	@Override
 	public void tick(VillagersWorldPerception world) {
-		villager.kill();
+		villager.updateStatus("dead");
 	}
 
 }

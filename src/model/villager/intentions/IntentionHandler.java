@@ -19,6 +19,8 @@ public class IntentionHandler {
 		pq.add(new EatIntent(villager));
 		pq.add(new DrinkIntent(villager));
 		pq.add(new SleepIntent(villager));
+		pq.add(new IdleIntent(villager));
+		//pq.add(new ExploreIntent(villager));
 	}
 	
 	public void update(){
@@ -29,14 +31,35 @@ public class IntentionHandler {
 		}
 		
 		//  Update order of intents
+		// TODO necessary to use PQ like this? quite resource intensive
 		PriorityQueue<Intent> newPQ = new PriorityQueue<Intent>(5, intentComparator);
 		while(!pq.isEmpty())
 			newPQ.add(pq.poll());
 		pq = newPQ;
 	}
 	
+	/**
+	 * Gets the topmost Intent's Plan.
+	 * 
+	 * Also removes the intent from the queue (unless it's a primitive intent)
+	 * @author Niklas
+	 */
 	public Plan getFirstPlan(){
-		return pq.peek().getPlan();
+		Intent i = pq.peek();
+		if (!(i instanceof PrimitiveIntent)) {
+			pq.poll();
+		}
+		return i.getPlan();
+	}
+	
+	/**
+	 * Adds an intent to do something,
+	 * which will be considered in the next update.
+	 */
+	public void addIntent(Intent i) {
+		// System.out.println("addin "+i.toString());
+		pq.add(i);
+		update();
 	}
 	
 }

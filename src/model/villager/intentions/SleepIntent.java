@@ -2,7 +2,13 @@ package model.villager.intentions;
 
 import model.villager.Villager;
 
-public class SleepIntent extends Intent {
+/**
+ * Simple class to see when the villager needs to rest.
+ * 
+ * @author Tux
+ *
+ */
+public class SleepIntent extends PrimitiveIntent {
 
 	public SleepIntent(Villager villager) {
 		super(0, villager);
