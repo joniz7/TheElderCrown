@@ -184,7 +184,7 @@ public class MainGameState implements GameState {
 		view = new View(appgc.getWidth(), appgc.getHeight());
 		controller = new WorldController(this, world, view);
 		appgc.getInput().addKeyListener(controller);
-		
+		appgc.getInput().addMouseListener(controller);
 		// Set up View listening to World
 		world.addPropertyChangeListener(view);
 		world.initialize();

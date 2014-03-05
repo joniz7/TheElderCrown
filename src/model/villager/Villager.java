@@ -6,8 +6,10 @@ import model.entity.Agent;
 import model.entity.MidEntity;
 import model.villager.intentions.Action;
 import model.villager.intentions.DieAction;
+import model.villager.intentions.Intent;
 import model.villager.intentions.IntentionHandler;
 import model.villager.intentions.Plan;
+import model.villager.order.Order;
 import util.EntityType;
 import util.RandomClass;
 
@@ -34,14 +36,38 @@ public class Villager extends MidEntity implements Agent {
 	}
 
 	@Override
+	/**
+	 * Update this villager's needs and plans for the future.
+	 * 
+	 * The villager is given a perception, which includes information
+	 * about her position, and possibly an order she should obey.
+	 */
 	public void update(Perception p) {
 		updatePos(p.position.x, p.position.y);
 		world.updateBotEntities(p.botEntities);
 		world.updateMidEntities(p.midEntities);
 		world.updateTopEntities(p.topEntities);
+
 		adjustNeeds();
+		
+		// If order was received, take it into consideration when planning
+		if (p.order != null) {
+			addOrder(p.order);
+		}
+		
 		seeIfDead();
 		plan();
+	}
+
+	/**
+	 * Adds an order to our intent handler,
+	 * which then will be considered the next time we plan.
+	 */
+	private void addOrder(Order o) {
+		Intent i = o.getIntent();
+		// TODO modify intent desire before adding,
+		//      based on obedience and other parameters
+		ih.addIntent(i);
 	}
 
 	public void satisfyHunger(float f) {

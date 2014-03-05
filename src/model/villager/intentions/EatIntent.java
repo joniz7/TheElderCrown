@@ -2,7 +2,7 @@ package model.villager.intentions;
 
 import model.villager.Villager;
 
-public class EatIntent extends Intent{
+public class EatIntent extends PrimitiveIntent {
 
 	public EatIntent(Villager villager) {
 		super(0, villager);

@@ -53,22 +53,22 @@ public class FindObject {
 		boolean found = false;
 		while(!found){
 			for(int i = (int) upperLeft.getX(); i <= lowerRight.getX(); i++)
-				if(tiles.get(new Point(i, (int) upperLeft.getY())).getEntityType() == id)
+				if(tiles.get(new Point(i, (int) upperLeft.getY())).getType() == id)
 					if(PathFinder.getPathToAdjacent(i, (int) upperLeft.getY(), startX, startY) != null)
 						return new Point(i, (int) upperLeft.getY());
 			
 			for(int i = (int) upperLeft.getX(); i <= lowerRight.getX(); i++)
-				if(tiles.get(new Point(i, (int) lowerRight.getY())).getEntityType() == id)
+				if(tiles.get(new Point(i, (int) lowerRight.getY())).getType() == id)
 					if(PathFinder.getPathToAdjacent(i, (int) lowerRight.getY(), startX, startY) != null)
 						return new Point(i, (int) lowerRight.getY());
 			
 			for(int i = (int) upperLeft.getY(); i <= lowerRight.getY(); i++)
-				if(tiles.get(new Point((int) upperLeft.getX(), i)).getEntityType() == id)
+				if(tiles.get(new Point((int) upperLeft.getX(), i)).getType() == id)
 					if(PathFinder.getPathToAdjacent((int) upperLeft.getX(), i, startX, startY) != null)
 						return new Point((int) upperLeft.getX(), i);
 			
 			for(int i = (int) upperLeft.getY(); i <= lowerRight.getY(); i++)
-				if(tiles.get(new Point((int) lowerRight.getX(), i)).getEntityType() == id)
+				if(tiles.get(new Point((int) lowerRight.getX(), i)).getType() == id)
 					if(PathFinder.getPathToAdjacent((int) lowerRight.getX(), i, startX, startY) != null)
 						return new Point((int) lowerRight.getX(), i);
 						
@@ -115,7 +115,7 @@ public static Point findTile2(VillagersWorldPerception world, EntityType id, int
 		 */
 		HashMap<Point, BottomEntity> tiles = world.getBotEntities();
 		
-		if(tiles.get(new Point(startX, startY)).getEntityType() == id)
+		if(tiles.get(new Point(startX, startY)).getType() == id)
 			return new Point(startX, startY);
 		
 		/*
@@ -178,7 +178,7 @@ public static Point findTile2(VillagersWorldPerception world, EntityType id, int
 			visited = new ArrayList<Point>();
 			
 			for(Point p : toVisit)
-				if(tiles.get(p) != null && tiles.get(p).getEntityType() == id && PathFinder.getPathToAdjacent(p.x, p.y, startX, startY) != null)
+				if(tiles.get(p) != null && tiles.get(p).getType() == id && PathFinder.getPathToAdjacent(p.x, p.y, startX, startY) != null)
 					return p;
 				else{
 					visited.add(p);
@@ -186,7 +186,7 @@ public static Point findTile2(VillagersWorldPerception world, EntityType id, int
 				}
 			
 			for(Point p : toCheck)
-				if(tiles.get(p) != null && tiles.get(p).getEntityType() == id && PathFinder.getPathToAdjacent(p.x, p.y, startX, startY) != null)
+				if(tiles.get(p) != null && tiles.get(p).getType() == id && PathFinder.getPathToAdjacent(p.x, p.y, startX, startY) != null)
 					return p;
 				else{
 					visited.add(p);
@@ -206,7 +206,7 @@ public static Point findTile2(VillagersWorldPerception world, EntityType id, int
 	public static boolean standingOnTile(VillagersWorldPerception world, EntityType id, int startX, int startY){
 		HashMap<Point, BottomEntity> tiles = world.getBotEntities();
 		
-		if(tiles.get(new Point(startX, startY)) != null && tiles.get(new Point(startX, startY)).getEntityType() == id)
+		if(tiles.get(new Point(startX, startY)) != null && tiles.get(new Point(startX, startY)).getType() == id)
 			return true;
 		
 		return false;
@@ -243,13 +243,13 @@ public static Point findTile2(VillagersWorldPerception world, EntityType id, int
 		Path p3 = null;
 		Path p4 = null;
 		
-		if(tiles.get(new Point((int) p.getX() - 1, (int) p.getY())).getEntityType() == EntityType.GRASS_TILE)
+		if(tiles.get(new Point((int) p.getX() - 1, (int) p.getY())).getType() == EntityType.GRASS_TILE)
 			p1 = PathFinder.getPath(startX, startY, (int) p.getX() - 1, (int) p.getY());
-		if(tiles.get(new Point((int) p.getX() + 1, (int) p.getY())).getEntityType() == EntityType.GRASS_TILE)
+		if(tiles.get(new Point((int) p.getX() + 1, (int) p.getY())).getType() == EntityType.GRASS_TILE)
 			p2 = PathFinder.getPath(startX, startY, (int) p.getX() + 1, (int) p.getY());
-		if(tiles.get(new Point((int) p.getX(), (int) p.getY() - 1)).getEntityType() == EntityType.GRASS_TILE)
+		if(tiles.get(new Point((int) p.getX(), (int) p.getY() - 1)).getType() == EntityType.GRASS_TILE)
 			p3 = PathFinder.getPath(startX, startY, (int) p.getX(), (int) p.getY() - 1);
-		if(tiles.get(new Point((int) p.getX(), (int) p.getY() + 1)).getEntityType() == EntityType.GRASS_TILE)
+		if(tiles.get(new Point((int) p.getX(), (int) p.getY() + 1)).getType() == EntityType.GRASS_TILE)
 			p4 = PathFinder.getPath(startX, startY, (int) p.getX(), (int) p.getY() + 1);
 		
 		Path bestPath = null;
@@ -288,13 +288,13 @@ public static Point findTile2(VillagersWorldPerception world, EntityType id, int
 		HashMap<Point, BottomEntity> tiles = world.getBotEntities();
 		
 		try{
-			if(tiles.get(new Point((int) startX - 1, (int) startY)).getEntityType() == id)
+			if(tiles.get(new Point((int) startX - 1, (int) startY)).getType() == id)
 				return true;
-			if(tiles.get(new Point((int) startX + 1, (int) startY)).getEntityType() == id)
+			if(tiles.get(new Point((int) startX + 1, (int) startY)).getType() == id)
 				return true;
-			if(tiles.get(new Point((int) startX, (int) startY - 1)).getEntityType() == id)
+			if(tiles.get(new Point((int) startX, (int) startY - 1)).getType() == id)
 				return true;
-			if(tiles.get(new Point((int) startX, (int) startY + 1)).getEntityType() == id)
+			if(tiles.get(new Point((int) startX, (int) startY + 1)).getType() == id)
 				return true;
 		}catch(NullPointerException e){
 			
@@ -327,12 +327,12 @@ public static Point findTile2(VillagersWorldPerception world, EntityType id, int
 		while(!found){
 			for(int i = (int) upperLeft.getX(); i <= lowerRight.getX(); i++){
 				if(mids.get(new Point(i, (int) upperLeft.getY())) != null)
-					if(mids.get(new Point(i, (int) upperLeft.getY())).getEntityType() == id && 
+					if(mids.get(new Point(i, (int) upperLeft.getY())).getType() == id && 
 							mids.get(new Point(i, (int) upperLeft.getY())).meetCriteria(crit))
 						if(PathFinder.getPathToAdjacent(i, (int) upperLeft.getY(), startX, startY) != null)
 							return new Point(i, (int) upperLeft.getY());
 				if(tops.get(new Point(i, (int) upperLeft.getY())) != null)
-					if(tops.get(new Point(i, (int) upperLeft.getY())).getEntityType() == id &&
+					if(tops.get(new Point(i, (int) upperLeft.getY())).getType() == id &&
 							tops.get(new Point(i, (int) upperLeft.getY())).meetCriteria(crit))
 						if(PathFinder.getPathToAdjacent(i, (int) upperLeft.getY(), startX, startY) != null)
 							return new Point(i, (int) upperLeft.getY());
@@ -340,12 +340,12 @@ public static Point findTile2(VillagersWorldPerception world, EntityType id, int
 			
 			for(int i = (int) upperLeft.getX(); i <= lowerRight.getX(); i++){
 				if(mids.get(new Point(i, (int) lowerRight.getY())) != null)
-					if(mids.get(new Point(i, (int) lowerRight.getY())).getEntityType() == id &&
+					if(mids.get(new Point(i, (int) lowerRight.getY())).getType() == id &&
 							mids.get(new Point(i, (int) lowerRight.getY())).meetCriteria(crit))
 						if(PathFinder.getPathToAdjacent(i, (int) lowerRight.getY(), startX, startY) != null)
 							return new Point(i, (int) lowerRight.getY());
 				if(tops.get(new Point(i, (int) lowerRight.getY())) != null)
-					if(tops.get(new Point(i, (int) lowerRight.getY())).getEntityType() == id &&
+					if(tops.get(new Point(i, (int) lowerRight.getY())).getType() == id &&
 							tops.get(new Point(i, (int) lowerRight.getY())).meetCriteria(crit))
 						if(PathFinder.getPathToAdjacent(i, (int) lowerRight.getY(), startX, startY) != null)
 							return new Point(i, (int) lowerRight.getY());
@@ -353,12 +353,12 @@ public static Point findTile2(VillagersWorldPerception world, EntityType id, int
 			
 			for(int i = (int) upperLeft.getY(); i <= lowerRight.getY(); i++){
 				if(mids.get(new Point((int) upperLeft.getX(), i)) != null)
-					if(mids.get(new Point((int) upperLeft.getX(), i)).getEntityType() == id &&
+					if(mids.get(new Point((int) upperLeft.getX(), i)).getType() == id &&
 							mids.get(new Point((int) upperLeft.getX(), i)).meetCriteria(crit))
 						if(PathFinder.getPathToAdjacent((int) upperLeft.getX(), i, startX, startY) != null)
 							return new Point((int) upperLeft.getX(), i);
 				if(tops.get(new Point((int) upperLeft.getX(), i)) != null)
-					if(tops.get(new Point((int) upperLeft.getX(), i)).getEntityType() == id &&
+					if(tops.get(new Point((int) upperLeft.getX(), i)).getType() == id &&
 							tops.get(new Point((int) upperLeft.getX(), i)).meetCriteria(crit))
 						if(PathFinder.getPathToAdjacent((int) upperLeft.getX(), i, startX, startY) != null)
 							return new Point((int) upperLeft.getX(), i);
@@ -366,12 +366,12 @@ public static Point findTile2(VillagersWorldPerception world, EntityType id, int
 			
 			for(int i = (int) upperLeft.getY(); i <= lowerRight.getY(); i++){
 				if(mids.get(new Point((int) lowerRight.getX(), i)) != null)
-					if(mids.get(new Point((int) lowerRight.getX(), i)).getEntityType() == id &&
+					if(mids.get(new Point((int) lowerRight.getX(), i)).getType() == id &&
 							mids.get(new Point((int) lowerRight.getX(), i)).meetCriteria(crit))
 						if(PathFinder.getPathToAdjacent((int) lowerRight.getX(), i, startX, startY) != null)
 							return new Point((int) lowerRight.getX(), i);
 				if(tops.get(new Point((int) lowerRight.getX(), i)) != null)
-					if(tops.get(new Point((int) lowerRight.getX(), i)).getEntityType() == id &&
+					if(tops.get(new Point((int) lowerRight.getX(), i)).getType() == id &&
 							tops.get(new Point((int) lowerRight.getX(), i)).meetCriteria(crit))
 						if(PathFinder.getPathToAdjacent((int) lowerRight.getX(), i, startX, startY) != null)
 							return new Point((int) lowerRight.getX(), i);
@@ -463,10 +463,10 @@ public static Point findTile2(VillagersWorldPerception world, EntityType id, int
 			visited = new ArrayList<Point>();
 			
 			for(Point p : toVisit){
-				if(mids.get(p) != null && mids.get(p).getEntityType() == id && mids.get(p).meetCriteria(crit) && 
+				if(mids.get(p) != null && mids.get(p).getType() == id && mids.get(p).meetCriteria(crit) && 
 						PathFinder.getPathToAdjacent(p.x, p.y, startX, startY) != null)
 					return p;
-				else if(tops.get(p) != null && tops.get(p).getEntityType() == id && tops.get(p).meetCriteria(crit) && 
+				else if(tops.get(p) != null && tops.get(p).getType() == id && tops.get(p).meetCriteria(crit) && 
 						PathFinder.getPathToAdjacent(p.x, p.y, startX, startY) != null)
 					return p;
 				else {
@@ -476,10 +476,10 @@ public static Point findTile2(VillagersWorldPerception world, EntityType id, int
 			}
 			
 			for(Point p : toCheck){
-				if(mids.get(p) != null && mids.get(p).getEntityType() == id && mids.get(p).meetCriteria(crit) && 
+				if(mids.get(p) != null && mids.get(p).getType() == id && mids.get(p).meetCriteria(crit) && 
 						PathFinder.getPathToAdjacent(p.x, p.y, startX, startY) != null)
 					return p;
-				else if(tops.get(p) != null && tops.get(p).getEntityType() == id && tops.get(p).meetCriteria(crit) && 
+				else if(tops.get(p) != null && tops.get(p).getType() == id && tops.get(p).meetCriteria(crit) && 
 						PathFinder.getPathToAdjacent(p.x, p.y, startX, startY) != null)
 					return p;
 //				else
@@ -530,13 +530,13 @@ public static Point findTile2(VillagersWorldPerception world, EntityType id, int
 		if(p == null)
 			return null;
 			
-		if(p.getX() > 0 && tiles.get(new Point((int) p.getX() - 1, (int) p.getY())).getEntityType() == EntityType.GRASS_TILE)
+		if(p.getX() > 0 && tiles.get(new Point((int) p.getX() - 1, (int) p.getY())).getType() == EntityType.GRASS_TILE)
 			p1 = PathFinder.getPath(startX, startY, (int) p.getX() - 1, (int) p.getY());
-		if(p.getX() < world.getWidthInTiles() - 1 && tiles.get(new Point((int) p.getX() + 1, (int) p.getY())).getEntityType() == EntityType.GRASS_TILE)
+		if(p.getX() < world.getWidthInTiles() - 1 && tiles.get(new Point((int) p.getX() + 1, (int) p.getY())).getType() == EntityType.GRASS_TILE)
 			p2 = PathFinder.getPath(startX, startY, (int) p.getX() + 1, (int) p.getY());
-		if(p.getY() > 0 && tiles.get(new Point((int) p.getX(), (int) p.getY() - 1)).getEntityType() == EntityType.GRASS_TILE)
+		if(p.getY() > 0 && tiles.get(new Point((int) p.getX(), (int) p.getY() - 1)).getType() == EntityType.GRASS_TILE)
 			p3 = PathFinder.getPath(startX, startY, (int) p.getX(), (int) p.getY() - 1);
-		if(p.getY() < world.getHeightInTiles() - 1 && tiles.get(new Point((int) p.getX(), (int) p.getY() + 1)).getEntityType() == EntityType.GRASS_TILE)
+		if(p.getY() < world.getHeightInTiles() - 1 && tiles.get(new Point((int) p.getX(), (int) p.getY() + 1)).getType() == EntityType.GRASS_TILE)
 			p4 = PathFinder.getPath(startX, startY, (int) p.getX(), (int) p.getY() + 1);
 		
 //		if(p.getX() > 0 && tiles.get(new Point((int) p.getX() - 1, (int) p.getY())).getTileID() == 0)
@@ -579,19 +579,19 @@ public static Point findTile2(VillagersWorldPerception world, EntityType id, int
 		
 		try{
 			if(mids.get(new Point(startX - 1, startY)) != null &&
-					mids.get(new Point(startX - 1, startY)).getEntityType() == id &&
+					mids.get(new Point(startX - 1, startY)).getType() == id &&
 					mids.get(new Point(startX - 1, startY)).meetCriteria(crit))
 				return mids.get(new Point(startX - 1, startY));
 			if(mids.get(new Point(startX + 1, startY)) != null && 
-					mids.get(new Point(startX + 1, startY)).getEntityType() == id &&
+					mids.get(new Point(startX + 1, startY)).getType() == id &&
 					mids.get(new Point(startX + 1, startY)).meetCriteria(crit))
 				return mids.get(new Point(startX + 1, startY));
 			if(mids.get(new Point(startX, startY - 1)) != null &&
-					mids.get(new Point(startX, startY - 1)).getEntityType() == id &&
+					mids.get(new Point(startX, startY - 1)).getType() == id &&
 					mids.get(new Point(startX, startY - 1)).meetCriteria(crit))
 				return mids.get(new Point(startX, startY - 1));
 			if(mids.get(new Point(startX, startY + 1)) != null &&
-					mids.get(new Point(startX, startY + 1)).getEntityType() == id &&
+					mids.get(new Point(startX, startY + 1)).getType() == id &&
 					mids.get(new Point(startX, startY + 1)).meetCriteria(crit))
 				return mids.get(new Point(startX, startY + 1));
 		}catch(ArrayIndexOutOfBoundsException e){
@@ -600,19 +600,19 @@ public static Point findTile2(VillagersWorldPerception world, EntityType id, int
 		
 		try{
 			if(tops.get(new Point(startX - 1, startY)) != null &&
-					tops.get(new Point(startX - 1, startY)).getEntityType() == id &&
+					tops.get(new Point(startX - 1, startY)).getType() == id &&
 					tops.get(new Point(startX - 1, startY)).meetCriteria(crit))
 				return tops.get(new Point(startX - 1, startY));
 			if(tops.get(new Point(startX + 1, startY)) != null &&
-					tops.get(new Point(startX + 1, startY)).getEntityType() == id &&
+					tops.get(new Point(startX + 1, startY)).getType() == id &&
 					tops.get(new Point(startX + 1, startY)).meetCriteria(crit))
 				return tops.get(new Point(startX + 1, startY));
 			if(tops.get(new Point(startX, startY - 1)) != null &&
-					tops.get(new Point(startX, startY - 1)).getEntityType() == id &&
+					tops.get(new Point(startX, startY - 1)).getType() == id &&
 					tops.get(new Point(startX, startY - 1)).meetCriteria(crit))
 				return tops.get(new Point(startX, startY - 1));
 			if(tops.get(new Point(startX, startY + 1)) != null &&
-					tops.get(new Point(startX, startY + 1)).getEntityType() == id &&
+					tops.get(new Point(startX, startY + 1)).getType() == id &&
 					tops.get(new Point(startX, startY + 1)).meetCriteria(crit))
 				return tops.get(new Point(startX, startY + 1));
 		}catch(ArrayIndexOutOfBoundsException e){

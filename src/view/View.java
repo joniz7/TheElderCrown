@@ -74,25 +74,25 @@ public class View implements PropertyChangeListener {
 	}
 
 	public void incX(){
-		if(cameraX<convertCoordinate(150))
+		if(cameraX<modelToViewCoordinate(150))
 			cameraX += SCROLL_SPEED;
 //			System.out.println("CameraX: "+cameraX);
 	}
 
 	public void incY(){
-		if(cameraY<convertCoordinate(150))
+		if(cameraY<modelToViewCoordinate(150))
 			cameraY += SCROLL_SPEED;
 //			System.out.println("CameraY: "+cameraY);
 	}
 
 	public void decX(){
-		if(cameraX>convertCoordinate(0))
+		if(cameraX>modelToViewCoordinate(0))
 			cameraX -= SCROLL_SPEED;
 //			System.out.println("CameraX: "+cameraX);
 	}
 
 	public void decY(){
-		if(cameraY>convertCoordinate(0))
+		if(cameraY>modelToViewCoordinate(0))
 			cameraY -= SCROLL_SPEED;
 //			System.out.println("CameraY: "+cameraY);
 	}
@@ -131,17 +131,17 @@ public class View implements PropertyChangeListener {
 		String name = event.getPropertyName();
 		if (name.equals("camera")) {
 			Point p = (Point)event.getNewValue();
-			cameraX = convertCoordinate(p.getX()) - width/2;
-			cameraY = convertCoordinate(p.getY()) - height/2;
+			cameraX = modelToViewCoordinate(p.getX()) - width/2;
+			cameraY = modelToViewCoordinate(p.getY()) - height/2;
 		}
 		else if(name.equals("worldsize")){
 			Point size = (Point) event.getNewValue();
-			worldXSize = convertCoordinate((int) size.getX());
-			worldYSize = convertCoordinate((int) size.getY());
+			worldXSize = modelToViewCoordinate((int) size.getX());
+			worldYSize = modelToViewCoordinate((int) size.getY());
 		}
 		else if (name.equals("addTopEntity")) {
 			TopEntity entity = (TopEntity) event.getNewValue();
-			EntityType type = entity.getEntityType();
+			EntityType type = entity.getType();
 			EntityView view = null;
 			switch(type){
 			case TREE:
@@ -162,7 +162,7 @@ public class View implements PropertyChangeListener {
 		}
 		else if (name.equals("addMidEntity")) {
 			MidEntity entity = (MidEntity) event.getNewValue();
-			EntityType type = entity.getEntityType();
+			EntityType type = entity.getType();
 			EntityView view = null;
 			switch(type){
 			case VILLAGER:
@@ -177,7 +177,7 @@ public class View implements PropertyChangeListener {
 		} 
 		else if (name.equals("addBotEntity")) {
 			BottomEntity entity = (BottomEntity) event.getNewValue();
-			EntityType type = entity.getEntityType();
+			EntityType type = entity.getType();
 			EntityView view = null;
 			switch(type){
 			case GRASS_TILE:
@@ -213,19 +213,40 @@ public class View implements PropertyChangeListener {
 	 * (Should always be used when receiving positions from model!)
 	 * @Author Niklas 
 	 */
-	public static int convertCoordinate(int worldCoordinate) {
+	public static int modelToViewCoordinate(int worldCoordinate) {
 		return worldCoordinate*TILE_OFFSET;
 	}
+	/**
+	 * Converts from view to world coordinates.
+	 * @Author Niklas 
+	 */
+	public static int viewToModelCoordinate(int viewCoordinate) {
+		return viewCoordinate/TILE_OFFSET;
+	}
+	
 	/**
 	 * Converts from world to view coordinates.
 	 * (Should always be used when receiving positions from model!)
 	 * 
 	 * Note: "worldCoordinate" is here converted to an integer.
-	 * 
+	 *
+	 * @deprecated
 	 * @Author Niklas 
 	 */
-	public static int convertCoordinate(double worldCoordinate) {
+	public static int modelToViewCoordinate(double worldCoordinate) {
 		return (int)worldCoordinate*TILE_OFFSET;
+	}
+	
+	/**
+	 * Converts from window to model coordinates.
+	 * @Author Niklas 
+	 */
+	public static Point windowToModelCoordinates(Point windowCoords) {
+		int viewX = (int)windowCoords.getX() + cameraX;
+		int viewY = (int)windowCoords.getY() + cameraY;
+		int modelX = viewToModelCoordinate(viewX);
+		int modelY = viewToModelCoordinate(viewY);
+		return new Point(modelX,modelY);
 	}
 	
 	public void setSize(int width, int height){
