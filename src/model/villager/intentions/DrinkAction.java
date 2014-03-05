@@ -20,12 +20,21 @@ public class DrinkAction extends Action{
 	public void tick(World world){
 		if(FindObject.isAdjacentTile(world, EntityType.WATER_TILE, villager.getX(),
 				villager.getY())){
+			villager.updateStatus("drinking");
+			
 			villager.satisfyThirst(0.5f);
 			stacks++;
-			if(stacks > stacksToDrink)
+			if(stacks > stacksToDrink){
+				villager.updateStatus("statusEnd");
 				actionFinished();
-		}else
+			}
+				
+				
+		}else{
+			villager.updateStatus("statusEnd");
 			actionFailed();
+		}
+			
 
 	}
 

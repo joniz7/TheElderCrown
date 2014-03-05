@@ -28,8 +28,10 @@ public class ImageLoader {
 		
 		//Villager
 		imageLib.put("villager", loadImage("image", "villager.png"));
-		imageLib.put("villagersleeping", loadImage("image", "villagersleeping.png"));
-		imageLib.put("villagerdead", loadImage("image", "villagerdead.png"));
+		imageLib.put("villagerSleeping", loadImage("image", "villagerSleeping.png"));
+		imageLib.put("villagerEating", loadImage("image", "villagerEating.png"));
+		imageLib.put("villagerDead", loadImage("image", "villagerDead.png"));
+		imageLib.put("villagerDrinking", loadImage("image", "villagerDrinking.png"));
 		
 		//Debugging
 		imageLib.put("helper", loadImage("image", "miss.png"));

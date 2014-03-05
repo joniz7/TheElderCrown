@@ -74,31 +74,31 @@ public class View implements PropertyChangeListener {
 	}
 
 	public void incX(){
-		if(cameraX<worldXSize-1000)
+		if(cameraX<convertCoordinate(150))
 			cameraX += SCROLL_SPEED;
-			System.out.println("CameraX: "+cameraX);
+//			System.out.println("CameraX: "+cameraX);
 	}
 
 	public void incY(){
-		if(cameraY<worldYSize-1000)
+		if(cameraY<convertCoordinate(150))
 			cameraY += SCROLL_SPEED;
-			System.out.println("CameraY: "+cameraY);
+//			System.out.println("CameraY: "+cameraY);
 	}
 
 	public void decX(){
 		if(cameraX>convertCoordinate(0))
 			cameraX -= SCROLL_SPEED;
-			System.out.println("CameraX: "+cameraX);
+//			System.out.println("CameraX: "+cameraX);
 	}
 
 	public void decY(){
 		if(cameraY>convertCoordinate(0))
 			cameraY -= SCROLL_SPEED;
-			System.out.println("CameraY: "+cameraY);
+//			System.out.println("CameraY: "+cameraY);
 	}
 
 	public static void render(Graphics g){
-		System.out.println("Size: "+botGraphics.size());
+//		System.out.println("Size: "+botGraphics.size());
 		//		Display disp = new Display();
 		//		g.fillRect(0, 0, disp.getGraphicsDevice().getDisplayMode().getWidth(), 
 		//				disp.getGraphicsDevice().getDisplayMode().getHeight());

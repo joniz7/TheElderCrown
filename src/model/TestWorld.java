@@ -34,13 +34,14 @@ public class TestWorld extends World implements TileBasedMap{
 	// -- World configuration --
 	// Size of world
 	private final int WIDTH = 200, HEIGHT = 200;
+
 	// Villagers
-	private final int VILLAGER_SPAWN_POS = 40, VILLAGER_COUNT = 1;
+	private final int VILLAGER_SPAWN_POS = 40, VILLAGER_COUNT = 10;
 	// Lakes 
 	private final float LAKE_COUNT = 8, LAKE_WEIGHT = 1f, LAKE_LOSS = 0.02f;
 	// Trees
 	private final int TREE_SPARSITY = 280;
-	
+
 	private ArrayList<Tree> trees = new ArrayList<Tree>();
 	
 	private Random rnd = new Random();
@@ -59,20 +60,37 @@ public class TestWorld extends World implements TileBasedMap{
 	 */
 	public void initialize() {
 
-		initializeGrass();
+
 		initializeLakes();
+		initializeGrass();
 		initializeHouses();
 		initializeTrees();
 		
 		new PathFinder(this);
 		
-		for(int i = 112; i < 128; i++) {
-			for(int j = 112; j < 128; j++) {
-				Point pos = new Point(i, j);
-				GrassTile grass = new GrassTile(i, j);
-				addEntity(pos, grass);
-			}
-		}
+//		for(int i = 112; i < 128; i++) {
+//			for(int j = 112; j < 128; j++) {
+//				Point pos = new Point(i, j);
+//				GrassTile grass = new GrassTile(i, j);
+//				addEntity(pos, grass);
+//			}
+//		}
+		
+		Point posG1 = new Point(120, 121);
+		GrassTile grass = new GrassTile(120, 121);
+		addEntity(posG1, grass);
+		
+		Point posG2 = new Point(121, 120);
+		GrassTile grass2 = new GrassTile(121, 120);
+		addEntity(posG2, grass2);
+		
+		Point posG3 = new Point(119, 120);
+		GrassTile grass3 = new GrassTile(119, 120);
+		addEntity(posG3, grass3);
+		
+		Point posG4 = new Point(120, 119);
+		GrassTile grass4 = new GrassTile(120, 119);
+		addEntity(posG4, grass4);
 		
 		// Send camera position update to view
 		Point pos = new Point(VILLAGER_SPAWN_POS, VILLAGER_SPAWN_POS);
@@ -89,9 +107,11 @@ public class TestWorld extends World implements TileBasedMap{
 	private void initializeGrass() {
 		for(int i = 0; i < WIDTH; i++) {
 			for(int j = 0; j < HEIGHT; j++) {
-				GrassTile grass = new GrassTile(i, j);
 				Point pos = new Point(i, j);
+				if(!botEntities.containsKey(pos)){
+				GrassTile grass = new GrassTile(i, j);
 				addEntity(pos, grass);
+				}
 			}
 		}
 	}
@@ -123,27 +143,27 @@ public class TestWorld extends World implements TileBasedMap{
 			while(!lakeDone){
 				ArrayList<Point> newWater = new ArrayList<Point>();
 				for(Point p : oldWater){
-					if(rnd.nextFloat() < weight && p.x != 0 && botEntities.get(new Point(p.x - 1, p.y)) instanceof GrassTile){
+					if(rnd.nextFloat() < weight && p.x != 0 && !(botEntities.get(new Point(p.x - 1, p.y)) instanceof WaterTile)){
 						Point pos = new Point(p.x-1, p.y);
 						addEntity(pos, new WaterTile((p.x-1), p.y));
 						newWater.add(new Point(p.x-1, p.y));
 					}
-					if(rnd.nextFloat() < weight  && p.x != 79 && botEntities.get(new Point(p.x + 1, p.y)) instanceof GrassTile){
+					if(rnd.nextFloat() < weight  && p.x != 79 && !(botEntities.get(new Point(p.x + 1, p.y)) instanceof WaterTile)){
 						addEntity(new Point(p.x+1, p.y), new WaterTile((p.x+1), p.y));
 						newWater.add(new Point(p.x+1, p.y));
 					}	
-					if(rnd.nextFloat() < weight  && p.y != 0 && botEntities.get(new Point(p.x, p.y - 1)) instanceof GrassTile){
+					if(rnd.nextFloat() < weight  && p.y != 0 && !(botEntities.get(new Point(p.x, p.y - 1)) instanceof WaterTile)){
 						addEntity(new Point(p.x, p.y-1), new WaterTile(p.x, (p.y-1)));
 						newWater.add(new Point(p.x, p.y-1));
 					}
-					if(rnd.nextFloat() < weight  && p.y != 79 && botEntities.get(new Point(p.x, p.y + 1)) instanceof GrassTile){
+					if(rnd.nextFloat() < weight  && p.y != 79 && !(botEntities.get(new Point(p.x, p.y + 1)) instanceof WaterTile)){
 						addEntity(new Point(p.x, p.y+1), new WaterTile(p.x, (p.y+1)));
 						newWater.add(new Point(p.x, p.y+1));
 					}
 				}
 				
 				oldWater = newWater;
-				
+				System.out.println("Generating lakes");
 				weight = weight - LAKE_LOSS;
 				if(weight <= 0)
 					lakeDone = true;
@@ -273,8 +293,8 @@ public class TestWorld extends World implements TileBasedMap{
 
 	private void initializeVillagers() {
 		for(int i = 0; i < VILLAGER_COUNT; i++) {
-			Point pos = new Point(VILLAGER_SPAWN_POS, VILLAGER_SPAWN_POS+i);
-			Villager villager = new Villager(this, VILLAGER_SPAWN_POS, VILLAGER_SPAWN_POS+i);
+			Point pos = new Point(VILLAGER_SPAWN_POS + 5, VILLAGER_SPAWN_POS+i);
+			Villager villager = new Villager(this, VILLAGER_SPAWN_POS + 5, VILLAGER_SPAWN_POS+i);
 			addEntity(pos, villager);
 		}
 	}
