@@ -136,8 +136,4 @@ public class Villager extends MidEntity implements Agent {
 	public boolean isDead() {
 		return dead;
 	}
-
-	public void kill() {
-		pcs.firePropertyChange("status", null, "dead");
-	}
 }
