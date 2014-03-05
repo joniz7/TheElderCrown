@@ -4,18 +4,13 @@ import java.awt.Point;
 import java.beans.PropertyChangeEvent;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Iterator;
-import java.util.Map;
 import java.util.Random;
 
 import model.entity.Agent;
 import model.entity.Entity;
-import model.entity.MidEntity;
-import model.entity.bottom.BottomEntity;
 import model.entity.bottom.GrassTile;
 import model.entity.bottom.HouseFloor;
 import model.entity.bottom.WaterTile;
-import model.entity.top.TopEntity;
 import model.entity.top.Tree;
 import model.entity.top.house.HouseDoor;
 import model.entity.top.house.HouseWall;
@@ -29,11 +24,15 @@ import util.EntityType;
 import util.NoPositionFoundException;
 import util.NoSuchEntityException;
 
+<<<<<<< HEAD
+public class TestWorld extends World implements TileBasedMap{
+=======
 public class TestWorld extends World{
 	
+>>>>>>> perception
 	// -- World configuration --
 	// Villagers
-	private final int VILLAGER_SPAWN_POS = 40, VILLAGER_COUNT = 1;
+	private final int VILLAGER_SPAWN_POS = 40, VILLAGER_COUNT = 10;
 	// Lakes 
 	private final float LAKE_COUNT = 8, LAKE_WEIGHT = 1f, LAKE_LOSS = 0.02f;
 	// Trees
@@ -160,7 +159,6 @@ public class TestWorld extends World{
 				}
 				
 				oldWater = newWater;
-				System.out.println("Generating lakes");
 				weight = weight - LAKE_LOSS;
 				if(weight <= 0)
 					lakeDone = true;
@@ -175,7 +173,7 @@ public class TestWorld extends World{
 	private void initializeTrees() {
 		for(int i = 0; i < Constants.WORLD_WIDTH - 1; i++) {
 			for(int j = 0; j < Constants.WORLD_HEIGHT - 1; j++) {
-				if(rnd.nextInt(TREE_SPARSITY) == 0 && botEntities.get(new Point(i + 1, j + 1)).getType() == EntityType.GRASS_TILE){
+				if(rnd.nextInt(TREE_SPARSITY) == 0 && botEntities.get(new Point(i + 1, j + 1)).getEntityType() == EntityType.GRASS_TILE){
 					Tree tree = new Tree(i + 1, j + 1);
 					trees.add(tree);
 					tickables.add(tree);
@@ -330,59 +328,11 @@ public class TestWorld extends World{
 	}
 	
 	/**
-	 * A method to get access to all the ground tiles.
-	 * @return a HashMap with all the tiles identified by their position.
-	 */
-	public HashMap<Point, BottomEntity> getTiles() {
-		return botEntities;
-	}
-	
-	/**
-	 * Returns all entities that are on the same level as villagers, including villagers.
-	 * @return a Hashmap with all entities in the 'middle' layer.
-	 */
-	public HashMap<Point, MidEntity> getMidObjects(){
-		return midEntities;
-	}
-	
-	/**
-	 * Returns all entities that are to be rendered on top of villagers.
-	 * @return a Hashmap with all entities above the villagers.
-	 */
-	public HashMap<Point, TopEntity> getTopObjects(){
-		return topEntities;
-	}
-	
-	/**
 	 * Returns all entities who are also agents.
 	 * @return a HashMap of all the Agents in the game.
 	 */
 	public HashMap<Point, Agent> getAgents(){
 		return agents;
-	}
-
-	/**
-	 * A method to get access to all the ground tiles.
-	 * @return a HashMap with all the tiles identified by their position.
-	 */
-	public HashMap<Point, BottomEntity> getTiles() {
-		return botEntities;
-	}
-	
-	/**
-	 * Returns all entities that are on the same level as villagers, including villagers.
-	 * @return a Hashmap with all entities in the 'middle' layer.
-	 */
-	public HashMap<Point, MidEntity> getMidObjects(){
-		return midEntities;
-	}
-	
-	/**
-	 * Returns all entities that are to be rendered on top of villagers.
-	 * @return a Hashmap with all entities above the villagers.
-	 */
-	public HashMap<Point, TopEntity> getTopObjects(){
-		return topEntities;
 	}
 	
 	/**
@@ -409,9 +359,9 @@ public class TestWorld extends World{
 	 */
 	public Entity getEntity(Point pos, EntityType type) throws NoSuchEntityException{
 		Entity e = null;
-		if(midEntities.get(pos).getType() == type)
+		if(midEntities.get(pos).getEntityType() == type)
 			e = midEntities.get(pos);
-		else if(topEntities.get(pos).getType() == type)
+		else if(topEntities.get(pos).getEntityType() == type)
 			e = topEntities.get(pos);
 		else
 			throw new NoSuchEntityException();
@@ -432,7 +382,7 @@ public class TestWorld extends World{
 		
 		for(int i = (int) upperLeft.getX(); i < lowerRight.getX(); i++){
 			for(int j = (int) upperLeft.getY(); j < lowerRight.getY(); j++){
-				System.out.print(botEntities.get(new Point(i, j)).getType() + "  -  ");
+				System.out.print(botEntities.get(new Point(i, j)).getEntityType() + "  -  ");
 			}
 			System.out.println("");
 		}
@@ -444,7 +394,7 @@ public class TestWorld extends World{
 		for(int i = (int) upperLeft.getX(); i < lowerRight.getX(); i++){
 			for(int j = (int) upperLeft.getY(); j < lowerRight.getY(); j++){
 				if(topEntities.get(new Point(i, j)) != null)
-					System.out.print(topEntities.get(new Point(i, j)).getType() + "  -  ");
+					System.out.print(topEntities.get(new Point(i, j)).getEntityType() + "  -  ");
 				else
 					System.out.print("NULL  -  ");
 
@@ -460,7 +410,7 @@ public class TestWorld extends World{
 	@Override
 	public void propertyChange(PropertyChangeEvent event) {
 		String name = event.getPropertyName();
-
+		
 		if(name.equals("move")){
 			Point p = null;
 			Point pos = (Point) event.getNewValue();
@@ -475,19 +425,6 @@ public class TestWorld extends World{
 				midEntities.put(pos, villager);
 				agents.remove(p);
 				midEntities.remove(p);
-			}
-		}else if(name.equals("status")){
-			String evtString = (String) event.getNewValue();
-			if(evtString.equals("dead")){
-				Iterator<Map.Entry<Point, Agent>> it = agents.entrySet().iterator();
-				Agent agent = (Agent) event.getSource();
-				while(it.hasNext()) {
-					Map.Entry<Point, Agent> e = (Map.Entry<Point, Agent>) it.next();
-					if(e.getValue() == agent) {
-						agents.remove(e.getKey());
-						break;
-					}
-				}
 			}
 		}
 	}

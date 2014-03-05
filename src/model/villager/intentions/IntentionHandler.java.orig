@@ -7,6 +7,26 @@ import model.villager.Villager;
 public class IntentionHandler {
 
 	private PriorityQueue<Intent> pq;
+<<<<<<< HEAD
+	
+	private EatIntent eatInt;
+	private DrinkIntent drinkInt;
+	private SleepIntent sleepInt;
+	private IdleIntent idleInt;
+	
+	public IntentionHandler(Villager villager){
+		pq = new PriorityQueue<Intent>(5, new IntentComparator());
+	
+		eatInt = new EatIntent(villager);
+		drinkInt = new DrinkIntent(villager);
+		sleepInt = new SleepIntent(villager);
+		idleInt = new IdleIntent(villager);
+		
+		pq.add(eatInt);
+		pq.add(drinkInt);
+		pq.add(sleepInt);
+		pq.add(idleInt);
+=======
 	private IntentComparator intentComparator;
 	
 	public IntentionHandler(Villager villager){
@@ -19,8 +39,7 @@ public class IntentionHandler {
 		pq.add(new EatIntent(villager));
 		pq.add(new DrinkIntent(villager));
 		pq.add(new SleepIntent(villager));
-		pq.add(new IdleIntent(villager));
-		//pq.add(new ExploreIntent(villager));
+>>>>>>> dev
 	}
 	
 	public void update(){
@@ -31,35 +50,14 @@ public class IntentionHandler {
 		}
 		
 		//  Update order of intents
-		// TODO necessary to use PQ like this? quite resource intensive
 		PriorityQueue<Intent> newPQ = new PriorityQueue<Intent>(5, intentComparator);
 		while(!pq.isEmpty())
 			newPQ.add(pq.poll());
 		pq = newPQ;
 	}
 	
-	/**
-	 * Gets the topmost Intent's Plan.
-	 * 
-	 * Also removes the intent from the queue (unless it's a primitive intent)
-	 * @author Niklas
-	 */
 	public Plan getFirstPlan(){
-		Intent i = pq.peek();
-		if (!(i instanceof PrimitiveIntent)) {
-			pq.poll();
-		}
-		return i.getPlan();
-	}
-	
-	/**
-	 * Adds an intent to do something,
-	 * which will be considered in the next update.
-	 */
-	public void addIntent(Intent i) {
-		// System.out.println("addin "+i.toString());
-		pq.add(i);
-		update();
+		return pq.peek().getPlan();
 	}
 	
 }
