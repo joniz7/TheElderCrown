@@ -9,8 +9,15 @@ public class IntentionHandler {
 	private PriorityQueue<Intent> pq;
 	private IntentComparator intentComparator;
 	
+	private Plan activePlan;
+	private Intent lastIntent;
+	
+	private Villager villager;
+	
 	public IntentionHandler(Villager villager){
 
+		this.villager = villager;
+		
 		// Initialize intention queue (= planning algorithm)
 		intentComparator = new IntentComparator();
 		pq = new PriorityQueue<Intent>(5, intentComparator);
@@ -39,15 +46,27 @@ public class IntentionHandler {
 	/**
 	 * Gets the topmost Intent's Plan.
 	 * 
-	 * Also removes the intent from the queue (unless it's a primitive intent)
 	 * @author Niklas
 	 */
 	public Plan getFirstPlan(){
-		Intent i = pq.peek();
-		if (!(i instanceof PrimitiveIntent)) {
+		if(lastIntent != pq.peek()) {
+			lastIntent = pq.peek();
+			activePlan = lastIntent.getPlan();
+			villager.updateStatus("statusEnd");
+		}
+		
+		return activePlan;
+	}
+	
+	/**
+	 * Removes the topmost Intent if it's not a PrimitiveIntent
+	 * 
+	 * @author Jonathan Orrö
+	 */
+	public void intentDone(){
+		if(!(pq.peek() instanceof PrimitiveIntent)) {
 			pq.poll();
 		}
-		return i.getPlan();
 	}
 	
 	/**

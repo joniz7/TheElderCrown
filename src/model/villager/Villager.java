@@ -96,10 +96,10 @@ public class Villager extends MidEntity implements Agent {
 	
 	private void plan() {
 		ih.update();
-		if(activePlan == null) {
+
 			activePlan = ih.getFirstPlan();
 			System.out.println(activePlan);
-		}
+
 	}
 
 	public Action getAction() {
@@ -114,10 +114,12 @@ public class Villager extends MidEntity implements Agent {
 	}
 	
 	public void actionDone(){
-		if(!activePlan.isFinished())
+		if(!activePlan.isFinished()) {
 			activePlan.actionDone();
-		else
+		} else {
 			activePlan = null;
+			ih.intentDone();
+		}
 	}
 
 	public float getSpeed() {
