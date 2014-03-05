@@ -26,6 +26,7 @@ public class EatPlan extends Plan{
 		// We're next to a tree. Eat!
 		if(tree != null){
 			actionQueue.addLast(new EatAction(villager));
+		}
 		
 		// We need to move, and then eat
 		else{
