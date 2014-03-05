@@ -145,6 +145,7 @@ public static Point findTile2(TestWorld world, EntityType id, int startX, int st
 		int stacks = 0;
 		boolean found = false;
 		while(!found){
+			stacks++;
 			toVisit = new ArrayList<Point>();
 			toCheck = new ArrayList<Point>();
 			for(Point p : visited){
@@ -233,11 +234,12 @@ public static Point findTile2(TestWorld world, EntityType id, int startX, int st
 			System.out.println("STUCK");
 			return null;
 		}
-		
+		System.out.println("Before findTile2");
 		Point p = findTile2(world, id, startX, startY);
-		
+		System.out.println("After findTile2");
 		long endTime = System.currentTimeMillis();
-		System.out.println("FindObject, find water tile: " + (endTime - startTime));
+		//System.out.println("FindObject, find water tile: " + (endTime - startTime));
+		System.out.println("FindObject, find "+id + (endTime - startTime));
 		
 		HashMap<Point, BottomEntity> tiles = world.getTiles();
 		

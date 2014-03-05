@@ -5,6 +5,7 @@ import model.World;
 import model.entity.top.Tree;
 import model.path.FindObject;
 import model.path.criteria.HasFruit;
+import model.path.criteria.isSocial;
 import model.villager.Villager;
 
 public class SocialAction extends Action{
@@ -17,8 +18,8 @@ public class SocialAction extends Action{
 
 	@Override
 	public void tick(World world) {
-		if(FindObject.isAdjacentTile(world, EntityType.VILLAGER, villager.getX(),
-				villager.getY())){
+		if(FindObject.getAdjacentObject(world, new isSocial(), EntityType.VILLAGER, villager.getX(),
+				villager.getY()) != null) {
 			villager.updateStatus("talking");
 			villager.satisfySocial(0.1f);
 			stacks++;

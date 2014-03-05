@@ -16,6 +16,8 @@ public class IntentionHandler {
 		pq = new PriorityQueue<Intent>(5, intentComparator);
 	
 		// Add primitive intents
+		pq.add(new SocialIntent(villager));
+		System.out.println("Social intent added!\n");
 		pq.add(new EatIntent(villager));
 		pq.add(new DrinkIntent(villager));
 		pq.add(new SleepIntent(villager));

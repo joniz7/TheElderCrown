@@ -77,6 +77,10 @@ public class Villager extends MidEntity implements Agent {
 		return activePlan.getActiveAction();
 	}
 	
+	public void setAction(Plan p) {
+		activePlan=p;
+	}
+	
 	public void disposePlan() {
 		activePlan = null;
 	}
