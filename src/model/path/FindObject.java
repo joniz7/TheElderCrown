@@ -142,6 +142,8 @@ public static Point findTile2(VillagersWorldPerception world, EntityType id, int
 		int stacks = 0;
 		boolean found = false;
 		while(!found){
+			stacks++;
+			System.out.println("findtile2 loop");
 			toVisit = new ArrayList<Point>();
 			toCheck = new ArrayList<Point>();
 			for(Point p : visited){
@@ -195,8 +197,8 @@ public static Point findTile2(VillagersWorldPerception world, EntityType id, int
 			
 			if(stacks > 100 || visited.size() == 0){
 				System.out.println("FindObject: " + visited.size());
-				Exception e = new Exception();
-				e.printStackTrace();
+				//Exception e = new Exception();
+				//e.printStackTrace();
 				return null;
 			}
 		}
@@ -232,6 +234,9 @@ public static Point findTile2(VillagersWorldPerception world, EntityType id, int
 		}
 		
 		Point p = findTile2(world, id, startX, startY);
+		if(p==null){
+			return null;
+		}
 		
 		long endTime = System.currentTimeMillis();
 		System.out.println("FindObject, find water tile: " + (endTime - startTime));
@@ -425,6 +430,7 @@ public static Point findTile2(VillagersWorldPerception world, EntityType id, int
 		int stacks = 0;
 		boolean found = false;
 		while(!found){
+			System.out.println("findobject2 loop");
 			stacks++;
 			//Add neighbors to visit
 			toVisit = new ArrayList<Point>();

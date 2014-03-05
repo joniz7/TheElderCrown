@@ -16,7 +16,7 @@ public class ExploreIntent extends Intent {
 
 	@Override
 	public void calculateDesire() {
-		setDesire(-villager.getHunger() * 4);
+		setDesire(-villager.getLaziness());
 //		System.out.println("EatIntent: " + desire);
 	}
 	
