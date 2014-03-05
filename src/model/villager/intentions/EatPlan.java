@@ -26,7 +26,6 @@ public class EatPlan extends Plan{
 		// We're next to a tree. Eat!
 		if(tree != null){
 			actionQueue.addLast(new EatAction(villager));
-		}
 		
 		// We need to move, and then eat
 		else{
@@ -37,6 +36,7 @@ public class EatPlan extends Plan{
 				movePath = PathFinder.getPathToAdjacent(villager.getX(), villager.getY(), p.x, p.y);
 			}else{
 				villager.setExplore();
+				isFinished=true;
 			}
 			actionQueue.add(new MoveAction(villager, movePath));
 			actionQueue.addLast(new EatAction(villager));

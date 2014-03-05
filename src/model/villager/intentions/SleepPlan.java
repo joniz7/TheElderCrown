@@ -39,6 +39,8 @@ public class SleepPlan extends Plan {
 			actionQueue.addLast(new SleepAction(villager));
 			}
 		
+		}else{
+			isFinished = true;
 		}
 	
 		

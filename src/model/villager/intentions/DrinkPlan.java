@@ -26,6 +26,7 @@ public class DrinkPlan extends Plan{
 			actionQueue.addLast(new DrinkAction(villager));
 		}else{
 			villager.setExplore();
+			isFinished=true;
 		}
 	}
 }

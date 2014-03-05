@@ -522,7 +522,9 @@ public static Point findTile2(VillagersWorldPerception world, EntityType id, int
 		}
 		
 		Point p = findObject2(world, crit, id, startX, startY);
-		
+		if(p == null)
+			return null;
+
 		long endTime = System.currentTimeMillis();
 		System.out.println("FindObject, find Tree tile: " + (endTime - startTime));
 		
@@ -533,8 +535,7 @@ public static Point findTile2(VillagersWorldPerception world, EntityType id, int
 		Path p3 = null;
 		Path p4 = null;
 		
-		if(p == null)
-			return null;
+
 			
 		if(p.getX() > 0 && tiles.get(new Point((int) p.getX() - 1, (int) p.getY())).getEntityType() == EntityType.GRASS_TILE)
 			p1 = PathFinder.getPath(startX, startY, (int) p.getX() - 1, (int) p.getY());
