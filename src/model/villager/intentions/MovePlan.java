@@ -13,7 +13,7 @@ public class MovePlan extends Plan {
 		super(villager);
 		
 		Path movePath = PathFinder.getPath(villager.getX(), villager.getY(), pos.x, pos.y);
-		
+				
 		actionQueue.add(new MoveAction(villager, movePath));
 	}
 

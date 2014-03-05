@@ -45,7 +45,9 @@ public class IntentionHandler {
 	 * which will be considered in the next update.
 	 */
 	public void addIntent(Intent i) {
+		// System.out.println("addin "+i.toString());
 		pq.add(i);
+		update();
 	}
 	
 }
