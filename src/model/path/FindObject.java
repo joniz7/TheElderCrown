@@ -630,10 +630,15 @@ public static Point findTile2(VillagersWorldPerception world, EntityType id, int
 	}
 	
 	public static boolean isStuck(VillagersWorldPerception world, int startX, int startY){
-		if(world.blocked(null, startX + 1, startY))
-			if(world.blocked(null, startX - 1, startY))
-				if(world.blocked(null, startX, startY + 1))
-					if(world.blocked(null, startX, startY - 1))
+		HashMap<Point, MidEntity> midEnts = world.getMidEntities();
+		Point p = new Point(startX+1,startY);
+		if(world.blocked(null, startX + 1, startY) || midEnts.containsKey(p))
+			p.move(startX-1, startY);
+			if(world.blocked(null, startX - 1, startY) || midEnts.containsKey(p))
+				p.move(startX, startY+1);
+				if(world.blocked(null, startX, startY + 1) || midEnts.containsKey(p))
+					p.move(startX, startY-1);
+					if(world.blocked(null, startX, startY - 1) || midEnts.containsKey(p))
 						return true;
 		return false;
 	}

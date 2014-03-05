@@ -12,6 +12,8 @@ import java.util.Random;
 
 import org.newdawn.slick.util.pathfinding.Path;
 
+import util.EntityType;
+
 public class ExplorePlan extends Plan {
 	
 	private Path path = null;
@@ -28,6 +30,8 @@ public class ExplorePlan extends Plan {
 				isFinished = true;
 			}
 			p = new Point(randInt((villager.getX()-5),(villager.getX()+5)),randInt((villager.getY()-5),(villager.getY()+5)));
+			//p = FindObject.findTileNeighbour(villager.getWorld(), EntityType.NULL_TILE, villager.getX(), villager.getY());
+			
 			if(p != null){
 				path = PathFinder.getPathToAdjacent(villager.getX(),villager.getY(),p.x,p.y);
 			}

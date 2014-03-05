@@ -34,7 +34,7 @@ public class TestWorld extends World{
 	
 	// -- World configuration --
 	// Villagers
-	private final int VILLAGER_SPAWN_POS = 40, VILLAGER_COUNT = 1;
+	private final int VILLAGER_SPAWN_POS = 40, VILLAGER_COUNT = 8;
 	// Lakes 
 	private final float LAKE_COUNT = 8, LAKE_WEIGHT = 1f, LAKE_LOSS = 0.02f;
 	// Trees
