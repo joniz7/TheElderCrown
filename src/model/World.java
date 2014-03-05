@@ -275,6 +275,12 @@ public abstract class World implements Tickable{
 		return topEntities;
 	}
 	
-	
-	
+	/**
+	 * Returns all entities who are also agents.
+	 * @return a HashMap of all the Agents in the game.
+	 */
+	public HashMap<Point, Agent> getAgents(){
+		return agents;
+	}
+
 }

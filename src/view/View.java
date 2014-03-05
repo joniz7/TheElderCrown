@@ -217,16 +217,26 @@ public class View implements PropertyChangeListener {
 		return worldCoordinate*TILE_OFFSET;
 	}
 	/**
+	 * Converts from view to world coordinates.
+	 * @Author Niklas 
+	 */
+	public static int viewToModelCoordinate(int viewCoordinate) {
+		return viewCoordinate/TILE_OFFSET;
+	}
+	
+	/**
 	 * Converts from world to view coordinates.
 	 * (Should always be used when receiving positions from model!)
 	 * 
 	 * Note: "worldCoordinate" is here converted to an integer.
-	 * 
+	 *
+	 * @deprecated
 	 * @Author Niklas 
 	 */
 	public static int modelToViewCoordinate(double worldCoordinate) {
 		return (int)worldCoordinate*TILE_OFFSET;
 	}
+	
 	/**
 	 * Converts from window to model coordinates.
 	 * @Author Niklas 
@@ -234,9 +244,9 @@ public class View implements PropertyChangeListener {
 	public static Point windowToModelCoordinates(Point windowCoords) {
 		int viewX = (int)windowCoords.getX() + cameraX;
 		int viewY = (int)windowCoords.getY() + cameraY;
-		System.out.println("viewX: "+viewX+", viewY:"+viewY);
-		
-		return new Point(0,0);
+		int modelX = viewToModelCoordinate(viewX);
+		int modelY = viewToModelCoordinate(viewY);
+		return new Point(modelX,modelY);
 	}
 	
 	public void setSize(int width, int height){

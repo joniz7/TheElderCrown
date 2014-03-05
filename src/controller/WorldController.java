@@ -1,9 +1,14 @@
 package controller;
 
+import head.MainGameState;
+
 import java.awt.Point;
 
-import head.MainGameState;
 import model.World;
+import model.entity.Agent;
+import model.villager.Villager;
+import model.villager.intentions.MoveIntent;
+import model.villager.order.Order;
 
 import org.newdawn.slick.Color;
 import org.newdawn.slick.Input;
@@ -117,15 +122,15 @@ public class WorldController extends Controller{
 	 * Send a move order to the specified position
 	 */
 	private void sendMoveOrder(Point windowPos) {
-		System.out.println("mouseClicked! x: "+x+" y:"+y);
 		// Figure out where we want to go
 		Point modelPos = View.windowToModelCoordinates(windowPos);
 		// Get the first villager from world
-		
+		Villager v = (Villager) world.getAgents().values().toArray()[0];
 		// Create order for this villager to move to the clicked position
-		
+		MoveIntent i = new MoveIntent(0, 900, v, modelPos);
+		Order o = new Order(0, v.getId(), i);
 		// Add order to world
-		
+		world.addOrder(o);
 	}
 
 	@Override

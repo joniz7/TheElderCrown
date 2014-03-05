@@ -356,14 +356,6 @@ public class TestWorld extends World implements TileBasedMap{
 	}
 	
 	/**
-	 * Returns all entities who are also agents.
-	 * @return a HashMap of all the Agents in the game.
-	 */
-	public HashMap<Point, Agent> getAgents(){
-		return agents;
-	}
-	
-	/**
 	 * Call this when you want a reference to a Tree at a specific location.
 	 * @param tileX the x-coordinate of the Tree to be found.
 	 * @param tileY the y-coordinate of the Tree to be found
