@@ -78,6 +78,9 @@ public class VillagerView extends EntityView {
 			if(status.compareTo("awake")==0){
 				setImage("villager");
 			}
+			if(status.equals("dead")){
+				setImage("villagerdead");
+			}
 		}else{
 			super.propertyChange(event);
 		}
