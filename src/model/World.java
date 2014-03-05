@@ -91,7 +91,7 @@ public abstract class World implements Tickable{
 
 		HashMap<Point, Agent> temp = (HashMap<Point, Agent>)agents.clone();
 		Iterator<Map.Entry<Point, Agent>> it = temp.entrySet().iterator();
-		boolean hasOrders = orders.isEmpty();
+		boolean hasOrders = !orders.isEmpty();
 		
 		while(it.hasNext()) {
 			Map.Entry<Point, Agent> e = (Map.Entry<Point, Agent>) it.next();

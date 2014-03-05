@@ -1,5 +1,7 @@
 package controller;
 
+import java.awt.Point;
+
 import head.MainGameState;
 import model.World;
 
@@ -104,31 +106,50 @@ public class WorldController extends Controller{
 	
 	@Override
 	public void mouseClicked(int button, int x, int y, int clickCount) {
-		System.out.println("mouseClicked! button:"+button+" x: "+x+" y:"+y+" count:"+clickCount);
+		// Debugging order system
+		if (button == 0) {
+			Point windowPos = new Point(x,y);
+			sendMoveOrder(windowPos);
+		}
+	}
+	
+	/**
+	 * Send a move order to the specified position
+	 */
+	private void sendMoveOrder(Point windowPos) {
+		System.out.println("mouseClicked! x: "+x+" y:"+y);
+		// Figure out where we want to go
+		Point modelPos = View.windowToModelCoordinates(windowPos);
+		// Get the first villager from world
+		
+		// Create order for this villager to move to the clicked position
+		
+		// Add order to world
+		
 	}
 
 	@Override
 	public void mouseDragged(int oldx, int oldy, int newx, int newy) {
 		// TODO Auto-generated method stub
-		
+//		System.out.println("mouseDragged");
 	}
 
 	@Override
 	public void mouseMoved(int oldx, int oldy, int newx, int newy) {
 		// TODO Auto-generated method stub
-		
+//		System.out.println("mouseMoved");
 	}
 
 	@Override
 	public void mousePressed(int button, int x, int y) {
 		// TODO Auto-generated method stub
-		
+//		System.out.println("mousepressed");
 	}
 
 	@Override
 	public void mouseReleased(int button, int x, int y) {
 		// TODO Auto-generated method stub
-		
+//		System.out.println("mouseReleased");
 	}
 
 	@Override

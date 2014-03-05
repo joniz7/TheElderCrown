@@ -15,11 +15,11 @@ import view.View;
  */
 public abstract class Controller implements KeyListener, MouseListener /*, MouseMotionListener*/, Tickable{
 
-	protected World gameState;
+	protected World world;
 	protected View view;
 	
 	public Controller(World gameState, View view){
-		this.gameState = gameState;
+		this.world = gameState;
 		this.view = view;
 	}
 	

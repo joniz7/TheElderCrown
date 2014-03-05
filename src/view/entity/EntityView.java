@@ -34,8 +34,8 @@ public class EntityView implements PropertyChangeListener {
 	 */
 	public EntityView(String name, int x, int y){
 		image = ImageLoader.getImage(name);
-		this.x = View.convertCoordinate(x);
-		this.y = View.convertCoordinate(y);
+		this.x = View.modelToViewCoordinate(x);
+		this.y = View.modelToViewCoordinate(y);
 		this.name = name;
 	}
 	
@@ -73,8 +73,8 @@ public class EntityView implements PropertyChangeListener {
 		String name = event.getPropertyName();
 		if (name.equals("position")) {
 			Point p = (Point)event.getNewValue();
-			x = View.convertCoordinate(p.getX());
-			y = View.convertCoordinate(p.getY());
+			x = View.modelToViewCoordinate(p.getX());
+			y = View.modelToViewCoordinate(p.getY());
 		}
 		else if (name.equals("interpolPosition")) {
 			InterpolPosition p = (InterpolPosition) event.getNewValue();
@@ -82,8 +82,8 @@ public class EntityView implements PropertyChangeListener {
 			int dx = (int) (p.getDx()*p.getProgress()*View.TILE_OFFSET);
 			int dy = (int) (p.getDy()*p.getProgress()*View.TILE_OFFSET);
 			// Originating view coordinates (i.e. tile we're moving from)
-			int x = View.convertCoordinate(p.getX());
-			int y = View.convertCoordinate(p.getY());
+			int x = View.modelToViewCoordinate(p.getX());
+			int y = View.modelToViewCoordinate(p.getY());
 			// Apply change
 			this.x = x + dx;
 			this.y = y + dy;

@@ -74,25 +74,25 @@ public class View implements PropertyChangeListener {
 	}
 
 	public void incX(){
-		if(cameraX<convertCoordinate(150))
+		if(cameraX<modelToViewCoordinate(150))
 			cameraX += SCROLL_SPEED;
 			System.out.println("CameraX: "+cameraX);
 	}
 
 	public void incY(){
-		if(cameraY<convertCoordinate(150))
+		if(cameraY<modelToViewCoordinate(150))
 			cameraY += SCROLL_SPEED;
 			System.out.println("CameraY: "+cameraY);
 	}
 
 	public void decX(){
-		if(cameraX>convertCoordinate(0))
+		if(cameraX>modelToViewCoordinate(0))
 			cameraX -= SCROLL_SPEED;
 			System.out.println("CameraX: "+cameraX);
 	}
 
 	public void decY(){
-		if(cameraY>convertCoordinate(0))
+		if(cameraY>modelToViewCoordinate(0))
 			cameraY -= SCROLL_SPEED;
 			System.out.println("CameraY: "+cameraY);
 	}
@@ -131,13 +131,13 @@ public class View implements PropertyChangeListener {
 		String name = event.getPropertyName();
 		if (name.equals("camera")) {
 			Point p = (Point)event.getNewValue();
-			cameraX = convertCoordinate(p.getX()) - width/2;
-			cameraY = convertCoordinate(p.getY()) - height/2;
+			cameraX = modelToViewCoordinate(p.getX()) - width/2;
+			cameraY = modelToViewCoordinate(p.getY()) - height/2;
 		}
 		else if(name.equals("worldsize")){
 			Point size = (Point) event.getNewValue();
-			worldXSize = convertCoordinate((int) size.getX());
-			worldYSize = convertCoordinate((int) size.getY());
+			worldXSize = modelToViewCoordinate((int) size.getX());
+			worldYSize = modelToViewCoordinate((int) size.getY());
 		}
 		else if (name.equals("addTopEntity")) {
 			TopEntity entity = (TopEntity) event.getNewValue();
@@ -213,7 +213,7 @@ public class View implements PropertyChangeListener {
 	 * (Should always be used when receiving positions from model!)
 	 * @Author Niklas 
 	 */
-	public static int convertCoordinate(int worldCoordinate) {
+	public static int modelToViewCoordinate(int worldCoordinate) {
 		return worldCoordinate*TILE_OFFSET;
 	}
 	/**
@@ -224,8 +224,19 @@ public class View implements PropertyChangeListener {
 	 * 
 	 * @Author Niklas 
 	 */
-	public static int convertCoordinate(double worldCoordinate) {
+	public static int modelToViewCoordinate(double worldCoordinate) {
 		return (int)worldCoordinate*TILE_OFFSET;
+	}
+	/**
+	 * Converts from window to model coordinates.
+	 * @Author Niklas 
+	 */
+	public static Point windowToModelCoordinates(Point windowCoords) {
+		int viewX = (int)windowCoords.getX() + cameraX;
+		int viewY = (int)windowCoords.getY() + cameraY;
+		System.out.println("viewX: "+viewX+", viewY:"+viewY);
+		
+		return new Point(0,0);
 	}
 	
 	public void setSize(int width, int height){
