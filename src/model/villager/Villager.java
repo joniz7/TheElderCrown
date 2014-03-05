@@ -43,11 +43,10 @@ public class Villager extends MidEntity implements Agent {
 		adjustNeeds();
 		seeIfDead();
 		plan();
-		System.out.println("Hunger: " + hunger);
 	}
 	
 	public void satisfyHunger(float f) {
-		//this.hunger += f;
+		this.hunger += f;
 	}
 	
 	public void satisfyThirst(float f) {
@@ -60,7 +59,7 @@ public class Villager extends MidEntity implements Agent {
 	}
 	
 	private void seeIfDead() {
-		if(hunger < -20.f || thirst < -100.f) {
+		if(hunger < -100.f || thirst < -100.f) {
 			dead = true;
 		}
 	}
