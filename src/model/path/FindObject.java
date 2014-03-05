@@ -143,7 +143,7 @@ public static Point findTile2(VillagersWorldPerception world, EntityType id, int
 		boolean found = false;
 		while(!found){
 			stacks++;
-			System.out.println("findtile2 loop");
+//			System.out.println("findtile2 loop");
 			toVisit = new ArrayList<Point>();
 			toCheck = new ArrayList<Point>();
 			for(Point p : visited){
