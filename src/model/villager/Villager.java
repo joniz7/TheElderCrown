@@ -18,9 +18,9 @@ import view.entity.mid.VillagerView;
 
 public class Villager extends MidEntity implements Agent {
 
-	private float hunger = -15f, thirst = 2f, speed = 20, sleepiness = 2f ;
+	private float hunger = -15f, thirst = 2f, speed = 20, sleepiness = 2f, obedience = 1f ;
 	private boolean dead = false;
-
+	
 	private World world;
 	private Plan activePlan;
 	private IntentionHandler ih = new IntentionHandler(this);
@@ -163,6 +163,10 @@ public class Villager extends MidEntity implements Agent {
 
 	public void kill() {
 		pcs.firePropertyChange("status", null, "dead");
+	}
+	
+	public float getObedience() {
+		return obedience;
 	}
 	
 }

@@ -62,15 +62,6 @@ public class MoveAction extends Action{
 		}
 	}
 	
-//	public boolean isMoving() {
-//		return moving;
-//	}
-//
-//	public void setMoving(boolean moving) {
-//		this.moving = moving;
-//		stepCount = 0;
-//	}
-
 	@Override
 	protected void actionFailed() {
 		isFailed = true;
@@ -79,6 +70,12 @@ public class MoveAction extends Action{
 	@Override
 	protected void actionFinished() {
 		isFinished = true;
+	}
+
+	@Override
+	public float getCost() {
+		// TODO Auto-generated method stub
+		return path.getLength() - stepCount;
 	}
 
 	

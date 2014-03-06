@@ -3,14 +3,15 @@ package model.villager.intentions;
 import model.villager.Villager;
 
 public class DrinkIntent extends PrimitiveIntent {
-
+	
 	public DrinkIntent(Villager villager) {
-		super(0, villager);
+		super(villager);
 	}
 
 	@Override
 	public Plan getPlan() {
-		return new DrinkPlan(villager);
+		plan = new DrinkPlan(villager);
+		return plan;
 	}
 
 	@Override

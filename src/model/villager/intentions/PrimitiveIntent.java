@@ -9,8 +9,8 @@ import model.villager.Villager;
  */
 public abstract class PrimitiveIntent extends Intent {
 
-	public PrimitiveIntent(int cost, Villager villager) {
-		super(cost, villager);
+	public PrimitiveIntent(Villager villager) {
+		super(villager);
 	}
 
 }

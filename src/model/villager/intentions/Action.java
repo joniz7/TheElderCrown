@@ -14,6 +14,8 @@ public abstract class Action {
 	
 	public abstract void tick(World world);
 	
+	public abstract float getCost();
+	
 	public boolean isFinished() {
 		return isFinished;
 	}

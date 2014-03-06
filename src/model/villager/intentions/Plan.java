@@ -30,4 +30,13 @@ public class Plan {
 	public boolean isFinished() {
 		return isFinished;
 	}
+	
+	public float getCost() {
+		float cost = 0;
+		for(Action a : actionQueue) {
+			cost += a.getCost();
+		}
+		
+		return cost;
+	}
 }

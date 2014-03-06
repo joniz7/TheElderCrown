@@ -16,4 +16,10 @@ public class DieAction extends Action{
 		villager.kill();
 	}
 
+	@Override
+	public float getCost() {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+
 }

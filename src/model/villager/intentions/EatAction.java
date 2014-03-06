@@ -41,4 +41,10 @@ public class EatAction extends Action{
 
 	}
 
+	@Override
+	public float getCost() {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+
  }
