@@ -10,8 +10,7 @@ public class DrinkIntent extends PrimitiveIntent {
 
 	@Override
 	public Plan getPlan() {
-		plan = new DrinkPlan(villager);
-		return plan;
+		return new DrinkPlan(villager);
 	}
 
 	@Override

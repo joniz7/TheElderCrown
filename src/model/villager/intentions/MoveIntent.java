@@ -7,7 +7,6 @@ import model.villager.Villager;
 public class MoveIntent extends Intent {
 
 	private Point p;
-	private Plan plan;
 	
 	public MoveIntent(int cost, int desire, Villager villager, Point p) {
 		super(villager);
@@ -18,18 +17,11 @@ public class MoveIntent extends Intent {
 	@Override
 	public Plan getPlan() {
 		// TODO Auto-generated method stub
-		plan = new MovePlan(villager, p);
-		return plan;
+		return new MovePlan(villager, p);
 	}
 
 	@Override
 	public void calculateDesire() {
-	}
-
-	@Override
-	public float getCost() {
-		// TODO Auto-generated method stub
-		return plan.getCost();
 	}
 
 }

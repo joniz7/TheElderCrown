@@ -75,7 +75,11 @@ public class MoveAction extends Action{
 	@Override
 	public float getCost() {
 		// TODO Auto-generated method stub
-		return path.getLength() - stepCount;
+		if(path != null) {
+			return path.getLength();
+		}else{
+			return 0;
+		}
 	}
 
 	

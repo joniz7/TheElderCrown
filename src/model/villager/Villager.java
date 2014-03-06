@@ -23,7 +23,7 @@ public class Villager extends MidEntity implements Agent {
 	
 	private World world;
 	private Plan activePlan;
-	private IntentionHandler ih = new IntentionHandler(this);
+	private IntentionHandler ih;
 	
 	private int height, weight;
 	
@@ -33,6 +33,7 @@ public class Villager extends MidEntity implements Agent {
 		height = 140 + RandomClass.getRandomInt(50, 0);
 		weight = height / 4 + RandomClass.getRandomInt(height/4, 0);
 		System.out.println("New villager created: "+height+"  "+weight);
+		ih = new IntentionHandler(this);
 	}
 	
 	public World getWorld() {

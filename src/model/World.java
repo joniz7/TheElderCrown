@@ -72,10 +72,12 @@ public abstract class World implements Tickable{
 	@Override
 	public void tick(){
 		if(!paused) {
+			
 			// Update all tickables
 			for(Tickable t : tickables){
 				t.tick();
 			}
+			
 			updateAgents();
 		}
 	}
