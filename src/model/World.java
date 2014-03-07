@@ -1,6 +1,5 @@
 package model;
 
-
 import java.awt.Point;
 import java.beans.PropertyChangeListener;
 import java.beans.PropertyChangeSupport;
@@ -8,6 +7,8 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Iterator;
+import java.util.LinkedList;
+import java.util.List;
 import java.util.Map;
 
 import model.entity.Agent;
@@ -16,18 +17,20 @@ import model.entity.MidEntity;
 import model.entity.bottom.BottomEntity;
 import model.entity.bottom.WaterTile;
 import model.entity.top.TopEntity;
-import model.villager.Villager;
+import model.villager.Perception;
+import model.villager.VillagersWorldPerception;
 import model.villager.intentions.Action;
+import model.villager.order.Order;
 
 import org.newdawn.slick.util.pathfinding.PathFindingContext;
 
 import util.NoPositionFoundException;
 import util.Tickable;
 
-public abstract class World implements Tickable{
+public abstract class World implements Tickable, VillagersWorldPerception, PropertyChangeListener{
 
 	// Tickable objects (e.g. trees)
-	protected ArrayList<Tickable> tickables = new ArrayList<Tickable>();
+	protected List<Tickable> tickables;
 	
 	// Agents (e.g. villagers)
 	protected HashMap<Point, Agent> agents;
@@ -37,8 +40,13 @@ public abstract class World implements Tickable{
 	protected HashMap<Point, MidEntity> midEntities;
 	protected HashMap<Point, TopEntity> topEntities;
 	
+	// Orders to agents, that should be processed in the next update
+	private List<Order> orders;
+	
 	protected boolean paused;
 	public boolean shouldExit;
+	
+	private final int VIEW_DISTANCE = 10;
 	
 	protected final PropertyChangeSupport pcs;
 	
@@ -51,13 +59,19 @@ public abstract class World implements Tickable{
     
     public World() {
     	pcs = new PropertyChangeSupport(this);
-		botEntities = new HashMap<Point, BottomEntity>();
+		
+    	botEntities = new HashMap<Point, BottomEntity>();
 		midEntities = new HashMap<Point, MidEntity>();
 		topEntities = new HashMap<Point, TopEntity>();
+		
+		tickables  = new ArrayList<Tickable>();
 		agents = new HashMap<Point, Agent>();
+		orders = new LinkedList<Order>();
+		
 		shouldExit = false;
 		}
 	
+	@SuppressWarnings("unchecked")
 	@Override
 	public void tick(){
 		if(!paused) {
@@ -65,23 +79,74 @@ public abstract class World implements Tickable{
 			for(Tickable t : tickables){
 				t.tick();
 			}
-			
+			updateAgents();
+		}
+	}
+
+	/**
+	 * Updates all agents in the system, and resolves their actions.
+	 * 
+	 * Goes through all agents and:
+	 * 1. Sends them input
+	 * 2. Gets and resolves their action
+	 */
+	private void updateAgents() {
+
 			// Update all villagers
 			HashMap<Point, Agent> temp = (HashMap<Point, Agent>)agents.clone();
 			Iterator<Map.Entry<Point, Agent>> it = temp.entrySet().iterator();
 			
+			HashMap<Point, BottomEntity> tempBotEnt;
+			HashMap<Point, MidEntity> tempMidEnt;
+			HashMap<Point, TopEntity> tempTopEnt;
+			Perception perception;
+			
 			while(it.hasNext()) {
+				tempBotEnt = new HashMap<Point, BottomEntity>();
+				tempMidEnt = new HashMap<Point, MidEntity>();
+				tempTopEnt = new HashMap<Point, TopEntity>();
+				perception = new Perception();
+				
 				Map.Entry<Point, Agent> e = (Map.Entry<Point, Agent>) it.next();
-				Point pos = e.getKey();
+				
+				perception.position = e.getKey();
 				Agent agent = e.getValue();
-				agent.update(pos);
+				Entity entity = (Entity)agent;
+				
+				for(int i=(-VIEW_DISTANCE); i<VIEW_DISTANCE*2; i++){
+					for(int j=(-VIEW_DISTANCE); j<VIEW_DISTANCE*2; j++){
+						Point p = new Point(perception.position.x+i,perception.position.y+j);
+						if(botEntities.get(p) != null){
+							tempBotEnt.put(p, botEntities.get(p));
+						}
+						if(midEntities.get(p) != null){
+							tempMidEnt.put(p, midEntities.get(p));
+						}
+						if(topEntities.get(p) != null){
+							tempTopEnt.put(p, topEntities.get(p));
+						}
+					}
+				}
+				perception.botEntities = tempBotEnt;
+				perception.midEntities = tempMidEnt;
+				perception.topEntities = tempTopEnt;
+				
+	 			// Has this agent been given an order?
+				for(Order o : orders) {
+					if (o.getToId() == entity.getId()) {
+						// Send order information in update 
+						perception.order = o;
+						orders.remove(o);		
+					}
+				}
+
+				agent.update(perception);
 				Action activeAction = agent.getAction();
 				if(activeAction != null && !activeAction.isFailed() && !activeAction.isFinished())
 					activeAction.tick(this);
 				else
-					// 
 					agent.actionDone();
-			}
+
 		}
 	}
 
@@ -164,23 +229,6 @@ public abstract class World implements Tickable{
 		shouldExit = true;
 	}
 	
-	//TODO tillfällig?
-	public void moveVillager(Villager villager, Point pos){
-		Point p = null;
-		try {
-			p = getPosition(villager);
-		} catch (NoPositionFoundException e) {
-			e.printStackTrace();
-		}
-		
-		if(!blockedMid(pos)) {
-			agents.put(pos, villager);
-			midEntities.put(pos, villager);
-			agents.remove(p);
-			midEntities.remove(p);
-		}
-	}
-	
 	//TODO Maybe might fail if things are moving at just the wrong time.
 	//It should be here and not in TestWorld right?
 	/**
@@ -216,6 +264,13 @@ public abstract class World implements Tickable{
 		throw new NoPositionFoundException();
 	}
 	
+	/**
+	 * Add an order to be processed by the world in the next update
+	 */
+	public void addOrder(Order o) {
+		orders.add(o);
+	}
+	
 	public HashMap<Point, BottomEntity> getBotEntities() {
 		return botEntities;
 	}
@@ -228,6 +283,24 @@ public abstract class World implements Tickable{
 		return topEntities;
 	}
 	
-	
-	
+	/**
+	 * Returns all entities who are also agents.
+	 * @return a HashMap of all the Agents in the game.
+	 */
+	public HashMap<Point, Agent> getAgents(){
+		return agents;
+	}
+
+	public void removeAgent(Agent agent) {
+		Iterator<Map.Entry<Point, Agent>> it = agents.entrySet().iterator();
+		
+		while(it.hasNext()) {
+			Map.Entry<Point, Agent> e = (Map.Entry<Point, Agent>) it.next();
+			if(e.getValue() == agent) {
+				agents.remove(e.getKey());
+				break;
+			}
+		}
+	}
+
 }

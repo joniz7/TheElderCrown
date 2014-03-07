@@ -30,12 +30,15 @@ public class EatPlan extends Plan{
 		
 		// We need to move, and then eat
 		else{
-			Point p = FindObject.findObjectNeighbour((TestWorld)villager.getWorld(), new HasFruit(), EntityType.TREE, 
+			Point p = FindObject.findObjectNeighbour(villager.getWorld(), new HasFruit(), EntityType.TREE, 
 					villager.getX(), villager.getY());
 			Path movePath = null;
-			if(p != null)
+			if(p != null){
 				movePath = PathFinder.getPathToAdjacent(villager.getX(), villager.getY(), p.x, p.y);
-
+			}else{
+				villager.setExplore();
+				isFinished=true;
+			}
 			actionQueue.add(new MoveAction(villager, movePath));
 			actionQueue.addLast(new EatAction(villager));
 		}

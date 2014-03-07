@@ -21,6 +21,7 @@ public class ImageLoader {
 		
 		// World Entities
 		imageLib.put("floor", loadImage("image", "floor.png"));
+		imageLib.put("corner", loadImage("image", "corner.png"));
 		imageLib.put("door", loadImage("image", "door.png"));
 		imageLib.put("wall", loadImage("image", "wall.png"));
 		imageLib.put("tree", loadImage("image", "tree.png"));

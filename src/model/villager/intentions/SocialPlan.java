@@ -27,7 +27,7 @@ public class SocialPlan extends Plan{
 			actionQueue.addLast(new SocialAction(villager));
 			otherVillager.setAction(new SocialPlan(otherVillager));
 		}else{
-			Point p = FindObject.findObjectNeighbour((TestWorld)villager.getWorld(), new isSocial(), EntityType.VILLAGER, 
+			Point p = FindObject.findObjectNeighbour(villager.getWorld(), new isSocial(), EntityType.VILLAGER, 
 					villager.getX(), villager.getY());
 			Path movePath = null;
 			if(p != null)

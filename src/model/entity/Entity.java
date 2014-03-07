@@ -4,9 +4,9 @@ import java.awt.Point;
 import java.beans.PropertyChangeSupport;
 
 import model.path.criteria.Criteria;
+import util.EntityId;
 import util.EntityType;
 import util.InterpolPosition;
-import view.entity.EntityView;
 
 /**
  * A class representing an object that is visible in the world.
@@ -18,9 +18,13 @@ public abstract class Entity {
 	
 	// This entity's belief of its position
 	protected int x, y;
+	
 	protected EntityType type;
 	protected PropertyChangeSupport pcs;
 	protected boolean isBlocking;
+	
+	// A number that uniquely identifies this Entity 
+	protected final int id;
 	
 	/**
 	 * A constructor with added functionality to set the Entity to blocking or not.
@@ -36,8 +40,8 @@ public abstract class Entity {
 		this.x = x;
 		this.y = y;
 		this.type = type;
+		this.id = EntityId.nextId();
 		this.isBlocking = blocking;
-
 	}
 
 	/**
@@ -107,10 +111,18 @@ public abstract class Entity {
 	/**
 	 * Returns the type of this Entity.
 	 */
-	public EntityType getEntityType(){
+	public EntityType getType(){
 		return type;
 	}
 	
+	/**
+	 * Returns the Id of this Entity.
+	 * (Is guaranteed to be unique)
+	 * @author Niklas
+	 */
+	public int getId() {
+		return id;
+	}
 	/**
 	 * Use when you need something to listen to this.
 	 * @return the pcs of this entity.
@@ -135,6 +147,21 @@ public abstract class Entity {
 	 */
 	public void setBlocking(boolean blocking) {
 		this.isBlocking = blocking;
+	}
+	
+	/**
+	 * Checks to see if this entity is equal to another entity.
+	 * Is based on the entities' id properties.
+	 * 
+	 * (Is final - shouldn't be overridden by subclasses)
+	 */
+	@Override
+	public final boolean equals(Object o) {
+		if (o instanceof Entity) {
+			Entity other = (Entity)o;
+			return this.id == other.id;
+		}
+		return false;
 	}
 	
 }

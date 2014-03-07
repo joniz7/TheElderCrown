@@ -13,8 +13,8 @@ public class Plan {
 	protected LinkedList<Action> actionQueue;
 	
 	public Plan(Villager villager) {
-		super();
 		this.villager = villager;
+		actionQueue = new LinkedList<Action>();
 	}
 	
 	public Action getActiveAction() {

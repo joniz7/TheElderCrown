@@ -1,10 +1,11 @@
 package model;
 
 import java.awt.Point;
+import java.beans.PropertyChangeEvent;
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.HashMap;
 import java.util.Iterator;
+import java.util.Map;
 import java.util.Random;
 
 import model.entity.Agent;
@@ -16,27 +17,24 @@ import model.entity.bottom.HouseFloor;
 import model.entity.bottom.WaterTile;
 import model.entity.top.TopEntity;
 import model.entity.top.Tree;
+import model.entity.top.house.HouseCorner;
 import model.entity.top.house.HouseDoor;
 import model.entity.top.house.HouseWall;
 import model.path.PathFinder;
 import model.villager.Villager;
 
 import org.newdawn.slick.util.pathfinding.PathFindingContext;
-import org.newdawn.slick.util.pathfinding.TileBasedMap;
 
 import util.Constants;
 import util.EntityType;
 import util.NoPositionFoundException;
 import util.NoSuchEntityException;
 
-public class TestWorld extends World implements TileBasedMap{
+public class TestWorld extends World{
 	
 	// -- World configuration --
-	// Size of world
-	private final int WIDTH = 200, HEIGHT = 200;
-
 	// Villagers
-	private final int VILLAGER_SPAWN_POS = 40, VILLAGER_COUNT = 10;
+	private final int VILLAGER_SPAWN_POS = 40, VILLAGER_COUNT = 8;
 	// Lakes 
 	private final float LAKE_COUNT = 8, LAKE_WEIGHT = 1f, LAKE_LOSS = 0.02f;
 	// Trees
@@ -62,8 +60,8 @@ public class TestWorld extends World implements TileBasedMap{
 
 
 		initializeLakes();
-		initializeGrass();
 		initializeHouses();
+		initializeGrass();
 		initializeTrees();
 		
 		new PathFinder(this);
@@ -95,18 +93,18 @@ public class TestWorld extends World implements TileBasedMap{
 		// Send camera position update to view
 		Point pos = new Point(VILLAGER_SPAWN_POS, VILLAGER_SPAWN_POS);
 		pcs.firePropertyChange("camera", null, pos);
-		Point size = new Point(WIDTH,HEIGHT);
+		Point size = new Point(Constants.WORLD_WIDTH,Constants.WORLD_HEIGHT);
 		pcs.firePropertyChange("worldsize",null,size);
 
 		initializeVillagers();
 	}
 	
 	/**
-	 * Covers the whole map in grass.
+	 * Covers the whole map in grass, except for where there is water.
 	 */
 	private void initializeGrass() {
-		for(int i = 0; i < WIDTH; i++) {
-			for(int j = 0; j < HEIGHT; j++) {
+		for(int i = 0; i < Constants.WORLD_WIDTH; i++) {
+			for(int j = 0; j < Constants.WORLD_HEIGHT; j++) {
 				Point pos = new Point(i, j);
 				if(!botEntities.containsKey(pos)){
 				GrassTile grass = new GrassTile(i, j);
@@ -124,8 +122,8 @@ public class TestWorld extends World implements TileBasedMap{
 		
 		//Create random centerpoints for lakes
 		for(int i = 0; i < LAKE_COUNT; i++){
-			int x = rnd.nextInt(WIDTH);
-			int y = rnd.nextInt(HEIGHT);
+			int x = rnd.nextInt(Constants.WORLD_WIDTH);
+			int y = rnd.nextInt(Constants.WORLD_HEIGHT);
 			Point pos = new Point(x, y);
 			centers.add(pos);
 			addEntity(pos, new WaterTile(x, y));
@@ -176,9 +174,9 @@ public class TestWorld extends World implements TileBasedMap{
 	 * A method that spawns a tree with a set probability on each grass tile.
 	 */
 	private void initializeTrees() {
-		for(int i = 0; i < WIDTH - 1; i++) {
-			for(int j = 0; j < HEIGHT - 1; j++) {
-				if(rnd.nextInt(TREE_SPARSITY) == 0 && botEntities.get(new Point(i + 1, j + 1)).getEntityType() == EntityType.GRASS_TILE){
+		for(int i = 0; i < Constants.WORLD_WIDTH - 1; i++) {
+			for(int j = 0; j < Constants.WORLD_HEIGHT - 1; j++) {
+				if(rnd.nextInt(TREE_SPARSITY) == 0 && botEntities.get(new Point(i + 1, j + 1)).getType() == EntityType.GRASS_TILE){
 					Tree tree = new Tree(i + 1, j + 1);
 					trees.add(tree);
 					tickables.add(tree);
@@ -242,34 +240,64 @@ public class TestWorld extends World implements TileBasedMap{
 		}
 		//BUILD WALLS
 		HouseWall wall;
+		HouseCorner corner;
+		boolean cornerPut = false;
 		for(int k=1; k<outerWidth; k++){
 			if(p.x != x || p.y != y){
-				wall = new HouseWall(p.x, p.y, Constants.UP_ENTRANCE);
-				addEntity(new Point(p.x, p.y), wall);
+				if(cornerPut){
+					wall = new HouseWall(p.x, p.y, Constants.UP_ENTRANCE);
+					addEntity(new Point(p.x, p.y), wall);
+				}else{
+					corner = new HouseCorner(p.x, p.y, Constants.UP_ENTRANCE);
+					addEntity(new Point(p.x, p.y), corner);
+					cornerPut = true;
+				}
 			}
 			p.translate(1, 0);
 		}
+		cornerPut = false;
 		for(int k=1; k<outerHeight; k++){
 			if(p.x != x || p.y != y){
-				wall = new HouseWall(p.x, p.y, Constants.RIGHT_ENTRANCE);
-				addEntity(new Point(p.x, p.y), wall);
+				if(cornerPut){
+					wall = new HouseWall(p.x, p.y, Constants.RIGHT_ENTRANCE);
+					addEntity(new Point(p.x, p.y), wall);
+				}else{
+					corner = new HouseCorner(p.x, p.y, Constants.RIGHT_ENTRANCE);
+					addEntity(new Point(p.x, p.y), corner);
+					cornerPut = true;
+				}
 			}
 			p.translate(0, 1);
 		}
+		cornerPut = false;
 		for(int k=1; k<outerWidth; k++){
 			if(p.x != x || p.y != y){
-				wall = new HouseWall(p.x, p.y, Constants.DOWN_ENTRANCE);
-				addEntity(new Point(p.x, p.y), wall);
+				if(cornerPut){
+					wall = new HouseWall(p.x, p.y, Constants.DOWN_ENTRANCE);
+					addEntity(new Point(p.x, p.y), wall);
+				}else{
+					corner = new HouseCorner(p.x, p.y, Constants.DOWN_ENTRANCE);
+					addEntity(new Point(p.x, p.y), corner);
+					cornerPut = true;
+				}
 			}
 			p.translate(-1, 0);
 		}
+		cornerPut = false;
 		for(int k=1; k<outerHeight; k++){
 			if(p.x != x || p.y != y){
-				wall = new HouseWall(p.x, p.y, Constants.LEFT_ENTRANCE);
-				addEntity(new Point(p.x, p.y), wall);
+				if(cornerPut){
+					wall = new HouseWall(p.x, p.y, Constants.LEFT_ENTRANCE);
+					addEntity(new Point(p.x, p.y), wall);
+				}else{
+					corner = new HouseCorner(p.x, p.y, Constants.LEFT_ENTRANCE);
+					addEntity(new Point(p.x, p.y), corner);
+					cornerPut = true;
+				}
 			}
 			p.translate(0, -1);
 		}
+		cornerPut = false;
 		p.translate(1, 1);
 		//ADD FLOOR
 		HouseFloor floor;
@@ -294,8 +322,9 @@ public class TestWorld extends World implements TileBasedMap{
 	private void initializeVillagers() {
 		for(int i = 0; i < VILLAGER_COUNT; i++) {
 			Point pos = new Point(VILLAGER_SPAWN_POS + 5, VILLAGER_SPAWN_POS+i);
-			Villager villager = new Villager(this, VILLAGER_SPAWN_POS + 5, VILLAGER_SPAWN_POS+i);
+			Villager villager = new Villager(VILLAGER_SPAWN_POS + 5, VILLAGER_SPAWN_POS+i);
 			addEntity(pos, villager);
+			villager.getPCS().addPropertyChangeListener(this);
 		}
 	}
 	
@@ -318,19 +347,27 @@ public class TestWorld extends World implements TileBasedMap{
 
 	@Override
 	public int getHeightInTiles(){
-		return HEIGHT;
+		return Constants.WORLD_HEIGHT;
 	}
 
 	@Override
 	public int getWidthInTiles(){
-		return WIDTH;
+		return Constants.WORLD_WIDTH;
 	}
 
 	@Override
 	public void pathFinderVisited(int x, int y){
 		
 	}
-	
+		
+	/**
+	 * Returns all entities who are also agents.
+	 * @return a HashMap of all the Agents in the game.
+	 */
+	public HashMap<Point, Agent> getAgents(){
+		return agents;
+	}
+
 	/**
 	 * A method to get access to all the ground tiles.
 	 * @return a HashMap with all the tiles identified by their position.
@@ -353,14 +390,6 @@ public class TestWorld extends World implements TileBasedMap{
 	 */
 	public HashMap<Point, TopEntity> getTopObjects(){
 		return topEntities;
-	}
-	
-	/**
-	 * Returns all entities who are also agents.
-	 * @return a HashMap of all the Agents in the game.
-	 */
-	public HashMap<Point, Agent> getAgents(){
-		return agents;
 	}
 	
 	/**
@@ -387,9 +416,9 @@ public class TestWorld extends World implements TileBasedMap{
 	 */
 	public Entity getEntity(Point pos, EntityType type) throws NoSuchEntityException{
 		Entity e = null;
-		if(midEntities.get(pos).getEntityType() == type)
+		if(midEntities.get(pos).getType() == type)
 			e = midEntities.get(pos);
-		else if(topEntities.get(pos).getEntityType() == type)
+		else if(topEntities.get(pos).getType() == type)
 			e = topEntities.get(pos);
 		else
 			throw new NoSuchEntityException();
@@ -410,7 +439,7 @@ public class TestWorld extends World implements TileBasedMap{
 		
 		for(int i = (int) upperLeft.getX(); i < lowerRight.getX(); i++){
 			for(int j = (int) upperLeft.getY(); j < lowerRight.getY(); j++){
-				System.out.print(botEntities.get(new Point(i, j)).getEntityType() + "  -  ");
+				System.out.print(botEntities.get(new Point(i, j)).getType() + "  -  ");
 			}
 			System.out.println("");
 		}
@@ -422,7 +451,7 @@ public class TestWorld extends World implements TileBasedMap{
 		for(int i = (int) upperLeft.getX(); i < lowerRight.getX(); i++){
 			for(int j = (int) upperLeft.getY(); j < lowerRight.getY(); j++){
 				if(topEntities.get(new Point(i, j)) != null)
-					System.out.print(topEntities.get(new Point(i, j)).getEntityType() + "  -  ");
+					System.out.print(topEntities.get(new Point(i, j)).getType() + "  -  ");
 				else
 					System.out.print("NULL  -  ");
 
@@ -434,6 +463,39 @@ public class TestWorld extends World implements TileBasedMap{
 		System.out.println("");
 		System.out.println("");
 	}
-	
-	
+
+	@Override
+	public void propertyChange(PropertyChangeEvent event) {
+		String name = event.getPropertyName();
+
+		if(name.equals("move")){
+			Point p = null;
+			Point pos = (Point) event.getNewValue();
+			Villager villager = (Villager) event.getSource();
+			try {
+				p = getPosition(villager);
+			} catch (NoPositionFoundException e) {
+				e.printStackTrace();
+			}
+			if(!blockedMid(pos)) {
+				agents.put(pos, villager);
+				midEntities.put(pos, villager);
+				agents.remove(p);
+				midEntities.remove(p);
+			}
+		}else if(name.equals("status")){
+			String evtString = (String) event.getNewValue();
+			if(evtString.equals("dead")){
+				Iterator<Map.Entry<Point, Agent>> it = agents.entrySet().iterator();
+				Agent agent = (Agent) event.getSource();
+				while(it.hasNext()) {
+					Map.Entry<Point, Agent> e = (Map.Entry<Point, Agent>) it.next();
+					if(e.getValue() == agent) {
+						agents.remove(e.getKey());
+						break;
+					}
+				}
+			}
+		}
+	}
 }

@@ -7,6 +7,7 @@ import model.path.FindObject;
 import model.path.criteria.HasFruit;
 import model.path.criteria.isSocial;
 import model.villager.Villager;
+import model.villager.VillagersWorldPerception;
 
 public class SocialAction extends Action{
 
@@ -17,7 +18,7 @@ public class SocialAction extends Action{
 	}
 
 	@Override
-	public void tick(World world) {
+	public void tick(VillagersWorldPerception world) {
 		if(FindObject.getAdjacentObject(world, new isSocial(), EntityType.VILLAGER, villager.getX(),
 				villager.getY()) != null) {
 			villager.updateStatus("talking");
