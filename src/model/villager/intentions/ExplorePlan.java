@@ -18,17 +18,22 @@ public class ExplorePlan extends Plan {
 	
 	private Path path = null;
 	private Point p;
-	private int waitTime;
+	private int stacks;
 	
 	public ExplorePlan(Villager villager){
 		super(villager);
 		actionQueue = new LinkedList<Action>();
-		waitTime = 0;
+		stacks = 0;
 		while(path == null){
-			System.out.println("Finding point to explore");
-			if(FindObject.isStuck(villager.getWorld(),villager.getX(),villager.getY())){
+			stacks++;
+			if(stacks > 100){
+				actionQueue.add(new IdleAction(villager));
 				isFinished = true;
 			}
+			System.out.println("Finding point to explore");
+//			if(FindObject.isStuck(villager.getWorld(),villager.getX(),villager.getY())){
+//				isFinished = true;
+//			}
 			p = new Point(randInt((villager.getX()-5),(villager.getX()+5)),randInt((villager.getY()-5),(villager.getY()+5)));
 			//p = FindObject.findTileNeighbour(villager.getWorld(), EntityType.NULL_TILE, villager.getX(), villager.getY());
 			
