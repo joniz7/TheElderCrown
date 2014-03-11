@@ -17,6 +17,6 @@ public class IdlePlan extends Plan {
 		super(villager);
 		actionQueue = new LinkedList<Action>();
 		actionQueue.addLast(new IdleAction(villager));
-		
+		name = "Just chillin";
 	}
 }

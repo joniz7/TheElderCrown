@@ -13,23 +13,23 @@ import util.RandomClass;
 import view.entity.EntityView;
 
 /**
- * The view representation of a villager.
+ * The UI representation of a villager.
  * 
- * @author Niklas
+ * @author Simon E
  */
 public class VillagerUI extends UI {
 
 	private int length, weight, xOff = 10, yOff = 10;
 	private float hungerOff, thirstOff, sleepOff;
 	private Color c;
-	private String currentStatus;
+	private String currentAction, currentPlan;
 	private String name;
-	private Boolean drawImage;
 	private boolean show;
 	private Image meter, meterArrow;
 	
 	/**
-	 * Creates a new VillagerView.
+	 * Creates a new Villager UI.
+	 * 
 	 * @param x - the world's x coordinate
 	 * @param y - the world's y coordinate
 	 */
@@ -64,6 +64,10 @@ public class VillagerUI extends UI {
 			g.drawImage(meter, xOff + 40, yOff + 355);
 			g.drawImage(meterArrow, xOff + 110 + sleepOff, yOff + 347);
 			g.drawString("Sleep", xOff + 90, yOff + 368);
+			
+			g.drawString("Currently:", xOff + 30, yOff + 410);
+			g.drawString(currentPlan, xOff + 30, yOff + 450);
+			g.drawString(currentAction, xOff + 30, yOff + 470);
 		}
 		return false;
 	}
@@ -74,7 +78,7 @@ public class VillagerUI extends UI {
 	 * Is called when our associated villager changes in any way.
 	 * Updates a villagers current meters
 	 * 
-	 * @author Tux, Denise, Simon E
+	 * @author Simon E
 	 */
 	public void propertyChange(PropertyChangeEvent event) {
 		String name = event.getPropertyName();
@@ -102,6 +106,10 @@ public class VillagerUI extends UI {
 					sleepOff = 80;
 				else if(sleepOff < -80)
 					sleepOff = -80;
+			}else if(status.compareTo("action") == 0){
+				currentAction = (String) event.getOldValue();
+			}else if(status.compareTo("plan") == 0){
+				currentPlan = (String) event.getOldValue();
 			}
 		}else{
 			super.propertyChange(event);

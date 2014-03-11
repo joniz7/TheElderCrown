@@ -16,6 +16,7 @@ public class MoveAction extends Action{
 	public MoveAction(Villager villager, Path path) {
 		super(villager);
 		this.path = path;
+		name = "Moving";
 	}
 
 	@Override

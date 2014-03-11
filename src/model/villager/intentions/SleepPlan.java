@@ -25,6 +25,7 @@ public class SleepPlan extends Plan {
 	public SleepPlan(Villager villager){
 		super(villager);
 		actionQueue = new LinkedList<Action>();
+		name = "Wants to sleep";
 		
 		Point floorPos = FindObject.findTile2(villager.getWorld(),EntityType.HOUSE_FLOOR, villager.getX(),villager.getY());
 

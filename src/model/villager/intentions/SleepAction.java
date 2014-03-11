@@ -21,6 +21,7 @@ public class SleepAction extends Action {
 	public SleepAction(Villager villager) {
 		super(villager);
 		sleepToGet = 250; // villager.getSleepiness();
+		name = "Sleeping";
 	}
 
 	@Override

@@ -23,6 +23,8 @@ public class ExplorePlan extends Plan {
 	public ExplorePlan(Villager villager){
 		super(villager);
 		actionQueue = new LinkedList<Action>();
+		name = "Needs to explore";
+		
 		stacks = 0;
 		while(path == null){
 			stacks++;

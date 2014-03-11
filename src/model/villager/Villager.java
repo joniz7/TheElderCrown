@@ -22,6 +22,7 @@ public class Villager extends MidEntity implements Agent {
 	private float hunger = -15f, thirst = 2f, speed = 20, sleepiness = 2f, laziness = 1f ;
 	private VillagerWorld world;
 	private boolean dead = false;
+	private String currentAction, currentPlan;
 	private Plan activePlan;
 	private IntentionHandler ih = new IntentionHandler(this);
 	private boolean mustExplore, isShowUI = false;
@@ -34,6 +35,9 @@ public class Villager extends MidEntity implements Agent {
 		length = 140 + RandomClass.getRandomInt(50, 0);
 		weight = length / 4 + RandomClass.getRandomInt(length/4, 0);
 		this.name = NameGen.newName(true);
+		
+		currentAction = "Doing Nothing";
+		currentPlan = "Doing Nothing";
 		
 		System.out.println("New villager created: " + name+ " " +length+"  "+weight);
 	}
@@ -117,6 +121,10 @@ public class Villager extends MidEntity implements Agent {
 				activePlan=new ExplorePlan(this);
 				mustExplore = false;
 			}
+		}else{
+			if(activePlan.getActiveAction() != null)
+				currentAction = activePlan.getActiveAction().getName();
+			currentPlan = activePlan.getName();
 		}
 	}
 
@@ -196,6 +204,9 @@ public class Villager extends MidEntity implements Agent {
 			pcs.firePropertyChange("status", hunger, "hunger");
 			pcs.firePropertyChange("status", thirst, "thirst");
 			pcs.firePropertyChange("status", sleepiness, "sleepiness");
+			
+			pcs.firePropertyChange("status", currentAction, "action");
+			pcs.firePropertyChange("status", currentPlan, "plan");
 		}
 	}
 	
