@@ -3,7 +3,7 @@ package view;
 import org.newdawn.slick.Color;
 import org.newdawn.slick.Graphics;
 
-public class MainMenuView{
+public class MenuView{
 	
 
 	public void render(Graphics g){
@@ -13,6 +13,8 @@ public class MainMenuView{
 		g.drawString("1.	Play Game", 50, 100);
 		g.drawString("2.	Set fullscreen", 50, 120);
 		g.drawString("3.	Quit", 50, 140);
+		
+		g.drawString("4.	Save map to file (!)", 50, 180);
 			
 	}
 

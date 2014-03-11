@@ -1,39 +1,38 @@
-package head;
+package controller;
 
-import model.RandomWorld;
-import model.World;
-
+import org.newdawn.slick.AppGameContainer;
+import org.newdawn.slick.Color;
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.Input;
 import org.newdawn.slick.SlickException;
 import org.newdawn.slick.state.GameState;
 import org.newdawn.slick.state.StateBasedGame;
+import org.newdawn.slick.state.transition.FadeInTransition;
+import org.newdawn.slick.state.transition.FadeOutTransition;
 
-import util.ImageLoader;
-import view.MainGameView;
-import controller.Controller;
-import controller.WorldController;
+import view.MenuView;
 
-public class MainGameState implements GameState {
-
-	private Controller controller;
-	private World world;
-	private MainGameView view;
-	private static boolean isExit;
-	private static GameContainer appgc;
-	private static StatedGame game;
+public class MenuController implements GameState {
 	
+	// Our parent, the state manager 
+	private Game game;
+	
+	private AppGameContainer container;
+	private MenuView view = new MenuView();
+	
+	private boolean isFullscreen = false;
+
+
 	@Override
 	public void mouseClicked(int arg0, int arg1, int arg2, int arg3) {
 		// TODO Auto-generated method stub
-
+		System.out.println("helo");
 	}
 
 	@Override
 	public void mouseDragged(int arg0, int arg1, int arg2, int arg3) {
 		// TODO Auto-generated method stub
-
 	}
 
 	@Override
@@ -75,7 +74,7 @@ public class MainGameState implements GameState {
 	@Override
 	public boolean isAcceptingInput() {
 		// TODO Auto-generated method stub
-		return false;
+		return true;
 	}
 
 	@Override
@@ -85,14 +84,50 @@ public class MainGameState implements GameState {
 	}
 
 	@Override
-	public void keyPressed(int arg0, char arg1) {
-		controller.keyPressed(arg0, arg1);
-
+	public void keyPressed(int key, char e) {
+		// TODO: Anything to do here?
 	}
 
 	@Override
-	public void keyReleased(int arg0, char arg1) {
-		controller.keyReleased(arg0, arg1);
+	public void keyReleased(int key, char e) {
+		switch(key){
+		case Input.KEY_1:
+			// Tell parent to change from main menu state to game state
+			game.enterState(2, new FadeOutTransition(Color.black), new FadeInTransition(Color.black));
+			break;
+		case Input.KEY_2:
+			if(!isFullscreen){
+				int w = game.getNativeWidth();
+				int h = game.getNativeHeight();
+				try {
+					container.setDisplayMode(w, h, true);
+					isFullscreen = true;
+				} catch (SlickException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
+			}else{
+				try {
+					container.setDisplayMode(800, 600, false);
+					isFullscreen = false;
+				} catch (SlickException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
+			}
+			
+			break;
+		case Input.KEY_3:
+			game.exit();
+			break;
+			
+		case Input.KEY_4:
+			System.out.println("TODO save map to file");
+			break;
+			
+		default:
+			break;
+		}
 
 	}
 
@@ -157,45 +192,26 @@ public class MainGameState implements GameState {
 	}
 
 	@Override
-	public void enter(GameContainer container, StateBasedGame game)
+	public void enter(GameContainer arg0, StateBasedGame arg1)
 			throws SlickException {
-		int h = container.getHeight();
-		int w = container.getWidth();
-		view.setSize(w, h);
+		// TODO Auto-generated method stub
 
 	}
 
 	@Override
 	public int getID() {
-		return 2;
+		return 1;
 	}
 
 	@Override
-	/**
-	 * Called when the state first in initialized by StatedGame
-	 */
-	public void init(GameContainer appgc, StateBasedGame game)
+	public void init(GameContainer container, StateBasedGame game)
 			throws SlickException {
-		this.game = (StatedGame)game;
-		this.appgc = appgc;
-		new ImageLoader();
-		
-		world = new RandomWorld();
-		view = new MainGameView(appgc.getWidth(), appgc.getHeight());
-		controller = new WorldController(this, world, view);
-		appgc.getInput().addKeyListener(controller);
-		appgc.getInput().addMouseListener(controller);
-		// Set up View listening to World
-		world.addPropertyChangeListener(view);
-		world.initialize();
-		isExit = false;
+		this.game = (Game) game;
+		this.container = (AppGameContainer) container;
 
 	}
 
 	@Override
-	/**
-	 * Called every time the state is exited in favour of another state
-	 */
 	public void leave(GameContainer arg0, StateBasedGame arg1)
 			throws SlickException {
 		// TODO Auto-generated method stub
@@ -203,44 +219,16 @@ public class MainGameState implements GameState {
 	}
 
 	@Override
-	/**
-	 * Draws the game
-	 */
 	public void render(GameContainer arg0, StateBasedGame arg1, Graphics g)
 			throws SlickException {
-		MainGameView.render(g);
-
+		view.render(g);
 	}
 
 	@Override
-	/**
-	 * Updates logic for the state. Runs continuously while state is entered
-	 */
 	public void update(GameContainer arg0, StateBasedGame arg1, int arg2)
 			throws SlickException {
-		world.tick();
-		controller.tick();
-		if(isExit){
-			getGame().exit();
-		}
+		// TODO Auto-generated method stub
 
 	}
-		
-	public boolean closeRequested() {
-		isExit = true;
-		return isExit;
-		}
 
-	public static Graphics getG(){
-		return appgc.getGraphics();
-	}
-	
-	public static GameContainer getGC(){
-		return appgc;
-	}
-	
-	public StatedGame getGame(){
-		return game;
-	}
-	
 }
