@@ -324,6 +324,7 @@ public class TestWorld extends World{
 			Point pos = new Point(VILLAGER_SPAWN_POS + 5, VILLAGER_SPAWN_POS+i);
 			Villager villager = new Villager(VILLAGER_SPAWN_POS + 5, VILLAGER_SPAWN_POS+i);
 			addEntity(pos, villager);
+			addVillagerUI(pos, villager);
 			villager.getPCS().addPropertyChangeListener(this);
 		}
 	}

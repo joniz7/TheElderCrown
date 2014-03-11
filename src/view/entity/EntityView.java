@@ -69,7 +69,6 @@ public class EntityView implements PropertyChangeListener {
 	 * @author Niklas
 	 */
 	public void propertyChange(PropertyChangeEvent event) {
-		
 		String name = event.getPropertyName();
 		if (name.equals("position")) {
 			Point p = (Point)event.getNewValue();
@@ -88,7 +87,6 @@ public class EntityView implements PropertyChangeListener {
 			this.x = x + dx;
 			this.y = y + dy;
 		}
-
 	}
 	
 	

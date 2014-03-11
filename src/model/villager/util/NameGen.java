@@ -29,9 +29,7 @@ public class NameGen {
 		else
 			nameBase = nameBase + maleEnding[RandomClass.getRandomInt(maleEnding.length, 0)];
 		
-		System.out.println(nameBase);
-		
-		return null;
+		return nameBase;
 	}
 	
 	public static void nameTest(){

@@ -11,6 +11,7 @@ import model.villager.intentions.ExplorePlan;
 import model.villager.intentions.IntentionHandler;
 import model.villager.intentions.Plan;
 import model.villager.order.Order;
+import model.villager.util.NameGen;
 import util.EntityType;
 import util.RandomClass;
 import view.entity.EntityView;
@@ -23,15 +24,18 @@ public class Villager extends MidEntity implements Agent {
 	private boolean dead = false;
 	private Plan activePlan;
 	private IntentionHandler ih = new IntentionHandler(this);
-	private boolean mustExplore;
-	private int height, weight;
+	private boolean mustExplore, isShowUI = false;
+	private int length, weight;
+	private String name;
 	
 	public Villager(int x, int y) {
 		super(x, y, EntityType.VILLAGER);
 		world = new VillagerWorld();
-		height = 140 + RandomClass.getRandomInt(50, 0);
-		weight = height / 4 + RandomClass.getRandomInt(height/4, 0);
-		System.out.println("New villager created: "+height+"  "+weight);
+		length = 140 + RandomClass.getRandomInt(50, 0);
+		weight = length / 4 + RandomClass.getRandomInt(length/4, 0);
+		this.name = NameGen.newName(true);
+		
+		System.out.println("New villager created: " + name+ " " +length+"  "+weight);
 	}
 	
 	public VillagersWorldPerception getWorld() {
@@ -47,6 +51,7 @@ public class Villager extends MidEntity implements Agent {
 	 */
 	public void update(Perception p) {
 		updatePos(p.position.x, p.position.y);
+		updateUI();
 		world.updateBotEntities(p.botEntities);
 		world.updateMidEntities(p.midEntities);
 		world.updateTopEntities(p.topEntities);
@@ -153,8 +158,8 @@ public class Villager extends MidEntity implements Agent {
 		return laziness;
 	}
 	
-	public int getHeight() {
-		return height;
+	public int getLength() {
+		return length;
 	}
 
 	public int getWeight() {
@@ -174,11 +179,32 @@ public class Villager extends MidEntity implements Agent {
 	}
 	
 	/**
+	 * Method for showing or hiding the UI for this Villager
+	 * 
+	 * @param show - true if the UI should be shown
+	 */
+	public void setShowUI(boolean show){
+		if(show)
+			pcs.firePropertyChange("status", null, "show");
+		else
+			pcs.firePropertyChange("status", null, "hide");	
+		isShowUI = show;
+	}
+	
+	public void updateUI(){
+		if(isShowUI){
+			pcs.firePropertyChange("status", hunger, "hunger");
+			pcs.firePropertyChange("status", thirst, "thirst");
+			pcs.firePropertyChange("status", sleepiness, "sleepiness");
+		}
+	}
+	
+	/**
 	 * Creates and returns a new VillagerView.
 	 * Registers the view as our listener.
 	 */
 	public EntityView createView() {
-		EntityView view = new VillagerView(x, y, height, weight);
+		EntityView view = new VillagerView(x, y, length, weight);
 		pcs.addPropertyChangeListener(view);
 		return view;
 	}
@@ -191,4 +217,10 @@ public class Villager extends MidEntity implements Agent {
 	public boolean isDead() {
 		return dead;
 	}
+
+	public String getName() {
+		return name;
+	}
+	
+	
 }

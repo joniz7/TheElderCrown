@@ -22,12 +22,16 @@ import view.entity.bot.WaterTileView;
 import view.entity.mid.VillagerView;
 import view.entity.top.TreeView;
 import view.entity.top.house.*;
+import view.ui.*;
 
 public class View implements PropertyChangeListener {
 
 	private static ArrayList<EntityView> topGraphics = new ArrayList<EntityView>();
 	private static ArrayList<EntityView> midGraphics = new ArrayList<EntityView>();
 	private static ArrayList<EntityView> botGraphics = new ArrayList<EntityView>();
+	private static ArrayList<EntityView> UI = new ArrayList<EntityView>();
+
+	
 	private static final int SCROLL_SPEED = 8;
 	private static int width, height;
 	private static int cameraX, cameraY;
@@ -113,6 +117,9 @@ public class View implements PropertyChangeListener {
 
 		for(EntityView d : topGraphics)
 			d.draw(g, cameraX, cameraY, width, height);
+		
+		for(EntityView d : UI)
+			d.draw(g, cameraX, cameraY, width, height);
 
 	}
 
@@ -172,7 +179,7 @@ public class View implements PropertyChangeListener {
 			case VILLAGER:
 				Villager villager = (Villager) entity;
 				view = new VillagerView(entity.getX(), entity.getY(), 
-						villager.getHeight(), villager.getWeight());
+						villager.getLength(), villager.getWeight());
 				break;
 			}
 			PropertyChangeSupport pcs = entity.getPCS();
@@ -198,6 +205,12 @@ public class View implements PropertyChangeListener {
 			PropertyChangeSupport pcs = entity.getPCS();
 			pcs.addPropertyChangeListener(view);
 			botGraphics.add(view);
+		}else if (name.equals("addVillagerUI")) {
+			Villager entity = (Villager) event.getNewValue();
+			EntityView view = new VillagerUI(entity);
+			PropertyChangeSupport pcs = entity.getPCS();
+			pcs.addPropertyChangeListener(view);
+			UI.add(view);
 		}
 		else if (name.equals("removeTopEntity")) {
 			// TODO search and remove from list

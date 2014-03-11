@@ -18,6 +18,7 @@ import model.entity.bottom.BottomEntity;
 import model.entity.bottom.WaterTile;
 import model.entity.top.TopEntity;
 import model.villager.Perception;
+import model.villager.Villager;
 import model.villager.VillagersWorldPerception;
 import model.villager.intentions.Action;
 import model.villager.order.Order;
@@ -26,6 +27,7 @@ import org.newdawn.slick.util.pathfinding.PathFindingContext;
 
 import util.NoPositionFoundException;
 import util.Tickable;
+import view.ui.UI;
 
 public abstract class World implements Tickable, VillagersWorldPerception, PropertyChangeListener{
 
@@ -216,6 +218,18 @@ public abstract class World implements Tickable, VillagersWorldPerception, Prope
 	public void addEntity(Point point, TopEntity entity) {
 		topEntities.put(point, entity);
 		pcs.firePropertyChange("addTopEntity", null, entity);
+	}
+	
+	/**
+	 * Adds an Entity to the top layer.
+	 * Also notifies View of the change.
+	 * 
+	 * @param point - the position of the Entity on the map
+	 * @param entity - the entity to add
+	 * @author Niklas
+	 */
+	public void addVillagerUI(Point point, Villager villager) {
+		pcs.firePropertyChange("addVillagerUI", null, villager);
 	}
 	
 	private void addAgent(Point point, Agent agent){

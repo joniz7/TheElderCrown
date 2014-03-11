@@ -3,9 +3,13 @@ package controller;
 import head.MainGameState;
 
 import java.awt.Point;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.Map;
 
 import model.World;
 import model.entity.Agent;
+import model.entity.Entity;
 import model.villager.Villager;
 import model.villager.intentions.MoveIntent;
 import model.villager.order.Order;
@@ -103,7 +107,6 @@ public class WorldController extends Controller{
 	@Override
 	public void setInput(Input arg0) {
 		
-		
 	}
 
 	
@@ -115,6 +118,9 @@ public class WorldController extends Controller{
 		if (button == 0) {
 			Point windowPos = new Point(x,y);
 			sendMoveOrder(windowPos);
+		}else if (button == 1){
+			Point windowPos = new Point(x,y);
+			showVillagerInfo(windowPos);
 		}
 	}
 	
@@ -131,6 +137,30 @@ public class WorldController extends Controller{
 		Order o = new Order(0, v.getId(), i);
 		// Add order to world
 		world.addOrder(o);
+	}
+	
+	private void showVillagerInfo(Point windowPos){
+		Point modelPos = View.windowToModelCoordinates(windowPos);
+		Villager v;
+		
+		HashMap<Point, Agent> temp = (HashMap<Point, Agent>)world.getAgents().clone();
+		Iterator<Map.Entry<Point, Agent>> it = temp.entrySet().iterator();
+		
+		while(it.hasNext()){
+			Map.Entry<Point, Agent> e = (Map.Entry<Point, Agent>) it.next();
+			
+			Agent agent = e.getValue();
+			if(agent instanceof Villager){
+				v = (Villager) agent;
+				v.setShowUI(false);
+			}
+		}
+		
+		if(world.getMidEntities().get(modelPos) instanceof Villager){
+			
+			v = (Villager) world.getMidEntities().get(modelPos);
+			v.setShowUI(true);
+		}
 	}
 
 	@Override
