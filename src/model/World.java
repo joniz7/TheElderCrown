@@ -17,6 +17,7 @@ import model.entity.MidEntity;
 import model.entity.bottom.BottomEntity;
 import model.entity.bottom.WaterTile;
 import model.entity.top.TopEntity;
+import model.entity.top.Tree;
 import model.villager.Perception;
 import model.villager.Villager;
 import model.villager.VillagersWorldPerception;
@@ -25,7 +26,10 @@ import model.villager.order.Order;
 
 import org.newdawn.slick.util.pathfinding.PathFindingContext;
 
+import util.Constants;
+import util.EntityType;
 import util.NoPositionFoundException;
+import util.NoSuchEntityException;
 import util.Tickable;
 import view.ui.UI;
 
@@ -152,7 +156,53 @@ public abstract class World implements Tickable, VillagersWorldPerception, Prope
 		}
 	}
 
+	@Override
+	/**
+	 * Checks whether the given position is blocked in any layer.
+	 * Note: use blocked(PathFindingContext, Point) instead!
+	 */
+	public boolean blocked(PathFindingContext pfc, int x, int y){
+		return blocked(pfc, new Point(x, y));
+	}
 	
+	/**
+	 * Checks whether the given position is blocked in any layer.
+	 * @param pfc - ?
+	 * @return true if there is something at position, which is blocking
+	 */
+	public boolean blocked(PathFindingContext pfc, Point p){
+		if (botBlocked(p)) return true;
+		else if(midBlocked(p)) return true;
+		else if(topBlocked(p)) return true;
+		else return false;
+	}
+	/**
+	 * Checks whether the specified position is blocked in the middle layer.
+	 * @return true if there is something at position, which is blocking
+	 */
+	public boolean topBlocked(Point p) {
+		Entity e = topEntities.get(p);
+		return e != null && e.isBlocking();
+	}
+	/**
+	 * Checks whether the specified position is blocked in the middle layer.
+	 * @return true if there is something at position, that is blocking
+	 */
+	public boolean midBlocked(Point p) {
+		Entity e = midEntities.get(p);
+		return e != null && e.isBlocking();
+	}
+	/**
+	 * Checks whether the specified position is blocked in the bottom layer.
+	 * @return true if there is something at position, that is blocking
+	 */
+	public boolean botBlocked(Point p) {
+		Entity e = botEntities.get(p);
+		return e != null && e.isBlocking();
+	}
+	
+	/*
+	 * Deprecated?
 	public boolean blocked(PathFindingContext pfc, int x, int y){
 		boolean blocked = false;
 		Point p = new Point(x, y);
@@ -164,10 +214,8 @@ public abstract class World implements Tickable, VillagersWorldPerception, Prope
 			blocked = topEntities.get(p).isBlocking();
 		return blocked;
 	}
+	*/
 	
-	public boolean blockedMid(Point pos) {
-		return midEntities.containsKey(pos);
-	}
 	
 	public void setPaused(boolean paused) {
 		this.paused = paused;
@@ -218,6 +266,40 @@ public abstract class World implements Tickable, VillagersWorldPerception, Prope
 	public void addEntity(Point point, TopEntity entity) {
 		topEntities.put(point, entity);
 		pcs.firePropertyChange("addTopEntity", null, entity);
+	}
+	
+	/**
+	 * Call this when you want a reference to a specific entity at a specific position.
+	 * 
+	 * @param pos the position in which you want to find the Entity.
+	 * @param type the Entity type desired.
+	 * @return the entity of the desired type at the specified Point
+	 * @throws NoSuchEntityException if there is no Entity of the specified type at the specified Point.
+	 */
+	public Entity getEntity(Point pos, EntityType type) throws NoSuchEntityException{
+		Entity e = null;
+		if(midEntities.get(pos).getType() == type)
+			e = midEntities.get(pos);
+		else if(topEntities.get(pos).getType() == type)
+			e = topEntities.get(pos);
+		else
+			throw new NoSuchEntityException();
+		return e;
+	}
+	
+	/**
+	 * Call this when you want a reference to a Tree at a specific location.
+	 * @param tileX the x-coordinate of the Tree to be found.
+	 * @param tileY the y-coordinate of the Tree to be found
+	 * @return if there is a Tree at the specified location it is returned. Otherwise null.
+	 * @deprecated not used?
+	 */
+	public Tree getTree(int tileX, int tileY){
+		Entity e = topEntities.get(new Point(tileX, tileY)); 
+		if(e != null && e instanceof Tree)
+			return (Tree) e;
+		else
+			return null;
 	}
 	
 	/**
@@ -317,4 +399,24 @@ public abstract class World implements Tickable, VillagersWorldPerception, Prope
 		}
 	}
 
+	// -- Path-finding methods --
+	// TODO Should be somewhere else? Empty "pathFinderVisited" needed?
+	
+	@Override
+	public float getCost(PathFindingContext pfc, int x, int y){
+		return 1.0f;
+	}
+	@Override
+	public int getHeightInTiles(){
+		return Constants.WORLD_HEIGHT;
+	}
+	@Override
+	public int getWidthInTiles(){
+		return Constants.WORLD_WIDTH;
+	}
+	@Override
+	public void pathFinderVisited(int x, int y){
+		
+	}
+	
 }

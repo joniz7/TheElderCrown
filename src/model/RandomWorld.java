@@ -30,7 +30,7 @@ import util.EntityType;
 import util.NoPositionFoundException;
 import util.NoSuchEntityException;
 
-public class TestWorld extends World{
+public class RandomWorld extends World{
 	
 	// -- World configuration --
 	// Villagers
@@ -48,7 +48,7 @@ public class TestWorld extends World{
 	 * Creates a new instance of TestWorld.
 	 * Remember to call initialize() before use.
 	 */
-	public TestWorld(){
+	public RandomWorld(){
 		super();
 	}
 	
@@ -328,104 +328,8 @@ public class TestWorld extends World{
 			villager.getPCS().addPropertyChangeListener(this);
 		}
 	}
-	
-	@Override
-	public boolean blocked(PathFindingContext pfc, int x, int y){
-		if(botEntities.get(new Point(x, y)) != null && botEntities.get(new Point(x, y)).isBlocking())
-			return true;
-		if(midEntities.get(new Point(x, y)) != null && midEntities.get(new Point(x, y)).isBlocking())
-			return true;
-		if(topEntities.get(new Point(x, y)) != null && topEntities.get(new Point(x, y)).isBlocking())
-			return true;
+
 		
-		return false;
-	}
-
-	@Override
-	public float getCost(PathFindingContext pfc, int x, int y){
-		return 1.0f;
-	}
-
-	@Override
-	public int getHeightInTiles(){
-		return Constants.WORLD_HEIGHT;
-	}
-
-	@Override
-	public int getWidthInTiles(){
-		return Constants.WORLD_WIDTH;
-	}
-
-	@Override
-	public void pathFinderVisited(int x, int y){
-		
-	}
-		
-	/**
-	 * Returns all entities who are also agents.
-	 * @return a HashMap of all the Agents in the game.
-	 */
-	public HashMap<Point, Agent> getAgents(){
-		return agents;
-	}
-
-	/**
-	 * A method to get access to all the ground tiles.
-	 * @return a HashMap with all the tiles identified by their position.
-	 */
-	public HashMap<Point, BottomEntity> getTiles() {
-		return botEntities;
-	}
-	
-	/**
-	 * Returns all entities that are on the same level as villagers, including villagers.
-	 * @return a Hashmap with all entities in the 'middle' layer.
-	 */
-	public HashMap<Point, MidEntity> getMidObjects(){
-		return midEntities;
-	}
-	
-	/**
-	 * Returns all entities that are to be rendered on top of villagers.
-	 * @return a Hashmap with all entities above the villagers.
-	 */
-	public HashMap<Point, TopEntity> getTopObjects(){
-		return topEntities;
-	}
-	
-	/**
-	 * Call this when you want a reference to a Tree at a specific location.
-	 * @param tileX the x-coordinate of the Tree to be found.
-	 * @param tileY the y-coordinate of the Tree to be found
-	 * @return if there is a Tree at the specified location it is returned. Otherwise null.
-	 */
-	public Tree getTree(int tileX, int tileY){
-		if(topEntities.get(new Point(tileX, tileY)) != null &&
-				topEntities.get(new Point(tileX, tileY)) instanceof Tree)
-			return (Tree) topEntities.get(new Point(tileX, tileY));
-		else
-			return null;
-	}
-	
-	/**
-	 * Call this when you want a reference to a specific entity at a specific position.
-	 * 
-	 * @param pos the position in which you want to find the Entity.
-	 * @param type the Entity type desired.
-	 * @return the entity of the desired type at the specified Point
-	 * @throws NoSuchEntityException if there is no Entity of the specified type at the specified Point.
-	 */
-	public Entity getEntity(Point pos, EntityType type) throws NoSuchEntityException{
-		Entity e = null;
-		if(midEntities.get(pos).getType() == type)
-			e = midEntities.get(pos);
-		else if(topEntities.get(pos).getType() == type)
-			e = topEntities.get(pos);
-		else
-			throw new NoSuchEntityException();
-		return e;
-	}
-	
 	/**
 	 * Debuggin purposes.
 	 * @param centerPoint
@@ -467,6 +371,7 @@ public class TestWorld extends World{
 
 	@Override
 	public void propertyChange(PropertyChangeEvent event) {
+		// TODO refactor / add comments. Add to World?
 		String name = event.getPropertyName();
 
 		if(name.equals("move")){
@@ -478,7 +383,7 @@ public class TestWorld extends World{
 			} catch (NoPositionFoundException e) {
 				e.printStackTrace();
 			}
-			if(!blockedMid(pos)) {
+			if(!midBlocked(pos)) {
 				agents.put(pos, villager);
 				midEntities.put(pos, villager);
 				agents.remove(p);

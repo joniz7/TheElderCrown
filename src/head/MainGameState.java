@@ -1,6 +1,6 @@
 package head;
 
-import model.TestWorld;
+import model.RandomWorld;
 import model.World;
 
 import org.newdawn.slick.GameContainer;
@@ -180,7 +180,7 @@ public class MainGameState implements GameState {
 		this.appgc = appgc;
 		new ImageLoader();
 		
-		world = new TestWorld();
+		world = new RandomWorld();
 		view = new View(appgc.getWidth(), appgc.getHeight());
 		controller = new WorldController(this, world, view);
 		appgc.getInput().addKeyListener(controller);
