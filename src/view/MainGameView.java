@@ -24,7 +24,7 @@ import view.entity.top.TreeView;
 import view.entity.top.house.*;
 import view.ui.*;
 
-public class View implements PropertyChangeListener {
+public class MainGameView implements PropertyChangeListener {
 
 	private static ArrayList<EntityView> topGraphics = new ArrayList<EntityView>();
 	private static ArrayList<EntityView> midGraphics = new ArrayList<EntityView>();
@@ -40,9 +40,9 @@ public class View implements PropertyChangeListener {
 	// The size of each tile in pixels (?)
 	public static final int TILE_OFFSET = 20;
 
-	public View(int width, int height) {
-		View.width = width;
-		View.height = height;
+	public MainGameView(int width, int height) {
+		MainGameView.width = width;
+		MainGameView.height = height;
 	}
 
 	public static void addTopGraphic(EntityView d){

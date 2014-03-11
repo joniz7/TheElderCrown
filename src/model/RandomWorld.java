@@ -40,6 +40,7 @@ public class RandomWorld extends World{
 	// Trees
 	private final int TREE_SPARSITY = 280;
 
+	/** @deprecated tickable is enough **/
 	private ArrayList<Tree> trees = new ArrayList<Tree>();
 	
 	private Random rnd = new Random();
@@ -178,7 +179,7 @@ public class RandomWorld extends World{
 			for(int j = 0; j < Constants.WORLD_HEIGHT - 1; j++) {
 				if(rnd.nextInt(TREE_SPARSITY) == 0 && botEntities.get(new Point(i + 1, j + 1)).getType() == EntityType.GRASS_TILE){
 					Tree tree = new Tree(i + 1, j + 1);
-					trees.add(tree);
+//					trees.add(tree);
 					tickables.add(tree);
 					Point pos = new Point(i + 1, j + 1);
 					addEntity(pos, tree);

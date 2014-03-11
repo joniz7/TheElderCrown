@@ -6,7 +6,7 @@ import org.newdawn.slick.KeyListener;
 import org.newdawn.slick.MouseListener;
 
 import util.Tickable;
-import view.View;
+import view.MainGameView;
 
 
 /**
@@ -16,10 +16,10 @@ import view.View;
 public abstract class Controller implements KeyListener, MouseListener /*, MouseMotionListener*/, Tickable{
 
 	protected World world;
-	protected View view;
+	protected MainGameView view;
 	
-	public Controller(World gameState, View view){
-		this.world = gameState;
+	public Controller(World world, MainGameView view){
+		this.world = world;
 		this.view = view;
 	}
 	

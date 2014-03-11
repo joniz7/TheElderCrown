@@ -9,7 +9,7 @@ import org.newdawn.slick.Image;
 
 import util.ImageLoader;
 import util.InterpolPosition;
-import view.View;
+import view.MainGameView;
 
 /**
  * A generic view representation of an entity.
@@ -34,8 +34,8 @@ public class EntityView implements PropertyChangeListener {
 	 */
 	public EntityView(String name, int x, int y){
 		image = ImageLoader.getImage(name);
-		this.x = View.modelToViewCoordinate(x);
-		this.y = View.modelToViewCoordinate(y);
+		this.x = MainGameView.modelToViewCoordinate(x);
+		this.y = MainGameView.modelToViewCoordinate(y);
 		this.name = name;
 	}
 	
@@ -72,17 +72,17 @@ public class EntityView implements PropertyChangeListener {
 		String name = event.getPropertyName();
 		if (name.equals("position")) {
 			Point p = (Point)event.getNewValue();
-			x = View.modelToViewCoordinate(p.getX());
-			y = View.modelToViewCoordinate(p.getY());
+			x = MainGameView.modelToViewCoordinate(p.getX());
+			y = MainGameView.modelToViewCoordinate(p.getY());
 		}
 		else if (name.equals("interpolPosition")) {
 			InterpolPosition p = (InterpolPosition) event.getNewValue();
 			// Change in view coordinates
-			int dx = (int) (p.getDx()*p.getProgress()*View.TILE_OFFSET);
-			int dy = (int) (p.getDy()*p.getProgress()*View.TILE_OFFSET);
+			int dx = (int) (p.getDx()*p.getProgress()*MainGameView.TILE_OFFSET);
+			int dy = (int) (p.getDy()*p.getProgress()*MainGameView.TILE_OFFSET);
 			// Originating view coordinates (i.e. tile we're moving from)
-			int x = View.modelToViewCoordinate(p.getX());
-			int y = View.modelToViewCoordinate(p.getY());
+			int x = MainGameView.modelToViewCoordinate(p.getX());
+			int y = MainGameView.modelToViewCoordinate(p.getY());
 			// Apply change
 			this.x = x + dx;
 			this.y = y + dy;

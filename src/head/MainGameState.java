@@ -11,7 +11,7 @@ import org.newdawn.slick.state.GameState;
 import org.newdawn.slick.state.StateBasedGame;
 
 import util.ImageLoader;
-import view.View;
+import view.MainGameView;
 import controller.Controller;
 import controller.WorldController;
 
@@ -19,7 +19,7 @@ public class MainGameState implements GameState {
 
 	private Controller controller;
 	private World world;
-	private View view;
+	private MainGameView view;
 	private static boolean isExit;
 	private static GameContainer appgc;
 	private static StatedGame game;
@@ -181,7 +181,7 @@ public class MainGameState implements GameState {
 		new ImageLoader();
 		
 		world = new RandomWorld();
-		view = new View(appgc.getWidth(), appgc.getHeight());
+		view = new MainGameView(appgc.getWidth(), appgc.getHeight());
 		controller = new WorldController(this, world, view);
 		appgc.getInput().addKeyListener(controller);
 		appgc.getInput().addMouseListener(controller);
@@ -208,7 +208,7 @@ public class MainGameState implements GameState {
 	 */
 	public void render(GameContainer arg0, StateBasedGame arg1, Graphics g)
 			throws SlickException {
-		View.render(g);
+		MainGameView.render(g);
 
 	}
 

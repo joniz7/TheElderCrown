@@ -19,7 +19,7 @@ import org.newdawn.slick.Input;
 import org.newdawn.slick.state.transition.FadeInTransition;
 import org.newdawn.slick.state.transition.FadeOutTransition;
 
-import view.View;
+import view.MainGameView;
 
 public class WorldController extends Controller{
 
@@ -27,13 +27,13 @@ public class WorldController extends Controller{
 
 	private MainGameState game;
 	
-	public WorldController(MainGameState mainGameState, World gameState, View view) {
-		super(gameState, view);
+	public WorldController(MainGameState mainGameState, World world, MainGameView view) {
+		super(world, view);
 		this.game = mainGameState;
 	}
 	
-	public WorldController(World gameState, View view) {
-		super(gameState, view);
+	public WorldController(World world, MainGameView view) {
+		super(world, view);
 	}
 
 	@Override
@@ -129,7 +129,7 @@ public class WorldController extends Controller{
 	 */
 	private void sendMoveOrder(Point windowPos) {
 		// Figure out where we want to go
-		Point modelPos = View.windowToModelCoordinates(windowPos);
+		Point modelPos = MainGameView.windowToModelCoordinates(windowPos);
 		// Get the first villager from world
 		Villager v = (Villager) world.getAgents().values().toArray()[0];
 		// Create order for this villager to move to the clicked position
@@ -140,7 +140,7 @@ public class WorldController extends Controller{
 	}
 	
 	private void showVillagerInfo(Point windowPos){
-		Point modelPos = View.windowToModelCoordinates(windowPos);
+		Point modelPos = MainGameView.windowToModelCoordinates(windowPos);
 		Villager v;
 		
 		HashMap<Point, Agent> temp = (HashMap<Point, Agent>)world.getAgents().clone();

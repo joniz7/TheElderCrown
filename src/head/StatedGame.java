@@ -38,7 +38,7 @@ public class StatedGame extends StateBasedGame {
     // Initialize the game states (calls init method of each gamestate, and set's the state ID)
     public void initStatesList(GameContainer gc) throws SlickException {
         // The first state added will be the one that is loaded first, when the application is launched
-        this.addState(new MainMenu());
+        this.addState(new MainMenuState());
         this.addState(new MainGameState());
     }
     

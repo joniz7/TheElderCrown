@@ -13,10 +13,11 @@ import org.newdawn.slick.state.transition.FadeOutTransition;
 
 import view.MainMenuView;
 
-public class MainMenu implements GameState {
+public class MainMenuState implements GameState {
 	
-	private static MainMenuView view = new MainMenuView();
-	private static StateBasedGame game;
+	private MainMenuView view = new MainMenuView();
+	// Our parent, the state manager 
+	private static StatedGame game;
 	private static AppGameContainer container;
 	private boolean isFullscreen = false;
 
@@ -90,12 +91,13 @@ public class MainMenu implements GameState {
 	public void keyReleased(int key, char e) {
 		switch(key){
 		case Input.KEY_1:
+			// Tell parent to change from main menu state to game state
 			game.enterState(2, new FadeOutTransition(Color.black), new FadeInTransition(Color.black));
 			break;
 		case Input.KEY_2:
 			if(!isFullscreen){
-				int w =((StatedGame)game).getNativeWidth();
-				int h =((StatedGame)game).getNativeHeight();
+				int w = game.getNativeWidth();
+				int h = game.getNativeHeight();
 				try {
 					container.setDisplayMode(w, h, true);
 					isFullscreen = true;
@@ -198,8 +200,8 @@ public class MainMenu implements GameState {
 	@Override
 	public void init(GameContainer container, StateBasedGame game)
 			throws SlickException {
-		this.game = game;
-		this.container = (AppGameContainer)container;
+		this.game = (StatedGame) game;
+		this.container = (AppGameContainer) container;
 
 	}
 
