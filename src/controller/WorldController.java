@@ -138,7 +138,7 @@ public class WorldController implements GameState {
 	@Override
 	public boolean isAcceptingInput() {
 		// TODO Auto-generated method stub
-		return false;
+		return true;
 	}
 
 	@Override
@@ -152,6 +152,7 @@ public class WorldController implements GameState {
 	 * Sets booleans to 'true' if the corresponding button is pressed.
 	 */
 	public void keyPressed(int key, char e) {
+		System.out.println("worldController keypresid");
 		if(e == 'w' || e == 'W')
 			isWDown = true;
 		if(e == 's' || e == 'S')

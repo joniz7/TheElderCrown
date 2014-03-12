@@ -10,7 +10,6 @@ import org.newdawn.slick.state.transition.Transition;
 
 public class Game extends StateBasedGame {
 	
-	
 	private static AppGameContainer app; 
 
     // Game state identifiers
@@ -39,37 +38,16 @@ public class Game extends StateBasedGame {
 	}
 	
 
-
 	@Override
     // Initialize the game states (calls init method of each gamestate, and set's the state ID)
     public void initStatesList(GameContainer gc) throws SlickException {
-		
-		// TODO how is input handled?
-		// When 
-		
 		menuController = new MenuController();
 		worldController = new WorldController();
-        // The first state added will be the one that is loaded first, when the application is launched
+        // (The first state added will be the one that is loaded first, when the application is launched)
 		this.addState(menuController);
         this.addState(worldController);
     }
 	
-	
-	@Override
-	// TODO how to switch who gets input events???
-	public void enterState(int id, Transition leave, Transition enter) {
-		super.enterState(id, leave, enter);
-		app.getInput().removeAllListeners();
-		switch (id) {
-			case MAINMENU:
-				app.getInput().addListener(menuController);
-				break;
-			case GAME:
-				app.getInput().addListener(worldController);
-				break;
-		}
-	}
-    
     // Method to quit the game completely
     public void exit(){
     	app.exit();
@@ -84,7 +62,7 @@ public class Game extends StateBasedGame {
     }
     
 	/**
-	 * @param args
+	 * The entrypoint of the application
 	 */
 	public static void main(String[] args) {
         try {
