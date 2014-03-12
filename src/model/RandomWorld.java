@@ -30,15 +30,21 @@ import util.EntityType;
 import util.NoPositionFoundException;
 import util.NoSuchEntityException;
 
+/**
+ * A world whose map is generated randomly on load
+ * 
+ * @author Niklas
+ */
 public class RandomWorld extends World{
 	
 	// -- World configuration --
-	// Villagers
-	private final int VILLAGER_SPAWN_POS = 40, VILLAGER_COUNT = 8;
 	// Lakes 
 	private final float LAKE_COUNT = 8, LAKE_WEIGHT = 1f, LAKE_LOSS = 0.02f;
 	// Trees
 	private final int TREE_SPARSITY = 280;
+	// Villagers
+	public final int VILLAGER_SPAWN_POS = 40, VILLAGER_COUNT = 8;
+
 
 	/** @deprecated tickable is enough **/
 	private ArrayList<Tree> trees = new ArrayList<Tree>();
@@ -58,7 +64,6 @@ public class RandomWorld extends World{
 	 * Generates the map, and creates objects and villagers.
 	 */
 	public void initialize() {
-
 
 		initializeLakes();
 		initializeHouses();

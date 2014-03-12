@@ -11,11 +11,12 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
+import javax.naming.OperationNotSupportedException;
+
 import model.entity.Agent;
 import model.entity.Entity;
 import model.entity.MidEntity;
 import model.entity.bottom.BottomEntity;
-import model.entity.bottom.WaterTile;
 import model.entity.top.TopEntity;
 import model.entity.top.Tree;
 import model.villager.Perception;
@@ -31,9 +32,8 @@ import util.EntityType;
 import util.NoPositionFoundException;
 import util.NoSuchEntityException;
 import util.Tickable;
-import view.ui.UI;
 
-public abstract class World implements Tickable, VillagersWorldPerception, PropertyChangeListener{
+public abstract class World implements Tickable, VillagersWorldPerception, PropertyChangeListener {
 
 	// Tickable objects (e.g. trees)
 	protected List<Tickable> tickables;
@@ -75,7 +75,7 @@ public abstract class World implements Tickable, VillagersWorldPerception, Prope
 		orders = new LinkedList<Order>();
 		
 		shouldExit = false;
-		}
+	}
 	
 	@SuppressWarnings("unchecked")
 	@Override
@@ -225,6 +225,16 @@ public abstract class World implements Tickable, VillagersWorldPerception, Prope
 	 * Initializes the world.
 	 */
 	public abstract void initialize();
+	
+	/**
+	 * Generates a WorldMap from this World's current state,
+	 * and returns it.
+	 */
+	public WorldMap getWorldMap() {
+		// TODO create new WorldMap object
+		// 		clone hashmaps etc
+		return null;
+	}
 	
 	/**
 	 * Adds an Entity to the bottom layer.

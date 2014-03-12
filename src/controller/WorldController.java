@@ -266,13 +266,13 @@ public class WorldController implements GameState {
 		this.appgc = appgc;
 		new ImageLoader();
 		
+		RandomWorld gen = new RandomWorld(); 
+		
 		world = new RandomWorld();
 		view = new WorldView(appgc.getWidth(), appgc.getHeight());
-		// TODO where to switch listeners?
-//		appgc.getInput().addKeyListener(this);
-//		appgc.getInput().addMouseListener(this);
 		// Set up View listening to World
 		world.addPropertyChangeListener(view);
+		// Initialize with no map
 		world.initialize();
 		isExit = false;
 
@@ -330,7 +330,7 @@ public class WorldController implements GameState {
 	public boolean closeRequested() {
 		isExit = true;
 		return isExit;
-		}
+	}
 
 	public Graphics getGraphics(){
 		return appgc.getGraphics();
@@ -342,6 +342,10 @@ public class WorldController implements GameState {
 	
 	public Game getGame(){
 		return game;
+	}
+	
+	public void saveWorld() {
+		
 	}
 	
 }
