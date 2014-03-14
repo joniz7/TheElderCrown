@@ -237,9 +237,15 @@ public class Villager extends MidEntity implements Agent {
 	}
 	
 	@Override
+	/**
+	 * Creates a new villager with the same position as this one.
+	 * Warning: this is not a complete copy by any means! Do not use!
+	 */
 	public Villager copy() {
 		Villager copy = new Villager(x,y);
-		throw new org.newdawn.slick.util.OperationNotSupportedException("what is a human mind?");
+		return copy;
+//		throw new org.newdawn.slick.util.OperationNotSupportedException("what is a human mind?");
+		
 	}
 	
 	

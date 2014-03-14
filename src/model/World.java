@@ -241,56 +241,17 @@ public abstract class World implements Tickable, VillagersWorldPerception, Prope
 		
 		// Remove all villagers from map
 		List<HashMap<Point, Entity>> villagers = getEntities(EntityType.VILLAGER);
-		// (Should be empty)
+		// Remove from bottom layer (should be empty)
 		Set<Point> pointsToRemove = villagers.get(0).keySet();
 		for (Point p : pointsToRemove) map.botEntities.remove(p);
+		// Remove from middle layer
 		pointsToRemove = villagers.get(1).keySet();
 		for (Point p : pointsToRemove) map.midEntities.remove(p);
-		// (Should be empty)
+		// Remove from top layer (should be empty)
 		pointsToRemove = villagers.get(2).keySet();
 		for (Point p : pointsToRemove) map.topEntities.remove(p);
-		
-		
-		// TODO create new WorldMap object
-		// 		clone hashmaps etc
-		return null;
-	}
-	
-	@SuppressWarnings("unchecked")
-	/**
-	 * Makes a deep copy of a hashmap containing Copyable keys/values. 
-	 * @param map - the map to copy
-	 * @return a deep copy of the map
-	 */
-	private static <K, V extends Copyable>
-			HashMap<K,V> deepCopy(HashMap<K, V> map) {
-		HashMap<K,V> newMap = new HashMap<K,V>();
-		Set<K> keys = map.keySet();
-		for (K key : keys) {
-			K newKey = key;
-			// Copy key if possible
-			if (key instanceof Copyable) {
-				newKey = (K) ((Copyable)key).copy();
-			}
-			V newVal = (V) map.get(key).copy();
-			newMap.put(newKey, newVal);
-		}
-		return newMap;
-	}
-	
-	@SuppressWarnings("unchecked")
-	/**
-	 * Makes a deep copy of an arrayList containing Copyables.
-	 * @param list the ArrayList to copy
-	 * @return a new ArrayList
-	 */
-	private static <T extends Copyable>
-			List<T> deepCopy(List<T> list) {
-		ArrayList<T> newList = new ArrayList<T>();
-		for(T item : list) {
-			newList.add((T) item.copy());
-		}
-		return newList;
+
+		return map;
 	}
 	
 	/**
@@ -565,6 +526,42 @@ public abstract class World implements Tickable, VillagersWorldPerception, Prope
 		
 	}
 	
+	@SuppressWarnings("unchecked")
+	/**
+	 * Makes a deep copy of a hashmap containing Copyable keys/values. 
+	 * @param map - the map to copy
+	 * @return a deep copy of the map
+	 */
+	private static <K, V extends Copyable>
+			HashMap<K,V> deepCopy(HashMap<K, V> map) {
+		HashMap<K,V> newMap = new HashMap<K,V>();
+		Set<K> keys = map.keySet();
+		for (K key : keys) {
+			K newKey = key;
+			// Copy key if possible
+			if (key instanceof Copyable) {
+				newKey = (K) ((Copyable)key).copy();
+			}
+			V newVal = (V) map.get(key).copy();
+			newMap.put(newKey, newVal);
+		}
+		return newMap;
+	}
+	
+	@SuppressWarnings("unchecked")
+	/**
+	 * Makes a deep copy of an arrayList containing Copyables.
+	 * @param list the ArrayList to copy
+	 * @return a new ArrayList
+	 */
+	private static <T extends Copyable>
+			List<T> deepCopy(List<T> list) {
+		ArrayList<T> newList = new ArrayList<T>();
+		for(T item : list) {
+			newList.add((T) item.copy());
+		}
+		return newList;
+	}
 	
 	@Override
 	/**

@@ -93,5 +93,14 @@ public class Game extends StateBasedGame {
         }
 
 	}
+
+	public MenuController getMenuController() {
+		return menuController;
+	}
+
+
+	public WorldController getWorldController() {
+		return worldController;
+	}
     
 }

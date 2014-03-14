@@ -1,5 +1,8 @@
 package controller;
 
+import java.io.File;
+import java.io.IOException;
+
 import org.newdawn.slick.AppGameContainer;
 import org.newdawn.slick.Color;
 import org.newdawn.slick.GameContainer;
@@ -95,33 +98,13 @@ public class MenuController implements GameState {
 			game.enterState(2, new FadeOutTransition(Color.black), new FadeInTransition(Color.black));
 			break;
 		case Input.KEY_2:
-			if(!isFullscreen){
-				int w = game.getNativeWidth();
-				int h = game.getNativeHeight();
-				try {
-					container.setDisplayMode(w, h, true);
-					isFullscreen = true;
-				} catch (SlickException e1) {
-					// TODO Auto-generated catch block
-					e1.printStackTrace();
-				}
-			}else{
-				try {
-					container.setDisplayMode(800, 600, false);
-					isFullscreen = false;
-				} catch (SlickException e1) {
-					// TODO Auto-generated catch block
-					e1.printStackTrace();
-				}
-			}
-			
+			toggleFullscreen();
 			break;
 		case Input.KEY_3:
 			game.exit();
 			break;
-			
 		case Input.KEY_4:
-			System.out.println("TODO save map to file");
+			saveWorldMap();
 			break;
 			
 		default:
@@ -130,6 +113,46 @@ public class MenuController implements GameState {
 
 	}
 
+	/**
+	 * Toggles fullscreen mode on/off
+	 */
+	private void toggleFullscreen() {
+		if(!isFullscreen){
+			int w = game.getNativeWidth();
+			int h = game.getNativeHeight();
+			try {
+				container.setDisplayMode(w, h, true);
+				isFullscreen = true;
+			} catch (SlickException e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+			}
+		}else{
+			try {
+				container.setDisplayMode(800, 600, false);
+				isFullscreen = false;
+			} catch (SlickException e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+			}
+		}
+
+	}
+	
+	/**
+	 * Creates a map from the current world,
+	 * and saves it to disc.
+	 */
+	private void saveWorldMap() {
+	    File f = null;
+		try {
+			f = File.createTempFile("temp", null);
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		game.getWorldController().saveWorldMap(f);
+	}
+	
 	@Override
 	public void controllerButtonPressed(int arg0, int arg1) {
 		// TODO Auto-generated method stub

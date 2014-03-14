@@ -1,12 +1,18 @@
 package controller;
 
 import java.awt.Point;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.ObjectOutputStream;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
 
 import model.RandomWorld;
 import model.World;
+import model.WorldMap;
 import model.entity.Agent;
 import model.villager.Villager;
 import model.villager.intentions.MoveIntent;
@@ -344,7 +350,30 @@ public class WorldController implements GameState {
 		return game;
 	}
 	
-	public void saveWorld() {
+	/**
+	 * Saves the map of the current word to the specified file.
+	 * @param f - the file to save to
+	 */
+	public void saveWorldMap(File f) {
+		System.out.println("Dumping world map...");
+		WorldMap wm = world.getWorldMap();
+		System.out.println("Saving world map to file...");
+		
+		try {
+			FileOutputStream fos = new FileOutputStream(f);
+			ObjectOutputStream oos = new ObjectOutputStream(fos);          
+			oos.writeObject(wm);
+			oos.flush();
+			oos.close();
+			fos.close();
+			System.out.println("Successfully saved world map! File: "+f.getAbsolutePath().toString());
+		} catch (FileNotFoundException e) {
+			System.out.println("Encountered FileNotFoundException in saveWorldMap(): "+e.toString());
+			e.printStackTrace();
+		} catch (IOException e) {
+			System.out.println("Encountered IOException in saveWorldMap(): "+e.toString());
+			e.printStackTrace();
+		}
 		
 	}
 	
