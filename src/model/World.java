@@ -239,6 +239,16 @@ public abstract class World implements Tickable, VillagersWorldPerception, Prope
 		map.topEntities = deepCopy(topEntities);
 		map.tickables = deepCopy(tickables);
 		
+		// Remove all villagers from map
+		List<HashMap<Point, Entity>> villagers = getEntities(EntityType.VILLAGER);
+		// (Should be empty)
+		Set<Point> pointsToRemove = villagers.get(0).keySet();
+		for (Point p : pointsToRemove) map.botEntities.remove(p);
+		pointsToRemove = villagers.get(1).keySet();
+		for (Point p : pointsToRemove) map.midEntities.remove(p);
+		// (Should be empty)
+		pointsToRemove = villagers.get(2).keySet();
+		for (Point p : pointsToRemove) map.topEntities.remove(p);
 		
 		
 		// TODO create new WorldMap object
