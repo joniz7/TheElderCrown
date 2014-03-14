@@ -94,25 +94,56 @@ public class MenuController implements GameState {
 	public void keyReleased(int key, char e) {
 		switch(key){
 		case Input.KEY_1:
-			// Tell parent to change from main menu state to game state
-			game.enterState(2, new FadeOutTransition(Color.black), new FadeInTransition(Color.black));
+			unpause();
 			break;
 		case Input.KEY_2:
-			toggleFullscreen();
+			initRandomWorld();
 			break;
 		case Input.KEY_3:
-			game.exit();
+			initMapWorld();
 			break;
 		case Input.KEY_4:
+			toggleFullscreen();
+			break;
+		case Input.KEY_5:
+			game.exit();
+			break;
+		case Input.KEY_6:
 			saveWorldMap();
 			break;
-			
 		default:
 			break;
 		}
 
 	}
 
+	private void initMapWorld() {
+		view.setMessage("Creating world...");
+		game.getWorldController().initMapWorld("test");
+		view.setMessage("Created world! You can now play.");
+	}
+
+	private void initRandomWorld() {
+		view.setMessage("Creating random world...");
+		game.getWorldController().initRandomWorld();
+		view.setMessage("Created world! You can now play.");
+	}
+
+	/**
+	 * Unpause the game, if possible.
+	 * If game hasn't been started, shows error message
+	 */
+	private void unpause() {
+		if (game.isGameInitialized()) {
+			// Tell parent to change from main menu state to game state
+			game.enterState(2, new FadeOutTransition(Color.black), new FadeInTransition(Color.black));
+		}
+		else {
+			view.setMessage("Create a game first!");
+		}
+	}
+	
+	
 	/**
 	 * Toggles fullscreen mode on/off
 	 */
@@ -144,13 +175,27 @@ public class MenuController implements GameState {
 	 * and saves it to disc.
 	 */
 	private void saveWorldMap() {
-	    File f = null;
-		try {
-			f = File.createTempFile("temp", null);
-		} catch (IOException e) {
-			e.printStackTrace();
+				
+		if (game.isGameInitialized()) {
+			// Save map
+		    File f = null;
+			try {
+				f = File.createTempFile("temp", null);
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+			
+			// Tell user how it went
+			if (game.getWorldController().saveWorldMap(f)) {
+				view.setMessage("Successfully saved map to %TEMP%/"+f.getName()+"!");
+			} else {
+				view.setMessage("Failed to save map");
+			}
 		}
-		game.getWorldController().saveWorldMap(f);
+		// World needs to be initialized first
+		else {
+			view.setMessage("Cannot save map, as the world doesn't exist. Nothing. Exists.");
+		}
 	}
 	
 	@Override
@@ -216,7 +261,13 @@ public class MenuController implements GameState {
 	@Override
 	public void enter(GameContainer arg0, StateBasedGame arg1)
 			throws SlickException {
-		// TODO Auto-generated method stub
+		// Shows the "paused" label
+		if (game.isGameInitialized()) {
+			view.setMessage("Paused");
+		}
+		else {
+			view.resetMessage();
+		}
 
 	}
 
@@ -236,8 +287,8 @@ public class MenuController implements GameState {
 	@Override
 	public void leave(GameContainer arg0, StateBasedGame arg1)
 			throws SlickException {
-		// TODO Auto-generated method stub
-
+		// Hide message text
+		view.resetMessage();
 	}
 
 	@Override

@@ -29,6 +29,9 @@ public class Game extends StateBasedGame {
 	private static String title = "The Elder Crown";
 	private static final int TICK_INTERVAL = 5;
 	
+	// Whether a world has been created or not
+	public boolean gameInitialized;
+
 	/**
 	 * Create and launch a new game.
 	 */
@@ -102,4 +105,12 @@ public class Game extends StateBasedGame {
 		return worldController;
 	}
     
+	public boolean isGameInitialized() {
+		return gameInitialized;
+	}
+
+	public void setGameInitialized(boolean gameInitialized) {
+		this.gameInitialized = gameInitialized;
+	}
+	
 }

@@ -269,18 +269,20 @@ public class WorldController implements GameState {
 	@Override
 	/**
 	 * Called when the state first in initialized by StatedGame
+	 * Note: Do not forget to initialize a world as well!
 	 */
 	public void init(GameContainer appgc, StateBasedGame game)
 			throws SlickException {
 		this.game = (Game)game;
 		this.appgc = appgc;
 		new ImageLoader();
-		
-//		initRandomWorld();
-		initMapWorld("test");
 	}
 	
-	private void initRandomWorld() {
+	/**
+	 * Creates a new RandomWorld.
+	 * Also creates its view and sets up view bindings
+	 */
+	public void initRandomWorld() {
 		world = new RandomWorld();
 		view = new WorldView(appgc.getWidth(), appgc.getHeight());
 		// Set up View listening to World
@@ -288,13 +290,19 @@ public class WorldController implements GameState {
 		// Initialize with no map
 		world.initialize();
 		isExit = false;
+		
+		// Allow the user to see the game
+		game.setGameInitialized(true);
 	}
+	
 	/**
-	 * Creates and launches a new MapWorld using the specified map
+	 * Creates a new MapWorld using the specified map.
+	 * Also creates its view and sets up view bindings
+	 * 
 	 * @param name - the name of the map.
-	 * 				"name.map" must exist in the maps/ directory
+	 * 				"name.map" must exist in the maps/ directory!
 	 */
-	private void initMapWorld(String name) {
+	public void initMapWorld(String name) {
 		
 		File f = Paths.get("maps/"+name+".map").toFile();		
 		WorldMap map = loadWorldMap(f);
@@ -303,9 +311,11 @@ public class WorldController implements GameState {
 		view = new WorldView(appgc.getWidth(), appgc.getHeight());
 		// Set up View listening to World
 		world.addPropertyChangeListener(view);
-		// Initialize with no map
 		world.initialize();
 		isExit = false;
+		
+		// Allow the user to see the game
+		game.setGameInitialized(true);
 	}
 
 	@Override
@@ -324,7 +334,7 @@ public class WorldController implements GameState {
 	 */
 	public void render(GameContainer arg0, StateBasedGame arg1, Graphics g)
 			throws SlickException {
-		WorldView.render(g);
+		view.render(g);
 
 	}
 
@@ -378,9 +388,10 @@ public class WorldController implements GameState {
 	 * Saves the map of the current word to the specified file.
 	 * 
 	 * @param f - the file to save to
+	 * @return true if save succeeded, false if not
 	 * @author Niklas
 	 */
-	public void saveWorldMap(File f) {
+	public boolean saveWorldMap(File f) {
 		System.out.println("Dumping world map...");
 		WorldMap wm = world.getWorldMap();
 		System.out.println("Saving world map to file...");
@@ -393,13 +404,16 @@ public class WorldController implements GameState {
 			oos.close();
 			fos.close();
 			System.out.println("Successfully saved world map! File: "+f.getAbsolutePath().toString());
+			return true;
 		} catch (FileNotFoundException e) {
 			System.out.println("Encountered FileNotFoundException in saveWorldMap(): "+e.toString());
 			e.printStackTrace();
+			return false;
 		} catch (IOException e) {
 			System.out.println("Encountered IOException in saveWorldMap(): "+e.toString());
 			e.printStackTrace();
-		}	
+			return false;
+		}
 	}
 	
 	/**

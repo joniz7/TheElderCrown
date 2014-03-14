@@ -26,10 +26,10 @@ import view.ui.*;
 
 public class WorldView implements PropertyChangeListener {
 
-	private static ArrayList<EntityView> topGraphics = new ArrayList<EntityView>();
-	private static ArrayList<EntityView> midGraphics = new ArrayList<EntityView>();
-	private static ArrayList<EntityView> botGraphics = new ArrayList<EntityView>();
-	private static ArrayList<EntityView> UI = new ArrayList<EntityView>();
+	private ArrayList<EntityView> topGraphics = new ArrayList<EntityView>();
+	private ArrayList<EntityView> midGraphics = new ArrayList<EntityView>();
+	private ArrayList<EntityView> botGraphics = new ArrayList<EntityView>();
+	private ArrayList<EntityView> UI = new ArrayList<EntityView>();
 
 	
 	private static final int SCROLL_SPEED = 8;
@@ -45,27 +45,27 @@ public class WorldView implements PropertyChangeListener {
 		WorldView.height = height;
 	}
 
-	public static void addTopGraphic(EntityView d){
+	public void addTopGraphic(EntityView d){
 		topGraphics.add(d);
 	}
 
-	public static void removeTopGraphic(EntityView d){
+	public void removeTopGraphic(EntityView d){
 		topGraphics.remove(d);
 	}
 
-	public static void addMidGraphic(EntityView d){
+	public void addMidGraphic(EntityView d){
 		midGraphics.add(d);
 	}
 
-	public static void removeMidGraphic(EntityView d){
+	public void removeMidGraphic(EntityView d){
 		midGraphics.remove(d);
 	}
 
-	public static void addBotGraphic(EntityView d){
+	public void addBotGraphic(EntityView d){
 		botGraphics.add(d);
 	}
 
-	public static void removeBotGraphic(EntityView d){
+	public void removeBotGraphic(EntityView d){
 		botGraphics.remove(d);
 	}
 
@@ -101,7 +101,7 @@ public class WorldView implements PropertyChangeListener {
 //			System.out.println("CameraY: "+cameraY);
 	}
 
-	public static void render(Graphics g){
+	public void render(Graphics g){
 //		System.out.println("Size: "+botGraphics.size());
 		//		Display disp = new Display();
 		//		g.fillRect(0, 0, disp.getGraphicsDevice().getDisplayMode().getWidth(), 
