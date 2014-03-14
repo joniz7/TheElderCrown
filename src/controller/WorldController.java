@@ -2,14 +2,19 @@ package controller;
 
 import java.awt.Point;
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
 
+import model.MapWorld;
 import model.RandomWorld;
 import model.World;
 import model.WorldMap;
@@ -158,7 +163,6 @@ public class WorldController implements GameState {
 	 * Sets booleans to 'true' if the corresponding button is pressed.
 	 */
 	public void keyPressed(int key, char e) {
-		System.out.println("worldController keypresid");
 		if(e == 'w' || e == 'W')
 			isWDown = true;
 		if(e == 's' || e == 'S')
@@ -272,8 +276,11 @@ public class WorldController implements GameState {
 		this.appgc = appgc;
 		new ImageLoader();
 		
-		RandomWorld gen = new RandomWorld(); 
-		
+//		initRandomWorld();
+		initMapWorld("test");
+	}
+	
+	private void initRandomWorld() {
 		world = new RandomWorld();
 		view = new WorldView(appgc.getWidth(), appgc.getHeight());
 		// Set up View listening to World
@@ -281,7 +288,24 @@ public class WorldController implements GameState {
 		// Initialize with no map
 		world.initialize();
 		isExit = false;
-
+	}
+	/**
+	 * Creates and launches a new MapWorld using the specified map
+	 * @param name - the name of the map.
+	 * 				"name.map" must exist in the maps/ directory
+	 */
+	private void initMapWorld(String name) {
+		
+		File f = Paths.get("maps/"+name+".map").toFile();		
+		WorldMap map = loadWorldMap(f);
+		
+		world = new MapWorld(map);
+		view = new WorldView(appgc.getWidth(), appgc.getHeight());
+		// Set up View listening to World
+		world.addPropertyChangeListener(view);
+		// Initialize with no map
+		world.initialize();
+		isExit = false;
 	}
 
 	@Override
@@ -352,7 +376,9 @@ public class WorldController implements GameState {
 	
 	/**
 	 * Saves the map of the current word to the specified file.
+	 * 
 	 * @param f - the file to save to
+	 * @author Niklas
 	 */
 	public void saveWorldMap(File f) {
 		System.out.println("Dumping world map...");
@@ -373,7 +399,33 @@ public class WorldController implements GameState {
 		} catch (IOException e) {
 			System.out.println("Encountered IOException in saveWorldMap(): "+e.toString());
 			e.printStackTrace();
+		}	
+	}
+	
+	/**
+	 * Loads a WorldMap object from file
+	 * 
+	 * @param f - a File containing a serialized WorldMap
+	 * @return null if reading of file failed.
+	 * @author Niklas
+	 */
+	public WorldMap loadWorldMap(File f) {
+		
+		WorldMap map = null;
+		System.out.println("Loading world map...");
+		try {
+			FileInputStream fos = new FileInputStream(f);
+			ObjectInputStream oos = new ObjectInputStream(fos);          
+			map = (WorldMap) oos.readObject();
+			oos.close();
+			fos.close();
+			System.out.println("Successfully loaded world map!");
+		} catch (IOException | ClassNotFoundException e) {
+			System.out.println("loadWorldMap() failed! file: "+f.toString());
+			e.printStackTrace();
 		}
+
+		return map;
 		
 	}
 	

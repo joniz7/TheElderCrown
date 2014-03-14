@@ -19,6 +19,7 @@ import model.entity.MidEntity;
 import model.entity.bottom.BottomEntity;
 import model.entity.top.TopEntity;
 import model.entity.top.Tree;
+import model.path.PathFinder;
 import model.villager.Perception;
 import model.villager.Villager;
 import model.villager.VillagersWorldPerception;
@@ -54,8 +55,10 @@ public abstract class World implements Tickable, VillagersWorldPerception, Prope
 	protected boolean paused;
 	public boolean shouldExit;
 	
+	// World configuration
 	private final int VIEW_DISTANCE = 10;
-	
+	public final int VILLAGER_SPAWN_POS = 40, VILLAGER_COUNT = 8;
+
 	protected final PropertyChangeSupport pcs;
 	
     public void addPropertyChangeListener(PropertyChangeListener listener) {
@@ -224,9 +227,37 @@ public abstract class World implements Tickable, VillagersWorldPerception, Prope
 	}
 	
 	/**
-	 * Initializes the world.
+	 * Initializes the things needed for all Worlds.
+	 * 
+	 * Subclasses should:
+	 * 	1. override (and call) this method,
+	 *  2. initialize the map,
+	 *  3. call initializeVillagers()
 	 */
-	public abstract void initialize();
+	public void initialize() {
+		new PathFinder(this);
+		
+		// Send camera position update to view
+		Point pos = new Point(VILLAGER_SPAWN_POS, VILLAGER_SPAWN_POS);
+		pcs.firePropertyChange("camera", null, pos);
+		// Tell view of our world's size
+		Point size = new Point(Constants.WORLD_WIDTH,Constants.WORLD_HEIGHT);
+		pcs.firePropertyChange("worldsize",null,size);
+	}
+	
+	/**
+	 * Creates villagers, and positions them in our world.
+	 * Note: Be sure to initialize world properly before calling this method
+	 */
+	protected final void initializeVillagers() {
+		for(int i = 0; i < VILLAGER_COUNT; i++) {
+			Point pos = new Point(VILLAGER_SPAWN_POS + 5, VILLAGER_SPAWN_POS+i);
+			Villager villager = new Villager(VILLAGER_SPAWN_POS + 5, VILLAGER_SPAWN_POS+i);
+			addEntity(pos, villager);
+			addVillagerUI(pos, villager);
+			villager.getPCS().addPropertyChangeListener(this);
+		}
+	}
 	
 	/**
 	 * Generates a WorldMap from this World's current state,
@@ -294,6 +325,35 @@ public abstract class World implements Tickable, VillagersWorldPerception, Prope
 	public void addEntity(Point point, TopEntity entity) {
 		topEntities.put(point, entity);
 		pcs.firePropertyChange("addTopEntity", null, entity);
+	}
+	
+	/**
+	 * Adds all entities to the specified layer
+	 * 
+	 * @param entities - a hashmap of entities to add
+	 * @param layer - 0 (bot), 1 (mid) or 2 (top)
+	 * @author Niklas
+	 */
+	public void addEntities(HashMap<Point, Entity> entities, int layer) {
+		Collection<Point> keys = entities.keySet();
+		Iterator<Point> it = keys.iterator();
+		// Go through all entities
+		while(it.hasNext()){
+			Point k = it.next();
+			Entity v = entities.get(k);
+			// Add to specified layer
+			switch (layer) {
+				case 0:
+					addEntity(k, (BottomEntity)v);
+					break;
+				case 1:
+					addEntity(k, (MidEntity)v);
+					break;
+				case 2:
+					addEntity(k, (TopEntity)v);
+					break;	
+			}
+		}
 	}
 	
 	/**

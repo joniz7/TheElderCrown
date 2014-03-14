@@ -24,9 +24,7 @@ public class WorldMap implements Serializable {
 	
 	// Tickable objects (e.g. trees)
 	public List<Tickable> tickables;
-	// Agents (e.g. villagers)
-	public HashMap<Point, Agent> agents;
-	
+	// All entities
 	public HashMap<Point, Entity> botEntities;
 	public HashMap<Point, Entity> midEntities;
 	public HashMap<Point, Entity> topEntities;

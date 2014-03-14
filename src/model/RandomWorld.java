@@ -42,9 +42,6 @@ public class RandomWorld extends World{
 	private final float LAKE_COUNT = 8, LAKE_WEIGHT = 1f, LAKE_LOSS = 0.02f;
 	// Trees
 	private final int TREE_SPARSITY = 280;
-	// Villagers
-	public final int VILLAGER_SPAWN_POS = 40, VILLAGER_COUNT = 8;
-
 
 	/** @deprecated tickable is enough **/
 	private ArrayList<Tree> trees = new ArrayList<Tree>();
@@ -59,18 +56,18 @@ public class RandomWorld extends World{
 		super();
 	}
 	
+	@Override
 	/**
 	 * Initializes the world.
 	 * Generates the map, and creates objects and villagers.
 	 */
 	public void initialize() {
-
+		super.initialize();
+		
 		generateLakes();
 		generateHouses();
 		generateGrass();
 		generateTrees();
-		
-		new PathFinder(this);
 		
 //		for(int i = 112; i < 128; i++) {
 //			for(int j = 112; j < 128; j++) {
@@ -96,12 +93,6 @@ public class RandomWorld extends World{
 		GrassTile grass4 = new GrassTile(120, 119);
 		addEntity(posG4, grass4);
 		
-		// Send camera position update to view
-		Point pos = new Point(VILLAGER_SPAWN_POS, VILLAGER_SPAWN_POS);
-		pcs.firePropertyChange("camera", null, pos);
-		Point size = new Point(Constants.WORLD_WIDTH,Constants.WORLD_HEIGHT);
-		pcs.firePropertyChange("worldsize",null,size);
-
 		initializeVillagers();
 	}
 	
@@ -167,7 +158,6 @@ public class RandomWorld extends World{
 				}
 				
 				oldWater = newWater;
-				System.out.println("Generating lakes");
 				weight = weight - LAKE_LOSS;
 				if(weight <= 0)
 					lakeDone = true;
@@ -325,17 +315,6 @@ public class RandomWorld extends World{
 		
 	}
 
-	private void initializeVillagers() {
-		for(int i = 0; i < VILLAGER_COUNT; i++) {
-			Point pos = new Point(VILLAGER_SPAWN_POS + 5, VILLAGER_SPAWN_POS+i);
-			Villager villager = new Villager(VILLAGER_SPAWN_POS + 5, VILLAGER_SPAWN_POS+i);
-			addEntity(pos, villager);
-			addVillagerUI(pos, villager);
-			villager.getPCS().addPropertyChangeListener(this);
-		}
-	}
-
-		
 	/**
 	 * Debuggin purposes.
 	 * @param centerPoint
