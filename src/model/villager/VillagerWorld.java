@@ -6,33 +6,30 @@ import java.util.Iterator;
 import java.util.Map.Entry;
 import java.util.Set;
 
-import model.entity.MidEntity;
-import model.entity.bottom.BottomEntity;
+import model.entity.Entity;
 import model.entity.bottom.NullTile;
-import model.entity.top.TopEntity;
 
 import org.newdawn.slick.util.pathfinding.PathFindingContext;
 
 import util.Constants;
-import util.EntityType;
 
 public class VillagerWorld implements VillagersWorldPerception {
 	
-	private HashMap<Point, BottomEntity> botEntities;
-	private HashMap<Point, MidEntity> midEntities;
-	private HashMap<Point, TopEntity> topEntities;
+	private HashMap<Point, Entity> botEntities;
+	private HashMap<Point, Entity> midEntities;
+	private HashMap<Point, Entity> topEntities;
 	
 	/**
 	 * Constructor
 	 */
 	public VillagerWorld(){
-		botEntities = new HashMap<Point, BottomEntity>();
-		midEntities = new HashMap<Point, MidEntity>();
-		topEntities = new HashMap<Point, TopEntity>();
+		botEntities = new HashMap<Point, Entity>();
+		midEntities = new HashMap<Point, Entity>();
+		topEntities = new HashMap<Point, Entity>();
 		NullTile tile;
 		for(int i=0; i<Constants.WORLD_WIDTH; i++){
 			for(int j=0; j<Constants.WORLD_HEIGHT; j++){
-				tile = new NullTile(i, j, EntityType.NULL_TILE);
+				tile = new NullTile(i, j);
 				botEntities.put(new Point(i,j), tile);
 			}
 		}
@@ -80,24 +77,24 @@ public class VillagerWorld implements VillagersWorldPerception {
 	}
 
 	@Override
-	public HashMap<Point, BottomEntity> getBotEntities() {
+	public HashMap<Point, Entity> getBotEntities() {
 		return botEntities;
 	}
 
 	@Override
-	public HashMap<Point, MidEntity> getMidEntities() {
+	public HashMap<Point, Entity> getMidEntities() {
 		return midEntities;
 	}
 
 	@Override
-	public HashMap<Point, TopEntity> getTopEntities() {
+	public HashMap<Point, Entity> getTopEntities() {
 		return topEntities;
 	}
 
-	public void updateBotEntities(HashMap<Point, BottomEntity> bots) {
-		Set<Entry<Point, BottomEntity>> ents = bots.entrySet();
-		Iterator<Entry<Point, BottomEntity>> it = ents.iterator();
-		Entry<Point, BottomEntity> ent;
+	public void updateBotEntities(HashMap<Point, Entity> bots) {
+		Set<Entry<Point, Entity>> ents = bots.entrySet();
+		Iterator<Entry<Point, Entity>> it = ents.iterator();
+		Entry<Point, Entity> ent;
 		while(it.hasNext()){
 			ent = it.next();
 			botEntities.put(
@@ -106,20 +103,20 @@ public class VillagerWorld implements VillagersWorldPerception {
 		}
 	}
 
-	public void updateMidEntities(HashMap<Point, MidEntity> mids) {
-		Set<Entry<Point, MidEntity>> ents = mids.entrySet();
-		Iterator<Entry<Point, MidEntity>> it = ents.iterator();
-		Entry<Point, MidEntity> ent;
+	public void updateMidEntities(HashMap<Point, Entity> mids) {
+		Set<Entry<Point, Entity>> ents = mids.entrySet();
+		Iterator<Entry<Point, Entity>> it = ents.iterator();
+		Entry<Point, Entity> ent;
 		while(it.hasNext()){
 			ent = it.next();
 			midEntities.put(ent.getKey(), ent.getValue());
 		}
 	}
 
-	public void updateTopEntities(HashMap<Point, TopEntity> tops) {
-		Set<Entry<Point, TopEntity>> ents = tops.entrySet();
-		Iterator<Entry<Point, TopEntity>> it = ents.iterator();
-		Entry<Point, TopEntity> ent;
+	public void updateTopEntities(HashMap<Point, Entity> tops) {
+		Set<Entry<Point, Entity>> ents = tops.entrySet();
+		Iterator<Entry<Point, Entity>> it = ents.iterator();
+		Entry<Point, Entity> ent;
 		while(it.hasNext()){
 			ent = it.next();
 			topEntities.put(ent.getKey(), ent.getValue());

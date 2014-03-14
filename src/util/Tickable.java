@@ -1,6 +1,6 @@
 package util;
 
-public interface Tickable {
+public interface Tickable extends Copyable {
 
 	public void tick();
 	

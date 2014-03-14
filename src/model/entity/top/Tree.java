@@ -1,5 +1,6 @@
 package model.entity.top;
 
+import model.entity.bottom.GrassTile;
 import util.EntityType;
 import util.Tickable;
 
@@ -60,6 +61,16 @@ public class Tree extends TopEntity implements Tickable{
 	 */
 	public boolean hasFruit() {
 		return fruit;
+	}
+	
+	@Override
+	public Tree copy() {
+		Tree copy = new Tree(x, y);
+		copy.timer = timer;
+		copy.foodTicks = foodTicks;
+		copy.fruit = fruit;
+		return copy;
+		
 	}
 	
 }

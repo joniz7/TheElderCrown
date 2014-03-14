@@ -5,12 +5,9 @@ import java.io.Serializable;
 import java.util.HashMap;
 import java.util.List;
 
-import util.Tickable;
-
 import model.entity.Agent;
-import model.entity.MidEntity;
-import model.entity.bottom.BottomEntity;
-import model.entity.top.TopEntity;
+import model.entity.Entity;
+import util.Tickable;
 
 /**
  * A data container for a map.
@@ -30,8 +27,8 @@ public class WorldMap implements Serializable {
 	// Agents (e.g. villagers)
 	public HashMap<Point, Agent> agents;
 	
-	public HashMap<Point, BottomEntity> botEntities;
-	public HashMap<Point, MidEntity> midEntities;
-	public HashMap<Point, TopEntity> topEntities;
+	public HashMap<Point, Entity> botEntities;
+	public HashMap<Point, Entity> midEntities;
+	public HashMap<Point, Entity> topEntities;
 	
 }

@@ -27,5 +27,10 @@ public class HouseCorner extends HousePart {
 	public int getOrientation(){
 		return orientation;
 	}
+	
+	@Override
+	public HouseCorner copy() {
+		return new HouseCorner(x,y,orientation);
+	}
 
 }

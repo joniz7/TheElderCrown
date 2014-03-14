@@ -8,4 +8,10 @@ public class WaterTile extends Tile{
 
 		super(x, y, EntityType.WATER_TILE, true);
 	}
+	
+	@Override
+	public WaterTile copy() {
+		return new WaterTile(x, y);
+	}
+	
 }

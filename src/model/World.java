@@ -1,6 +1,7 @@
 package model;
 
 import java.awt.Point;
+import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.beans.PropertyChangeSupport;
 import java.util.ArrayList;
@@ -10,8 +11,7 @@ import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
-
-import javax.naming.OperationNotSupportedException;
+import java.util.Set;
 
 import model.entity.Agent;
 import model.entity.Entity;
@@ -25,9 +25,11 @@ import model.villager.VillagersWorldPerception;
 import model.villager.intentions.Action;
 import model.villager.order.Order;
 
+import org.newdawn.slick.util.OperationNotSupportedException;
 import org.newdawn.slick.util.pathfinding.PathFindingContext;
 
 import util.Constants;
+import util.Copyable;
 import util.EntityType;
 import util.NoPositionFoundException;
 import util.NoSuchEntityException;
@@ -42,9 +44,9 @@ public abstract class World implements Tickable, VillagersWorldPerception, Prope
 	protected HashMap<Point, Agent> agents;
 	
 	// All entities of this world (grass, trees, villagers, ...)
-	protected HashMap<Point, BottomEntity> botEntities;
-	protected HashMap<Point, MidEntity> midEntities;
-	protected HashMap<Point, TopEntity> topEntities;
+	protected HashMap<Point, Entity> botEntities;
+	protected HashMap<Point, Entity> midEntities;
+	protected HashMap<Point, Entity> topEntities;
 	
 	// Orders to agents, that should be processed in the next update
 	private List<Order> orders;
@@ -66,9 +68,9 @@ public abstract class World implements Tickable, VillagersWorldPerception, Prope
     public World() {
     	pcs = new PropertyChangeSupport(this);
 		
-    	botEntities = new HashMap<Point, BottomEntity>();
-		midEntities = new HashMap<Point, MidEntity>();
-		topEntities = new HashMap<Point, TopEntity>();
+    	botEntities = new HashMap<Point, Entity>();
+		midEntities = new HashMap<Point, Entity>();
+		topEntities = new HashMap<Point, Entity>();
 		
 		tickables  = new ArrayList<Tickable>();
 		agents = new HashMap<Point, Agent>();
@@ -102,15 +104,15 @@ public abstract class World implements Tickable, VillagersWorldPerception, Prope
 			HashMap<Point, Agent> temp = (HashMap<Point, Agent>)agents.clone();
 			Iterator<Map.Entry<Point, Agent>> it = temp.entrySet().iterator();
 			
-			HashMap<Point, BottomEntity> tempBotEnt;
-			HashMap<Point, MidEntity> tempMidEnt;
-			HashMap<Point, TopEntity> tempTopEnt;
+			HashMap<Point, Entity> tempBotEnt;
+			HashMap<Point, Entity> tempMidEnt;
+			HashMap<Point, Entity> tempTopEnt;
 			Perception perception;
 			
 			while(it.hasNext()) {
-				tempBotEnt = new HashMap<Point, BottomEntity>();
-				tempMidEnt = new HashMap<Point, MidEntity>();
-				tempTopEnt = new HashMap<Point, TopEntity>();
+				tempBotEnt = new HashMap<Point, Entity>();
+				tempMidEnt = new HashMap<Point, Entity>();
+				tempTopEnt = new HashMap<Point, Entity>();
 				perception = new Perception();
 				
 				Map.Entry<Point, Agent> e = (Map.Entry<Point, Agent>) it.next();
@@ -231,9 +233,54 @@ public abstract class World implements Tickable, VillagersWorldPerception, Prope
 	 * and returns it.
 	 */
 	public WorldMap getWorldMap() {
+		WorldMap map = new WorldMap();
+		map.botEntities = deepCopy(botEntities);
+		map.midEntities = deepCopy(midEntities);
+		map.topEntities = deepCopy(topEntities);
+		map.tickables = deepCopy(tickables);
+		
+		
+		
 		// TODO create new WorldMap object
 		// 		clone hashmaps etc
 		return null;
+	}
+	
+	@SuppressWarnings("unchecked")
+	/**
+	 * Makes a deep copy of a hashmap containing Copyable keys/values. 
+	 * @param map - the map to copy
+	 * @return a deep copy of the map
+	 */
+	private static <K, V extends Copyable>
+			HashMap<K,V> deepCopy(HashMap<K, V> map) {
+		HashMap<K,V> newMap = new HashMap<K,V>();
+		Set<K> keys = map.keySet();
+		for (K key : keys) {
+			K newKey = key;
+			// Copy key if possible
+			if (key instanceof Copyable) {
+				newKey = (K) ((Copyable)key).copy();
+			}
+			V newVal = (V) map.get(key).copy();
+			newMap.put(newKey, newVal);
+		}
+		return newMap;
+	}
+	
+	@SuppressWarnings("unchecked")
+	/**
+	 * Makes a deep copy of an arrayList containing Copyables.
+	 * @param list the ArrayList to copy
+	 * @return a new ArrayList
+	 */
+	private static <T extends Copyable>
+			List<T> deepCopy(List<T> list) {
+		ArrayList<T> newList = new ArrayList<T>();
+		for(T item : list) {
+			newList.add((T) item.copy());
+		}
+		return newList;
 	}
 	
 	/**
@@ -295,6 +342,43 @@ public abstract class World implements Tickable, VillagersWorldPerception, Prope
 		else
 			throw new NoSuchEntityException();
 		return e;
+	}
+	
+	/**
+	 * Get all entities of the specified type.
+	 * Looks through all layers.
+	 * 
+	 * @param type - the EntityType to search for
+	 * @return A list of hashmaps; results for bottom layer is found at index 0 and so on
+	 * @author Niklas
+	 */
+	public List<HashMap<Point, Entity>> getEntities(EntityType type) {
+		List<HashMap<Point, Entity>> result = new ArrayList<HashMap<Point, Entity>>(); 
+		result.add(getEntities(type,botEntities));
+		result.add(getEntities(type,midEntities));
+		result.add(getEntities(type,topEntities));
+		return result;
+	}
+	
+	/**
+	 * Helper method; looks for entities of the specified type in a hashmap
+	 * 
+	 * @param type - The EntityType to search for
+	 * @param src - the hashmap to search through
+	 * @return - an new HashMap containing the results (may be empty)
+	 */
+	private HashMap<Point, Entity> getEntities(EntityType type, HashMap<Point, Entity> src) {
+		HashMap<Point, Entity> result = new HashMap<Point, Entity>();
+		Collection<Point> keys = src.keySet();
+		Iterator<Point> it = keys.iterator();
+		while(it.hasNext()){
+			Point k = it.next();
+			Entity v = src.get(k);
+			if(v.getType() == type) {
+				result.put(k, v);
+			}	
+		}
+		return result;
 	}
 	
 	/**
@@ -377,15 +461,15 @@ public abstract class World implements Tickable, VillagersWorldPerception, Prope
 		orders.add(o);
 	}
 	
-	public HashMap<Point, BottomEntity> getBotEntities() {
+	public HashMap<Point, Entity> getBotEntities() {
 		return botEntities;
 	}
 	
-	public HashMap<Point, MidEntity> getMidEntities() {
+	public HashMap<Point, Entity> getMidEntities() {
 		return midEntities;
 	}
 	
-	public HashMap<Point, TopEntity> getTopEntities() {
+	public HashMap<Point, Entity> getTopEntities() {
 		return topEntities;
 	}
 	
@@ -409,6 +493,48 @@ public abstract class World implements Tickable, VillagersWorldPerception, Prope
 		}
 	}
 
+	@Override
+	/**
+	 * Handles events, sent by entities
+	 * TODO comment
+	 * @author ?
+	 */
+	public void propertyChange(PropertyChangeEvent event) {
+
+		String name = event.getPropertyName();
+
+		if(name.equals("move")){
+			Point p = null;
+			Point pos = (Point) event.getNewValue();
+			Villager villager = (Villager) event.getSource();
+			try {
+				p = getPosition(villager);
+			} catch (NoPositionFoundException e) {
+				e.printStackTrace();
+			}
+			if(!midBlocked(pos)) {
+				agents.put(pos, villager);
+				midEntities.put(pos, villager);
+				agents.remove(p);
+				midEntities.remove(p);
+			}
+		}else if(name.equals("status")){
+			String evtString = (String) event.getNewValue();
+			if(evtString.equals("dead")){
+				Iterator<Map.Entry<Point, Agent>> it = agents.entrySet().iterator();
+				Agent agent = (Agent) event.getSource();
+				while(it.hasNext()) {
+					Map.Entry<Point, Agent> e = (Map.Entry<Point, Agent>) it.next();
+					if(e.getValue() == agent) {
+						agents.remove(e.getKey());
+						break;
+					}
+				}
+			}
+		}
+	}
+
+	
 	// -- Path-finding methods --
 	// TODO Should be somewhere else? Empty "pathFinderVisited" needed?
 	
@@ -427,6 +553,16 @@ public abstract class World implements Tickable, VillagersWorldPerception, Prope
 	@Override
 	public void pathFinderVisited(int x, int y){
 		
+	}
+	
+	
+	@Override
+	/**
+	 * @deprecated - Do not use this
+	 * (TODO change: A Tree and a World shouldn't be the same kind of object (Tickable)
+	 */
+	public World copy() {
+		throw new OperationNotSupportedException("helo");
 	}
 	
 }

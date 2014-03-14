@@ -8,4 +8,10 @@ public class Helper3 extends TopEntity{
 		super(x * 20, y * 20, null);
 		updatePos(x, y);
 	}
+	
+	@Override
+	public Helper3 copy() {
+		return new Helper3(x, y);
+	}
+	
 }

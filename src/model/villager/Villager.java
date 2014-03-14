@@ -2,8 +2,11 @@ package model.villager;
 
 import java.awt.Point;
 
+import javax.naming.OperationNotSupportedException;
+
 import model.entity.Agent;
 import model.entity.MidEntity;
+import model.entity.top.house.HouseWall;
 import model.villager.intentions.Action;
 import model.villager.intentions.DieAction;
 import model.villager.intentions.Intent;
@@ -231,6 +234,12 @@ public class Villager extends MidEntity implements Agent {
 
 	public String getName() {
 		return name;
+	}
+	
+	@Override
+	public Villager copy() {
+		Villager copy = new Villager(x,y);
+		throw new org.newdawn.slick.util.OperationNotSupportedException("what is a human mind?");
 	}
 	
 	

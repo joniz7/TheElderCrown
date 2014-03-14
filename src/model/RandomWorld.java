@@ -65,10 +65,10 @@ public class RandomWorld extends World{
 	 */
 	public void initialize() {
 
-		initializeLakes();
-		initializeHouses();
-		initializeGrass();
-		initializeTrees();
+		generateLakes();
+		generateHouses();
+		generateGrass();
+		generateTrees();
 		
 		new PathFinder(this);
 		
@@ -108,7 +108,7 @@ public class RandomWorld extends World{
 	/**
 	 * Covers the whole map in grass, except for where there is water.
 	 */
-	private void initializeGrass() {
+	private void generateGrass() {
 		for(int i = 0; i < Constants.WORLD_WIDTH; i++) {
 			for(int j = 0; j < Constants.WORLD_HEIGHT; j++) {
 				Point pos = new Point(i, j);
@@ -123,7 +123,7 @@ public class RandomWorld extends World{
 	/**
 	 * A method to randomly generate a set number of lakes.
 	 */
-	private void initializeLakes(){
+	private void generateLakes(){
 		ArrayList<Point> centers = new ArrayList<Point>();
 		
 		//Create random centerpoints for lakes
@@ -179,7 +179,7 @@ public class RandomWorld extends World{
 	/**
 	 * A method that spawns a tree with a set probability on each grass tile.
 	 */
-	private void initializeTrees() {
+	private void generateTrees() {
 		for(int i = 0; i < Constants.WORLD_WIDTH - 1; i++) {
 			for(int j = 0; j < Constants.WORLD_HEIGHT - 1; j++) {
 				if(rnd.nextInt(TREE_SPARSITY) == 0 && botEntities.get(new Point(i + 1, j + 1)).getType() == EntityType.GRASS_TILE){
@@ -196,7 +196,7 @@ public class RandomWorld extends World{
 	/**
 	 * The method to initialise all the houses in the world.
 	 */
-	private void initializeHouses() {
+	private void generateHouses() {
 		
 		for(int i=-18;i<18;i++){
 			for(int j=-10;j<10;j++){
@@ -375,39 +375,4 @@ public class RandomWorld extends World{
 		System.out.println("");
 	}
 
-	@Override
-	public void propertyChange(PropertyChangeEvent event) {
-		// TODO refactor / add comments. Add to World?
-		String name = event.getPropertyName();
-
-		if(name.equals("move")){
-			Point p = null;
-			Point pos = (Point) event.getNewValue();
-			Villager villager = (Villager) event.getSource();
-			try {
-				p = getPosition(villager);
-			} catch (NoPositionFoundException e) {
-				e.printStackTrace();
-			}
-			if(!midBlocked(pos)) {
-				agents.put(pos, villager);
-				midEntities.put(pos, villager);
-				agents.remove(p);
-				midEntities.remove(p);
-			}
-		}else if(name.equals("status")){
-			String evtString = (String) event.getNewValue();
-			if(evtString.equals("dead")){
-				Iterator<Map.Entry<Point, Agent>> it = agents.entrySet().iterator();
-				Agent agent = (Agent) event.getSource();
-				while(it.hasNext()) {
-					Map.Entry<Point, Agent> e = (Map.Entry<Point, Agent>) it.next();
-					if(e.getValue() == agent) {
-						agents.remove(e.getKey());
-						break;
-					}
-				}
-			}
-		}
-	}
 }

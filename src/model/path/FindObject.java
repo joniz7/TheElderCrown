@@ -5,9 +5,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 import model.entity.Entity;
-import model.entity.MidEntity;
-import model.entity.bottom.BottomEntity;
-import model.entity.top.TopEntity;
 import model.path.criteria.Criteria;
 import model.villager.VillagersWorldPerception;
 
@@ -36,7 +33,7 @@ public class FindObject {
 	 * This did the job that findTile2 does now, saves this code, just in case
 	 */
 	public static Point findTile(VillagersWorldPerception world, EntityType id, int startX, int startY){
-		HashMap<Point, BottomEntity> tiles = world.getBotEntities();
+		HashMap<Point, Entity> tiles = world.getBotEntities();
 		
 		Point upperLeft = new Point(startX - 1, startY - 1);
 		Point lowerRight  = new Point(startX + 1, startY + 1);
@@ -113,7 +110,7 @@ public static Point findTile2(VillagersWorldPerception world, EntityType id, int
 		 * tiles - this is just the map of all the points in the world, this is what we
 		 * search through
 		 */
-		HashMap<Point, BottomEntity> tiles = world.getBotEntities();
+		HashMap<Point, Entity> tiles = world.getBotEntities();
 		
 		if(tiles.get(new Point(startX, startY)).getType() == id)
 			return new Point(startX, startY);
@@ -206,7 +203,7 @@ public static Point findTile2(VillagersWorldPerception world, EntityType id, int
 	}
 	
 	public static boolean standingOnTile(VillagersWorldPerception world, EntityType id, int startX, int startY){
-		HashMap<Point, BottomEntity> tiles = world.getBotEntities();
+		HashMap<Point, Entity> tiles = world.getBotEntities();
 		
 		if(tiles.get(new Point(startX, startY)) != null && tiles.get(new Point(startX, startY)).getType() == id)
 			return true;
@@ -241,7 +238,7 @@ public static Point findTile2(VillagersWorldPerception world, EntityType id, int
 		long endTime = System.currentTimeMillis();
 		System.out.println("FindObject, find water tile: " + (endTime - startTime));
 		
-		HashMap<Point, BottomEntity> tiles = world.getBotEntities();
+		HashMap<Point, Entity> tiles = world.getBotEntities();
 		
 		Path p1 = null;
 		Path p2 = null;
@@ -290,7 +287,7 @@ public static Point findTile2(VillagersWorldPerception world, EntityType id, int
 	}
 	
 	public static boolean isAdjacentTile(VillagersWorldPerception world, EntityType id, int startX, int startY){
-		HashMap<Point, BottomEntity> tiles = world.getBotEntities();
+		HashMap<Point, Entity> tiles = world.getBotEntities();
 		
 		try{
 			if(tiles.get(new Point((int) startX - 1, (int) startY)).getType() == id)
@@ -313,8 +310,8 @@ public static Point findTile2(VillagersWorldPerception world, EntityType id, int
 	 * This did the job that findObject2 does now, saves this code, just in case
 	 */
 	public static Point findObject(VillagersWorldPerception world, Criteria crit, EntityType id, int startX, int startY){
-		HashMap<Point, MidEntity> mids = world.getMidEntities();
-		HashMap<Point, TopEntity> tops = world.getTopEntities();
+		HashMap<Point, Entity> mids = world.getMidEntities();
+		HashMap<Point, Entity> tops = world.getTopEntities();
 
 		Point upperLeft = new Point(startX - 1, startY - 1);
 		Point lowerRight = new Point(startX + 1, startY + 1);
@@ -418,8 +415,8 @@ public static Point findTile2(VillagersWorldPerception world, EntityType id, int
 		 * also takes the criteria into account
 		 */
 		HashMap<Point, Boolean> visitedHash = new HashMap<Point, Boolean>();
-		HashMap<Point, MidEntity> mids = world.getMidEntities();
-		HashMap<Point, TopEntity> tops = world.getTopEntities();
+		HashMap<Point, Entity> mids = world.getMidEntities();
+		HashMap<Point, Entity> tops = world.getTopEntities();
 		
 		ArrayList<Point> visited = new ArrayList<Point>();
 		ArrayList<Point> toVisit = new ArrayList<Point>();
@@ -528,7 +525,7 @@ public static Point findTile2(VillagersWorldPerception world, EntityType id, int
 		long endTime = System.currentTimeMillis();
 		System.out.println("FindObject, find Tree tile: " + (endTime - startTime));
 		
-		HashMap<Point, BottomEntity> tiles = world.getBotEntities();
+		HashMap<Point, Entity> tiles = world.getBotEntities();
 		
 		Path p1 = null;
 		Path p2 = null;
@@ -581,8 +578,8 @@ public static Point findTile2(VillagersWorldPerception world, EntityType id, int
 	
 
 	public static Entity getAdjacentObject(VillagersWorldPerception world, Criteria crit, EntityType id, int startX, int startY){
-		HashMap<Point, MidEntity> mids = world.getMidEntities();
-		HashMap<Point, TopEntity> tops = world.getTopEntities();
+		HashMap<Point, Entity> mids = world.getMidEntities();
+		HashMap<Point, Entity> tops = world.getTopEntities();
 		
 		try{
 			if(mids.get(new Point(startX - 1, startY)) != null &&
@@ -630,7 +627,7 @@ public static Point findTile2(VillagersWorldPerception world, EntityType id, int
 	}
 	
 	public static boolean isStuck(VillagersWorldPerception world, int startX, int startY){
-		HashMap<Point, MidEntity> midEnts = world.getMidEntities();
+		HashMap<Point, Entity> midEnts = world.getMidEntities();
 		Point p = new Point(startX+1,startY);
 		if(world.blocked(null, startX + 1, startY) || midEnts.containsKey(p))
 			p.move(startX-1, startY);

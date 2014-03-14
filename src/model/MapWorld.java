@@ -10,12 +10,9 @@ import java.beans.PropertyChangeEvent;
 public class MapWorld extends World {
 
 	@Override
-	public void propertyChange(PropertyChangeEvent arg0) {
-		// TODO ?
-	}
-
-	@Override
-	// @deprecated
+	/**
+	 * @deprecated
+	 */
 	public void initialize() {
 		
 	}

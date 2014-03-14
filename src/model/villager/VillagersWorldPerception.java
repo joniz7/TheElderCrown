@@ -5,6 +5,7 @@ import java.util.HashMap;
 
 import org.newdawn.slick.util.pathfinding.TileBasedMap;
 
+import model.entity.Entity;
 import model.entity.MidEntity;
 import model.entity.bottom.BottomEntity;
 import model.entity.top.TopEntity;
@@ -17,10 +18,10 @@ public interface VillagersWorldPerception extends TileBasedMap{
 
 	public void setPaused(boolean b);
 
-	public HashMap<Point, BottomEntity> getBotEntities();
+	public HashMap<Point, Entity> getBotEntities();
 
-	public HashMap<Point, MidEntity> getMidEntities();
+	public HashMap<Point, Entity> getMidEntities();
 
-	public HashMap<Point, TopEntity> getTopEntities();
+	public HashMap<Point, Entity> getTopEntities();
 
 }
