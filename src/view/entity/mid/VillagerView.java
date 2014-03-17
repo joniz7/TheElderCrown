@@ -105,7 +105,7 @@ public class VillagerView extends EntityView {
 		 		drawImage=true;
 		 		currentStatus="dead";
 		 	}else if(status.compareTo("statusEnd")==0){
-				System.out.println("Status ended\n");
+//				System.out.println("Status ended\n");
 				currentStatus="moving";
 				drawImage=false;
 			}

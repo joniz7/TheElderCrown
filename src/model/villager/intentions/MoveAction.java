@@ -58,7 +58,7 @@ public class MoveAction extends Action{
 			waitTime++;
 			if(waitTime > 40){
 				actionFailed();
-				System.out.println("WAIT!");
+//				System.out.println("WAIT!");
 			}
 		}
 	}

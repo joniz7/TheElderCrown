@@ -32,7 +32,7 @@ public class ExplorePlan extends Plan {
 				actionQueue.add(new IdleAction(villager));
 				isFinished = true;
 			}
-			System.out.println("Finding point to explore");
+//			System.out.println("Finding point to explore");
 //			if(FindObject.isStuck(villager.getWorld(),villager.getX(),villager.getY())){
 //				isFinished = true;
 //			}

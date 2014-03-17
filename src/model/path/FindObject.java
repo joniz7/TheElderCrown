@@ -193,7 +193,7 @@ public static Point findTile2(VillagersWorldPerception world, EntityType id, int
 				}
 			
 			if(stacks > 100 || visited.size() == 0){
-				System.out.println("FindObject: " + visited.size());
+//				System.out.println("FindObject: " + visited.size());
 				//Exception e = new Exception();
 				//e.printStackTrace();
 				return null;
@@ -226,7 +226,7 @@ public static Point findTile2(VillagersWorldPerception world, EntityType id, int
 		long startTime = System.currentTimeMillis();
 		
 		if(isStuck(world, startX, startY)){
-			System.out.println("STUCK");
+//			System.out.println("STUCK");
 			return null;
 		}
 		
@@ -427,7 +427,7 @@ public static Point findTile2(VillagersWorldPerception world, EntityType id, int
 		int stacks = 0;
 		boolean found = false;
 		while(!found){
-			System.out.println("findobject2 loop");
+//			System.out.println("findobject2 loop");
 			stacks++;
 			//Add neighbors to visit
 			toVisit = new ArrayList<Point>();
@@ -514,7 +514,7 @@ public static Point findTile2(VillagersWorldPerception world, EntityType id, int
 		long startTime = System.currentTimeMillis();
 		
 		if(isStuck(world, startX, startY)){
-			System.out.println("STUCK");
+//			System.out.println("STUCK");
 			return null;
 		}
 		
@@ -523,7 +523,7 @@ public static Point findTile2(VillagersWorldPerception world, EntityType id, int
 			return null;
 
 		long endTime = System.currentTimeMillis();
-		System.out.println("FindObject, find Tree tile: " + (endTime - startTime));
+//		System.out.println("FindObject, find Tree tile: " + (endTime - startTime));
 		
 		HashMap<Point, Entity> tiles = world.getBotEntities();
 		
