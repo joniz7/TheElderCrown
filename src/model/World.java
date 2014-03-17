@@ -351,6 +351,11 @@ public abstract class World implements Tickable, VillagersWorldPerception, Prope
 					break;
 				case 2:
 					addEntity(k, (TopEntity)v);
+					if (v instanceof Tree) {
+						// Make view display correctly; hack
+						// TODO make programming multi-tile entities prettier. Also in Tree's constructor
+						v.updateViewPosition(1, 1, 1);
+					}
 					break;	
 			}
 		}
