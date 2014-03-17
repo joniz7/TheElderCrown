@@ -8,7 +8,6 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
-import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -19,6 +18,7 @@ import model.RandomWorld;
 import model.World;
 import model.WorldMap;
 import model.entity.Agent;
+import model.entity.Entity;
 import model.villager.Villager;
 import model.villager.intentions.MoveIntent;
 import model.villager.order.Order;
@@ -39,12 +39,17 @@ import view.WorldView;
 public class WorldController implements GameState {
 
 	private boolean isWDown, isADown, isSDown, isDDown;
+	// How strong the desire to move on mouse click should be
+	public static final int MOVE_ORDER_DESIRE = 900;
 	
 	private World world;
 	private WorldView view;
 	private boolean isExit;
 	private GameContainer appgc;
 	private Game game;
+	
+	// The currently selected entity. Is changed by mouse clicking
+	private Villager selectedVillager;
 	
 	@Override
 	public void mouseClicked(int button, int x, int y, int clickCount) {
@@ -64,11 +69,20 @@ public class WorldController implements GameState {
 	private void sendMoveOrder(Point windowPos) {
 		// Figure out where we want to go
 		Point modelPos = WorldView.windowToModelCoordinates(windowPos);
-		// Get the first villager from world
-		Villager v = (Villager) world.getAgents().values().toArray()[0];
+		
+		// Select receiving villager
+		Villager receiver;
+		if (selectedVillager == null) {
+			// Get the first villager from world
+			receiver = (Villager) world.getAgents().values().toArray()[0]; 
+		} else {
+			receiver = selectedVillager;
+		}
+		 
 		// Create order for this villager to move to the clicked position
-		MoveIntent i = new MoveIntent(0, 900, v, modelPos);
-		Order o = new Order(0, v.getId(), i);
+		MoveIntent i = new MoveIntent(0, MOVE_ORDER_DESIRE, receiver, modelPos);
+		Order o = new Order(0, receiver.getId(), i);
+
 		// Add order to world
 		world.addOrder(o);
 	}
@@ -80,25 +94,26 @@ public class WorldController implements GameState {
 	 */
 	private void showVillagerInfo(Point windowPos){
 		Point modelPos = WorldView.windowToModelCoordinates(windowPos);
-		Villager v;
 		
 		HashMap<Point, Agent> temp = (HashMap<Point, Agent>)world.getAgents().clone();
 		Iterator<Map.Entry<Point, Agent>> it = temp.entrySet().iterator();
 		
+		// Hide all villagers' UIs
 		while(it.hasNext()){
 			Map.Entry<Point, Agent> e = (Map.Entry<Point, Agent>) it.next();
-			
 			Agent agent = e.getValue();
 			if(agent instanceof Villager){
-				v = (Villager) agent;
+				Villager v = (Villager) agent;
 				v.setShowUI(false);
 			}
 		}
-		
-		if(world.getMidEntities().get(modelPos) instanceof Villager){
-			
-			v = (Villager) world.getMidEntities().get(modelPos);
-			v.setShowUI(true);
+		// Change current selection maybe show Villager UI
+		Entity e = world.getMidEntities().get(modelPos);
+		if(e instanceof Villager){
+			selectedVillager = (Villager) e;
+			selectedVillager.setShowUI(true);
+		} else {
+			selectedVillager = null;
 		}
 	}
 
