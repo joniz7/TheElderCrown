@@ -78,49 +78,35 @@ public class WorldView implements PropertyChangeListener {
 	}
 
 	public void incX(){
+		// TODO remove magic constant
 		if(cameraX<modelToViewCoordinate(150))
 			cameraX += SCROLL_SPEED;
-//			System.out.println("CameraX: "+cameraX);
 	}
 
 	public void incY(){
 		if(cameraY<modelToViewCoordinate(150))
 			cameraY += SCROLL_SPEED;
-//			System.out.println("CameraY: "+cameraY);
 	}
 
 	public void decX(){
 		if(cameraX>modelToViewCoordinate(0))
 			cameraX -= SCROLL_SPEED;
-//			System.out.println("CameraX: "+cameraX);
 	}
 
 	public void decY(){
 		if(cameraY>modelToViewCoordinate(0))
 			cameraY -= SCROLL_SPEED;
-//			System.out.println("CameraY: "+cameraY);
 	}
 
 	public void render(Graphics g){
-//		System.out.println("Size: "+botGraphics.size());
-		//		Display disp = new Display();
-		//		g.fillRect(0, 0, disp.getGraphicsDevice().getDisplayMode().getWidth(), 
-		//				disp.getGraphicsDevice().getDisplayMode().getHeight());
-
-		//		System.out.println(""+botGraphics.size()+" "+midGraphics.size()+" "+topGraphics.size());
-
 		for(EntityView d : botGraphics)
 			d.draw(g, cameraX, cameraY, width, height);
-
 		for(EntityView d : midGraphics)
 			d.draw(g, cameraX, cameraY, width, height);
-
 		for(EntityView d : topGraphics)
 			d.draw(g, cameraX, cameraY, width, height);
-		
 		for(EntityView d : UI)
 			d.draw(g, cameraX, cameraY, width, height);
-
 	}
 
 	/**
@@ -138,8 +124,7 @@ public class WorldView implements PropertyChangeListener {
 		String name = event.getPropertyName();
 		if (name.equals("camera")) {
 			Point p = (Point)event.getNewValue();
-			cameraX = modelToViewCoordinate(p.getX()) - width/2;
-			cameraY = modelToViewCoordinate(p.getY()) - height/2;
+			centerCamera(p);
 		}
 		else if(name.equals("worldsize")){
 			Point size = (Point) event.getNewValue();
@@ -226,6 +211,17 @@ public class WorldView implements PropertyChangeListener {
 	}
 	
 	/**
+	 * Moves the camera to the specified position
+	 * 
+	 * @param pos - model coordinates to center on
+	 * @author Niklas
+	 */
+	public void centerCamera(Point p) {
+		cameraX = modelToViewCoordinate(p.x) - width/2;
+		cameraY = modelToViewCoordinate(p.y) - height/2;	
+	}
+	
+	/**
 	 * Converts from world to view coordinates.
 	 * (Should always be used when receiving positions from model!)
 	 * @Author Niklas 
@@ -247,7 +243,7 @@ public class WorldView implements PropertyChangeListener {
 	 * 
 	 * Note: "worldCoordinate" is here converted to an integer.
 	 *
-	 * @deprecated
+	 * @deprecated use int version instead
 	 * @Author Niklas 
 	 */
 	public static int modelToViewCoordinate(double worldCoordinate) {

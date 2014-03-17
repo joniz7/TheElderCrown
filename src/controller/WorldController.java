@@ -34,6 +34,7 @@ import org.newdawn.slick.state.transition.FadeInTransition;
 import org.newdawn.slick.state.transition.FadeOutTransition;
 
 import util.ImageLoader;
+import util.NoPositionFoundException;
 import view.WorldView;
 
 public class WorldController implements GameState {
@@ -188,6 +189,9 @@ public class WorldController implements GameState {
 		if(key == Input.KEY_ESCAPE){
 			getGame().enterState(1, new FadeOutTransition(Color.black), new FadeInTransition(Color.black));
 		}
+		if (key == Input.KEY_SPACE) {
+			centerCameraOnEntity();
+		}
 	}
 
 
@@ -204,6 +208,21 @@ public class WorldController implements GameState {
 			isADown = false;
 		if(e == 'd' || e == 'D')
 			isDDown = false;		
+	}
+	
+	/**
+	 * Moves the camera to the selected entity
+	 */
+	private void centerCameraOnEntity() {
+		if (selectedVillager != null) {
+			try {
+				Point p = world.getPosition(selectedVillager);
+				view.centerCamera(p);
+			} catch (NoPositionFoundException e) {
+				System.out.println("Error: No position found while centering camera");
+				e.printStackTrace();
+			}
+		}
 	}
 
 	@Override
