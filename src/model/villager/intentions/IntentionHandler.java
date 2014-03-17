@@ -6,6 +6,8 @@ import model.villager.Villager;
 
 public class IntentionHandler {
 
+	private int timer;
+	
 	private PriorityQueue<Intent> pq;
 	private IntentComparator intentComparator;
 	
@@ -16,6 +18,8 @@ public class IntentionHandler {
 	
 	public IntentionHandler(Villager villager){
 
+		timer = (int)(Math.random()*100);
+		
 		this.villager = villager;
 		
 		// Initialize intention queue (= planning algorithm)
@@ -37,10 +41,13 @@ public class IntentionHandler {
 		
 		//  Update order of intents
 		// TODO necessary to use PQ like this? quite resource intensive
-		PriorityQueue<Intent> newPQ = new PriorityQueue<Intent>(5, intentComparator);
-		while(!pq.isEmpty())
-			newPQ.add(pq.poll());
-		pq = newPQ;
+		if(timer % 50 == 0) {
+			PriorityQueue<Intent> newPQ = new PriorityQueue<Intent>(5, intentComparator);
+			while(!pq.isEmpty())
+				newPQ.add(pq.poll());
+			pq = newPQ;
+		}
+		timer++;
 	}
 	
 	/**
