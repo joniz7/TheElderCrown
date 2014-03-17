@@ -1,14 +1,14 @@
 package model.entity;
 
-import java.awt.Point;
+import java.io.Serializable;
 
+import model.villager.Perception;
 import model.villager.intentions.Action;
-import model.villager.order.Order;
+import util.Copyable;
 
-public interface Agent {
-	// TODO should use Perception, which may include Orders 
-	public void update(Point pos, Order o);
+public interface Agent extends Copyable, Serializable {
 	public Action getAction();
 	public void actionDone();
+	void update(Perception p);
 	public boolean isDead();
 }

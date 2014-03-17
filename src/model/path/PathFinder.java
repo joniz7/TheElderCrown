@@ -1,6 +1,6 @@
 package model.path;
 
-import model.TestWorld;
+import model.villager.VillagersWorldPerception;
 
 import org.newdawn.slick.util.pathfinding.AStarPathFinder;
 import org.newdawn.slick.util.pathfinding.Path;
@@ -23,7 +23,7 @@ public class PathFinder {
 	 * 
 	 * @param world - the game world
 	 */
-	public PathFinder(TestWorld world){
+	public PathFinder(VillagersWorldPerception world){
 		pathFinder = new AStarPathFinder(world, 10000, false);
 	}
 	

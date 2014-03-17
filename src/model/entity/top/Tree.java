@@ -1,5 +1,6 @@
 package model.entity.top;
 
+import model.entity.bottom.GrassTile;
 import util.EntityType;
 import util.Tickable;
 
@@ -22,6 +23,8 @@ public class Tree extends TopEntity implements Tickable{
 	 */
 	public Tree(int x, int y) {
 		super(x, y, EntityType.TREE);
+		// this makes the TreeView show in the right position
+		// TODO make this prettier (note: is hardcoded in World#addEntities as well)
 		updatePos(x-1, y-1);
 	}
 
@@ -60,6 +63,16 @@ public class Tree extends TopEntity implements Tickable{
 	 */
 	public boolean hasFruit() {
 		return fruit;
+	}
+	
+	@Override
+	public Tree copy() {
+		Tree copy = new Tree(x, y);
+		copy.timer = timer;
+		copy.foodTicks = foodTicks;
+		copy.fruit = fruit;
+		return copy;
+		
 	}
 	
 }

@@ -13,4 +13,10 @@ public class HouseFloor extends Tile {
 	public HouseFloor(int x, int y) {
 		super(x, y, EntityType.HOUSE_FLOOR, false);
 	}
+
+	@Override
+	public HouseFloor copy() {
+		return new HouseFloor(x, y);
+	}
+	
 }

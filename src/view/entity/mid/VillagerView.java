@@ -1,12 +1,10 @@
 package view.entity.mid;
 
-import java.awt.Point;
 import java.beans.PropertyChangeEvent;
 
 import org.newdawn.slick.Color;
 import org.newdawn.slick.Graphics;
 
-import util.ImageLoader;
 import util.RandomClass;
 import view.entity.EntityView;
 
@@ -107,7 +105,7 @@ public class VillagerView extends EntityView {
 		 		drawImage=true;
 		 		currentStatus="dead";
 		 	}else if(status.compareTo("statusEnd")==0){
-				System.out.println("Status ended\n");
+//				System.out.println("Status ended\n");
 				currentStatus="moving";
 				drawImage=false;
 			}

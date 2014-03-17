@@ -21,6 +21,7 @@ public class ImageLoader {
 		
 		// World Entities
 		imageLib.put("floor", loadImage("image", "floor.png"));
+		imageLib.put("corner", loadImage("image", "corner.png"));
 		imageLib.put("door", loadImage("image", "door.png"));
 		imageLib.put("wall", loadImage("image", "wall.png"));
 		imageLib.put("tree", loadImage("image", "tree.png"));
@@ -28,6 +29,9 @@ public class ImageLoader {
 		
 		//Villager
 		imageLib.put("villager", loadImage("image", "villager.png"));
+		imageLib.put("villagerUI", loadImage("image", "villagerUI.png"));
+		imageLib.put("meter", loadImage("image", "meter.png"));
+		imageLib.put("meterArrow", loadImage("image", "meterArrow.png"));
 		imageLib.put("villagerSleeping", loadImage("image", "villagerSleeping.png"));
 		imageLib.put("villagerEating", loadImage("image", "villagerEating.png"));
 		imageLib.put("villagerDead", loadImage("image", "villagerDead.png"));

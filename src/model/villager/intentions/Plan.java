@@ -9,6 +9,7 @@ public class Plan {
 	// TODO do we need this reference later?
 	protected Villager villager;
 	protected boolean isFinished;
+	protected String name;
 	
 	protected LinkedList<Action> actionQueue;
 	
@@ -38,5 +39,9 @@ public class Plan {
 		}
 		
 		return cost;
+	}
+
+	public String getName() {
+		return name;
 	}
 }

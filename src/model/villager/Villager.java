@@ -2,15 +2,19 @@ package model.villager;
 
 import java.awt.Point;
 
-import model.World;
+import javax.naming.OperationNotSupportedException;
+
 import model.entity.Agent;
 import model.entity.MidEntity;
+import model.entity.top.house.HouseWall;
 import model.villager.intentions.Action;
 import model.villager.intentions.DieAction;
 import model.villager.intentions.Intent;
+import model.villager.intentions.ExplorePlan;
 import model.villager.intentions.IntentionHandler;
 import model.villager.intentions.Plan;
 import model.villager.order.Order;
+import model.villager.util.NameGen;
 import util.EntityType;
 import util.RandomClass;
 import view.entity.EntityView;
@@ -18,25 +22,34 @@ import view.entity.mid.VillagerView;
 
 public class Villager extends MidEntity implements Agent {
 
-	private float hunger = -15f, thirst = 2f, speed = 20, sleepiness = 2f, obedience = 1f ;
-	private boolean dead = false;
-	
-	private World world;
-	private Plan activePlan;
 	private IntentionHandler ih;
+
+	private float hunger = -15f, thirst = 2f, speed = 20, sleepiness = 2f, laziness = 1f, obedience = 0 ;
+	private VillagerWorld world;
+	private boolean dead = false;
+	private String currentAction, currentPlan;
+	private Plan activePlan;
+
+	private boolean mustExplore, isShowUI = false;
+	private int length, weight;
+	private String name;
 	
-	private int height, weight;
-	
-	public Villager(World world, int x, int y) {
+	public Villager(int x, int y) {
 		super(x, y, EntityType.VILLAGER);
-		this.world = world;
-		height = 140 + RandomClass.getRandomInt(50, 0);
-		weight = height / 4 + RandomClass.getRandomInt(height/4, 0);
-		System.out.println("New villager created: "+height+"  "+weight);
+
+		world = new VillagerWorld();
+		length = 140 + RandomClass.getRandomInt(50, 0);
+		weight = length / 4 + RandomClass.getRandomInt(length/4, 0);
+		this.name = NameGen.newName(true);
 		ih = new IntentionHandler(this);
+		
+		currentAction = "Doing Nothing";
+		currentPlan = "Doing Nothing";
+		
+		System.out.println("New villager created: " + name+ " " +length+"  "+weight);
 	}
 	
-	public World getWorld() {
+	public VillagersWorldPerception getWorld() {
 		return world;
 	}
 
@@ -44,22 +57,27 @@ public class Villager extends MidEntity implements Agent {
 	/**
 	 * Update this villager's needs and plans for the future.
 	 * 
-	 * The villager is given information about her position,
-	 * 		and possibly an order she should obey.
+	 * The villager is given a perception, which includes information
+	 * about her position, and possibly an order she should obey.
 	 */
-	public void update(Point pos, Order o) {
-		updatePos(pos.x, pos.y);
+	public void update(Perception p) {
+		updatePos(p.position.x, p.position.y);
+		updateUI();
+		world.updateBotEntities(p.botEntities);
+		world.updateMidEntities(p.midEntities);
+		world.updateTopEntities(p.topEntities);
+
 		adjustNeeds();
 		
 		// If order was received, take it into consideration when planning
-		if (o != null) {
-			addOrder(o);
+		if (p.order != null) {
+			addOrder(p.order);
 		}
 		
 		seeIfDead();
 		plan();
 	}
-	
+
 	/**
 	 * Adds an order to our intent handler,
 	 * which then will be considered the next time we plan.
@@ -70,7 +88,7 @@ public class Villager extends MidEntity implements Agent {
 		//      based on obedience and other parameters
 		ih.addIntent(i);
 	}
-	
+
 	public void satisfyHunger(float f) {
 		this.hunger += f;
 	}
@@ -81,6 +99,10 @@ public class Villager extends MidEntity implements Agent {
 	
 	public void satisfySleep(float f){
 		this.sleepiness += f;
+	}
+	
+	public void setExplore(){
+		mustExplore=true;
 	}
 	
 	private void adjustNeeds() {
@@ -97,10 +119,20 @@ public class Villager extends MidEntity implements Agent {
 	
 	private void plan() {
 		ih.update();
-
-			activePlan = ih.getFirstPlan();
-			System.out.println(activePlan);
-
+		if(activePlan == null) {
+			if(!mustExplore){
+				activePlan = ih.getFirstPlan();
+//				System.out.println(activePlan);
+			}else{
+//				System.out.println("Creating ExplorePlan");
+				activePlan=new ExplorePlan(this);
+				mustExplore = false;
+			}
+		}else{
+			if(activePlan.getActiveAction() != null)
+				currentAction = activePlan.getActiveAction().getName();
+			currentPlan = activePlan.getName();
+		}
 	}
 
 	public Action getAction() {
@@ -139,13 +171,19 @@ public class Villager extends MidEntity implements Agent {
 		return sleepiness;
 	}
 	
-	public int getHeight() {
-		return height;
+	public float getLaziness(){
+		return laziness;
+	}
+	
+	public int getLength() {
+		return length;
 	}
 
 	public int getWeight() {
 		return weight;
 	}
+	
+	
 	
 	/**
 	 * Method for updating the view (and thus set villager looks) after what they are currently doing.
@@ -156,18 +194,67 @@ public class Villager extends MidEntity implements Agent {
 	public void updateStatus(String newStatus){
 		pcs.firePropertyChange("status", null, newStatus);		
 	}
+	
+	/**
+	 * Method for showing or hiding the UI for this Villager
+	 * 
+	 * @param show - true if the UI should be shown
+	 */
+	public void setShowUI(boolean show){
+		if(show)
+			pcs.firePropertyChange("status", null, "show");
+		else
+			pcs.firePropertyChange("status", null, "hide");	
+		isShowUI = show;
+	}
+	
+	public void updateUI(){
+		if(isShowUI){
+			pcs.firePropertyChange("status", hunger, "hunger");
+			pcs.firePropertyChange("status", thirst, "thirst");
+			pcs.firePropertyChange("status", sleepiness, "sleepiness");
+			
+			pcs.firePropertyChange("status", currentAction, "action");
+			pcs.firePropertyChange("status", currentPlan, "plan");
+		}
+	}
+	
+	/**
+	 * Creates and returns a new VillagerView.
+	 * Registers the view as our listener.
+	 */
+	public EntityView createView() {
+		EntityView view = new VillagerView(x, y, length, weight);
+		pcs.addPropertyChangeListener(view);
+		return view;
+	}
+
+	public void attemptMove(Point newPos) {
+		pcs.firePropertyChange("move", null, newPos);
+	}
 
 	@Override
 	public boolean isDead() {
 		return dead;
 	}
 
-	public void kill() {
-		pcs.firePropertyChange("status", null, "dead");
+	public String getName() {
+		return name;
 	}
 	
 	public float getObedience() {
 		return obedience;
 	}
 	
+	@Override
+	/**
+	 * Creates a new villager with the same position as this one.
+	 * Warning: this is not a complete copy by any means! Do not use!
+	 */
+	public Villager copy() {
+		Villager copy = new Villager(x,y);
+		return copy;
+//		throw new org.newdawn.slick.util.OperationNotSupportedException("what is a human mind?");
+		
+	}
 }

@@ -1,19 +1,18 @@
 package model.villager.intentions;
 
-import model.World;
 import model.villager.Villager;
+import model.villager.VillagersWorldPerception;
 
 public class DieAction extends Action{
 
 	public DieAction(Villager villager) {
 		super(villager);
-		// TODO Auto-generated constructor stub
+		name = "Dying";
 	}
 
 	@Override
-	public void tick(World world) {
-		world.removeAgent(villager);
-		villager.kill();
+	public void tick(VillagersWorldPerception world) {
+		villager.updateStatus("dead");
 	}
 
 	@Override

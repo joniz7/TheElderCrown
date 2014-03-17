@@ -1,7 +1,7 @@
 package model;
 
-
 import java.awt.Point;
+import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.beans.PropertyChangeSupport;
 import java.util.ArrayList;
@@ -11,23 +11,32 @@ import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import model.entity.Agent;
 import model.entity.Entity;
 import model.entity.MidEntity;
 import model.entity.bottom.BottomEntity;
-import model.entity.bottom.WaterTile;
 import model.entity.top.TopEntity;
+import model.entity.top.Tree;
+import model.path.PathFinder;
+import model.villager.Perception;
 import model.villager.Villager;
+import model.villager.VillagersWorldPerception;
 import model.villager.intentions.Action;
 import model.villager.order.Order;
 
+import org.newdawn.slick.util.OperationNotSupportedException;
 import org.newdawn.slick.util.pathfinding.PathFindingContext;
 
+import util.Constants;
+import util.Copyable;
+import util.EntityType;
 import util.NoPositionFoundException;
+import util.NoSuchEntityException;
 import util.Tickable;
 
-public abstract class World implements Tickable{
+public abstract class World implements Tickable, VillagersWorldPerception, PropertyChangeListener {
 
 	// Tickable objects (e.g. trees)
 	protected List<Tickable> tickables;
@@ -36,9 +45,9 @@ public abstract class World implements Tickable{
 	protected HashMap<Point, Agent> agents;
 	
 	// All entities of this world (grass, trees, villagers, ...)
-	protected HashMap<Point, BottomEntity> botEntities;
-	protected HashMap<Point, MidEntity> midEntities;
-	protected HashMap<Point, TopEntity> topEntities;
+	protected HashMap<Point, Entity> botEntities;
+	protected HashMap<Point, Entity> midEntities;
+	protected HashMap<Point, Entity> topEntities;
 	
 	// Orders to agents, that should be processed in the next update
 	private List<Order> orders;
@@ -46,6 +55,10 @@ public abstract class World implements Tickable{
 	protected boolean paused;
 	public boolean shouldExit;
 	
+	// World configuration
+	private final int VIEW_DISTANCE = 10;
+	public final int VILLAGER_SPAWN_POS = 40, VILLAGER_COUNT = 8;
+
 	protected final PropertyChangeSupport pcs;
 	
     public void addPropertyChangeListener(PropertyChangeListener listener) {
@@ -58,17 +71,18 @@ public abstract class World implements Tickable{
     public World() {
     	pcs = new PropertyChangeSupport(this);
 		
-    	botEntities = new HashMap<Point, BottomEntity>();
-		midEntities = new HashMap<Point, MidEntity>();
-		topEntities = new HashMap<Point, TopEntity>();
+    	botEntities = new HashMap<Point, Entity>();
+		midEntities = new HashMap<Point, Entity>();
+		topEntities = new HashMap<Point, Entity>();
 		
 		tickables  = new ArrayList<Tickable>();
 		agents = new HashMap<Point, Agent>();
 		orders = new LinkedList<Order>();
 		
 		shouldExit = false;
-		}
+	}
 	
+	@SuppressWarnings("unchecked")
 	@Override
 	public void tick(){
 		if(!paused) {
@@ -91,43 +105,111 @@ public abstract class World implements Tickable{
 	 */
 	private void updateAgents() {
 
-		HashMap<Point, Agent> temp = (HashMap<Point, Agent>)agents.clone();
-		Iterator<Map.Entry<Point, Agent>> it = temp.entrySet().iterator();
-		boolean hasOrders = !orders.isEmpty();
-		
-		while(it.hasNext()) {
-			Map.Entry<Point, Agent> e = (Map.Entry<Point, Agent>) it.next();
-			Point pos = e.getKey();
-			Agent agent = e.getValue();
-			// TODO better relationship between Agent and Entity types.
-			// All agents are also entities? Seems reasonable
-			Entity entity = (Entity)agent;
+			// Update all villagers
+			HashMap<Point, Agent> temp = (HashMap<Point, Agent>)agents.clone();
+			Iterator<Map.Entry<Point, Agent>> it = temp.entrySet().iterator();
 			
-			// Has this agent been given an order?
-			Order order = null;
-			if (hasOrders) {
+			HashMap<Point, Entity> tempBotEnt;
+			HashMap<Point, Entity> tempMidEnt;
+			HashMap<Point, Entity> tempTopEnt;
+			Perception perception;
+			
+			while(it.hasNext()) {
+				tempBotEnt = new HashMap<Point, Entity>();
+				tempMidEnt = new HashMap<Point, Entity>();
+				tempTopEnt = new HashMap<Point, Entity>();
+				perception = new Perception();
+				
+				Map.Entry<Point, Agent> e = (Map.Entry<Point, Agent>) it.next();
+				
+				perception.position = e.getKey();
+				Agent agent = e.getValue();
+				Entity entity = (Entity)agent;
+				
+				for(int i=(-VIEW_DISTANCE); i<VIEW_DISTANCE*2; i++){
+					for(int j=(-VIEW_DISTANCE); j<VIEW_DISTANCE*2; j++){
+						Point p = new Point(perception.position.x+i,perception.position.y+j);
+						if(botEntities.get(p) != null){
+							tempBotEnt.put(p, botEntities.get(p));
+						}
+						if(midEntities.get(p) != null){
+							tempMidEnt.put(p, midEntities.get(p));
+						}
+						if(topEntities.get(p) != null){
+							tempTopEnt.put(p, topEntities.get(p));
+						}
+					}
+				}
+				perception.botEntities = tempBotEnt;
+				perception.midEntities = tempMidEnt;
+				perception.topEntities = tempTopEnt;
+				
+	 			// Has this agent been given an order?
 				for(Order o : orders) {
 					if (o.getToId() == entity.getId()) {
 						// Send order information in update 
-						// (should ideally be changed to Perception later)
-						order = o;
-						orders.remove(o);
-						
+						perception.order = o;
+						orders.remove(o);		
 					}
 				}
-			}
-			// Update agent with position and possibly an order
-			agent.update(pos, order);
-			
-			Action activeAction = agent.getAction();
-			if(activeAction != null && !activeAction.isFailed() && !activeAction.isFinished())
-				activeAction.tick(this);
-			else
-				agent.actionDone();
+
+				agent.update(perception);
+				Action activeAction = agent.getAction();
+				if(activeAction != null && !activeAction.isFailed() && !activeAction.isFinished())
+					activeAction.tick(this);
+				else
+					agent.actionDone();
+
 		}
 	}
 
+	@Override
+	/**
+	 * Checks whether the given position is blocked in any layer.
+	 * Note: use blocked(PathFindingContext, Point) instead!
+	 */
+	public boolean blocked(PathFindingContext pfc, int x, int y){
+		return blocked(pfc, new Point(x, y));
+	}
 	
+	/**
+	 * Checks whether the given position is blocked in any layer.
+	 * @param pfc - ?
+	 * @return true if there is something at position, which is blocking
+	 */
+	public boolean blocked(PathFindingContext pfc, Point p){
+		if (botBlocked(p)) return true;
+		else if(midBlocked(p)) return true;
+		else if(topBlocked(p)) return true;
+		else return false;
+	}
+	/**
+	 * Checks whether the specified position is blocked in the middle layer.
+	 * @return true if there is something at position, which is blocking
+	 */
+	public boolean topBlocked(Point p) {
+		Entity e = topEntities.get(p);
+		return e != null && e.isBlocking();
+	}
+	/**
+	 * Checks whether the specified position is blocked in the middle layer.
+	 * @return true if there is something at position, that is blocking
+	 */
+	public boolean midBlocked(Point p) {
+		Entity e = midEntities.get(p);
+		return e != null && e.isBlocking();
+	}
+	/**
+	 * Checks whether the specified position is blocked in the bottom layer.
+	 * @return true if there is something at position, that is blocking
+	 */
+	public boolean botBlocked(Point p) {
+		Entity e = botEntities.get(p);
+		return e != null && e.isBlocking();
+	}
+	
+	/*
+	 * Deprecated?
 	public boolean blocked(PathFindingContext pfc, int x, int y){
 		boolean blocked = false;
 		Point p = new Point(x, y);
@@ -139,19 +221,71 @@ public abstract class World implements Tickable{
 			blocked = topEntities.get(p).isBlocking();
 		return blocked;
 	}
+	*/
 	
-	public boolean blockedMid(Point pos) {
-		return midEntities.containsKey(pos);
-	}
 	
 	public void setPaused(boolean paused) {
 		this.paused = paused;
 	}
 	
 	/**
-	 * Initializes the world.
+	 * Initializes the things needed for all Worlds.
+	 * 
+	 * Subclasses should:
+	 * 	1. override (and call) this method,
+	 *  2. initialize the map,
+	 *  3. call initializeVillagers()
 	 */
-	public abstract void initialize();
+	public void initialize() {
+		new PathFinder(this);
+		
+		// Send camera position update to view
+		Point pos = new Point(VILLAGER_SPAWN_POS, VILLAGER_SPAWN_POS);
+		pcs.firePropertyChange("camera", null, pos);
+		// Tell view of our world's size
+		Point size = new Point(Constants.WORLD_WIDTH,Constants.WORLD_HEIGHT);
+		pcs.firePropertyChange("worldsize",null,size);
+	}
+	
+	/**
+	 * Creates villagers, and positions them in our world.
+	 * Note: Be sure to initialize world properly before calling this method
+	 */
+	protected final void initializeVillagers() {
+		for(int i = 0; i < VILLAGER_COUNT; i++) {
+			Point pos = new Point(VILLAGER_SPAWN_POS + 5, VILLAGER_SPAWN_POS+i);
+			Villager villager = new Villager(VILLAGER_SPAWN_POS + 5, VILLAGER_SPAWN_POS+i);
+			addEntity(pos, villager);
+			addVillagerUI(pos, villager);
+			villager.getPCS().addPropertyChangeListener(this);
+		}
+	}
+	
+	/**
+	 * Generates a WorldMap from this World's current state,
+	 * and returns it.
+	 */
+	public WorldMap getWorldMap() {
+		WorldMap map = new WorldMap();
+		map.botEntities = deepCopy(botEntities);
+		map.midEntities = deepCopy(midEntities);
+		map.topEntities = deepCopy(topEntities);
+		map.tickables = deepCopy(tickables);
+		
+		// Remove all villagers from map
+		List<HashMap<Point, Entity>> villagers = getEntities(EntityType.VILLAGER);
+		// Remove from bottom layer (should be empty)
+		Set<Point> pointsToRemove = villagers.get(0).keySet();
+		for (Point p : pointsToRemove) map.botEntities.remove(p);
+		// Remove from middle layer
+		pointsToRemove = villagers.get(1).keySet();
+		for (Point p : pointsToRemove) map.midEntities.remove(p);
+		// Remove from top layer (should be empty)
+		pointsToRemove = villagers.get(2).keySet();
+		for (Point p : pointsToRemove) map.topEntities.remove(p);
+
+		return map;
+	}
 	
 	/**
 	 * Adds an Entity to the bottom layer.
@@ -195,6 +329,123 @@ public abstract class World implements Tickable{
 		pcs.firePropertyChange("addTopEntity", null, entity);
 	}
 	
+	/**
+	 * Adds all entities to the specified layer
+	 * 
+	 * @param entities - a hashmap of entities to add
+	 * @param layer - 0 (bot), 1 (mid) or 2 (top)
+	 * @author Niklas
+	 */
+	public void addEntities(HashMap<Point, Entity> entities, int layer) {
+		Collection<Point> keys = entities.keySet();
+		Iterator<Point> it = keys.iterator();
+		// Go through all entities
+		while(it.hasNext()){
+			Point k = it.next();
+			Entity v = entities.get(k);
+			// Add to specified layer
+			switch (layer) {
+				case 0:
+					addEntity(k, (BottomEntity)v);
+					break;
+				case 1:
+					addEntity(k, (MidEntity)v);
+					break;
+				case 2:
+					addEntity(k, (TopEntity)v);
+					if (v instanceof Tree) {
+						// Make view display correctly; hack
+						// TODO make programming multi-tile entities prettier. Also in Tree's constructor
+						v.updateViewPosition(1, 1, 1);
+					}
+					break;	
+			}
+		}
+	}
+	
+	/**
+	 * Call this when you want a reference to a specific entity at a specific position.
+	 * 
+	 * @param pos the position in which you want to find the Entity.
+	 * @param type the Entity type desired.
+	 * @return the entity of the desired type at the specified Point
+	 * @throws NoSuchEntityException if there is no Entity of the specified type at the specified Point.
+	 */
+	public Entity getEntity(Point pos, EntityType type) throws NoSuchEntityException{
+		Entity e = null;
+		if(midEntities.get(pos).getType() == type)
+			e = midEntities.get(pos);
+		else if(topEntities.get(pos).getType() == type)
+			e = topEntities.get(pos);
+		else
+			throw new NoSuchEntityException();
+		return e;
+	}
+	
+	/**
+	 * Get all entities of the specified type.
+	 * Looks through all layers.
+	 * 
+	 * @param type - the EntityType to search for
+	 * @return A list of hashmaps; results for bottom layer is found at index 0 and so on
+	 * @author Niklas
+	 */
+	public List<HashMap<Point, Entity>> getEntities(EntityType type) {
+		List<HashMap<Point, Entity>> result = new ArrayList<HashMap<Point, Entity>>(); 
+		result.add(getEntities(type,botEntities));
+		result.add(getEntities(type,midEntities));
+		result.add(getEntities(type,topEntities));
+		return result;
+	}
+	
+	/**
+	 * Helper method; looks for entities of the specified type in a hashmap
+	 * 
+	 * @param type - The EntityType to search for
+	 * @param src - the hashmap to search through
+	 * @return - an new HashMap containing the results (may be empty)
+	 */
+	private HashMap<Point, Entity> getEntities(EntityType type, HashMap<Point, Entity> src) {
+		HashMap<Point, Entity> result = new HashMap<Point, Entity>();
+		Collection<Point> keys = src.keySet();
+		Iterator<Point> it = keys.iterator();
+		while(it.hasNext()){
+			Point k = it.next();
+			Entity v = src.get(k);
+			if(v.getType() == type) {
+				result.put(k, v);
+			}	
+		}
+		return result;
+	}
+	
+	/**
+	 * Call this when you want a reference to a Tree at a specific location.
+	 * @param tileX the x-coordinate of the Tree to be found.
+	 * @param tileY the y-coordinate of the Tree to be found
+	 * @return if there is a Tree at the specified location it is returned. Otherwise null.
+	 * @deprecated not used?
+	 */
+	public Tree getTree(int tileX, int tileY){
+		Entity e = topEntities.get(new Point(tileX, tileY)); 
+		if(e != null && e instanceof Tree)
+			return (Tree) e;
+		else
+			return null;
+	}
+	
+	/**
+	 * Adds an Entity to the top layer.
+	 * Also notifies View of the change.
+	 * 
+	 * @param point - the position of the Entity on the map
+	 * @param entity - the entity to add
+	 * @author Niklas
+	 */
+	public void addVillagerUI(Point point, Villager villager) {
+		pcs.firePropertyChange("addVillagerUI", null, villager);
+	}
+	
 	private void addAgent(Point point, Agent agent){
 		agents.put(point, agent);
 	}
@@ -204,23 +455,6 @@ public abstract class World implements Tickable{
 	 */
 	public void closeRequested() {
 		shouldExit = true;
-	}
-	
-	//TODO tillfällig?
-	public void moveVillager(Villager villager, Point pos){
-		Point p = null;
-		try {
-			p = getPosition(villager);
-		} catch (NoPositionFoundException e) {
-			e.printStackTrace();
-		}
-		
-		if(!blockedMid(pos)) {
-			agents.put(pos, villager);
-			midEntities.put(pos, villager);
-			agents.remove(p);
-			midEntities.remove(p);
-		}
 	}
 	
 	//TODO Maybe might fail if things are moving at just the wrong time.
@@ -265,15 +499,15 @@ public abstract class World implements Tickable{
 		orders.add(o);
 	}
 	
-	public HashMap<Point, BottomEntity> getBotEntities() {
+	public HashMap<Point, Entity> getBotEntities() {
 		return botEntities;
 	}
 	
-	public HashMap<Point, MidEntity> getMidEntities() {
+	public HashMap<Point, Entity> getMidEntities() {
 		return midEntities;
 	}
 	
-	public HashMap<Point, TopEntity> getTopEntities() {
+	public HashMap<Point, Entity> getTopEntities() {
 		return topEntities;
 	}
 	
@@ -297,4 +531,112 @@ public abstract class World implements Tickable{
 		}
 	}
 
+	@Override
+	/**
+	 * Handles events, sent by entities
+	 * TODO comment
+	 * @author ?
+	 */
+	public void propertyChange(PropertyChangeEvent event) {
+
+		String name = event.getPropertyName();
+
+		if(name.equals("move")){
+			Point p = null;
+			Point pos = (Point) event.getNewValue();
+			Villager villager = (Villager) event.getSource();
+			try {
+				p = getPosition(villager);
+			} catch (NoPositionFoundException e) {
+				e.printStackTrace();
+			}
+			if(!midBlocked(pos)) {
+				agents.put(pos, villager);
+				midEntities.put(pos, villager);
+				agents.remove(p);
+				midEntities.remove(p);
+			}
+		}else if(name.equals("status")){
+			String evtString = (String) event.getNewValue();
+			if(evtString.equals("dead")){
+				Iterator<Map.Entry<Point, Agent>> it = agents.entrySet().iterator();
+				Agent agent = (Agent) event.getSource();
+				while(it.hasNext()) {
+					Map.Entry<Point, Agent> e = (Map.Entry<Point, Agent>) it.next();
+					if(e.getValue() == agent) {
+						agents.remove(e.getKey());
+						break;
+					}
+				}
+			}
+		}
+	}
+
+	
+	// -- Path-finding methods --
+	// TODO Should be somewhere else? Empty "pathFinderVisited" needed?
+	
+	@Override
+	public float getCost(PathFindingContext pfc, int x, int y){
+		return 1.0f;
+	}
+	@Override
+	public int getHeightInTiles(){
+		return Constants.WORLD_HEIGHT;
+	}
+	@Override
+	public int getWidthInTiles(){
+		return Constants.WORLD_WIDTH;
+	}
+	@Override
+	public void pathFinderVisited(int x, int y){
+		
+	}
+	
+	@SuppressWarnings("unchecked")
+	/**
+	 * Makes a deep copy of a hashmap containing Copyable keys/values. 
+	 * @param map - the map to copy
+	 * @return a deep copy of the map
+	 */
+	private static <K, V extends Copyable>
+			HashMap<K,V> deepCopy(HashMap<K, V> map) {
+		HashMap<K,V> newMap = new HashMap<K,V>();
+		Set<K> keys = map.keySet();
+		for (K key : keys) {
+			K newKey = key;
+			// Copy key if possible
+			if (key instanceof Copyable) {
+				newKey = (K) ((Copyable)key).copy();
+			}
+			V newVal = (V) map.get(key).copy();
+			newMap.put(newKey, newVal);
+		}
+		return newMap;
+	}
+	
+	@SuppressWarnings("unchecked")
+	/**
+	 * Makes a deep copy of an arrayList containing Copyables.
+	 * @param list the ArrayList to copy
+	 * @return a new ArrayList
+	 */
+	private static <T extends Copyable>
+			List<T> deepCopy(List<T> list) {
+		ArrayList<T> newList = new ArrayList<T>();
+		for(T item : list) {
+			newList.add((T) item.copy());
+		}
+		return newList;
+	}
+	
+	@Override
+	/**
+	 * @deprecated - Do not use this
+	 * (TODO change: A Tree and a World shouldn't be the same kind of object (Tickable)
+	 */
+	public World copy() {
+		throw new OperationNotSupportedException("helo");
+	}
+	
 }
