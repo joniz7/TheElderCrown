@@ -58,6 +58,10 @@ public abstract class World implements Tickable, VillagersWorldPerception, Prope
 	// World configuration
 	private final int VIEW_DISTANCE = 10;
 	public final int VILLAGER_SPAWN_POS = 40, VILLAGER_COUNT = 8;
+	
+	// Keep track of when to spawn babies
+	private int babyTimer = 0;
+	private int spawnBabiesAfter = 2000;
 
 	protected final PropertyChangeSupport pcs;
 	
@@ -86,6 +90,13 @@ public abstract class World implements Tickable, VillagersWorldPerception, Prope
 	@Override
 	public void tick(){
 		if(!paused) {
+			
+			// Possibly create babies
+			if (babyTimer++ >= spawnBabiesAfter) {
+				babyTimer = 0;
+				spawnBabies();
+			}
+			
 			// Update all tickables
 			for(Tickable t : tickables){
 				t.tick();
@@ -161,6 +172,13 @@ public abstract class World implements Tickable, VillagersWorldPerception, Prope
 		}
 	}
 
+	/**
+	 * Possibly creates new babies in the world. 
+	 */
+	private void spawnBabies() {
+		
+	}
+	
 	@Override
 	/**
 	 * Checks whether the given position is blocked in any layer.
