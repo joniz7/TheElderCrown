@@ -178,6 +178,8 @@ public class RandomWorld extends World{
 					tickables.add(tree);
 					Point pos = new Point(i + 1, j + 1);
 					addEntity(pos, tree);
+					addTreeUI(pos, tree);
+					tree.getPCS().addPropertyChangeListener(this);
 				}
 			}
 		}

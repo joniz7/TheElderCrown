@@ -19,6 +19,7 @@ public class VillagerView extends EntityView {
 	private Color c;
 	private String currentStatus;
 	private Boolean drawImage;
+	private boolean highlight;
 	
 	/**
 	 * Creates a new VillagerView.
@@ -50,12 +51,23 @@ public class VillagerView extends EntityView {
 				
 //				g.drawImage(image, transposedX, transposedY);
 				
+				Color newC = c.brighter();
+				
 				g.setColor(c);
+				if(highlight)
+					g.setColor(newC);
 				g.fillOval(transposedX + (20 - diameter)/2, transposedY + (20 - diameter)/2,
 						diameter, diameter);
-				g.setColor(new Color(0, 0, 0));
-				g.drawOval(transposedX + (20 - diameter)/2, transposedY + (20 - diameter)/2,
-						diameter, diameter);
+				
+				if(highlight){
+					g.setColor(new Color(255, 0, 0));
+					g.drawOval(transposedX + (20 - diameter)/2, transposedY + (20 - diameter)/2,
+							diameter, diameter);
+				}else{
+					g.setColor(new Color(0, 0, 0));
+					g.drawOval(transposedX + (20 - diameter)/2, transposedY + (20 - diameter)/2,
+							diameter, diameter);
+				}
 				
 				if(drawImage){
 					if(currentStatus.compareTo("sleeping")==0){
@@ -108,6 +120,10 @@ public class VillagerView extends EntityView {
 //				System.out.println("Status ended\n");
 				currentStatus="moving";
 				drawImage=false;
+			}else if(status.compareTo("highlight")==0){
+				highlight = true;
+			}else if(status.compareTo("unHighlight")==0){
+				highlight = false;
 			}
 			
 		}else{

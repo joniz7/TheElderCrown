@@ -444,6 +444,18 @@ public abstract class World implements Tickable, VillagersWorldPerception, Prope
 		pcs.firePropertyChange("addVillagerUI", null, villager);
 	}
 	
+	/**
+	 * Adds an Entity to the top layer.
+	 * Also notifies View of the change.
+	 * 
+	 * @param point - the position of the Entity on the map
+	 * @param entity - the entity to add
+	 * @author Niklas
+	 */
+	public void addTreeUI(Point point, Tree tree) {
+		pcs.firePropertyChange("addTreeUI", null, tree);
+	}
+	
 	private void addAgent(Point point, Agent agent){
 		agents.put(point, agent);
 	}

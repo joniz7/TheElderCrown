@@ -195,10 +195,13 @@ public class Villager extends MidEntity implements Agent {
 	 * @param show - true if the UI should be shown
 	 */
 	public void setShowUI(boolean show){
-		if(show)
+		if(show){
 			pcs.firePropertyChange("status", null, "show");
-		else
+			pcs.firePropertyChange("status", null, "highlight");
+		}else{
 			pcs.firePropertyChange("status", null, "hide");	
+			pcs.firePropertyChange("status", null, "unHighlight");
+		}
 		isShowUI = show;
 	}
 	

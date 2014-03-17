@@ -11,9 +11,9 @@ import util.Tickable;
  */
 public class Tree extends TopEntity implements Tickable{
 	
-	private final int FRUIT_REGROWTH = 50000;
+	private final int FRUIT_REGROWTH = 5000;
 	private int timer = 0, foodTicks = 1500;
-	private boolean fruit = true;
+	private boolean fruit = true, isShowUI = false;
 	
 	/**
 	 * The constructor which initialises all the necessary things for a tree.
@@ -40,7 +40,9 @@ public class Tree extends TopEntity implements Tickable{
 			// Send update to view
 			pcs.firePropertyChange("fruit", false, true);
 			fruit = true;
+			foodTicks = 1500;
 		}
+		updateUI();
 	}
 	
 	/**
@@ -56,6 +58,31 @@ public class Tree extends TopEntity implements Tickable{
 		}
 	}
 
+	/**
+	 * Method for showing or hiding the UI for this Tree
+	 * 
+	 * @param show - true if the UI should be shown
+	 */
+	public void setShowUI(boolean show){
+		if(show){
+			pcs.firePropertyChange("status", null, "show");
+		}else{
+			pcs.firePropertyChange("status", null, "hide");	
+		}
+		isShowUI = show;
+	}
+	
+	public void updateUI(){
+		if(isShowUI){
+			pcs.firePropertyChange("status", foodTicks, "fruit");
+			
+			float regrowth = -80;
+			regrowth += (timer / (FRUIT_REGROWTH / 160));
+			
+			pcs.firePropertyChange("status", regrowth, "regrowth");
+		}
+	}
+	
 	/**
 	 * A method to check if the tree has fruit or not.
 	 * 
