@@ -53,13 +53,11 @@ public class WorldController implements GameState {
 	
 	@Override
 	public void mouseClicked(int button, int x, int y, int clickCount) {
-		// Debugging order system
+		Point windowPos = new Point(x,y);
 		if (button == 0) {
-			Point windowPos = new Point(x,y);
-			sendMoveOrder(windowPos);
+			selectEntity(windowPos);
 		}else if (button == 1){
-			Point windowPos = new Point(x,y);
-			showVillagerInfo(windowPos);
+			sendMoveOrder(windowPos);
 		}
 	}
 	
@@ -88,11 +86,12 @@ public class WorldController implements GameState {
 	}
 	
 	/**
-	 * Maybe show a popup containing info about a villager
-	 * TODO document
-	 * @param windowPos - ?
+	 * Marks the entity at the clicked position as the currently selected entity.
+	 * Maybe shows a popup containing info about a villager
+	 * 
+	 * @param windowPos - the window coordinates
 	 */
-	private void showVillagerInfo(Point windowPos){
+	private void selectEntity(Point windowPos){
 		Point modelPos = WorldView.windowToModelCoordinates(windowPos);
 		
 		HashMap<Point, Agent> temp = (HashMap<Point, Agent>)world.getAgents().clone();
