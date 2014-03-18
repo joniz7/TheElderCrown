@@ -44,13 +44,23 @@ public class Bed extends MidEntity {
 		return female;
 	}
 	
-	public Villager getOther(){
+	/*public Villager getOther(){
 		if(female != null){
 			return female;
 		}else if (male != null){
 			return male;
 		}
 		return null;
+	}*/
+	
+	public Villager getOther(Villager first){
+		if(!female.equals(first)){
+			return female;
+		}else if(!male.equals(first)){
+			return male;
+		}else{
+			return null;
+		}
 	}
 
 	public void setFemale(Villager female) {

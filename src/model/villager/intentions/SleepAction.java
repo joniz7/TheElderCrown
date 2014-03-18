@@ -19,6 +19,7 @@ public class SleepAction extends Action {
 	private float stacks, sleepToGet;
 	private HouseFloor floor;
 	private Bed thisBed;
+	private boolean usedAtStart = false;
 	
 	public SleepAction(Villager villager) {
 		super(villager);
@@ -29,6 +30,9 @@ public class SleepAction extends Action {
 	public SleepAction(Villager villager, Bed thisBed) {
 		super(villager);
 		this.thisBed = thisBed;
+		if(thisBed.isUsed()){
+			usedAtStart = true;
+		}
 	}
 
 	@Override
@@ -40,6 +44,10 @@ public class SleepAction extends Action {
 			villager.satisfySleep(0.2f);
 			stacks = stacks + 0.3f;
 			if(stacks > sleepToGet)
+				if(usedAtStart){
+					thisBed.getOther(villager).setBlocking(true);
+					villager.setBlocking(true);
+					}
 				actionFinished();
 			
 		}else if(FindObject.standingOnTile(world, EntityType.GRASS_TILE, villager.getX(), villager.getY())){

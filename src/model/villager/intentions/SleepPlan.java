@@ -28,6 +28,7 @@ public class SleepPlan extends Plan {
 	
 	public SleepPlan(Villager villager){
 		super(villager);
+		Bed thisBed;
 		actionQueue = new LinkedList<Action>();
 		name = "Wants to sleep";
 		
@@ -36,19 +37,25 @@ public class SleepPlan extends Plan {
 		if(villager.getBedPos()==null){
 			bedPos = FindObject.findObject2(villager.getWorld(), new IsUnclaimed(villager), EntityType.BED, villager.getX(), villager.getY());
 			villager.setBed(bedPos);
+			thisBed = (Bed) villager.getWorld().getMidEntities().get(bedPos);
+			if(thisBed != null){
+				if(villager.isMale()){
+					thisBed.setClaimedByMale(true);
+					thisBed.setMale(villager);
+				}else if(villager.isFemale()){
+					thisBed.setClaimedByFemale(true);
+					thisBed.setFemale(villager);
+				}
+			}
 		}else{
 			bedPos = villager.getBedPos();
+			thisBed = (Bed) villager.getWorld().getMidEntities().get(bedPos);
 		}
 		
 		
 		if(bedPos != null){
-			Bed thisBed = (Bed) villager.getWorld().getMidEntities().get(bedPos);
-			if(villager.isMale()){
-				thisBed.setClaimedByMale(true);
-				thisBed.setMale(villager);
-			}
 			if(thisBed.isUsed()){
-				thisBed.getOther().setBlocking(false);
+				thisBed.getOther(villager).setBlocking(false);
 				villager.setBlocking(false);
 			}
 			Path movePath = PathFinder.getPath(villager.getX(), villager.getY(), bedPos.x, bedPos.y);
