@@ -3,7 +3,6 @@ package model.villager.intentions;
 import java.awt.Point;
 import java.util.LinkedList;
 
-import model.TestWorld;
 import model.entity.top.Tree;
 import model.path.FindObject;
 import model.path.PathFinder;

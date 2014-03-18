@@ -1,8 +1,6 @@
 package model.villager.intentions;
 
 import util.EntityType;
-import model.TestWorld;
-import model.World;
 import model.entity.bottom.HouseFloor;
 import model.path.FindObject;
 import model.villager.Villager;
