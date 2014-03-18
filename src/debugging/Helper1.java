@@ -1,5 +1,6 @@
 package debugging;
 
+import model.entity.bottom.NullTile;
 import model.entity.top.TopEntity;
 
 public class Helper1 extends TopEntity{
@@ -8,5 +9,11 @@ public class Helper1 extends TopEntity{
 		super(x * 20, y * 20, null);
 		updatePos(x, y);
 	}
+	
+	@Override
+	public Helper1 copy() {
+		return new Helper1(x, y);
+	}
+	
 
 }

@@ -22,6 +22,7 @@ public class IdleAction extends Action {
 	
 	public IdleAction(Villager villager) {
 		super(villager);
+		name = "Idling";
 		idleTime = 300;
 	}
 

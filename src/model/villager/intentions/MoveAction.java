@@ -16,6 +16,7 @@ public class MoveAction extends Action{
 	public MoveAction(Villager villager, Path path) {
 		super(villager);
 		this.path = path;
+		name = "Moving";
 	}
 
 	@Override
@@ -57,7 +58,7 @@ public class MoveAction extends Action{
 			waitTime++;
 			if(waitTime > 40){
 				actionFailed();
-				System.out.println("WAIT!");
+//				System.out.println("WAIT!");
 			}
 		}
 	}

@@ -29,6 +29,9 @@ public class ImageLoader {
 		
 		//Villager
 		imageLib.put("villager", loadImage("image", "villager.png"));
+		imageLib.put("villagerUI", loadImage("image", "villagerUI.png"));
+		imageLib.put("meter", loadImage("image", "meter.png"));
+		imageLib.put("meterArrow", loadImage("image", "meterArrow.png"));
 		imageLib.put("villagerSleeping", loadImage("image", "villagerSleeping.png"));
 		imageLib.put("villagerEating", loadImage("image", "villagerEating.png"));
 		imageLib.put("villagerDead", loadImage("image", "villagerDead.png"));

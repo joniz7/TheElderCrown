@@ -1,5 +1,6 @@
 package model.entity.top;
 
+import model.entity.bottom.GrassTile;
 import util.EntityType;
 import util.Tickable;
 
@@ -10,9 +11,9 @@ import util.Tickable;
  */
 public class Tree extends TopEntity implements Tickable{
 	
-	private final int FRUIT_REGROWTH = 50000;
+	private final int FRUIT_REGROWTH = 5000;
 	private int timer = 0, foodTicks = 1500;
-	private boolean fruit = true;
+	private boolean fruit = true, isShowUI = false;
 	
 	/**
 	 * The constructor which initialises all the necessary things for a tree.
@@ -22,6 +23,8 @@ public class Tree extends TopEntity implements Tickable{
 	 */
 	public Tree(int x, int y) {
 		super(x, y, EntityType.TREE);
+		// this makes the TreeView show in the right position
+		// TODO make this prettier (note: is hardcoded in World#addEntities as well)
 		updatePos(x-1, y-1);
 	}
 
@@ -37,7 +40,9 @@ public class Tree extends TopEntity implements Tickable{
 			// Send update to view
 			pcs.firePropertyChange("fruit", false, true);
 			fruit = true;
+			foodTicks = 1500;
 		}
+		updateUI();
 	}
 	
 	/**
@@ -54,12 +59,47 @@ public class Tree extends TopEntity implements Tickable{
 	}
 
 	/**
+	 * Method for showing or hiding the UI for this Tree
+	 * 
+	 * @param show - true if the UI should be shown
+	 */
+	public void setShowUI(boolean show){
+		if(show){
+			pcs.firePropertyChange("status", null, "show");
+		}else{
+			pcs.firePropertyChange("status", null, "hide");	
+		}
+		isShowUI = show;
+	}
+	
+	public void updateUI(){
+		if(isShowUI){
+			pcs.firePropertyChange("status", foodTicks, "fruit");
+			
+			float regrowth = -80;
+			regrowth += (timer / (FRUIT_REGROWTH / 160));
+			
+			pcs.firePropertyChange("status", regrowth, "regrowth");
+		}
+	}
+	
+	/**
 	 * A method to check if the tree has fruit or not.
 	 * 
 	 * @return true if the tree has fruit to be harvested, false otherwise.
 	 */
 	public boolean hasFruit() {
 		return fruit;
+	}
+	
+	@Override
+	public Tree copy() {
+		Tree copy = new Tree(x, y);
+		copy.timer = timer;
+		copy.foodTicks = foodTicks;
+		copy.fruit = fruit;
+		return copy;
+		
 	}
 	
 }

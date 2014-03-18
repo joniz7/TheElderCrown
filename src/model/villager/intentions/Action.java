@@ -7,6 +7,7 @@ public abstract class Action {
 
 	protected Villager villager;
 	protected boolean isFinished, isFailed;
+	protected String name;
 	
 	public Action(Villager villager){
 		this.villager = villager;
@@ -28,5 +29,9 @@ public abstract class Action {
 
 	protected void actionFinished() {
 		isFinished = true;
+	}
+
+	public String getName() {
+		return name;
 	}
 }

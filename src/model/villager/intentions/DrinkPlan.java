@@ -16,6 +16,7 @@ public class DrinkPlan extends Plan{
 	public DrinkPlan(Villager villager){
 		super(villager);
 		actionQueue = new LinkedList<Action>();
+		name = "Wants to drink";
 		
 		Point p = FindObject.findTileNeighbour(villager.getWorld(), EntityType.WATER_TILE, 
 				villager.getX(), villager.getY());

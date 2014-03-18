@@ -13,6 +13,7 @@ public class EatAction extends Action{
 	
 	public EatAction(Villager villager) {
 		super(villager);
+		name = "Eating";
 		stacksToEat = 500;
 	}
 

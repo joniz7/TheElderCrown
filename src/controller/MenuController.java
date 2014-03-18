@@ -1,4 +1,7 @@
-package head;
+package controller;
+
+import java.io.File;
+import java.io.IOException;
 
 import org.newdawn.slick.AppGameContainer;
 import org.newdawn.slick.Color;
@@ -11,26 +14,27 @@ import org.newdawn.slick.state.StateBasedGame;
 import org.newdawn.slick.state.transition.FadeInTransition;
 import org.newdawn.slick.state.transition.FadeOutTransition;
 
-import view.MainMenuView;
+import view.MenuView;
 
-public class MainMenu implements GameState {
+public class MenuController implements GameState {
 	
-	private static MainMenuView view = new MainMenuView();
-	private static StateBasedGame game;
-	private static AppGameContainer container;
+	// Our parent, the state manager 
+	private Game game;
+	
+	private AppGameContainer container;
+	private MenuView view = new MenuView();
+	
 	private boolean isFullscreen = false;
-
 
 	@Override
 	public void mouseClicked(int arg0, int arg1, int arg2, int arg3) {
 		// TODO Auto-generated method stub
-
+		System.out.println("helo");
 	}
 
 	@Override
 	public void mouseDragged(int arg0, int arg1, int arg2, int arg3) {
 		// TODO Auto-generated method stub
-
 	}
 
 	@Override
@@ -90,32 +94,22 @@ public class MainMenu implements GameState {
 	public void keyReleased(int key, char e) {
 		switch(key){
 		case Input.KEY_1:
-			game.enterState(2, new FadeOutTransition(Color.black), new FadeInTransition(Color.black));
+			unpause();
 			break;
 		case Input.KEY_2:
-			if(!isFullscreen){
-				int w =((StatedGame)game).getNativeWidth();
-				int h =((StatedGame)game).getNativeHeight();
-				try {
-					container.setDisplayMode(w, h, true);
-					isFullscreen = true;
-				} catch (SlickException e1) {
-					// TODO Auto-generated catch block
-					e1.printStackTrace();
-				}
-			}else{
-				try {
-					container.setDisplayMode(800, 600, false);
-					isFullscreen = false;
-				} catch (SlickException e1) {
-					// TODO Auto-generated catch block
-					e1.printStackTrace();
-				}
-			}
-			
+			initRandomWorld();
 			break;
 		case Input.KEY_3:
-			((StatedGame)game).exit();
+			initMapWorld();
+			break;
+		case Input.KEY_4:
+			toggleFullscreen();
+			break;
+		case Input.KEY_5:
+			game.exit();
+			break;
+		case Input.KEY_6:
+			saveWorldMap();
 			break;
 		default:
 			break;
@@ -123,6 +117,87 @@ public class MainMenu implements GameState {
 
 	}
 
+	private void initMapWorld() {
+		view.setMessage("Creating world...");
+		game.getWorldController().initMapWorld("test");
+		view.setMessage("Created world! You can now play.");
+	}
+
+	private void initRandomWorld() {
+		view.setMessage("Creating random world...");
+		game.getWorldController().initRandomWorld();
+		view.setMessage("Created world! You can now play.");
+	}
+
+	/**
+	 * Unpause the game, if possible.
+	 * If game hasn't been started, shows error message
+	 */
+	private void unpause() {
+		if (game.isGameInitialized()) {
+			// Tell parent to change from main menu state to game state
+			game.enterState(2, new FadeOutTransition(Color.black), new FadeInTransition(Color.black));
+		}
+		else {
+			view.setMessage("Create a game first!");
+		}
+	}
+	
+	
+	/**
+	 * Toggles fullscreen mode on/off
+	 */
+	private void toggleFullscreen() {
+		if(!isFullscreen){
+			int w = game.getNativeWidth();
+			int h = game.getNativeHeight();
+			try {
+				container.setDisplayMode(w, h, true);
+				isFullscreen = true;
+			} catch (SlickException e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+			}
+		}else{
+			try {
+				container.setDisplayMode(800, 600, false);
+				isFullscreen = false;
+			} catch (SlickException e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+			}
+		}
+
+	}
+	
+	/**
+	 * Creates a map from the current world,
+	 * and saves it to disc.
+	 */
+	private void saveWorldMap() {
+				
+		if (game.isGameInitialized()) {
+			// Save map
+		    File f = null;
+			try {
+				f = File.createTempFile("temp", null);
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+			
+			// Tell user how it went
+			if (game.getWorldController().saveWorldMap(f)) {
+				view.setMessage("Successfully saved map to %TEMP%/"+f.getName()+"!");
+			} else {
+				view.setMessage("Failed to save map");
+			}
+		}
+		// World needs to be initialized first
+		else {
+			view.setMessage("Cannot save map, as the world doesn't exist. Nothing. Exists.");
+		}
+	}
+	
 	@Override
 	public void controllerButtonPressed(int arg0, int arg1) {
 		// TODO Auto-generated method stub
@@ -186,7 +261,13 @@ public class MainMenu implements GameState {
 	@Override
 	public void enter(GameContainer arg0, StateBasedGame arg1)
 			throws SlickException {
-		// TODO Auto-generated method stub
+		// Shows the "paused" label
+		if (game.isGameInitialized()) {
+			view.setMessage("Paused");
+		}
+		else {
+			view.resetMessage();
+		}
 
 	}
 
@@ -198,16 +279,16 @@ public class MainMenu implements GameState {
 	@Override
 	public void init(GameContainer container, StateBasedGame game)
 			throws SlickException {
-		this.game = game;
-		this.container = (AppGameContainer)container;
+		this.game = (Game) game;
+		this.container = (AppGameContainer) container;
 
 	}
 
 	@Override
 	public void leave(GameContainer arg0, StateBasedGame arg1)
 			throws SlickException {
-		// TODO Auto-generated method stub
-
+		// Hide message text
+		view.resetMessage();
 	}
 
 	@Override

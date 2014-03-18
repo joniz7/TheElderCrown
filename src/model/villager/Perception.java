@@ -3,9 +3,7 @@ package model.villager;
 import java.awt.Point;
 import java.util.HashMap;
 
-import model.entity.MidEntity;
-import model.entity.bottom.BottomEntity;
-import model.entity.top.TopEntity;
+import model.entity.Entity;
 import model.villager.order.Order;
 
 /**
@@ -18,8 +16,8 @@ public class Perception {
 
 	public Point position;
 	public Order order;
-	public HashMap<Point, BottomEntity> botEntities;
-	public HashMap<Point, MidEntity> midEntities;
-	public HashMap<Point, TopEntity> topEntities;
+	public HashMap<Point, Entity> botEntities;
+	public HashMap<Point, Entity> midEntities;
+	public HashMap<Point, Entity> topEntities;
 	
 }

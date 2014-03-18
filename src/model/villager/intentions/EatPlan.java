@@ -3,7 +3,7 @@ package model.villager.intentions;
 import java.awt.Point;
 import java.util.LinkedList;
 
-import model.TestWorld;
+import model.RandomWorld;
 import model.entity.top.Tree;
 import model.path.FindObject;
 import model.path.PathFinder;
@@ -19,6 +19,7 @@ public class EatPlan extends Plan{
 	public EatPlan(Villager villager){
 		super(villager);
 		actionQueue = new LinkedList<Action>();
+		name = "Wants to eat";
 		
 		Tree tree = (Tree) FindObject.getAdjacentObject(villager.getWorld(), new HasFruit(), 
 				EntityType.TREE, villager.getX(), villager.getY());

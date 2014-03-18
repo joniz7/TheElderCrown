@@ -2,8 +2,10 @@ package model.entity;
 
 import java.awt.Point;
 import java.beans.PropertyChangeSupport;
+import java.io.Serializable;
 
 import model.path.criteria.Criteria;
+import util.Copyable;
 import util.EntityId;
 import util.EntityType;
 import util.InterpolPosition;
@@ -14,7 +16,7 @@ import util.InterpolPosition;
  * 
  * @author Simon E, Teodor O
  */
-public abstract class Entity {
+public abstract class Entity implements Copyable, Serializable {
 	
 	// This entity's belief of its position
 	protected int x, y;
