@@ -152,6 +152,10 @@ public class WorldView implements PropertyChangeListener {
 				HouseCorner corner = (HouseCorner) entity;
 				view = new HouseCornerView(corner.getX(), corner.getY(), corner.getOrientation());
 				break;
+			case FOOD_STORAGE:
+				FoodStorage fs = (FoodStorage) entity;
+				view = new FoodStorageView(fs.getX(), fs.getY());
+				break;
 			}
 			PropertyChangeSupport pcs = entity.getPCS();
 			pcs.addPropertyChangeListener(view);

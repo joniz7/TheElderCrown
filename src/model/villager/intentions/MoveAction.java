@@ -2,25 +2,49 @@ package model.villager.intentions;
 
 import java.awt.Point;
 
+import model.path.FindObject;
+import model.path.PathFinder;
+import model.path.criteria.Criteria;
+import model.path.criteria.IsFoodStorage;
 import model.villager.Villager;
 import model.villager.VillagersWorldPerception;
 
 import org.newdawn.slick.util.pathfinding.Path;
+
+import util.EntityType;
 
 public class MoveAction extends Action{
 
 	private Path path;
 	private int progress, stepCount = 1, speedCap = 240;
 	private int waitTime = 0;
+	private EntityType type;
+	private Criteria crit;
+	
 	
 	public MoveAction(Villager villager, Path path) {
 		super(villager);
 		this.path = path;
 		name = "Moving";
 	}
+	
+	public MoveAction(Villager villager, EntityType type, Criteria crit) {
+		super(villager);
+		this.type = type;
+		this.crit = crit;
+		name = "Moving";
+	}
 
 	@Override
 	public void tick(VillagersWorldPerception world) {
+		if(path == null && type != null){
+			Point p = FindObject.findObjectNeighbour(world, 
+					crit, type, villager.getX(), villager.getY());
+			path = PathFinder.getPathToAdjacent(villager.getX(), villager.getY(), 
+					p.x, p.y);
+			type = null;
+		}
+		
 		if(path == null){
 			actionFailed();
 			return;

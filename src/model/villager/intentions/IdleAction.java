@@ -38,8 +38,5 @@ public class IdleAction extends Action {
 			villager.updateStatus("statusEnd");
 			actionFinished();
 		}
-			
-
 	}
-
 }

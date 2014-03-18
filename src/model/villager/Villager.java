@@ -7,6 +7,7 @@ import javax.naming.OperationNotSupportedException;
 import model.entity.Agent;
 import model.entity.MidEntity;
 import model.entity.top.house.HouseWall;
+import model.item.Item;
 import model.villager.intentions.Action;
 import model.villager.intentions.DieAction;
 import model.villager.intentions.Intent;
@@ -22,7 +23,7 @@ import view.entity.mid.VillagerView;
 
 public class Villager extends MidEntity implements Agent {
 
-	private float hunger = -15f, thirst = 2f, speed = 20, sleepiness = 2f, laziness = 1f ;
+	private float hunger = 100f, thirst = 100f, speed = 20, sleepiness = 100f, laziness = 1f ;
 	private VillagerWorld world;
 	private boolean dead = false;
 	private String currentAction, currentPlan;
@@ -31,6 +32,9 @@ public class Villager extends MidEntity implements Agent {
 	private boolean mustExplore, isShowUI = false;
 	private int length, weight;
 	private String name;
+	
+	private Item activeItem;
+	private Item[] inventory = new Item[6];
 	
 	public Villager(int x, int y) {
 		super(x, y, EntityType.VILLAGER);
@@ -249,6 +253,40 @@ public class Villager extends MidEntity implements Agent {
 		return copy;
 //		throw new org.newdawn.slick.util.OperationNotSupportedException("what is a human mind?");
 		
+	}
+
+	public Item getActiveItem() {
+		return activeItem;
+	}
+
+	public void setActiveItem(Item activeItem) {
+		this.activeItem = activeItem;
+	}
+	
+	public boolean addToInventory(Item item){
+		for(int i = 0; i < inventory.length; i++)
+			if(inventory[i] == null){
+				inventory[i] = item;
+				return true;
+			}
+		return false;
+	}
+	
+	public void removeFromInventory(int index){
+		inventory[index] = null;
+	}
+	
+	public void clearInventory(){
+		for(int i = 0; i < inventory.length; i++)
+			inventory[i] = null;
+	}
+	
+	public Item[] getInventory(){
+		return inventory;
+	}
+
+	public Plan getActivePlan() {
+		return activePlan;
 	}
 	
 	
