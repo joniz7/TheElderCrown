@@ -66,8 +66,8 @@ public class RandomWorld extends World{
 		
 		generateLakes();
 		generateHouses();
-		generateGrass();
 		generateTrees();
+		generateGrass();
 		
 //		for(int i = 112; i < 128; i++) {
 //			for(int j = 112; j < 128; j++) {
@@ -103,7 +103,7 @@ public class RandomWorld extends World{
 		for(int i = 0; i < Constants.WORLD_WIDTH; i++) {
 			for(int j = 0; j < Constants.WORLD_HEIGHT; j++) {
 				Point pos = new Point(i, j);
-				if(!botEntities.containsKey(pos)){
+				if(!botEntities.containsKey(pos) && topEntities.get(pos) == null){
 				GrassTile grass = new GrassTile(i, j);
 				addEntity(pos, grass);
 				}
@@ -170,9 +170,13 @@ public class RandomWorld extends World{
 	 * A method that spawns a tree with a set probability on each grass tile.
 	 */
 	private void generateTrees() {
+		int sparsity;
 		for(int i = 0; i < Constants.WORLD_WIDTH - 1; i++) {
 			for(int j = 0; j < Constants.WORLD_HEIGHT - 1; j++) {
-				if(rnd.nextInt(TREE_SPARSITY) == 0 && botEntities.get(new Point(i + 1, j + 1)).getType() == EntityType.GRASS_TILE){
+				Point p = new Point(i + 1, j + 1);
+				sparsity = rnd.nextInt(TREE_SPARSITY);
+				if(sparsity == 0 && botEntities.get(p) == null || 
+						sparsity == 0 && botEntities.get(p) != null && botEntities.get(p).getType() == EntityType.GRASS_TILE){
 					Tree tree = new Tree(i + 1, j + 1);
 //					trees.add(tree);
 					tickables.add(tree);
