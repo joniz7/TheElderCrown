@@ -1,5 +1,6 @@
-package model.entity;
+package model.entity.mid;
 
+import model.entity.Entity;
 import util.EntityType;
 
 /**

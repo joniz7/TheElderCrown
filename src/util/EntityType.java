@@ -7,6 +7,6 @@ package util;
  */
 public enum EntityType {
 	GRASS_TILE, WATER_TILE, NULL_TILE,
-	VILLAGER,
+	VILLAGER, BED,
 	TREE, HOUSE_DOOR, HOUSE_WALL, HOUSE_CORNER, HOUSE_FLOOR;
 }

@@ -210,6 +210,15 @@ public static Point findTile2(VillagersWorldPerception world, EntityType id, int
 		
 		return false;
 	}
+	
+	public static boolean standingOnObject(VillagersWorldPerception world, EntityType id, int startX, int startY){
+		HashMap<Point, Entity> objects = world.getMidEntities();
+		
+		if(objects.get(new Point(startX, startY)) != null && objects.get(new Point(startX, startY)).getType() == id)
+			return true;
+		
+		return false;
+	}
 
 	/**
 	 * In order to create a correct path, the villager wants to move to a unblocked tile adjacent

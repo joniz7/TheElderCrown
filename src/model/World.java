@@ -15,8 +15,8 @@ import java.util.Set;
 
 import model.entity.Agent;
 import model.entity.Entity;
-import model.entity.MidEntity;
 import model.entity.bottom.BottomEntity;
+import model.entity.mid.MidEntity;
 import model.entity.top.TopEntity;
 import model.entity.top.Tree;
 import model.path.PathFinder;

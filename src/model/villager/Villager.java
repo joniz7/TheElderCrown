@@ -5,7 +5,7 @@ import java.awt.Point;
 import javax.naming.OperationNotSupportedException;
 
 import model.entity.Agent;
-import model.entity.MidEntity;
+import model.entity.mid.MidEntity;
 import model.entity.top.house.HouseWall;
 import model.villager.intentions.Action;
 import model.villager.intentions.DieAction;
@@ -31,6 +31,8 @@ public class Villager extends MidEntity implements Agent {
 	private boolean mustExplore, isShowUI = false;
 	private int length, weight;
 	private String name;
+	private int sex; // 0 -female, 1 - male
+	private Point myBed = null;
 	
 	public Villager(int x, int y) {
 		super(x, y, EntityType.VILLAGER);
@@ -38,6 +40,7 @@ public class Villager extends MidEntity implements Agent {
 		length = 140 + RandomClass.getRandomInt(50, 0);
 		weight = length / 4 + RandomClass.getRandomInt(length/4, 0);
 		this.name = NameGen.newName(true);
+		this.sex = RandomClass.getRandomInt(2, 0);
 		
 		currentAction = "Doing Nothing";
 		currentPlan = "Doing Nothing";
@@ -177,6 +180,27 @@ public class Villager extends MidEntity implements Agent {
 		return weight;
 	}
 	
+	public boolean isMale(){
+		if(sex == 1){
+			return true;
+		}
+		return false;
+	}
+	
+	public boolean isFemale(){
+		if(sex == 0){
+			return true;
+		}
+		return false;
+	}
+	
+	public void setBed(Point p){
+		this.myBed = p;
+	}
+	
+	public Point getBedPos(){
+		return myBed;
+	}
 	
 	
 	/**

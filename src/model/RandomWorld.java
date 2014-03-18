@@ -10,11 +10,11 @@ import java.util.Random;
 
 import model.entity.Agent;
 import model.entity.Entity;
-import model.entity.MidEntity;
 import model.entity.bottom.BottomEntity;
 import model.entity.bottom.GrassTile;
 import model.entity.bottom.HouseFloor;
 import model.entity.bottom.WaterTile;
+import model.entity.mid.MidEntity;
 import model.entity.top.TopEntity;
 import model.entity.top.Tree;
 import model.entity.top.house.HouseCorner;
