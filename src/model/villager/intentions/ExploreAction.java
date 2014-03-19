@@ -12,6 +12,7 @@ public class ExploreAction extends Action {
 
 	public ExploreAction(Villager villager) {
 		super(villager);
+		villager.updateStatus("exploring");
 		name = "Exploring";
 	}
 
