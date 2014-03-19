@@ -180,6 +180,10 @@ public class Villager extends MidEntity implements Agent {
 		return weight;
 	}
 	
+	public int getSex(){
+		return sex;
+	}
+	
 	public boolean isMale(){
 		if(sex == 1){
 			return true;

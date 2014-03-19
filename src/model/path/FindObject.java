@@ -432,7 +432,7 @@ public static Point findTile2(VillagersWorldPerception world, EntityType id, int
 		ArrayList<Point> toCheck = new ArrayList<Point>();
 		
 		visited.add(new Point(startX, startY));
-		
+		System.out.println("FindObject: "+ crit.toString() );
 		int stacks = 0;
 		boolean found = false;
 		while(!found){
@@ -476,9 +476,10 @@ public static Point findTile2(VillagersWorldPerception world, EntityType id, int
 			
 			for(Point p : toVisit){
 				if(mids.get(p) != null && mids.get(p).getType() == id && mids.get(p).meetCriteria(crit) && 
-						PathFinder.getPathToAdjacent(p.x, p.y, startX, startY) != null)
+						PathFinder.getPathToAdjacent(p.x, p.y, startX, startY) != null){
+
 					return p;
-				else if(tops.get(p) != null && tops.get(p).getType() == id && tops.get(p).meetCriteria(crit) && 
+				}else if(tops.get(p) != null && tops.get(p).getType() == id && tops.get(p).meetCriteria(crit) && 
 						PathFinder.getPathToAdjacent(p.x, p.y, startX, startY) != null)
 					return p;
 				else {

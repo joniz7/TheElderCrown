@@ -25,18 +25,23 @@ import util.EntityType;
 public class SleepPlan extends Plan {
 
 	private Point bedPos;
+	private Villager villager;
 	
 	public SleepPlan(Villager villager){
 		super(villager);
 		Bed thisBed;
 		actionQueue = new LinkedList<Action>();
 		name = "Wants to sleep";
+		this.villager = villager;
 		
 		//Point floorPos = FindObject.findTile2(villager.getWorld(),EntityType.HOUSE_FLOOR, villager.getX(),villager.getY());
 		
 		if(villager.getBedPos()==null){
-			bedPos = FindObject.findObject2(villager.getWorld(), new IsUnclaimed(villager), EntityType.BED, villager.getX(), villager.getY());
+			IsUnclaimed bedcriteria = new IsUnclaimed(villager);
+			System.out.println("SleepPlan: "+ bedcriteria.toString());
+			bedPos = FindObject.findObject2(villager.getWorld(), bedcriteria, EntityType.BED, villager.getX(), villager.getY());
 			villager.setBed(bedPos);
+			System.out.println("My bed pos: " +bedPos.x+","+bedPos.y);
 			thisBed = (Bed) villager.getWorld().getMidEntities().get(bedPos);
 			if(thisBed != null){
 				if(villager.isMale()){

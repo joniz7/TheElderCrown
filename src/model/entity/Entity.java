@@ -107,6 +107,7 @@ public abstract class Entity implements Copyable, Serializable {
 	 * @return true if the criteria is met, false otherwise.
 	 */
 	public boolean meetCriteria(Criteria criteria){
+		System.out.println("Entity: "+ criteria.toString() );
 		return criteria.match(this);
 	}
 	

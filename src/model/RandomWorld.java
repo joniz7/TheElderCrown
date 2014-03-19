@@ -14,6 +14,7 @@ import model.entity.bottom.BottomEntity;
 import model.entity.bottom.GrassTile;
 import model.entity.bottom.HouseFloor;
 import model.entity.bottom.WaterTile;
+import model.entity.mid.Bed;
 import model.entity.mid.MidEntity;
 import model.entity.top.TopEntity;
 import model.entity.top.Tree;
@@ -303,11 +304,20 @@ public class RandomWorld extends World{
 		p.translate(1, 1);
 		//ADD FLOOR
 		HouseFloor floor;
+		Bed bed;
 		for(int k=0; k<outerWidth-2; k++){
 			for(int l=0; l<outerHeight-2; l++){
+				if(l==0 || l==outerHeight-3){
+					bed = new Bed(p.x,p.y);
+					addEntity(new Point(p.x, p.y), bed);
+					floor = new HouseFloor(p.x, p.y);
+					addEntity(new Point(p.x, p.y), floor);
+					p.translate(0, 1);
+				}else{
 				floor = new HouseFloor(p.x, p.y);
 				addEntity(new Point(p.x, p.y), floor);
 				p.translate(0, 1);
+				}
 			}
 			p.translate(1, -(outerHeight-2)); //-2 to accoun for the absence of walls in this case.
 		}

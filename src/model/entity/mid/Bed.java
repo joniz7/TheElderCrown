@@ -10,12 +10,14 @@ public class Bed extends MidEntity {
 	private boolean isClaimedByFemale;
 	private Villager female;
 	private Villager male;
-	private boolean isUsed;
+	private boolean isUsed = false;
 
-	public Bed(int x, int y, EntityType id) {
-		super(x, y, id, false);
+	public Bed(int x, int y) {
+		super(x, y, EntityType.BED, false);
 		this.male = null;
 		this.female = null;
+		this.isClaimedByFemale = false;
+		this.isClaimedByMale = false;
 	}
 
 	@Override
@@ -81,6 +83,11 @@ public class Bed extends MidEntity {
 
 	public void setUsed(boolean isUsed) {
 		this.isUsed = isUsed;
+	}
+
+	public boolean isFree() {
+		return (isClaimedByMale == false && isClaimedByFemale == false);
+		
 	}
 
 	
