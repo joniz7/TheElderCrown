@@ -25,6 +25,7 @@ public class ImageLoader {
 		imageLib.put("door", loadImage("image", "door.png"));
 		imageLib.put("wall", loadImage("image", "wall.png"));
 		imageLib.put("storage", loadImage("image", "storage.png"));
+		imageLib.put("storage2", loadImage("image", "storage2.png"));
 		imageLib.put("tree", loadImage("image", "tree.png"));
 		imageLib.put("tree2", loadImage("image", "tree2.png"));
 		

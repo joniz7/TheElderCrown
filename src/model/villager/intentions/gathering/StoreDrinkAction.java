@@ -2,50 +2,52 @@ package model.villager.intentions.gathering;
 
 import util.EntityType;
 import model.entity.top.Tree;
+import model.entity.top.house.DrinkStorage;
 import model.entity.top.house.FoodStorage;
 import model.item.Item;
-import model.item.food.Food;
+import model.item.liquid.Drink;
 import model.path.FindObject;
 import model.path.criteria.HasFood;
+import model.path.criteria.IsDrinkStorage;
 import model.path.criteria.IsFoodStorage;
 import model.villager.Villager;
 import model.villager.VillagersWorldPerception;
 import model.villager.intentions.action.Action;
 
-public class StoreFoodAction extends Action{
+public class StoreDrinkAction extends Action{
 
 	private int stacks = 0, stacksToStore;
 	
-	public StoreFoodAction(Villager villager) {
+	public StoreDrinkAction(Villager villager) {
 		super(villager);
-		name = "Storing Food";
+		name = "Storing Drink";
 		stacksToStore = 20;
 	}
 
 	@Override
 	public void tick(VillagersWorldPerception world){
-		if(FindObject.getAdjacentObject(world, new IsFoodStorage(), EntityType.FOOD_STORAGE, villager.getX(),
+		if(FindObject.getAdjacentObject(world, new IsDrinkStorage(), EntityType.DRINK_STORAGE, villager.getX(),
 				villager.getY()) != null) {
-			FoodStorage fs = (FoodStorage) FindObject.getAdjacentObject(world, new IsFoodStorage(), 
-					EntityType.FOOD_STORAGE, villager.getX(), villager.getY());
+			DrinkStorage fs = (DrinkStorage) FindObject.getAdjacentObject(world, new IsDrinkStorage(), 
+					EntityType.DRINK_STORAGE, villager.getX(), villager.getY());
 			
 			stacks++;
 			if(stacks >= stacksToStore){
 				Item[] items = villager.getInventory();
-				Food food = null;
+				Drink drink = null;
 				for(int i = 0; i < items.length; i++)
-					if(items[i] instanceof Food){
-						food = (Food) items[i];
+					if(items[i] instanceof Drink){
+						drink = (Drink) items[i];
 						villager.removeFromInventory(i);
 						items[i] = null;
 						break;
 					}
 				
-				if(food == null){
+				if(drink == null){
 					villager.updateStatus("statusEnd");
 					actionFinished();
 				}else{
-					fs.addFood(food);
+					fs.addDrink(drink);
 				}
 				stacks = 0;
 			}

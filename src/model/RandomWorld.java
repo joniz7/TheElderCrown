@@ -17,6 +17,7 @@ import model.entity.bottom.HouseFloor;
 import model.entity.bottom.WaterTile;
 import model.entity.top.TopEntity;
 import model.entity.top.Tree;
+import model.entity.top.house.DrinkStorage;
 import model.entity.top.house.FoodStorage;
 import model.entity.top.house.HouseCorner;
 import model.entity.top.house.HouseDoor;
@@ -207,6 +208,10 @@ public class RandomWorld extends World{
 		FoodStorage storage = new FoodStorage(38, 33);
 		addEntity(new Point(38, 33), storage);
 		addFoodStorageUI(new Point(38, 33), storage);
+		
+		DrinkStorage storage2 = new DrinkStorage(41, 33);
+		addEntity(new Point(41, 33), storage2);
+		addDrinkStorageUI(new Point(41, 33), storage2);
 	}
 	
 	/**

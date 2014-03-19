@@ -8,6 +8,7 @@ import model.entity.top.Tree;
 import model.path.FindObject;
 import model.path.PathFinder;
 import model.path.criteria.HasFood;
+import model.path.criteria.IsDrinkStorage;
 import model.path.criteria.IsFoodStorage;
 import model.villager.Villager;
 import model.villager.intentions.action.Action;
@@ -19,41 +20,40 @@ import org.newdawn.slick.util.pathfinding.Path;
 
 import util.EntityType;
 
-public class GatherFoodPlan extends Plan{
+public class GatherDrinkPlan extends Plan{
 
-	public GatherFoodPlan(Villager villager){
+	public GatherDrinkPlan(Villager villager){
 		super(villager);
 		actionQueue = new LinkedList<Action>();
-		name = "Gathers food";
+		name = "Gathers drink";
 		
 		villager.clearInventory();
 		
-		Tree tree = (Tree) FindObject.getAdjacentObject(villager.getWorld(), new HasFood(), 
-				EntityType.TREE, villager.getX(), villager.getY());
+		boolean water = FindObject.isAdjacentTile(villager.getWorld() ,
+				EntityType.WATER_TILE, villager.getX(), villager.getY());
 
 		// We're next to a tree. fill Inventory!
-		if(tree != null){
-			actionQueue.addLast(new GatherFoodAction(villager));
-			actionQueue.addLast(new MoveAction(villager, null, new IsFoodStorage()));
-			actionQueue.addLast(new StoreFoodAction(villager));
+		if(water){
+			actionQueue.addLast(new GatherDrinkAction(villager));
+			actionQueue.addLast(new MoveAction(villager, null, new IsDrinkStorage()));
+			actionQueue.addLast(new StoreDrinkAction(villager));
 		}
 		// We need to move, and then fill Inventory
 		else{
-			Point p = FindObject.findObjectNeighbour(villager.getWorld(), new HasFood(), EntityType.TREE, 
+			Point p = FindObject.findTileNeighbour(villager.getWorld(), EntityType.WATER_TILE, 
 					villager.getX(), villager.getY());
 			Path movePath = null;
 			if(p != null){
 				movePath = PathFinder.getPathToAdjacent(villager.getX(), villager.getY(), p.x, p.y);
 			}else{
-				System.out.println("GATHERFOODPLAN: FAILED FINDING TREE");
 				villager.setExplore();
 				isFinished=true;
 			}
 
-			actionQueue.add(new MoveAction(villager, EntityType.TREE, new HasFood()));
-			actionQueue.addLast(new GatherFoodAction(villager));
-			actionQueue.addLast(new MoveAction(villager, null, new IsFoodStorage()));
-			actionQueue.addLast(new StoreFoodAction(villager));
+			actionQueue.add(new MoveAction(villager, movePath));
+			actionQueue.addLast(new GatherDrinkAction(villager));
+			actionQueue.addLast(new MoveAction(villager, null, new IsDrinkStorage()));
+			actionQueue.addLast(new StoreDrinkAction(villager));
 		}
 		
 	}

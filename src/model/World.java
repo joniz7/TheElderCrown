@@ -19,6 +19,7 @@ import model.entity.MidEntity;
 import model.entity.bottom.BottomEntity;
 import model.entity.top.TopEntity;
 import model.entity.top.Tree;
+import model.entity.top.house.DrinkStorage;
 import model.entity.top.house.FoodStorage;
 import model.path.PathFinder;
 import model.villager.Perception;
@@ -467,6 +468,10 @@ public abstract class World implements Tickable, VillagersWorldPerception, Prope
 	 */
 	public void addFoodStorageUI(Point point, FoodStorage fs) {
 		pcs.firePropertyChange("addFoodStorageUI", null, fs);
+	}
+	
+	protected void addDrinkStorageUI(Point point, DrinkStorage storage2) {
+		pcs.firePropertyChange("addDrinkStorageUI", null, storage2);
 	}
 	
 	private void addAgent(Point point, Agent agent){
