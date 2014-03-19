@@ -36,6 +36,7 @@ public class ImageLoader {
 		imageLib.put("villagerEating", loadImage("image", "villagerEating.png"));
 		imageLib.put("villagerDead", loadImage("image", "villagerDead.png"));
 		imageLib.put("villagerDrinking", loadImage("image", "villagerDrinking.png"));
+		imageLib.put("villagerExploring", loadImage("image", "villagerExploring.png"));
 		
 		//Debugging
 		imageLib.put("helper", loadImage("image", "miss.png"));

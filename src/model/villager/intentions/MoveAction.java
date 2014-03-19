@@ -22,6 +22,7 @@ public class MoveAction extends Action{
 	@Override
 	public void tick(VillagersWorldPerception world) {
 		if(path == null){
+
 			actionFailed();
 			return;
 		}
@@ -74,11 +75,13 @@ public class MoveAction extends Action{
 
 	@Override
 	protected void actionFailed() {
+		villager.updateStatus("statusEnd");
 		isFailed = true;
 	}
 
 	@Override
 	protected void actionFinished() {
+		villager.updateStatus("statusEnd");
 		isFinished = true;
 	}
 

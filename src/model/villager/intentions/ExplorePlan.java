@@ -23,6 +23,7 @@ public class ExplorePlan extends Plan {
 	public ExplorePlan(Villager villager){
 		super(villager);
 		actionQueue = new LinkedList<Action>();
+		villager.updateStatus("exploring");
 		name = "Needs to explore";
 		
 		stacks = 0;
@@ -31,6 +32,7 @@ public class ExplorePlan extends Plan {
 			if(stacks > 100){
 				actionQueue.add(new IdleAction(villager));
 				isFinished = true;
+				villager.updateStatus("statusEnd");
 			}
 //			System.out.println("Finding point to explore");
 //			if(FindObject.isStuck(villager.getWorld(),villager.getX(),villager.getY())){
