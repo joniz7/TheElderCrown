@@ -3,6 +3,8 @@ package model.villager.intentions;
 import java.awt.Point;
 
 import model.villager.Villager;
+import model.villager.intentions.plan.MovePlan;
+import model.villager.intentions.plan.Plan;
 
 public class MoveIntent extends Intent {
 

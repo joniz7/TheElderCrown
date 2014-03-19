@@ -1,4 +1,4 @@
-package model.villager.intentions;
+package model.villager.intentions.plan;
 
 import java.awt.Point;
 import java.util.LinkedList;
@@ -7,6 +7,9 @@ import model.RandomWorld;
 import model.path.FindObject;
 import model.path.PathFinder;
 import model.villager.Villager;
+import model.villager.intentions.action.Action;
+import model.villager.intentions.action.IdleAction;
+import model.villager.intentions.action.MoveAction;
 
 import java.util.Random;
 

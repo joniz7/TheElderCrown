@@ -1,8 +1,9 @@
-package model.villager.intentions;
+package model.villager.intentions.plan;
 
 import java.util.LinkedList;
 
 import model.villager.Villager;
+import model.villager.intentions.action.Action;
 
 public class Plan {
 

@@ -1,4 +1,4 @@
-package model.villager.intentions;
+package model.villager.intentions.action;
 
 import model.entity.top.Tree;
 import model.item.food.Food;

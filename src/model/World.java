@@ -24,7 +24,7 @@ import model.path.PathFinder;
 import model.villager.Perception;
 import model.villager.Villager;
 import model.villager.VillagersWorldPerception;
-import model.villager.intentions.Action;
+import model.villager.intentions.action.Action;
 import model.villager.order.Order;
 
 import org.newdawn.slick.util.OperationNotSupportedException;

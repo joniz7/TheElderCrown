@@ -1,6 +1,8 @@
 package model.villager.intentions;
 
 import model.villager.Villager;
+import model.villager.intentions.plan.IdlePlan;
+import model.villager.intentions.plan.Plan;
 
 /**
  * Simple class for handling whether a villager wants to idle
@@ -21,8 +23,7 @@ public class IdleIntent extends Intent {
 
 	@Override
 	public void calculateDesire() {
-		setDesire(-villager.getLaziness() * 4);
-//		System.out.println("IdleIntent: " + desire);
+		desire = -100;
 	}
 	
 }
