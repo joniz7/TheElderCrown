@@ -1,6 +1,8 @@
 package model.villager.intentions;
 
 import model.villager.Villager;
+import model.villager.intentions.plan.DrinkPlan;
+import model.villager.intentions.plan.Plan;
 
 public class DrinkIntent extends PrimitiveIntent {
 

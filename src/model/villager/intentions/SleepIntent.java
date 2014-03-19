@@ -1,6 +1,8 @@
 package model.villager.intentions;
 
 import model.villager.Villager;
+import model.villager.intentions.plan.Plan;
+import model.villager.intentions.plan.SleepPlan;
 
 /**
  * Simple class to see when the villager needs to rest.

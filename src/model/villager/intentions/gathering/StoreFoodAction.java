@@ -10,7 +10,7 @@ import model.path.criteria.HasFood;
 import model.path.criteria.IsFoodStorage;
 import model.villager.Villager;
 import model.villager.VillagersWorldPerception;
-import model.villager.intentions.Action;
+import model.villager.intentions.action.Action;
 
 public class StoreFoodAction extends Action{
 

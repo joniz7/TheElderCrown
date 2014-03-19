@@ -10,10 +10,10 @@ import model.path.PathFinder;
 import model.path.criteria.HasFood;
 import model.path.criteria.IsFoodStorage;
 import model.villager.Villager;
-import model.villager.intentions.Action;
-import model.villager.intentions.EatAction;
-import model.villager.intentions.MoveAction;
-import model.villager.intentions.Plan;
+import model.villager.intentions.action.Action;
+import model.villager.intentions.action.EatAction;
+import model.villager.intentions.action.MoveAction;
+import model.villager.intentions.plan.Plan;
 
 import org.newdawn.slick.util.pathfinding.Path;
 

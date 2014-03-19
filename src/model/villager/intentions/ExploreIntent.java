@@ -1,6 +1,8 @@
 package model.villager.intentions;
 
 import model.villager.Villager;
+import model.villager.intentions.plan.ExplorePlan;
+import model.villager.intentions.plan.Plan;
 
 public class ExploreIntent extends Intent {
 

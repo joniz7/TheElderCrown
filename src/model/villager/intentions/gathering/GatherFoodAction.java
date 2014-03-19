@@ -7,7 +7,7 @@ import model.path.FindObject;
 import model.path.criteria.HasFood;
 import model.villager.Villager;
 import model.villager.VillagersWorldPerception;
-import model.villager.intentions.Action;
+import model.villager.intentions.action.Action;
 
 public class GatherFoodAction extends Action{
 
