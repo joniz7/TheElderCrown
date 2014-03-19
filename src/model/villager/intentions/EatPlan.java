@@ -7,7 +7,7 @@ import model.RandomWorld;
 import model.entity.top.Tree;
 import model.path.FindObject;
 import model.path.PathFinder;
-import model.path.criteria.HasFruit;
+import model.path.criteria.HasFood;
 import model.villager.Villager;
 
 import org.newdawn.slick.util.pathfinding.Path;
@@ -21,7 +21,7 @@ public class EatPlan extends Plan{
 		actionQueue = new LinkedList<Action>();
 		name = "Wants to eat";
 		
-		Tree tree = (Tree) FindObject.getAdjacentObject(villager.getWorld(), new HasFruit(), 
+		Tree tree = (Tree) FindObject.getAdjacentObject(villager.getWorld(), new HasFood(), 
 				EntityType.TREE, villager.getX(), villager.getY());
 
 		// We're next to a tree. Eat!
@@ -31,7 +31,7 @@ public class EatPlan extends Plan{
 		
 		// We need to move, and then eat
 		else{
-			Point p = FindObject.findObjectNeighbour(villager.getWorld(), new HasFruit(), EntityType.TREE, 
+			Point p = FindObject.findObjectNeighbour(villager.getWorld(), new HasFood(), EntityType.TREE, 
 					villager.getX(), villager.getY());
 			Path movePath = null;
 			if(p != null){

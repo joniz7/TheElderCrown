@@ -4,7 +4,7 @@ import util.EntityType;
 import model.entity.top.Tree;
 import model.item.food.Food;
 import model.path.FindObject;
-import model.path.criteria.HasFruit;
+import model.path.criteria.HasFood;
 import model.villager.Villager;
 import model.villager.VillagersWorldPerception;
 import model.villager.intentions.Action;
@@ -21,13 +21,13 @@ public class GatherFoodAction extends Action{
 
 	@Override
 	public void tick(VillagersWorldPerception world){
-		if(FindObject.getAdjacentObject(world, new HasFruit(), EntityType.TREE, villager.getX(),
+		if(FindObject.getAdjacentObject(world, new HasFood(), EntityType.TREE, villager.getX(),
 				villager.getY()) != null) {
-			Tree tree = (Tree) FindObject.getAdjacentObject(world, new HasFruit(), EntityType.TREE, villager.getX(),
+			Tree tree = (Tree) FindObject.getAdjacentObject(world, new HasFood(), EntityType.TREE, villager.getX(),
 					villager.getY());
 			stacks++;
 			if(stacks >= stacksToStore){
-				if(!villager.addToInventory(tree.getFruit())){
+				if(!villager.addToInventory(tree.getFood())){
 					villager.updateStatus("statusEnd");
 					actionFinished();
 				}

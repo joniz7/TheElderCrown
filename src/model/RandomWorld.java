@@ -206,6 +206,7 @@ public class RandomWorld extends World{
 		
 		FoodStorage storage = new FoodStorage(38, 33);
 		addEntity(new Point(38, 33), storage);
+		addFoodStorageUI(new Point(38, 33), storage);
 	}
 	
 	/**

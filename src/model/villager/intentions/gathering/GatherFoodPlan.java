@@ -7,7 +7,7 @@ import model.RandomWorld;
 import model.entity.top.Tree;
 import model.path.FindObject;
 import model.path.PathFinder;
-import model.path.criteria.HasFruit;
+import model.path.criteria.HasFood;
 import model.path.criteria.IsFoodStorage;
 import model.villager.Villager;
 import model.villager.intentions.Action;
@@ -28,7 +28,7 @@ public class GatherFoodPlan extends Plan{
 		
 		villager.clearInventory();
 		
-		Tree tree = (Tree) FindObject.getAdjacentObject(villager.getWorld(), new HasFruit(), 
+		Tree tree = (Tree) FindObject.getAdjacentObject(villager.getWorld(), new HasFood(), 
 				EntityType.TREE, villager.getX(), villager.getY());
 
 		// We're next to a tree. fill Inventory!
@@ -37,7 +37,7 @@ public class GatherFoodPlan extends Plan{
 		}
 		// We need to move, and then fill Inventory
 		else{
-			Point p = FindObject.findObjectNeighbour(villager.getWorld(), new HasFruit(), EntityType.TREE, 
+			Point p = FindObject.findObjectNeighbour(villager.getWorld(), new HasFood(), EntityType.TREE, 
 					villager.getX(), villager.getY());
 			Path movePath = null;
 			if(p != null){
@@ -47,7 +47,7 @@ public class GatherFoodPlan extends Plan{
 				isFinished=true;
 			}
 
-			actionQueue.add(new MoveAction(villager, EntityType.TREE, new HasFruit()));
+			actionQueue.add(new MoveAction(villager, EntityType.TREE, new HasFood()));
 			actionQueue.addLast(new GatherFoodAction(villager));
 			actionQueue.addLast(new MoveAction(villager, EntityType.FOOD_STORAGE, new IsFoodStorage()));
 			actionQueue.addLast(new StoreFoodAction(villager));

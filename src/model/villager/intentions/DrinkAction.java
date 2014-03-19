@@ -5,7 +5,7 @@ import model.item.food.Food;
 import model.item.liquid.Drink;
 import model.item.liquid.WaterBowl;
 import model.path.FindObject;
-import model.path.criteria.HasFruit;
+import model.path.criteria.HasFood;
 import model.villager.Villager;
 import model.villager.VillagersWorldPerception;
 import util.EntityType;

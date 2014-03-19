@@ -2,6 +2,8 @@ package model.entity.top;
 
 import model.entity.bottom.GrassTile;
 import model.item.food.Apple;
+import model.item.food.Food;
+import model.item.food.FoodSource;
 import util.EntityType;
 import util.Tickable;
 
@@ -10,7 +12,7 @@ import util.Tickable;
  * 
  * @author Simon E
  */
-public class Tree extends TopEntity implements Tickable{
+public class Tree extends TopEntity implements Tickable, FoodSource{
 	
 	private final int FRUIT_REGROWTH = 5000;
 	private int timer = 0;
@@ -50,7 +52,7 @@ public class Tree extends TopEntity implements Tickable{
 	/**
 	 * The method to call when the fruit of a tree has been eaten.
 	 */
-	public Apple getFruit(){
+	public Apple getFood(){
 		// Send update to view
 		fruitCount--;
 		if(fruitCount <= 0){
