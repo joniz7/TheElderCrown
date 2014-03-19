@@ -19,7 +19,7 @@ public class GatherFoodIntent extends Intent{
 
 	@Override
 	public void calculateDesire() {
-		
+		desire = -20;
 	}
 
 }
