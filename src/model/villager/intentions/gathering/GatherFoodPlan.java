@@ -49,7 +49,7 @@ public class GatherFoodPlan extends Plan{
 
 			actionQueue.add(new MoveAction(villager, EntityType.TREE, new HasFood()));
 			actionQueue.addLast(new GatherFoodAction(villager));
-			actionQueue.addLast(new MoveAction(villager, EntityType.FOOD_STORAGE, new IsFoodStorage()));
+			actionQueue.addLast(new MoveAction(villager, null, new IsFoodStorage()));
 			actionQueue.addLast(new StoreFoodAction(villager));
 		}
 		

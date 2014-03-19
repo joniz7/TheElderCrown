@@ -37,7 +37,7 @@ public class MoveAction extends Action{
 
 	@Override
 	public void tick(VillagersWorldPerception world) {
-		if(path == null && type != null){
+		if(path == null && crit != null){
 			Point p = FindObject.findObjectNeighbour(world, 
 					crit, type, villager.getX(), villager.getY());
 			path = PathFinder.getPathToAdjacent(villager.getX(), villager.getY(), 
