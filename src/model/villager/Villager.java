@@ -23,7 +23,7 @@ import view.entity.mid.VillagerView;
 
 public class Villager extends MidEntity implements Agent {
 
-	private float hunger = 100f, thirst = 100f, speed = 20, sleepiness = 100f, laziness = 1f ;
+	private float hunger = 10f, thirst = 10f, speed = 30, sleepiness = 40f, laziness = 1f ;
 	private VillagerWorld world;
 	private boolean dead = false;
 	private String currentAction, currentPlan;
