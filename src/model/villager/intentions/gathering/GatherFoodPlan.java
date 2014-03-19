@@ -1,4 +1,4 @@
-package model.villager.intentions;
+package model.villager.intentions.gathering;
 
 import java.awt.Point;
 import java.util.LinkedList;
@@ -8,28 +8,34 @@ import model.entity.top.Tree;
 import model.path.FindObject;
 import model.path.PathFinder;
 import model.path.criteria.HasFood;
+import model.path.criteria.IsFoodStorage;
 import model.villager.Villager;
+import model.villager.intentions.Action;
+import model.villager.intentions.EatAction;
+import model.villager.intentions.MoveAction;
+import model.villager.intentions.Plan;
 
 import org.newdawn.slick.util.pathfinding.Path;
 
 import util.EntityType;
 
-public class EatPlan extends Plan{
+public class GatherFoodPlan extends Plan{
 
-	public EatPlan(Villager villager){
+	public GatherFoodPlan(Villager villager){
 		super(villager);
 		actionQueue = new LinkedList<Action>();
-		name = "Wants to eat";
+		name = "Gathers food";
+		
+		villager.clearInventory();
 		
 		Tree tree = (Tree) FindObject.getAdjacentObject(villager.getWorld(), new HasFood(), 
 				EntityType.TREE, villager.getX(), villager.getY());
 
-		// We're next to a tree. Eat!
+		// We're next to a tree. fill Inventory!
 		if(tree != null){
-			actionQueue.addLast(new EatAction(villager));
+			actionQueue.addLast(new GatherFoodAction(villager));
 		}
-		
-		// We need to move, and then eat
+		// We need to move, and then fill Inventory
 		else{
 			Point p = FindObject.findObjectNeighbour(villager.getWorld(), new HasFood(), EntityType.TREE, 
 					villager.getX(), villager.getY());
@@ -40,8 +46,11 @@ public class EatPlan extends Plan{
 				villager.setExplore();
 				isFinished=true;
 			}
-			actionQueue.add(new MoveAction(villager, movePath));
-			actionQueue.addLast(new EatAction(villager));
+
+			actionQueue.add(new MoveAction(villager, EntityType.TREE, new HasFood()));
+			actionQueue.addLast(new GatherFoodAction(villager));
+			actionQueue.addLast(new MoveAction(villager, null, new IsFoodStorage()));
+			actionQueue.addLast(new StoreFoodAction(villager));
 		}
 		
 	}
