@@ -19,6 +19,7 @@ import model.entity.bottom.BottomEntity;
 import model.entity.mid.MidEntity;
 import model.entity.top.TopEntity;
 import model.entity.top.Tree;
+import model.entity.top.house.FoodStorage;
 import model.path.PathFinder;
 import model.villager.Perception;
 import model.villager.Villager;
@@ -57,7 +58,7 @@ public abstract class World implements Tickable, VillagersWorldPerception, Prope
 	
 	// World configuration
 	private final int VIEW_DISTANCE = 10;
-	public final int VILLAGER_SPAWN_POS = 40, VILLAGER_COUNT = 8;
+	public final int VILLAGER_SPAWN_POS = 40, VILLAGER_COUNT = 1;
 
 	protected final PropertyChangeSupport pcs;
 	
@@ -454,6 +455,18 @@ public abstract class World implements Tickable, VillagersWorldPerception, Prope
 	 */
 	public void addTreeUI(Point point, Tree tree) {
 		pcs.firePropertyChange("addTreeUI", null, tree);
+	}
+	
+	/**
+	 * Adds an Entity to the top layer.
+	 * Also notifies View of the change.
+	 * 
+	 * @param point - the position of the Entity on the map
+	 * @param entity - the entity to add
+	 * @author Niklas
+	 */
+	public void addFoodStorageUI(Point point, FoodStorage fs) {
+		pcs.firePropertyChange("addFoodStorageUI", null, fs);
 	}
 	
 	private void addAgent(Point point, Agent agent){

@@ -24,6 +24,7 @@ public class ImageLoader {
 		imageLib.put("corner", loadImage("image", "corner.png"));
 		imageLib.put("door", loadImage("image", "door.png"));
 		imageLib.put("wall", loadImage("image", "wall.png"));
+		imageLib.put("storage", loadImage("image", "storage.png"));
 		imageLib.put("tree", loadImage("image", "tree.png"));
 		imageLib.put("tree2", loadImage("image", "tree2.png"));
 		imageLib.put("bed", loadImage("image", "bed.png"));
@@ -37,6 +38,7 @@ public class ImageLoader {
 		imageLib.put("villagerEating", loadImage("image", "villagerEating.png"));
 		imageLib.put("villagerDead", loadImage("image", "villagerDead.png"));
 		imageLib.put("villagerDrinking", loadImage("image", "villagerDrinking.png"));
+		imageLib.put("villagerExploring", loadImage("image", "villagerExploring.png"));
 		
 		//Debugging
 		imageLib.put("helper", loadImage("image", "miss.png"));

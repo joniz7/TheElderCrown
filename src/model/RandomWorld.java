@@ -18,6 +18,7 @@ import model.entity.mid.Bed;
 import model.entity.mid.MidEntity;
 import model.entity.top.TopEntity;
 import model.entity.top.Tree;
+import model.entity.top.house.FoodStorage;
 import model.entity.top.house.HouseCorner;
 import model.entity.top.house.HouseDoor;
 import model.entity.top.house.HouseWall;
@@ -208,6 +209,9 @@ public class RandomWorld extends World{
 		buildHouse(VILLAGER_SPAWN_POS - 6, VILLAGER_SPAWN_POS - 3, 2, 3, Constants.DOWN_ENTRANCE);
 		buildHouse(VILLAGER_SPAWN_POS - 2, VILLAGER_SPAWN_POS, 4, 4, Constants.LEFT_ENTRANCE);
 		
+		FoodStorage storage = new FoodStorage(38, 33);
+		addEntity(new Point(38, 33), storage);
+		addFoodStorageUI(new Point(38, 33), storage);
 	}
 	
 	/**

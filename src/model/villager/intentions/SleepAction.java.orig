@@ -38,41 +38,47 @@ public class SleepAction extends Action {
 	@Override
 	public void tick(VillagersWorldPerception world){
 //		if(FindObject.findTile2((TestWorld) world, EntityType.HOUSE_FLOOR, villager.getX(), villager.getY()) != null) {
+<<<<<<< HEAD
 
 		
 		if(FindObject.standingOnObject(world, EntityType.BED, villager.getX(), villager.getY())){
 			villager.satisfySleep(0.2f);
 			stacks = stacks + 0.3f;
-			villager.updateStatus("sleeping");
-			if(stacks > sleepToGet){
+			if(stacks > sleepToGet)
 				if(usedAtStart){
 					thisBed.getOther(villager).setBlocking(true);
 					villager.setBlocking(true);
 					}
-				villager.updateStatus("statusEnd");
 				actionFinished();
-			}
 			
 		}else if(FindObject.standingOnTile(world, EntityType.GRASS_TILE, villager.getX(), villager.getY())){
-			villager.updateStatus("sleeping");
 			villager.satisfySleep(0.1f);
 			stacks = stacks + 0.1f;
-			if(stacks > sleepToGet){
-				villager.updateStatus("statusEnd");
+			if(stacks > sleepToGet)
 				actionFinished();
-			}
+			
 		}else if(FindObject.standingOnTile(world, EntityType.HOUSE_FLOOR, villager.getX(), villager.getY())){
+=======
+		if(FindObject.standingOnTile(world, EntityType.HOUSE_FLOOR, villager.getX(), villager.getY())){
 			villager.updateStatus("sleeping");
+>>>>>>> dev
 			villager.satisfySleep(0.1f);
 			stacks = stacks + 0.2f;
 			if(stacks > sleepToGet){
 				villager.updateStatus("statusEnd");
 				actionFinished();
+<<<<<<< HEAD
+			
+		}else
+=======
 			}
+				
 		}else{
 			villager.updateStatus("statusEnd");
+>>>>>>> dev
 			actionFailed();
 		}
+			
 
 	}
 

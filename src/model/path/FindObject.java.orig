@@ -213,10 +213,10 @@ public static Point findTile2(VillagersWorldPerception world, EntityType id, int
 	
 	public static boolean standingOnObject(VillagersWorldPerception world, EntityType id, int startX, int startY){
 		HashMap<Point, Entity> objects = world.getMidEntities();
-
+		
 		if(objects.get(new Point(startX, startY)) != null && objects.get(new Point(startX, startY)).getType() == id)
 			return true;
-
+		
 		return false;
 	}
 
@@ -432,7 +432,7 @@ public static Point findTile2(VillagersWorldPerception world, EntityType id, int
 		ArrayList<Point> toCheck = new ArrayList<Point>();
 		
 		visited.add(new Point(startX, startY));
-		
+		System.out.println("FindObject: "+ crit.toString() );
 		int stacks = 0;
 		boolean found = false;
 		while(!found){
@@ -475,10 +475,18 @@ public static Point findTile2(VillagersWorldPerception world, EntityType id, int
 			visited = new ArrayList<Point>();
 			
 			for(Point p : toVisit){
+<<<<<<< HEAD
+				if(mids.get(p) != null && mids.get(p).getType() == id && mids.get(p).meetCriteria(crit) && 
+						PathFinder.getPathToAdjacent(p.x, p.y, startX, startY) != null){
+
+					return p;
+				}else if(tops.get(p) != null && tops.get(p).getType() == id && tops.get(p).meetCriteria(crit) && 
+=======
 				if(mids.get(p) != null && (mids.get(p).getType() == id || id == null) && mids.get(p).meetCriteria(crit) && 
 						PathFinder.getPathToAdjacent(p.x, p.y, startX, startY) != null)
 					return p;
 				else if(tops.get(p) != null && (tops.get(p).getType() == id || id == null) && tops.get(p).meetCriteria(crit) && 
+>>>>>>> dev
 						PathFinder.getPathToAdjacent(p.x, p.y, startX, startY) != null)
 					return p;
 				else {
