@@ -42,7 +42,9 @@ public class MoveAction extends Action{
 					crit, type, villager.getX(), villager.getY());
 			if(p == null){
 				System.out.println("WATER ABANDONDED ");
+				villager.actionDone();
 				villager.disposePlan();
+				villager.clearInventory();
 //				villager.setExplore();
 			}else
 				path = PathFinder.getPathToAdjacent(villager.getX(), villager.getY(), 

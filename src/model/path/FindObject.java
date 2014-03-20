@@ -4,6 +4,7 @@ import java.awt.Point;
 import java.util.ArrayList;
 import java.util.HashMap;
 
+import model.World;
 import model.entity.Entity;
 import model.path.criteria.Criteria;
 import model.villager.VillagersWorldPerception;
@@ -28,6 +29,12 @@ public class FindObject {
 	 * i en enda algoritm. Har undvikit detta hittills eftersom
 	 * att just bottenlagret �r ganska speciellt, d� det enbart best�r av tiles.
 	 */
+	
+	private static World worldStatic;
+	
+	public FindObject(World world){
+		worldStatic = world;
+	}
 	
 	/**
 	 * This did the job that findTile2 does now, saves this code, just in case
@@ -514,13 +521,15 @@ public static Point findTile2(VillagersWorldPerception world, EntityType id, int
 		long startTime = System.currentTimeMillis();
 		
 		if(isStuck(world, startX, startY)){
-//			System.out.println("STUCK");
+			System.out.println("STUCK");
 			return null;
 		}
 		
 		Point p = findObject2(world, crit, id, startX, startY);
-		if(p == null)
+		if(p == null){
+			System.out.println("CANT FIND");
 			return null;
+		}
 
 		long endTime = System.currentTimeMillis();
 //		System.out.println("FindObject, find Tree tile: " + (endTime - startTime));
@@ -626,16 +635,25 @@ public static Point findTile2(VillagersWorldPerception world, EntityType id, int
 		return null;
 	}
 	
+//	public static boolean isStuck(VillagersWorldPerception world, int startX, int startY){
+//		HashMap<Point, Entity> midEnts = world.getMidEntities();
+//		Point p = new Point(startX+1,startY);
+//		if(world.blocked(null, startX + 1, startY) || midEnts.containsKey(p))
+//			p.move(startX-1, startY);
+//			if(world.blocked(null, startX - 1, startY) || midEnts.containsKey(p))
+//				p.move(startX, startY+1);
+//				if(world.blocked(null, startX, startY + 1) || midEnts.containsKey(p))
+//					p.move(startX, startY-1);
+//					if(world.blocked(null, startX, startY - 1) || midEnts.containsKey(p))
+//						return true;
+//		return false;
+//	}
+	
 	public static boolean isStuck(VillagersWorldPerception world, int startX, int startY){
-		HashMap<Point, Entity> midEnts = world.getMidEntities();
-		Point p = new Point(startX+1,startY);
-		if(world.blocked(null, startX + 1, startY) || midEnts.containsKey(p))
-			p.move(startX-1, startY);
-			if(world.blocked(null, startX - 1, startY) || midEnts.containsKey(p))
-				p.move(startX, startY+1);
-				if(world.blocked(null, startX, startY + 1) || midEnts.containsKey(p))
-					p.move(startX, startY-1);
-					if(world.blocked(null, startX, startY - 1) || midEnts.containsKey(p))
+		if(worldStatic.blocked(null, startX + 1, startY))
+			if(worldStatic.blocked(null, startX - 1, startY))
+				if(worldStatic.blocked(null, startX, startY + 1))
+					if(worldStatic.blocked(null, startX, startY - 1))
 						return true;
 		return false;
 	}
