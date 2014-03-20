@@ -61,7 +61,7 @@ public abstract class World implements Tickable, VillagersWorldPerception, Prope
 	
 	// Keep track of when to spawn babies
 	private int babyTimer = 0;
-	private int spawnBabiesAfter = 2000;
+	private int spawnBabiesAfter = 200;
 
 	protected final PropertyChangeSupport pcs;
 	
@@ -95,7 +95,7 @@ public abstract class World implements Tickable, VillagersWorldPerception, Prope
 			if (babyTimer++ >= spawnBabiesAfter) {
 				babyTimer = 0;
 				Point p = new Point(VILLAGER_SPAWN_POS, VILLAGER_SPAWN_POS);
-				newBaby(p);				
+				// newVillager(p);		
 			}
 			
 			// Update all tickables
@@ -174,19 +174,24 @@ public abstract class World implements Tickable, VillagersWorldPerception, Prope
 	}
 
 	/**
-	 * Create a new baby in the world at the specified point 
+	 * Create a new villager in the world at the specified point.
+	 * Also creates UI and registers view bindings.
+	 * 
+	 *  @param p - the point to place the villager at.
+	 *  		   If occupied in middle layer, this method does nothing
 	 */
-	private void newBaby(Point p) {
+	private void newVillager(Point p) {
 		// Spawn only if position is empty
 		if (midEntities.get(p) == null) {
 			System.out.println("A baby is born!");
 			Villager v = new Villager(p);
 			addEntity(p, v);
+			addVillagerUI(p, v);
+			v.getPCS().addPropertyChangeListener(this);
 		}
 		else {
-			System.out.println("Too many people, too many problems");
+			System.out.println("Can't spawn baby: Too many people, too many problems");
 		}
-
 	}
 	
 	@Override
@@ -280,10 +285,7 @@ public abstract class World implements Tickable, VillagersWorldPerception, Prope
 	protected final void initializeVillagers() {
 		for(int i = 0; i < VILLAGER_COUNT; i++) {
 			Point pos = new Point(VILLAGER_SPAWN_POS + 5, VILLAGER_SPAWN_POS+i);
-			Villager villager = new Villager(pos);
-			addEntity(pos, villager);
-			addVillagerUI(pos, villager);
-			villager.getPCS().addPropertyChangeListener(this);
+			newVillager(pos);
 		}
 	}
 	
