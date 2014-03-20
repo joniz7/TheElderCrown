@@ -9,7 +9,7 @@ import model.villager.intentions.Plan;
 public class GatherFoodIntent extends Intent{
 
 	public GatherFoodIntent(Villager villager) {
-		super(-300, villager);
+		super(0, villager);
 	}
 
 	@Override

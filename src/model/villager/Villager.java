@@ -23,7 +23,7 @@ import view.entity.mid.VillagerView;
 
 public class Villager extends MidEntity implements Agent {
 
-	private float hunger = 10f, thirst = 10f, speed = 30, sleepiness = 40f, laziness = 1f ;
+	private float hunger = 10f, thirst = 10f, speed = 30, sleepiness = 40f, laziness = 20f ;
 	private VillagerWorld world;
 	private boolean dead = false;
 	private String currentAction, currentPlan;
@@ -54,7 +54,7 @@ public class Villager extends MidEntity implements Agent {
 		currentAction = "Doing Nothing";
 		currentPlan = "Doing Nothing";
 		
-		System.out.println("New villager created: " + name+ " " +length+"  "+weight);
+		System.out.println("New villager created: " + name+ " " +length+"  "+weight+ " " +sex);
 	}
 	
 	public VillagersWorldPerception getWorld() {
@@ -116,7 +116,7 @@ public class Villager extends MidEntity implements Agent {
 	private void adjustNeeds() {
 		hunger = hunger - 0.01f;
 		thirst = thirst - 0.01f;
-		sleepiness = sleepiness - 0.103f;
+		sleepiness = sleepiness - 0.003f;
 	}
 	
 	private void seeIfDead() {

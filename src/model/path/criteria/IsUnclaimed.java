@@ -1,7 +1,7 @@
 package model.path.criteria;
 
 import model.entity.Entity;
-import model.entity.mid.Bed;
+import model.entity.bottom.Bed;
 import model.villager.Villager;
 
 public class IsUnclaimed implements Criteria {

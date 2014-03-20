@@ -17,12 +17,12 @@ public class IntentionHandler {
 		pq = new PriorityQueue<Intent>(5, intentComparator);
 	
 		// Add primitive intents
-		pq.add(new EatIntent(villager));
+		//pq.add(new EatIntent(villager));
 		pq.add(new DrinkIntent(villager));
-		pq.add(new SleepIntent(villager));
-		pq.add(new IdleIntent(villager));
+		//pq.add(new SleepIntent(villager));
+		//pq.add(new IdleIntent(villager));
 		
-		pq.add(new GatherFoodIntent(villager));
+		//pq.add(new GatherFoodIntent(villager));
 		
 		//pq.add(new ExploreIntent(villager));
 	}

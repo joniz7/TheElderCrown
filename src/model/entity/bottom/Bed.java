@@ -1,8 +1,7 @@
-package model.entity.mid;
+package model.entity.bottom;
 
 import util.Copyable;
 import util.EntityType;
-import model.entity.bottom.BottomEntity;
 import model.villager.*;
 
 public class Bed extends BottomEntity {

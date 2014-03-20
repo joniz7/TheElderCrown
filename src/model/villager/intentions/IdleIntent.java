@@ -21,7 +21,7 @@ public class IdleIntent extends Intent {
 
 	@Override
 	public void calculateDesire() {
-		setDesire(-villager.getLaziness() * 4);
+		setDesire(-villager.getLaziness() * 2);
 //		System.out.println("IdleIntent: " + desire);
 	}
 	

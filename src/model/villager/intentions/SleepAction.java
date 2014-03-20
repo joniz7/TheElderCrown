@@ -1,8 +1,8 @@
 package model.villager.intentions;
 
 import util.EntityType;
+import model.entity.bottom.Bed;
 import model.entity.bottom.HouseFloor;
-import model.entity.mid.Bed;
 import model.path.FindObject;
 import model.villager.Villager;
 import model.villager.VillagersWorldPerception;
@@ -44,7 +44,7 @@ public class SleepAction extends Action {
 		
 		if(FindObject.standingOnTile(world, EntityType.BED, villager.getX(), villager.getY())){
 			if(this.firstTick){
-				System.out.println("Sleeping on bed!");
+				//System.out.println("Sleeping on bed!");
 				villager.setBlocking(false);
 				thisBed.setUsed(true);
 				villager.updateStatus("sleeping");
@@ -60,7 +60,7 @@ public class SleepAction extends Action {
 			
 		}else if(FindObject.standingOnTile(world, EntityType.GRASS_TILE, villager.getX(), villager.getY())){
 			if(this.firstTick){
-				System.out.println("Sleeping on grass!");
+				//System.out.println("Sleeping on grass!");
 				villager.setBlocking(false);
 				villager.updateStatus("sleeping");
 				firstTick = false;
@@ -74,7 +74,7 @@ public class SleepAction extends Action {
 			}
 		}else if(FindObject.standingOnTile(world, EntityType.HOUSE_FLOOR, villager.getX(), villager.getY())){
 			if(this.firstTick){
-				System.out.println("Sleeping on floor!");
+				//System.out.println("Sleeping on floor!");
 				villager.setBlocking(false);
 				villager.updateStatus("sleeping");
 				firstTick = false;

@@ -6,9 +6,9 @@ import java.beans.PropertyChangeListener;
 import java.beans.PropertyChangeSupport;
 import java.util.ArrayList;
 
+import model.entity.bottom.Bed;
 import model.entity.bottom.BottomEntity;
 import model.entity.bottom.HouseFloor;
-import model.entity.mid.Bed;
 import model.entity.mid.MidEntity;
 import model.entity.top.TopEntity;
 import model.entity.top.Tree;

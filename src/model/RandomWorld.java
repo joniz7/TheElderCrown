@@ -10,11 +10,11 @@ import java.util.Random;
 
 import model.entity.Agent;
 import model.entity.Entity;
+import model.entity.bottom.Bed;
 import model.entity.bottom.BottomEntity;
 import model.entity.bottom.GrassTile;
 import model.entity.bottom.HouseFloor;
 import model.entity.bottom.WaterTile;
-import model.entity.mid.Bed;
 import model.entity.mid.MidEntity;
 import model.entity.top.TopEntity;
 import model.entity.top.Tree;
@@ -306,16 +306,27 @@ public class RandomWorld extends World{
 		}
 		cornerPut = false;
 		p.translate(1, 1);
+		
+		//ADD DOOR
+		Point doorPoint = new Point(x, y);
+		HouseFloor floor = new HouseFloor(x, y);
+		addEntity(doorPoint, floor);
+		topEntities.remove(doorPoint);
+		HouseDoor door = new HouseDoor(x, y, orientation);
+		addEntity(doorPoint, door);
+		
+		
 		//ADD FLOOR
-		HouseFloor floor;
 		Bed bed;
 		for(int k=0; k<outerWidth-2; k++){
 			for(int l=0; l<outerHeight-2; l++){
 				if((l==0 || l==outerHeight-3) && (k==0 || k==outerWidth-3)){
 					floor = new HouseFloor(p.x, p.y);
 					addEntity(new Point(p.x, p.y), floor);
-					bed = new Bed(p.x,p.y);
-					addEntity(new Point(p.x, p.y), bed);
+					if(p.x != doorPoint.x && p.y != doorPoint.y){
+						bed = new Bed(p.x,p.y);
+						addEntity(new Point(p.x, p.y), bed);
+					}
 					p.translate(0, 1);
 				}else{
 				floor = new HouseFloor(p.x, p.y);
@@ -325,13 +336,7 @@ public class RandomWorld extends World{
 			}
 			p.translate(1, -(outerHeight-2)); //-2 to account for the absence of walls in this case.
 		}
-		//ADD DOOR
-		Point doorPoint = new Point(x, y);
-		floor = new HouseFloor(x, y);
-		addEntity(doorPoint, floor);
-		topEntities.remove(doorPoint);
-		HouseDoor door = new HouseDoor(x, y, orientation);
-		addEntity(doorPoint, door);
+
 		
 	}
 
