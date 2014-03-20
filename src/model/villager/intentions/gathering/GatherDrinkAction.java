@@ -33,7 +33,6 @@ public class GatherDrinkAction extends Action{
 					actionFinished();
 				}
 				count++;
-				System.out.println("WATER ADDED " + count);
 				stacks = 0;
 			}
 		}else{

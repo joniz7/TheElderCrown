@@ -22,6 +22,7 @@ import model.entity.top.house.FoodStorage;
 import model.entity.top.house.HouseCorner;
 import model.entity.top.house.HouseDoor;
 import model.entity.top.house.HouseWall;
+import model.path.FindObject;
 import model.path.PathFinder;
 import model.villager.Villager;
 
@@ -70,6 +71,8 @@ public class RandomWorld extends World{
 		generateHouses();
 		generateGrass();
 		generateTrees();
+		
+		new FindObject(this);
 		
 //		for(int i = 112; i < 128; i++) {
 //			for(int j = 112; j < 128; j++) {
