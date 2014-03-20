@@ -41,8 +41,7 @@ public class SleepPlan extends Plan {
 			System.out.println("SleepPlan: "+ bedcriteria.toString());
 			bedPos = FindObject.findObject2(villager.getWorld(), bedcriteria, EntityType.BED, villager.getX(), villager.getY());
 			villager.setBed(bedPos);
-			System.out.println("My bed pos: " +bedPos.x+","+bedPos.y);
-			thisBed = (Bed) villager.getWorld().getMidEntities().get(bedPos);
+			thisBed = (Bed) villager.getWorld().getBotEntities().get(bedPos);
 			if(thisBed != null){
 				if(villager.isMale()){
 					thisBed.setClaimedByMale(true);
@@ -54,18 +53,18 @@ public class SleepPlan extends Plan {
 			}
 		}else{
 			bedPos = villager.getBedPos();
-			thisBed = (Bed) villager.getWorld().getMidEntities().get(bedPos);
+			thisBed = (Bed) villager.getWorld().getBotEntities().get(bedPos);
 		}
 		
 		
 		if(bedPos != null){
-			if(thisBed.isUsed()){
+			/*if(thisBed.isUsed()){
 				thisBed.getOther(villager).setBlocking(false);
 				villager.setBlocking(false);
-			}
+			}*/
 			Path movePath = PathFinder.getPath(villager.getX(), villager.getY(), bedPos.x, bedPos.y);
 			actionQueue.add(new MoveAction(villager, movePath));
-			actionQueue.addLast(new SleepAction(villager, thisBed));
+			actionQueue.addLast(new SleepAction(villager));
 		
 		}else if(bedPos == null){
 			actionQueue.addLast(new SleepAction(villager));

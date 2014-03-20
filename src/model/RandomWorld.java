@@ -312,10 +312,10 @@ public class RandomWorld extends World{
 		for(int k=0; k<outerWidth-2; k++){
 			for(int l=0; l<outerHeight-2; l++){
 				if(l==0 || l==outerHeight-3){
-					bed = new Bed(p.x,p.y);
-					addEntity(new Point(p.x, p.y), bed);
 					floor = new HouseFloor(p.x, p.y);
 					addEntity(new Point(p.x, p.y), floor);
+					bed = new Bed(p.x,p.y);
+					addEntity(new Point(p.x, p.y), bed);
 					p.translate(0, 1);
 				}else{
 				floor = new HouseFloor(p.x, p.y);

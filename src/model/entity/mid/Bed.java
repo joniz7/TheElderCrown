@@ -2,9 +2,10 @@ package model.entity.mid;
 
 import util.Copyable;
 import util.EntityType;
+import model.entity.bottom.BottomEntity;
 import model.villager.*;
 
-public class Bed extends MidEntity {
+public class Bed extends BottomEntity {
 	
 	private boolean isClaimedByMale;
 	private boolean isClaimedByFemale;
@@ -20,7 +21,6 @@ public class Bed extends MidEntity {
 		this.isClaimedByMale = false;
 	}
 
-	@Override
 	public Copyable copy() {
 		// TODO Auto-generated method stub
 		return null;
@@ -56,9 +56,9 @@ public class Bed extends MidEntity {
 	}*/
 	
 	public Villager getOther(Villager first){
-		if(!female.equals(first)){
+		if(female != null && !female.equals(first)){
 			return female;
-		}else if(!male.equals(first)){
+		}else if(male !=null && !male.equals(first)){
 			return male;
 		}else{
 			return null;

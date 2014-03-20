@@ -426,48 +426,55 @@ public static Point findTile2(VillagersWorldPerception world, EntityType id, int
 		HashMap<Point, Boolean> visitedHash = new HashMap<Point, Boolean>();
 		HashMap<Point, Entity> mids = world.getMidEntities();
 		HashMap<Point, Entity> tops = world.getTopEntities();
+		HashMap<Point, Entity> bots = world.getBotEntities();
 		
 		ArrayList<Point> visited = new ArrayList<Point>();
 		ArrayList<Point> toVisit = new ArrayList<Point>();
 		ArrayList<Point> toCheck = new ArrayList<Point>();
 		
 		visited.add(new Point(startX, startY));
-		
 		int stacks = 0;
 		boolean found = false;
 		while(!found){
-//			System.out.println("findobject2 loop");
+			//System.out.println("findobject2 loop");
 			stacks++;
 			//Add neighbors to visit
 			toVisit = new ArrayList<Point>();
 			toCheck = new ArrayList<Point>();
 			for(Point p : visited){
 				if(visitedHash.get(new Point(p.x + 1, p.y)) == null){
-					if(!world.blocked(null, p.x + 1, p.y))
+					if(!world.blocked(null, p.x + 1, p.y)){
 						toVisit.add(new Point(p.x + 1, p.y));
-					else
+					}else{
 						toCheck.add(new Point(p.x + 1, p.y));
+					}
 					visitedHash.put(new Point(p.x + 1, p.y), true);
+					
 				}
 				if(visitedHash.get(new Point(p.x - 1, p.y)) == null){
-					if(!world.blocked(null, p.x - 1, p.y))
+					if(!world.blocked(null, p.x - 1, p.y)){
 						toVisit.add(new Point(p.x - 1, p.y));
-					else
+					}else{
 						toCheck.add(new Point(p.x - 1, p.y));
+					}
 					visitedHash.put(new Point(p.x - 1, p.y), true);
+				
 				}
 				if(visitedHash.get(new Point(p.x, p.y + 1)) == null){
-					if(!world.blocked(null, p.x, p.y + 1))
+					if(!world.blocked(null, p.x, p.y + 1)){
 						toVisit.add(new Point(p.x, p.y + 1));
-					else
+					}else{
 						toCheck.add(new Point(p.x, p.y + 1));
+					}
 					visitedHash.put(new Point(p.x, p.y + 1), true);
+					
 				}
 				if(visitedHash.get(new Point(p.x, p.y - 1)) == null){
-					if(!world.blocked(null, p.x, p.y - 1))
+					if(!world.blocked(null, p.x, p.y - 1)){
 						toVisit.add(new Point(p.x, p.y - 1));
-					else
+					}else{
 						toCheck.add(new Point(p.x, p.y - 1));
+					}
 					visitedHash.put(new Point(p.x, p.y - 1), true);
 				}
 			}
@@ -479,6 +486,9 @@ public static Point findTile2(VillagersWorldPerception world, EntityType id, int
 						PathFinder.getPathToAdjacent(p.x, p.y, startX, startY) != null)
 					return p;
 				else if(tops.get(p) != null && (tops.get(p).getType() == id || id == null) && tops.get(p).meetCriteria(crit) && 
+						PathFinder.getPathToAdjacent(p.x, p.y, startX, startY) != null)
+					return p;
+				else if(bots.get(p) != null && (bots.get(p).getType() == id || id == null) && bots.get(p).meetCriteria(crit) && 
 						PathFinder.getPathToAdjacent(p.x, p.y, startX, startY) != null)
 					return p;
 				else {

@@ -173,10 +173,7 @@ public class WorldView implements PropertyChangeListener {
 				view = new VillagerView(entity.getX(), entity.getY(), 
 						villager.getLength(), villager.getWeight());
 				break;
-			case BED:
-				Bed bed = (Bed) entity;
-				view = new BedView(entity.getX(),entity.getY());
-				break;
+
 			}
 			PropertyChangeSupport pcs = entity.getPCS();
 			pcs.addPropertyChangeListener(view);
@@ -196,6 +193,10 @@ public class WorldView implements PropertyChangeListener {
 			case HOUSE_FLOOR:
 				HouseFloor floor = (HouseFloor) entity;
 				view = new HouseFloorView(floor.getX(), floor.getY());
+				break;
+			case BED:
+				Bed bed = (Bed) entity;
+				view = new BedView(entity.getX(),entity.getY());
 				break;
 			}
 			PropertyChangeSupport pcs = entity.getPCS();
