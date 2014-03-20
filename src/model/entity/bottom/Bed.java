@@ -21,8 +21,13 @@ public class Bed extends BottomEntity {
 	}
 
 	public Copyable copy() {
-		// TODO Auto-generated method stub
-		return null;
+		Bed copy = new Bed(x,y);
+		copy.isClaimedByFemale = isClaimedByFemale;
+		copy.isClaimedByMale = isClaimedByMale;
+		copy.female = female;
+		copy.male = male;
+		copy.isUsed = isUsed;
+		return copy;
 	}
 
 	public boolean isClaimedByMale() {
