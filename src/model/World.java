@@ -15,8 +15,8 @@ import java.util.Set;
 
 import model.entity.Agent;
 import model.entity.Entity;
-import model.entity.MidEntity;
 import model.entity.bottom.BottomEntity;
+import model.entity.mid.MidEntity;
 import model.entity.top.TopEntity;
 import model.entity.top.Tree;
 import model.entity.top.house.FoodStorage;
@@ -58,7 +58,7 @@ public abstract class World implements Tickable, VillagersWorldPerception, Prope
 	
 	// World configuration
 	private final int VIEW_DISTANCE = 10;
-	public final int VILLAGER_SPAWN_POS = 40, VILLAGER_COUNT = 1;
+	public final int VILLAGER_SPAWN_POS = 40, VILLAGER_COUNT = 8;
 
 	protected final PropertyChangeSupport pcs;
 	

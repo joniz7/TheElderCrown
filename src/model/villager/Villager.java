@@ -5,7 +5,7 @@ import java.awt.Point;
 import javax.naming.OperationNotSupportedException;
 
 import model.entity.Agent;
-import model.entity.MidEntity;
+import model.entity.mid.MidEntity;
 import model.entity.top.house.HouseWall;
 import model.item.Item;
 import model.villager.intentions.Intent;
@@ -26,7 +26,7 @@ import view.entity.mid.VillagerView;
 
 public class Villager extends MidEntity implements Agent {
 
-	private float hunger = 10f, thirst = 10f, speed = 30, sleepiness = 40f, laziness = 1f ;
+	private float hunger = 10f, thirst = 10f, speed = 30, sleepiness = 40f, laziness = 20f ;
 	private VillagerWorld world;
 	private boolean dead = false;
 	private String currentAction, currentPlan;
@@ -35,6 +35,8 @@ public class Villager extends MidEntity implements Agent {
 	private boolean mustExplore, isShowUI = false;
 	private int length, weight;
 	private String name;
+	private int sex; // 0 -female, 1 - male
+	private Point myBed = null;
 	
 	private Item activeItem;
 	private Item[] inventory = new Item[6];
@@ -44,12 +46,18 @@ public class Villager extends MidEntity implements Agent {
 		world = new VillagerWorld();
 		length = 140 + RandomClass.getRandomInt(50, 0);
 		weight = length / 4 + RandomClass.getRandomInt(length/4, 0);
-		this.name = NameGen.newName(true);
+		this.sex = RandomClass.getRandomInt(2, 0);
+		if(sex == 0){
+			this.name = NameGen.newName(true);
+		}else{
+			this.name = NameGen.newName(false);
+		}
+		
 		
 		currentAction = "Doing Nothing";
 		currentPlan = "Doing Nothing";
 		
-		System.out.println("New villager created: " + name+ " " +length+"  "+weight);
+		System.out.println("New villager created: " + name+ " " +length+"  "+weight+ " " +sex);
 	}
 	
 	public VillagersWorldPerception getWorld() {
@@ -206,6 +214,31 @@ public class Villager extends MidEntity implements Agent {
 		return weight;
 	}
 	
+	public int getSex(){
+		return sex;
+	}
+	
+	public boolean isMale(){
+		if(sex == 1){
+			return true;
+		}
+		return false;
+	}
+	
+	public boolean isFemale(){
+		if(sex == 0){
+			return true;
+		}
+		return false;
+	}
+	
+	public void setBed(Point p){
+		this.myBed = p;
+	}
+	
+	public Point getBedPos(){
+		return myBed;
+	}
 	
 	
 	/**

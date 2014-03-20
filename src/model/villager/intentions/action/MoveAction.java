@@ -40,7 +40,8 @@ public class MoveAction extends Action{
 		if(path == null && crit != null){
 			Point p = FindObject.findObjectNeighbour(world, 
 					crit, type, villager.getX(), villager.getY());
-			path = PathFinder.getPathToAdjacent(villager.getX(), villager.getY(), 
+			if(p!=null)
+				path = PathFinder.getPathToAdjacent(villager.getX(), villager.getY(), 
 					p.x, p.y);
 			type = null;
 		}

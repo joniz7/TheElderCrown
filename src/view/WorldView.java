@@ -6,9 +6,10 @@ import java.beans.PropertyChangeListener;
 import java.beans.PropertyChangeSupport;
 import java.util.ArrayList;
 
-import model.entity.MidEntity;
+import model.entity.bottom.Bed;
 import model.entity.bottom.BottomEntity;
 import model.entity.bottom.HouseFloor;
+import model.entity.mid.MidEntity;
 import model.entity.top.TopEntity;
 import model.entity.top.Tree;
 import model.villager.Villager;
@@ -20,6 +21,7 @@ import util.EntityType;
 import view.entity.EntityView;
 import view.entity.bot.GrassTileView;
 import view.entity.bot.WaterTileView;
+import view.entity.mid.BedView;
 import view.entity.mid.VillagerView;
 import view.entity.top.TreeView;
 import view.entity.top.house.*;
@@ -171,6 +173,7 @@ public class WorldView implements PropertyChangeListener {
 				view = new VillagerView(entity.getX(), entity.getY(), 
 						villager.getLength(), villager.getWeight());
 				break;
+
 			}
 			PropertyChangeSupport pcs = entity.getPCS();
 			pcs.addPropertyChangeListener(view);
@@ -190,6 +193,10 @@ public class WorldView implements PropertyChangeListener {
 			case HOUSE_FLOOR:
 				HouseFloor floor = (HouseFloor) entity;
 				view = new HouseFloorView(floor.getX(), floor.getY());
+				break;
+			case BED:
+				Bed bed = (Bed) entity;
+				view = new BedView(entity.getX(),entity.getY());
 				break;
 			}
 			PropertyChangeSupport pcs = entity.getPCS();

@@ -12,6 +12,7 @@ import model.entity.bottom.NullTile;
 import org.newdawn.slick.util.pathfinding.PathFindingContext;
 
 import util.Constants;
+import util.EntityType;
 
 public class VillagerWorld implements VillagersWorldPerception {
 	
@@ -37,13 +38,14 @@ public class VillagerWorld implements VillagersWorldPerception {
 	
 	@Override
 	public boolean blocked(PathFindingContext arg0, int x, int y) {
-		if(botEntities.get(new Point(x, y)) != null && botEntities.get(new Point(x, y)).isBlocking()){
+		Point p = new Point(x,y);
+		if(botEntities.get(p) != null && botEntities.get(p).isBlocking()){
 			return true;
 		}
-		if(midEntities.get(new Point(x, y)) != null && midEntities.get(new Point(x, y)).isBlocking()){
+		if(midEntities.get(p) != null && midEntities.get(p).isBlocking()){
 			return true;
 		}
-		if(topEntities.get(new Point(x, y)) != null && topEntities.get(new Point(x, y)).isBlocking()){
+		if(topEntities.get(p) != null && topEntities.get(p).isBlocking()){
 			return true;
 		}
 		return false;
