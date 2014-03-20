@@ -94,7 +94,8 @@ public abstract class World implements Tickable, VillagersWorldPerception, Prope
 			// Possibly create babies
 			if (babyTimer++ >= spawnBabiesAfter) {
 				babyTimer = 0;
-				spawnBabies();
+				Point p = new Point(VILLAGER_SPAWN_POS, VILLAGER_SPAWN_POS);
+				newBaby(p);				
 			}
 			
 			// Update all tickables
@@ -173,10 +174,19 @@ public abstract class World implements Tickable, VillagersWorldPerception, Prope
 	}
 
 	/**
-	 * Possibly creates new babies in the world. 
+	 * Create a new baby in the world at the specified point 
 	 */
-	private void spawnBabies() {
-		
+	private void newBaby(Point p) {
+		// Spawn only if position is empty
+		if (midEntities.get(p) == null) {
+			System.out.println("A baby is born!");
+			Villager v = new Villager(p);
+			addEntity(p, v);
+		}
+		else {
+			System.out.println("Too many people, too many problems");
+		}
+
 	}
 	
 	@Override
@@ -270,7 +280,7 @@ public abstract class World implements Tickable, VillagersWorldPerception, Prope
 	protected final void initializeVillagers() {
 		for(int i = 0; i < VILLAGER_COUNT; i++) {
 			Point pos = new Point(VILLAGER_SPAWN_POS + 5, VILLAGER_SPAWN_POS+i);
-			Villager villager = new Villager(VILLAGER_SPAWN_POS + 5, VILLAGER_SPAWN_POS+i);
+			Villager villager = new Villager(pos);
 			addEntity(pos, villager);
 			addVillagerUI(pos, villager);
 			villager.getPCS().addPropertyChangeListener(this);
