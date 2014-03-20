@@ -61,7 +61,7 @@ public abstract class World implements Tickable, VillagersWorldPerception, Prope
 	
 	// Keep track of when to spawn babies
 	private int babyTimer = 0;
-	private int spawnBabiesAfter = 200;
+	private int spawnBabiesAfter = -1;
 
 	protected final PropertyChangeSupport pcs;
 	
@@ -95,7 +95,7 @@ public abstract class World implements Tickable, VillagersWorldPerception, Prope
 			if (babyTimer++ >= spawnBabiesAfter) {
 				babyTimer = 0;
 				Point p = new Point(VILLAGER_SPAWN_POS, VILLAGER_SPAWN_POS);
-				// newVillager(p);		
+				newVillager(p);		
 			}
 			
 			// Update all tickables
