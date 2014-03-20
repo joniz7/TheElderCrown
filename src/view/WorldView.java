@@ -213,8 +213,11 @@ public class WorldView implements PropertyChangeListener {
 			PropertyChangeSupport pcs = entity.getPCS();
 			pcs.addPropertyChangeListener(view);
 			UI.add(view);
-		}
-		else if (name.equals("removeTopEntity")) {
+		}else if(name.equals("addSlowTimeUI")){
+			EntityView view =new SlowTimeUI();
+			//PropertyChangeSupport psc = entity.getPCS();
+			UI.add(view);
+		}else if (name.equals("removeTopEntity")) {
 			// TODO search and remove from list
 			//      (should implement GUIDs first)
 			throw new UnsupportedOperationException();

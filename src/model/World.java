@@ -239,6 +239,8 @@ public abstract class World implements Tickable, VillagersWorldPerception, Prope
 	public void initialize() {
 		new PathFinder(this);
 		
+		addSlowTimeUI();
+		
 		// Send camera position update to view
 		Point pos = new Point(VILLAGER_SPAWN_POS, VILLAGER_SPAWN_POS);
 		pcs.firePropertyChange("camera", null, pos);
@@ -457,6 +459,11 @@ public abstract class World implements Tickable, VillagersWorldPerception, Prope
 	 */
 	public void addTreeUI(Point point, Tree tree) {
 		pcs.firePropertyChange("addTreeUI", null, tree);
+	}
+	
+	public void addSlowTimeUI() {
+		System.out.println("slowTimeUI added\n");
+		pcs.firePropertyChange("addSlowTimeUI", null, null);
 	}
 	
 	/**
