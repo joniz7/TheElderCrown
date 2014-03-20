@@ -59,6 +59,10 @@ public abstract class World implements Tickable, VillagersWorldPerception, Prope
 	// World configuration
 	private final int VIEW_DISTANCE = 10;
 	public final int VILLAGER_SPAWN_POS = 40, VILLAGER_COUNT = 8;
+	
+	// Keep track of when to spawn babies
+	private int babyTimer = 0;
+	private int spawnBabiesAfter = -1;
 
 	protected final PropertyChangeSupport pcs;
 	
@@ -87,6 +91,14 @@ public abstract class World implements Tickable, VillagersWorldPerception, Prope
 	@Override
 	public void tick(){
 		if(!paused) {
+			
+			// Possibly create babies
+			if (babyTimer++ >= spawnBabiesAfter) {
+				babyTimer = 0;
+				Point p = new Point(VILLAGER_SPAWN_POS, VILLAGER_SPAWN_POS);
+				newVillager(p);		
+			}
+			
 			// Update all tickables
 			for(Tickable t : tickables){
 				t.tick();
@@ -162,6 +174,27 @@ public abstract class World implements Tickable, VillagersWorldPerception, Prope
 		}
 	}
 
+	/**
+	 * Create a new villager in the world at the specified point.
+	 * Also creates UI and registers view bindings.
+	 * 
+	 *  @param p - the point to place the villager at.
+	 *  		   If occupied in middle layer, this method does nothing
+	 */
+	private void newVillager(Point p) {
+		// Spawn only if position is empty
+		if (midEntities.get(p) == null) {
+			System.out.println("A baby is born!");
+			Villager v = new Villager(p);
+			addEntity(p, v);
+			addVillagerUI(p, v);
+			v.getPCS().addPropertyChangeListener(this);
+		}
+		else {
+			System.out.println("Can't spawn baby: Too many people, too many problems");
+		}
+	}
+	
 	@Override
 	/**
 	 * Checks whether the given position is blocked in any layer.
@@ -253,10 +286,7 @@ public abstract class World implements Tickable, VillagersWorldPerception, Prope
 	protected final void initializeVillagers() {
 		for(int i = 0; i < VILLAGER_COUNT; i++) {
 			Point pos = new Point(VILLAGER_SPAWN_POS + 5, VILLAGER_SPAWN_POS+i);
-			Villager villager = new Villager(VILLAGER_SPAWN_POS + 5, VILLAGER_SPAWN_POS+i);
-			addEntity(pos, villager);
-			addVillagerUI(pos, villager);
-			villager.getPCS().addPropertyChangeListener(this);
+			newVillager(pos);
 		}
 	}
 	

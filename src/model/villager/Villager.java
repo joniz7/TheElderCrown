@@ -41,8 +41,8 @@ public class Villager extends MidEntity implements Agent {
 	private Item activeItem;
 	private Item[] inventory = new Item[6];
 	
-	public Villager(int x, int y) {
-		super(x, y, EntityType.VILLAGER);
+	public Villager(Point p) {
+		super(p.x, p.y, EntityType.VILLAGER);
 		world = new VillagerWorld();
 		length = 140 + RandomClass.getRandomInt(50, 0);
 		weight = length / 4 + RandomClass.getRandomInt(length/4, 0);
@@ -307,7 +307,8 @@ public class Villager extends MidEntity implements Agent {
 	 * Warning: this is not a complete copy by any means! Do not use!
 	 */
 	public Villager copy() {
-		Villager copy = new Villager(x,y);
+		Point p = new Point(x,y);
+		Villager copy = new Villager(p);
 		return copy;
 //		throw new org.newdawn.slick.util.OperationNotSupportedException("what is a human mind?");
 		
