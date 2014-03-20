@@ -16,7 +16,12 @@ import util.EntityType;
 
 /**
  * Class to plan sleep.
- * Villager will find closest HOUSE_FLOOR tile and the perform SleepAction
+ * Villager will find closest unclaimed (or claimed by opposite sex)
+ * bed and perform a sleep action. If no bed can be found,
+ * villager will sleep on floor or grass.
+ * Villager will sleep better on beds than floor/grass.
+ * Villagers are not blocking while sleeping.
+ * 
  * .
  * @author Tux
  *
@@ -34,8 +39,8 @@ public class SleepPlan extends Plan {
 		name = "Wants to sleep";
 		this.villager = villager;
 		
-		//Point floorPos = FindObject.findTile2(villager.getWorld(),EntityType.HOUSE_FLOOR, villager.getX(),villager.getY());
 		
+		//If villager has no assigned bed, find the closest unclaimed and claim it.
 		if(villager.getBedPos()==null){
 			IsUnclaimed bedcriteria = new IsUnclaimed(villager);
 			System.out.println("SleepPlan: "+ bedcriteria.toString());
@@ -51,6 +56,7 @@ public class SleepPlan extends Plan {
 					thisBed.setFemale(villager);
 				}
 			}
+		//Else use already assigned bed
 		}else{
 			bedPos = villager.getBedPos();
 			thisBed = (Bed) villager.getWorld().getBotEntities().get(bedPos);
@@ -64,7 +70,7 @@ public class SleepPlan extends Plan {
 			}*/
 			Path movePath = PathFinder.getPath(villager.getX(), villager.getY(), bedPos.x, bedPos.y);
 			actionQueue.add(new MoveAction(villager, movePath));
-			actionQueue.addLast(new SleepAction(villager));
+			actionQueue.addLast(new SleepAction(villager, thisBed));
 		
 		}else if(bedPos == null){
 			actionQueue.addLast(new SleepAction(villager));

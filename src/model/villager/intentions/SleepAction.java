@@ -8,7 +8,8 @@ import model.villager.Villager;
 import model.villager.VillagersWorldPerception;
 
 /**
- * The sleeping action. Villager checks if on a HOUSE_FLOOR tile and rests there for a while.
+ * The sleeping action. Villager checks if on a Bed, house floor or grass tile.
+ * Villager is not blocking while sleeping, and will sleep better on beds than floors.
  * 
  * @author Tux
  *
@@ -26,6 +27,13 @@ public class SleepAction extends Action {
 		super(villager);
 		sleepToGet = 250; // villager.getSleepiness();
 		name = "Sleeping";
+	}
+	
+	public SleepAction(Villager villager, Bed thisBed) {
+		super(villager);
+		sleepToGet = 250; // villager.getSleepiness();
+		name = "Sleeping";
+		this.thisBed = thisBed;
 	}
 
 

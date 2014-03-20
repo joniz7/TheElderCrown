@@ -311,7 +311,7 @@ public class RandomWorld extends World{
 		Bed bed;
 		for(int k=0; k<outerWidth-2; k++){
 			for(int l=0; l<outerHeight-2; l++){
-				if(l==0 || l==outerHeight-3){
+				if((l==0 || l==outerHeight-3) && (k==0 || k==outerWidth-3)){
 					floor = new HouseFloor(p.x, p.y);
 					addEntity(new Point(p.x, p.y), floor);
 					bed = new Bed(p.x,p.y);
@@ -323,7 +323,7 @@ public class RandomWorld extends World{
 				p.translate(0, 1);
 				}
 			}
-			p.translate(1, -(outerHeight-2)); //-2 to accoun for the absence of walls in this case.
+			p.translate(1, -(outerHeight-2)); //-2 to account for the absence of walls in this case.
 		}
 		//ADD DOOR
 		Point doorPoint = new Point(x, y);

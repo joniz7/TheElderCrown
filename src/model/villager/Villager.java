@@ -43,8 +43,13 @@ public class Villager extends MidEntity implements Agent {
 		world = new VillagerWorld();
 		length = 140 + RandomClass.getRandomInt(50, 0);
 		weight = length / 4 + RandomClass.getRandomInt(length/4, 0);
-		this.name = NameGen.newName(true);
 		this.sex = RandomClass.getRandomInt(2, 0);
+		if(sex == 0){
+			this.name = NameGen.newName(true);
+		}else{
+			this.name = NameGen.newName(false);
+		}
+		
 		
 		currentAction = "Doing Nothing";
 		currentPlan = "Doing Nothing";
