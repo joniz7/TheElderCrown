@@ -32,16 +32,21 @@ public class Villager extends MidEntity implements Agent {
 	private boolean mustExplore, isShowUI = false;
 	private int length, weight;
 	private String name;
+	private int age,ageprog;
+	private int deathrisk;
 	
 	private Item activeItem;
 	private Item[] inventory = new Item[6];
 	
-	public Villager(int x, int y) {
+	public Villager(int x, int y, int age) {
 		super(x, y, EntityType.VILLAGER);
 		world = new VillagerWorld();
 		length = 140 + RandomClass.getRandomInt(50, 0);
 		weight = length / 4 + RandomClass.getRandomInt(length/4, 0);
 		this.name = NameGen.newName(true);
+		this.age=age;
+		ageprog=0;
+		deathrisk=1;
 		
 		currentAction = "Doing Nothing";
 		currentPlan = "Doing Nothing";
@@ -66,7 +71,10 @@ public class Villager extends MidEntity implements Agent {
 		world.updateBotEntities(p.botEntities);
 		world.updateMidEntities(p.midEntities);
 		world.updateTopEntities(p.topEntities);
-
+		
+		ageprog++;
+		seeIfBirthday();
+		System.out.println("\n"+age );
 		adjustNeeds();
 		
 		// If order was received, take it into consideration when planning
@@ -112,8 +120,23 @@ public class Villager extends MidEntity implements Agent {
 	}
 	
 	private void seeIfDead() {
-		if(hunger < -100.f || thirst < -100.f) {
+		if(hunger < -100.f || thirst < -100.f || RandomClass.getRandomInt(100, deathrisk) >= 100) {
 			dead = true;
+			System.out.println(dead);
+		}
+	}
+	
+	private void seeIfBirthday(){
+		if(ageprog>100){
+			age++;
+			ageprog=0;
+			if(age>30){
+				if(age%3==0){
+					deathrisk++;
+					//deathrisk += (age-30)%2;
+				}
+				
+			}
 		}
 	}
 	
@@ -249,7 +272,7 @@ public class Villager extends MidEntity implements Agent {
 	 * Warning: this is not a complete copy by any means! Do not use!
 	 */
 	public Villager copy() {
-		Villager copy = new Villager(x,y);
+		Villager copy = new Villager(x,y,age);
 		return copy;
 //		throw new org.newdawn.slick.util.OperationNotSupportedException("what is a human mind?");
 		

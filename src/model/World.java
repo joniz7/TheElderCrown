@@ -35,6 +35,7 @@ import util.Copyable;
 import util.EntityType;
 import util.NoPositionFoundException;
 import util.NoSuchEntityException;
+import util.RandomClass;
 import util.Tickable;
 
 public abstract class World implements Tickable, VillagersWorldPerception, PropertyChangeListener {
@@ -251,9 +252,10 @@ public abstract class World implements Tickable, VillagersWorldPerception, Prope
 	 * Note: Be sure to initialize world properly before calling this method
 	 */
 	protected final void initializeVillagers() {
+		
 		for(int i = 0; i < VILLAGER_COUNT; i++) {
 			Point pos = new Point(VILLAGER_SPAWN_POS + 5, VILLAGER_SPAWN_POS+i);
-			Villager villager = new Villager(VILLAGER_SPAWN_POS + 5, VILLAGER_SPAWN_POS+i);
+			Villager villager = new Villager(VILLAGER_SPAWN_POS + 5, VILLAGER_SPAWN_POS+i,RandomClass.getRandomInt(10, 15));
 			addEntity(pos, villager);
 			addVillagerUI(pos, villager);
 			villager.getPCS().addPropertyChangeListener(this);
