@@ -1,8 +1,11 @@
-package model.villager.intentions;
+package model.villager.intentions.plan;
 
 
 import java.util.LinkedList;
+
 import model.villager.Villager;
+import model.villager.intentions.action.Action;
+import model.villager.intentions.action.IdleAction;
 
 /**
  * Very simple "plan" for how to idle. Might become more advanced later on.

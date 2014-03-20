@@ -1,4 +1,4 @@
-package model.villager.intentions;
+package model.villager.intentions.plan;
 
 import java.awt.Point;
 import java.util.LinkedList;
@@ -9,6 +9,9 @@ import model.path.FindObject;
 import model.path.PathFinder;
 import model.path.criteria.IsUnclaimed;
 import model.villager.Villager;
+import model.villager.intentions.action.Action;
+import model.villager.intentions.action.MoveAction;
+import model.villager.intentions.action.SleepAction;
 
 import org.newdawn.slick.util.pathfinding.Path;
 

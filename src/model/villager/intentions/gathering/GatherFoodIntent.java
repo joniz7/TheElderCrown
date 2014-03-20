@@ -1,10 +1,10 @@
 package model.villager.intentions.gathering;
 
 import model.villager.Villager;
-import model.villager.intentions.IdleAction;
-import model.villager.intentions.IdlePlan;
 import model.villager.intentions.Intent;
-import model.villager.intentions.Plan;
+import model.villager.intentions.action.IdleAction;
+import model.villager.intentions.plan.IdlePlan;
+import model.villager.intentions.plan.Plan;
 
 public class GatherFoodIntent extends Intent{
 
@@ -19,7 +19,7 @@ public class GatherFoodIntent extends Intent{
 
 	@Override
 	public void calculateDesire() {
-		
+		desire = -20;
 	}
 
 }

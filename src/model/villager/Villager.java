@@ -8,12 +8,15 @@ import model.entity.Agent;
 import model.entity.mid.MidEntity;
 import model.entity.top.house.HouseWall;
 import model.item.Item;
-import model.villager.intentions.Action;
-import model.villager.intentions.DieAction;
 import model.villager.intentions.Intent;
-import model.villager.intentions.ExplorePlan;
 import model.villager.intentions.IntentionHandler;
-import model.villager.intentions.Plan;
+import model.villager.intentions.action.Action;
+import model.villager.intentions.action.DieAction;
+import model.villager.intentions.plan.DrinkPlan;
+import model.villager.intentions.plan.EatPlan;
+import model.villager.intentions.plan.ExplorePlan;
+import model.villager.intentions.plan.Plan;
+import model.villager.intentions.plan.SleepPlan;
 import model.villager.order.Order;
 import model.villager.util.NameGen;
 import util.EntityType;
@@ -71,6 +74,7 @@ public class Villager extends MidEntity implements Agent {
 	public void update(Perception p) {
 		updatePos(p.position.x, p.position.y);
 		updateUI();
+		
 		world.updateBotEntities(p.botEntities);
 		world.updateMidEntities(p.midEntities);
 		world.updateTopEntities(p.topEntities);
@@ -99,14 +103,35 @@ public class Villager extends MidEntity implements Agent {
 
 	public void satisfyHunger(float f) {
 		this.hunger += f;
+		if(hunger > 80){
+			hunger = 80;
+			if(activePlan instanceof EatPlan){
+				disposePlan();
+				plan();
+			}
+		}
 	}
 	
 	public void satisfyThirst(float f) {
 		this.thirst += f;
+		if(thirst > 80){
+			thirst = 80;
+			if(activePlan instanceof DrinkPlan){
+				disposePlan();
+				plan();
+			}
+		}
 	}
 	
 	public void satisfySleep(float f){
 		this.sleepiness += f;
+		if(sleepiness > 80){
+			sleepiness = 80;
+			if(activePlan instanceof SleepPlan){
+				disposePlan();
+				plan();
+			}
+		}
 	}
 	
 	public void setExplore(){
@@ -114,9 +139,9 @@ public class Villager extends MidEntity implements Agent {
 	}
 	
 	private void adjustNeeds() {
-		hunger = hunger - 0.01f;
-		thirst = thirst - 0.01f;
-		sleepiness = sleepiness - 0.003f;
+		hunger = hunger - 0.03f;
+		thirst = thirst - 0.03f;
+		sleepiness = sleepiness - 0.01f;
 	}
 	
 	private void seeIfDead() {

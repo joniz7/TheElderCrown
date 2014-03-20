@@ -4,6 +4,7 @@ import java.util.PriorityQueue;
 
 import model.villager.Villager;
 import model.villager.intentions.gathering.GatherFoodIntent;
+import model.villager.intentions.plan.Plan;
 
 public class IntentionHandler {
 
