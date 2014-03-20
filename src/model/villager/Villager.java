@@ -33,6 +33,8 @@ public class Villager extends MidEntity implements Agent {
 	private int length, weight;
 	private String name;
 	private int age,ageprog;
+	
+	//The deathrisk based on age.
 	private int deathrisk;
 	
 	private Item activeItem;
@@ -74,7 +76,6 @@ public class Villager extends MidEntity implements Agent {
 		
 		ageprog++;
 		seeIfBirthday();
-		System.out.println("\n"+age );
 		adjustNeeds();
 		
 		// If order was received, take it into consideration when planning
@@ -120,9 +121,8 @@ public class Villager extends MidEntity implements Agent {
 	}
 	
 	private void seeIfDead() {
-		if(hunger < -100.f || thirst < -100.f || RandomClass.getRandomInt(100, deathrisk) >= 100) {
+		if(hunger < -100.f || thirst < -100.f || RandomClass.getRandomInt(10000, deathrisk) >= 10000) {
 			dead = true;
-			System.out.println(dead);
 		}
 	}
 	
@@ -130,12 +130,8 @@ public class Villager extends MidEntity implements Agent {
 		if(ageprog>100){
 			age++;
 			ageprog=0;
-			if(age>30){
-				if(age%3==0){
-					deathrisk++;
-					//deathrisk += (age-30)%2;
-				}
-				
+			if(age>30){				
+				deathrisk++;				
 			}
 		}
 	}
