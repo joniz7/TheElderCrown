@@ -40,14 +40,20 @@ public class MoveAction extends Action{
 		if(path == null && crit != null){
 			Point p = FindObject.findObjectNeighbour(world, 
 					crit, type, villager.getX(), villager.getY());
-			if(p!=null)
+
+			if(p == null){
+				System.out.println("WATER ABANDONDED ");
+				villager.actionDone();
+				villager.disposePlan();
+				villager.clearInventory();
+//				villager.setExplore();
+			}else
 				path = PathFinder.getPathToAdjacent(villager.getX(), villager.getY(), 
-					p.x, p.y);
+						p.x, p.y);
 			type = null;
 		}
 		
 		if(path == null){
-
 			actionFailed();
 			return;
 		}

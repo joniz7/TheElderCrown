@@ -3,6 +3,7 @@ package model.villager.intentions;
 import java.util.PriorityQueue;
 
 import model.villager.Villager;
+import model.villager.intentions.gathering.GatherDrinkIntent;
 import model.villager.intentions.gathering.GatherFoodIntent;
 import model.villager.intentions.plan.Plan;
 
@@ -24,6 +25,7 @@ public class IntentionHandler {
 		pq.add(new IdleIntent(villager));
 		
 		pq.add(new GatherFoodIntent(villager));
+		pq.add(new GatherDrinkIntent(villager));
 		
 		//pq.add(new ExploreIntent(villager));
 	}
@@ -50,6 +52,7 @@ public class IntentionHandler {
 	 * @author Niklas
 	 */
 	public Plan getFirstPlan(){
+		System.out.println("GET NEW PLAN");
 		Intent i = pq.peek();
 		if (!(i instanceof Intent)) {
 			pq.poll();

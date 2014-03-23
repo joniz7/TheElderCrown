@@ -5,6 +5,7 @@ import java.util.LinkedList;
 
 import model.RandomWorld;
 import model.entity.top.Tree;
+import model.item.food.FoodSource;
 import model.path.FindObject;
 import model.path.PathFinder;
 import model.path.criteria.HasFood;
@@ -24,26 +25,26 @@ public class EatPlan extends Plan{
 		actionQueue = new LinkedList<Action>();
 		name = "Wants to eat";
 		
-		Tree tree = (Tree) FindObject.getAdjacentObject(villager.getWorld(), new HasFood(), 
-				EntityType.TREE, villager.getX(), villager.getY());
+		FoodSource fs = (FoodSource) FindObject.getAdjacentObject(villager.getWorld(), new HasFood(), 
+				null, villager.getX(), villager.getY());
 
 		// We're next to a tree. Eat!
-		if(tree != null){
+		if(fs != null){
 			actionQueue.addLast(new EatAction(villager));
 		}
 		
 		// We need to move, and then eat
 		else{
-			Point p = FindObject.findObjectNeighbour(villager.getWorld(), new HasFood(), EntityType.TREE, 
-					villager.getX(), villager.getY());
-			Path movePath = null;
-			if(p != null){
-				movePath = PathFinder.getPathToAdjacent(villager.getX(), villager.getY(), p.x, p.y);
-			}else{
-				villager.setExplore();
-				isFinished=true;
-			}
-			actionQueue.add(new MoveAction(villager, movePath));
+//			Point p = FindObject.findObjectNeighbour(villager.getWorld(), new HasFood(), null, 
+//					villager.getX(), villager.getY());
+//			Path movePath = null;
+//			if(p != null){
+//				movePath = PathFinder.getPathToAdjacent(villager.getX(), villager.getY(), p.x, p.y);
+//			}else{
+//				villager.setExplore();
+//				isFinished=true;
+//			}
+			actionQueue.add(new MoveAction(villager, null, new HasFood()));
 			actionQueue.addLast(new EatAction(villager));
 		}
 		

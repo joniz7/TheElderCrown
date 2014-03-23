@@ -18,10 +18,12 @@ import model.entity.bottom.WaterTile;
 import model.entity.mid.MidEntity;
 import model.entity.top.TopEntity;
 import model.entity.top.Tree;
+import model.entity.top.house.DrinkStorage;
 import model.entity.top.house.FoodStorage;
 import model.entity.top.house.HouseCorner;
 import model.entity.top.house.HouseDoor;
 import model.entity.top.house.HouseWall;
+import model.path.FindObject;
 import model.path.PathFinder;
 import model.villager.Villager;
 
@@ -70,6 +72,8 @@ public class RandomWorld extends World{
 		generateHouses();
 		generateTrees();
 		generateGrass();
+		
+		new FindObject(this);
 		
 //		for(int i = 112; i < 128; i++) {
 //			for(int j = 112; j < 128; j++) {
@@ -212,6 +216,10 @@ public class RandomWorld extends World{
 		FoodStorage storage = new FoodStorage(38, 33);
 		addEntity(new Point(38, 33), storage);
 		addFoodStorageUI(new Point(38, 33), storage);
+		
+		DrinkStorage storage2 = new DrinkStorage(41, 33);
+		addEntity(new Point(41, 33), storage2);
+		addDrinkStorageUI(new Point(41, 33), storage2);
 	}
 	
 	/**

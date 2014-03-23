@@ -139,9 +139,9 @@ public class Villager extends MidEntity implements Agent {
 	}
 	
 	private void adjustNeeds() {
-		hunger = hunger - 0.03f;
-		thirst = thirst - 0.03f;
-		sleepiness = sleepiness - 0.01f;
+		hunger = hunger - 0.01f;
+		thirst = thirst - 0.013f;
+		sleepiness = sleepiness - 0.005f;
 	}
 	
 	private void seeIfDead() {
@@ -323,6 +323,12 @@ public class Villager extends MidEntity implements Agent {
 	}
 	
 	public boolean addToInventory(Item item){
+		int count = 0;
+		for(int i = 0; i < inventory.length; i++)
+			if(inventory[i] == null)
+				count++;
+		System.out.println("FREE SPACE " + count);
+			
 		for(int i = 0; i < inventory.length; i++)
 			if(inventory[i] == null){
 				inventory[i] = item;

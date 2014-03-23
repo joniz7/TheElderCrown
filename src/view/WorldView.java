@@ -158,6 +158,10 @@ public class WorldView implements PropertyChangeListener {
 				FoodStorage fs = (FoodStorage) entity;
 				view = new FoodStorageView(fs.getX(), fs.getY());
 				break;
+			case DRINK_STORAGE:
+				DrinkStorage ds = (DrinkStorage) entity;
+				view = new DrinkStorageView(ds.getX(), ds.getY());
+				break;
 			}
 			PropertyChangeSupport pcs = entity.getPCS();
 			pcs.addPropertyChangeListener(view);
@@ -220,6 +224,13 @@ public class WorldView implements PropertyChangeListener {
 			PropertyChangeSupport pcs = entity.getPCS();
 			pcs.addPropertyChangeListener(view);
 			UI.add(view);
+		}else if (name.equals("addDrinkStorageUI")) {
+			DrinkStorage entity = (DrinkStorage) event.getNewValue();
+			EntityView view = new DrinkStorageUI();
+			PropertyChangeSupport pcs = entity.getPCS();
+			pcs.addPropertyChangeListener(view);
+			UI.add(view);
+			System.out.println("ADDED");
 		}
 		else if (name.equals("removeTopEntity")) {
 			// TODO search and remove from list
