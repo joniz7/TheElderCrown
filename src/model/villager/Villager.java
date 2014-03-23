@@ -26,7 +26,7 @@ import view.entity.mid.VillagerView;
 
 public class Villager extends MidEntity implements Agent {
 
-	private float hunger = 80f, thirst = -50f, speed = 30, sleepiness = 80f, laziness = 1f ;
+	private float hunger = RandomClass.getRandomInt(75, 0), thirst = -50f, speed = 30, sleepiness = 80f, laziness = 1f ;
 	private VillagerWorld world;
 	private boolean dead = false;
 	private String currentAction, currentPlan;

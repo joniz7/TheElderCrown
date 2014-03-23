@@ -496,8 +496,9 @@ public static Point findTile2(VillagersWorldPerception world, EntityType id, int
 //					View.addTopGraphic(new Helper1View(p.x, p.y));
 			}
 			
-			if(stacks > 300 || visited.size() == 0){
+			if(stacks > 100 || visited.size() == 0){
 				System.out.println("FindObject: " + visited.size());
+				System.out.println("FindObject: " + crit);
 				Exception e = new Exception();
 				e.printStackTrace();
 				return null;

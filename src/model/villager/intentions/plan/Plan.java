@@ -24,6 +24,10 @@ public class Plan {
 	}
 	
 	public void actionDone() {
+		if(actionQueue.size() <= 0){
+			villager.disposePlan();
+			return;
+		}
 		actionQueue.pop();
 		if(actionQueue.size() <= 0)
 			isFinished = true;
