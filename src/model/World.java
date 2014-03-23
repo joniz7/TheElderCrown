@@ -46,6 +46,9 @@ public abstract class World implements Tickable, VillagersWorldPerception, Prope
 	// Agents (e.g. villagers)
 	protected HashMap<Point, Agent> agents;
 	
+	// Cursor position
+	protected Point cPos;
+	
 	// All entities of this world (grass, trees, villagers, ...)
 	protected HashMap<Point, Entity> botEntities;
 	protected HashMap<Point, Entity> midEntities;
@@ -59,7 +62,7 @@ public abstract class World implements Tickable, VillagersWorldPerception, Prope
 	
 	// World configuration
 	private final int VIEW_DISTANCE = 10;
-	public final int VILLAGER_SPAWN_POS = 40, VILLAGER_COUNT = 8;
+	public final int VILLAGER_SPAWN_POS = 40, VILLAGER_COUNT = 1;
 	
 	// Keep track of when to spawn babies
 	private boolean spawnBabies = false;
@@ -67,6 +70,8 @@ public abstract class World implements Tickable, VillagersWorldPerception, Prope
 	private int spawnBabiesAfter = 1000;
 
 	protected final PropertyChangeSupport pcs;
+	
+	private int time = 15000;
 	
     public void addPropertyChangeListener(PropertyChangeListener listener) {
         this.pcs.addPropertyChangeListener(listener);
@@ -93,6 +98,11 @@ public abstract class World implements Tickable, VillagersWorldPerception, Prope
 	@Override
 	public void tick(){
 		if(!paused) {
+			time++;
+			pcs.firePropertyChange("setTime", cPos, time);
+			
+			if(time >= 18000)
+				time = 0;
 			
 			// Possibly create babies
 			if (spawnBabies && babyTimer++ >= spawnBabiesAfter) {
@@ -696,6 +706,12 @@ public abstract class World implements Tickable, VillagersWorldPerception, Prope
 	 */
 	public World copy() {
 		throw new OperationNotSupportedException("helo");
+	}
+	public Point getcPos() {
+		return cPos;
+	}
+	public void setcPos(Point cPos) {
+		this.cPos = cPos;
 	}
 	
 }

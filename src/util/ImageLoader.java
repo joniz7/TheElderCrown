@@ -48,6 +48,9 @@ public class ImageLoader {
 		imageLib.put("helper", loadImage("image", "miss.png"));
 		imageLib.put("helper2", loadImage("image", "hit.png"));
 		imageLib.put("helper3", loadImage("image", "checker.png"));
+		
+		//misc
+		imageLib.put("light", loadImage("image", "light.png"));
 	}
 	
 	public static Image getImage(String name){

@@ -227,8 +227,7 @@ public class WorldController implements GameState {
 
 	@Override
 	public void mouseMoved(int arg0, int arg1, int arg2, int arg3) {
-		// TODO Auto-generated method stub
-
+		world.setcPos(new Point(arg2, arg3));
 	}
 
 	@Override
