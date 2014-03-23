@@ -24,9 +24,15 @@ public class SleepIntent extends PrimitiveIntent {
 
 	@Override
 	public void calculateDesire() {
-		setDesire(-villager.getSleepiness() * 3);
-//		System.out.println("SleepIntent: " + desire);
-
+		int time = villager.getTime();
+		int hours = time / 750;
+		
+		if(hours > 22 || hours < 8)
+			setDesire(-villager.getSleepiness() + 100);
+		else
+			setDesire(-villager.getSleepiness() - 100);
+		
+		System.out.println("Sleepy: " + desire + " at hour " + hours);
 	}
 
 }

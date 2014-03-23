@@ -9,6 +9,6 @@ import util.Copyable;
 public interface Agent extends Copyable, Serializable {
 	public Action getAction();
 	public void actionDone();
-	void update(Perception p);
+	void update(Perception p, int time);
 	public boolean isDead();
 }

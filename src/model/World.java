@@ -176,7 +176,7 @@ public abstract class World implements Tickable, VillagersWorldPerception, Prope
 					}
 				}
 
-				agent.update(perception);
+				agent.update(perception, time);
 				Action activeAction = agent.getAction();
 				if(activeAction != null && !activeAction.isFailed() && !activeAction.isFinished())
 					activeAction.tick(this);

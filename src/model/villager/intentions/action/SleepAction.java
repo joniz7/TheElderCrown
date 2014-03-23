@@ -50,7 +50,7 @@ public class SleepAction extends Action {
 				villager.updateStatus("sleeping");
 				firstTick = false;
 			}
-			villager.satisfySleep(0.2f);
+			villager.satisfySleep(0.029f);
 			stacks = stacks + 0.3f;
 			if(stacks > sleepToGet){
 				villager.setBlocking(true);

@@ -38,6 +38,8 @@ public class Villager extends MidEntity implements Agent {
 	private int sex; // 0 -female, 1 - male
 	private Point myBed = null;
 	
+	private int time;
+	
 	private Item activeItem;
 	private Item[] inventory = new Item[6];
 	
@@ -71,9 +73,11 @@ public class Villager extends MidEntity implements Agent {
 	 * The villager is given a perception, which includes information
 	 * about her position, and possibly an order she should obey.
 	 */
-	public void update(Perception p) {
+	public void update(Perception p, int time) {
 		updatePos(p.position.x, p.position.y);
 		updateUI();
+		
+		this.time = time;
 		
 		world.updateBotEntities(p.botEntities);
 		world.updateMidEntities(p.midEntities);
@@ -140,8 +144,8 @@ public class Villager extends MidEntity implements Agent {
 	
 	private void adjustNeeds() {
 		hunger = hunger - 0.01f;
-		thirst = thirst - 0.013f;
-		sleepiness = sleepiness - 0.005f;
+		thirst = thirst - 0.02f;
+		sleepiness = sleepiness - 0.012f;
 	}
 	
 	private void seeIfDead() {
@@ -353,6 +357,8 @@ public class Villager extends MidEntity implements Agent {
 	public Plan getActivePlan() {
 		return activePlan;
 	}
-	
-	
+
+	public int getTime() {
+		return time;
+	}
 }
