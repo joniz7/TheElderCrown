@@ -143,8 +143,15 @@ public class Villager extends MidEntity implements Agent {
 	}
 	
 	private void adjustNeeds() {
-		hunger = hunger - 0.01f;
-		thirst = thirst - 0.02f;
+		int hours = time / 750;
+		
+		if(hours >= 22 || hours < 8){
+
+		}else{
+			hunger = hunger - 0.01f;
+			thirst = thirst - 0.02f;
+		}
+		
 		sleepiness = sleepiness - 0.012f;
 	}
 	

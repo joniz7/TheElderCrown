@@ -27,10 +27,10 @@ public class SleepIntent extends PrimitiveIntent {
 		int time = villager.getTime();
 		int hours = time / 750;
 		
-		if(hours > 22 || hours < 8)
-			setDesire(-villager.getSleepiness() + 100);
+		if(hours >= 22 || hours < 8)
+			setDesire(-villager.getSleepiness() + 50);
 		else
-			setDesire(-villager.getSleepiness() - 100);
+			setDesire(-villager.getSleepiness() - 75);
 		
 		System.out.println("Sleepy: " + desire + " at hour " + hours);
 	}
