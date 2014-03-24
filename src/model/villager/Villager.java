@@ -106,8 +106,8 @@ public class Villager extends MidEntity implements Agent {
 		seeIfDead();
 		plan();
 		
-		if(profession != null)
-			profession.update(time);
+//		if(profession != null)
+//			profession.update(time);
 		
 		if(activePlan.getActiveAction() == null){
 			disposePlan();
