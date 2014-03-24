@@ -1,9 +1,10 @@
-package model.villager.intentions;
+package model.villager.intentions.plan;
 
 import java.awt.Point;
 
 import model.path.PathFinder;
 import model.villager.Villager;
+import model.villager.intentions.action.MoveAction;
 
 import org.newdawn.slick.util.pathfinding.Path;
 

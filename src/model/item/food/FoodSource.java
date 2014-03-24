@@ -1,7 +1,10 @@
 package model.item.food;
 
-public interface FoodSource {
+import model.path.criteria.HasFood;
 
-	public Food getFood();
+public interface FoodSource{
+
+	public Food getFood(); 
+	public boolean hasFood();
 	
 }

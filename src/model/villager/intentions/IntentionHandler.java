@@ -3,15 +3,28 @@ package model.villager.intentions;
 import java.util.PriorityQueue;
 
 import model.villager.Villager;
+import model.villager.intentions.gathering.GatherDrinkIntent;
 import model.villager.intentions.gathering.GatherFoodIntent;
+import model.villager.intentions.plan.Plan;
 
 public class IntentionHandler {
 
+	private int timer;
+	
 	private PriorityQueue<Intent> pq;
 	private IntentComparator intentComparator;
 	
+	private Plan activePlan;
+	private Intent lastIntent;
+	
+	private Villager villager;
+	
 	public IntentionHandler(Villager villager){
 
+		timer = (int)(Math.random()*100);
+		
+		this.villager = villager;
+		
 		// Initialize intention queue (= planning algorithm)
 		intentComparator = new IntentComparator();
 		pq = new PriorityQueue<Intent>(5, intentComparator);
@@ -23,6 +36,7 @@ public class IntentionHandler {
 		pq.add(new IdleIntent(villager));
 		
 		pq.add(new GatherFoodIntent(villager));
+		pq.add(new GatherDrinkIntent(villager));
 		
 		//pq.add(new ExploreIntent(villager));
 	}
@@ -36,24 +50,40 @@ public class IntentionHandler {
 		
 		//  Update order of intents
 		// TODO necessary to use PQ like this? quite resource intensive
-		PriorityQueue<Intent> newPQ = new PriorityQueue<Intent>(5, intentComparator);
-		while(!pq.isEmpty())
-			newPQ.add(pq.poll());
-		pq = newPQ;
+		if(timer % 150 == 0) {
+			PriorityQueue<Intent> newPQ = new PriorityQueue<Intent>(5, intentComparator);
+			while(!pq.isEmpty())
+				newPQ.add(pq.poll());
+			pq = newPQ;
+		}
+		timer++;
 	}
 	
 	/**
 	 * Gets the topmost Intent's Plan.
 	 * 
-	 * Also removes the intent from the queue (unless it's a primitive intent)
 	 * @author Niklas
 	 */
 	public Plan getFirstPlan(){
-		Intent i = pq.peek();
-		if (!(i instanceof Intent)) {
+		if(lastIntent != pq.peek()) {
+			lastIntent = pq.peek();
+			activePlan = lastIntent.getPlan();
+			villager.updateStatus("statusEnd");
+		}
+		
+		return activePlan;
+	}
+	
+	/**
+	 * Removes the topmost Intent if it's not a PrimitiveIntent
+	 * 
+	 * @author Jonathan Orrö
+	 */
+	public void intentDone(){
+		if(!(pq.peek() instanceof PrimitiveIntent)) {
+			System.out.println("GET NEW PLAN");
 			pq.poll();
 		}
-		return i.getPlan();
 	}
 	
 	/**

@@ -1,12 +1,14 @@
 package model.villager.intentions;
 
 import model.villager.Villager;
+import model.villager.intentions.plan.ExplorePlan;
+import model.villager.intentions.plan.Plan;
 
 public class ExploreIntent extends Intent {
 
 
 	public ExploreIntent(Villager villager) {
-		super(0, villager);
+		super(villager);
 	}
 
 	@Override

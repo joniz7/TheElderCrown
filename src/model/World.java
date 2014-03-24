@@ -15,16 +15,17 @@ import java.util.Set;
 
 import model.entity.Agent;
 import model.entity.Entity;
-import model.entity.MidEntity;
 import model.entity.bottom.BottomEntity;
+import model.entity.mid.MidEntity;
 import model.entity.top.TopEntity;
 import model.entity.top.Tree;
+import model.entity.top.house.DrinkStorage;
 import model.entity.top.house.FoodStorage;
 import model.path.PathFinder;
 import model.villager.Perception;
 import model.villager.Villager;
 import model.villager.VillagersWorldPerception;
-import model.villager.intentions.Action;
+import model.villager.intentions.action.Action;
 import model.villager.order.Order;
 
 import org.newdawn.slick.util.OperationNotSupportedException;
@@ -46,6 +47,9 @@ public abstract class World implements Tickable, VillagersWorldPerception, Prope
 	// Agents (e.g. villagers)
 	protected HashMap<Point, Agent> agents;
 	
+	// Cursor position
+	protected Point cPos;
+	
 	// All entities of this world (grass, trees, villagers, ...)
 	protected HashMap<Point, Entity> botEntities;
 	protected HashMap<Point, Entity> midEntities;
@@ -60,8 +64,15 @@ public abstract class World implements Tickable, VillagersWorldPerception, Prope
 	// World configuration
 	private final int VIEW_DISTANCE = 10;
 	public final int VILLAGER_SPAWN_POS = 40, VILLAGER_COUNT = 1;
+	
+	// Keep track of when to spawn babies
+	private boolean spawnBabies = false;
+	private int babyTimer = 0;
+	private int spawnBabiesAfter = 1000;
 
 	protected final PropertyChangeSupport pcs;
+	
+	private int time = 14000;
 	
     public void addPropertyChangeListener(PropertyChangeListener listener) {
         this.pcs.addPropertyChangeListener(listener);
@@ -88,10 +99,24 @@ public abstract class World implements Tickable, VillagersWorldPerception, Prope
 	@Override
 	public void tick(){
 		if(!paused) {
+			time++;
+			pcs.firePropertyChange("setTime", cPos, time);
+			
+			if(time >= 18000)
+				time = 0;
+			
+			// Possibly create babies
+			if (spawnBabies && babyTimer++ >= spawnBabiesAfter) {
+				babyTimer = 0;
+				Point p = new Point(VILLAGER_SPAWN_POS, VILLAGER_SPAWN_POS);
+				newVillager(p,0);		
+			}
+			
 			// Update all tickables
 			for(Tickable t : tickables){
 				t.tick();
 			}
+			
 			updateAgents();
 		}
 	}
@@ -153,7 +178,7 @@ public abstract class World implements Tickable, VillagersWorldPerception, Prope
 					}
 				}
 
-				agent.update(perception);
+				agent.update(perception, time);
 				Action activeAction = agent.getAction();
 				if(activeAction != null && !activeAction.isFailed() && !activeAction.isFinished())
 					activeAction.tick(this);
@@ -163,6 +188,27 @@ public abstract class World implements Tickable, VillagersWorldPerception, Prope
 		}
 	}
 
+	/**
+	 * Create a new villager in the world at the specified point.
+	 * Also creates UI and registers view bindings.
+	 * 
+	 *  @param p - the point to place the villager at.
+	 *  		   If occupied in middle layer, this method does nothing
+	 */
+	private void newVillager(Point p, int age) {
+		// Spawn only if position is empty
+		if (midEntities.get(p) == null) {
+			System.out.println("A baby is born!");
+			Villager v = new Villager(p,age);
+			addEntity(p, v);
+			addVillagerUI(p, v);
+			v.getPCS().addPropertyChangeListener(this);
+		}
+		else {
+			System.out.println("Can't spawn baby: Too many people, too many problems");
+		}
+	}
+	
 	@Override
 	/**
 	 * Checks whether the given position is blocked in any layer.
@@ -255,10 +301,7 @@ public abstract class World implements Tickable, VillagersWorldPerception, Prope
 		
 		for(int i = 0; i < VILLAGER_COUNT; i++) {
 			Point pos = new Point(VILLAGER_SPAWN_POS + 5, VILLAGER_SPAWN_POS+i);
-			Villager villager = new Villager(VILLAGER_SPAWN_POS + 5, VILLAGER_SPAWN_POS+i,RandomClass.getRandomInt(10, 15));
-			addEntity(pos, villager);
-			addVillagerUI(pos, villager);
-			villager.getPCS().addPropertyChangeListener(this);
+			newVillager(pos, RandomClass.getRandomInt(10, 15));
 		}
 	}
 	
@@ -471,6 +514,10 @@ public abstract class World implements Tickable, VillagersWorldPerception, Prope
 		pcs.firePropertyChange("addFoodStorageUI", null, fs);
 	}
 	
+	protected void addDrinkStorageUI(Point point, DrinkStorage storage2) {
+		pcs.firePropertyChange("addDrinkStorageUI", null, storage2);
+	}
+	
 	private void addAgent(Point point, Agent agent){
 		agents.put(point, agent);
 	}
@@ -662,6 +709,12 @@ public abstract class World implements Tickable, VillagersWorldPerception, Prope
 	 */
 	public World copy() {
 		throw new OperationNotSupportedException("helo");
+	}
+	public Point getcPos() {
+		return cPos;
+	}
+	public void setcPos(Point cPos) {
+		this.cPos = cPos;
 	}
 	
 }

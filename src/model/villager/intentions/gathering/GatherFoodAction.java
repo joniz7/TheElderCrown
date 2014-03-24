@@ -7,7 +7,7 @@ import model.path.FindObject;
 import model.path.criteria.HasFood;
 import model.villager.Villager;
 import model.villager.VillagersWorldPerception;
-import model.villager.intentions.Action;
+import model.villager.intentions.action.Action;
 
 public class GatherFoodAction extends Action{
 
@@ -37,5 +37,11 @@ public class GatherFoodAction extends Action{
 			villager.updateStatus("statusEnd");
 			actionFailed();
 		}
+	}
+
+	@Override
+	public float getCost() {
+		// TODO Auto-generated method stub
+		return 0;
 	}
 }

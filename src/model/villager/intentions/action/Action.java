@@ -1,4 +1,4 @@
-package model.villager.intentions;
+package model.villager.intentions.action;
 
 import model.villager.Villager;
 import model.villager.VillagersWorldPerception;
@@ -14,6 +14,8 @@ public abstract class Action {
 	}
 	
 	public abstract void tick(VillagersWorldPerception world);
+	
+	public abstract float getCost();
 	
 	public boolean isFinished() {
 		return isFinished;

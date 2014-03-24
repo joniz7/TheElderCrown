@@ -1,25 +1,31 @@
 package view;
 
 import java.awt.Point;
+import java.awt.image.BufferedImage;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.beans.PropertyChangeSupport;
 import java.util.ArrayList;
 
-import model.entity.MidEntity;
+import model.entity.bottom.Bed;
 import model.entity.bottom.BottomEntity;
 import model.entity.bottom.HouseFloor;
+import model.entity.mid.MidEntity;
 import model.entity.top.TopEntity;
 import model.entity.top.Tree;
 import model.villager.Villager;
 import model.entity.top.house.*;
 
+import org.newdawn.slick.Color;
 import org.newdawn.slick.Graphics;
+import org.newdawn.slick.Image;
 
 import util.EntityType;
+import util.ImageLoader;
 import view.entity.EntityView;
 import view.entity.bot.GrassTileView;
 import view.entity.bot.WaterTileView;
+import view.entity.mid.BedView;
 import view.entity.mid.VillagerView;
 import view.entity.top.TreeView;
 import view.entity.top.house.*;
@@ -32,18 +38,32 @@ public class WorldView implements PropertyChangeListener {
 	private ArrayList<EntityView> botGraphics = new ArrayList<EntityView>();
 	private ArrayList<EntityView> UI = new ArrayList<EntityView>();
 
+	//Day-Night cycle
+	private Color overlay;
+	private int hours;
+	private float alpha, alphaMod;
+	private int cX, cY;
+	private float rot;
+	private boolean night = false;
 	
 	private static final int SCROLL_SPEED = 8;
 	private static int width, height;
 	private static int cameraX, cameraY;
 	private static int worldXSize, worldYSize;
 	
-	// The size of each tile in pixels (?)
+	//Day-Night-stuff
+	private Image lightMap = ImageLoader.getImage("light");
+	private Image clock = ImageLoader.getImage("clock");
+	private Image clockBorder = ImageLoader.getImage("clockBorder");
+	
+	// The size ofeach tile in pixels (?)
 	public static final int TILE_OFFSET = 20;
 
 	public WorldView(int width, int height) {
 		WorldView.width = width;
 		WorldView.height = height;
+		overlay = new Color(Color.black);
+		overlay.a = 0;
 	}
 
 	public void addTopGraphic(EntityView d){
@@ -100,14 +120,45 @@ public class WorldView implements PropertyChangeListener {
 	}
 
 	public void render(Graphics g){
+		g.clearAlphaMap();
+		g.setDrawMode(Graphics.MODE_NORMAL);
+		
 		for(EntityView d : botGraphics)
 			d.draw(g, cameraX, cameraY, width, height);
 		for(EntityView d : midGraphics)
 			d.draw(g, cameraX, cameraY, width, height);
 		for(EntityView d : topGraphics)
 			d.draw(g, cameraX, cameraY, width, height);
+		
+		g.setColor(overlay);
+		overlay.a = alpha;
+		g.fillRect(0, 0, width, height);
+		
+		if(night){
+			g.setColor(Color.white);
+			// write only alpha
+			g.setDrawMode(Graphics.MODE_ALPHA_MAP);
+			
+//			g.drawImage(lightMap, cX - 2000, cY - 2000);
+			lightMap.draw(cX - 2000, cY - 2000);
+			
+			g.setDrawMode(Graphics.MODE_ALPHA_BLEND);
+			g.setColor(overlay);
+			overlay.a = alpha;
+			g.fillRect(0, 0, width, height);
+			
+			g.setDrawMode(Graphics.MODE_NORMAL);
+		}
+		
 		for(EntityView d : UI)
 			d.draw(g, cameraX, cameraY, width, height);
+		
+		
+		
+		g.rotate((width / 2), -110, rot);
+		g.drawImage(clock, (width / 2) - 170, -280);
+		g.rotate((width / 2), -110, -rot);
+		g.drawImage(clockBorder, (width / 2) - 150, 0);
 	}
 
 	/**
@@ -156,6 +207,10 @@ public class WorldView implements PropertyChangeListener {
 				FoodStorage fs = (FoodStorage) entity;
 				view = new FoodStorageView(fs.getX(), fs.getY());
 				break;
+			case DRINK_STORAGE:
+				DrinkStorage ds = (DrinkStorage) entity;
+				view = new DrinkStorageView(ds.getX(), ds.getY());
+				break;
 			}
 			PropertyChangeSupport pcs = entity.getPCS();
 			pcs.addPropertyChangeListener(view);
@@ -171,6 +226,7 @@ public class WorldView implements PropertyChangeListener {
 				view = new VillagerView(entity.getX(), entity.getY(), 
 						villager.getLength(), villager.getWeight());
 				break;
+
 			}
 			PropertyChangeSupport pcs = entity.getPCS();
 			pcs.addPropertyChangeListener(view);
@@ -190,6 +246,10 @@ public class WorldView implements PropertyChangeListener {
 			case HOUSE_FLOOR:
 				HouseFloor floor = (HouseFloor) entity;
 				view = new HouseFloorView(floor.getX(), floor.getY());
+				break;
+			case BED:
+				Bed bed = (Bed) entity;
+				view = new BedView(entity.getX(),entity.getY());
 				break;
 			}
 			PropertyChangeSupport pcs = entity.getPCS();
@@ -213,6 +273,13 @@ public class WorldView implements PropertyChangeListener {
 			PropertyChangeSupport pcs = entity.getPCS();
 			pcs.addPropertyChangeListener(view);
 			UI.add(view);
+		}else if (name.equals("addDrinkStorageUI")) {
+			DrinkStorage entity = (DrinkStorage) event.getNewValue();
+			EntityView view = new DrinkStorageUI();
+			PropertyChangeSupport pcs = entity.getPCS();
+			pcs.addPropertyChangeListener(view);
+			UI.add(view);
+			System.out.println("ADDED");
 		}
 		else if (name.equals("removeTopEntity")) {
 			// TODO search and remove from list
@@ -224,6 +291,40 @@ public class WorldView implements PropertyChangeListener {
 		}
 		else if (name.equals("removeBotEntity")) {
 			throw new UnsupportedOperationException();
+		}
+		else if(name.equals("setTime")){
+			Integer time = (Integer) event.getNewValue();
+			int hours = time / 750;
+			
+			if(hours >= 20 && hours <= 21){
+				alphaMod = 0.00068f;
+			}else if(hours > 21 && hours <= 22){
+				alphaMod = -0.005f;
+				night = true;
+			}else if(hours == 23){
+				alphaMod = 0;
+			}else if(hours >= 6 && hours <= 7){
+				alphaMod = -0.00068f;
+				night = false;
+			}else if(hours >= 5 && hours < 6){
+				alphaMod = 0.005f;
+			}else if(hours == 8){
+				alphaMod = 0;
+			}
+
+			alpha = alpha + alphaMod;
+			rot = time / 50;
+			
+//			System.out.println("Hours -" + hours + " : " + alpha);
+			
+			Point cPos = (Point) event.getOldValue();
+			if(cPos != null){
+				cX = cPos.x;
+				cY = cPos.y;
+			}else{
+				cX = 0;
+				cY = 0;
+			}
 		}
 	}
 	

@@ -1,4 +1,4 @@
-package model.villager.intentions;
+package model.villager.intentions.action;
 
 import java.awt.Point;
 
@@ -40,13 +40,20 @@ public class MoveAction extends Action{
 		if(path == null && crit != null){
 			Point p = FindObject.findObjectNeighbour(world, 
 					crit, type, villager.getX(), villager.getY());
-			path = PathFinder.getPathToAdjacent(villager.getX(), villager.getY(), 
-					p.x, p.y);
+
+			if(p == null){
+				System.out.println("WATER ABANDONDED ");
+				villager.actionDone();
+				villager.disposePlan();
+				villager.clearInventory();
+//				villager.setExplore();
+			}else
+				path = PathFinder.getPathToAdjacent(villager.getX(), villager.getY(), 
+						p.x, p.y);
 			type = null;
 		}
 		
 		if(path == null){
-
 			actionFailed();
 			return;
 		}
@@ -88,15 +95,6 @@ public class MoveAction extends Action{
 		}
 	}
 	
-//	public boolean isMoving() {
-//		return moving;
-//	}
-//
-//	public void setMoving(boolean moving) {
-//		this.moving = moving;
-//		stepCount = 0;
-//	}
-
 	@Override
 	protected void actionFailed() {
 		villager.updateStatus("statusEnd");
@@ -107,6 +105,16 @@ public class MoveAction extends Action{
 	protected void actionFinished() {
 		villager.updateStatus("statusEnd");
 		isFinished = true;
+	}
+
+	@Override
+	public float getCost() {
+		// TODO Auto-generated method stub
+		if(path != null) {
+			return path.getLength();
+		}else{
+			return 0;
+		}
 	}
 
 	

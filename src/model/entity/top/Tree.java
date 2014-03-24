@@ -93,8 +93,8 @@ public class Tree extends TopEntity implements Tickable, FoodSource{
 	 * 
 	 * @return true if the tree has fruit to be harvested, false otherwise.
 	 */
-	public boolean hasFruit() {
-		return fruit;
+	public boolean hasFood() {
+		return fruitCount > 0;
 	}
 	
 	@Override

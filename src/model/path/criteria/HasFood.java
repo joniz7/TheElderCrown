@@ -2,17 +2,21 @@ package model.path.criteria;
 
 import model.entity.Entity;
 import model.entity.top.Tree;
+import model.item.food.FoodSource;
 
 public class HasFood implements Criteria{
 
 	@Override
 	public boolean match(Entity ge){
-		Tree tree = (Tree) ge;
+		if(ge instanceof FoodSource){
+			FoodSource fs = (FoodSource) ge;
 
-		if(tree.hasFruit())
-			return true;
-		else
-			return false;	
+			if(fs.hasFood()){
+				return true;
+			}else
+				return false;	
+		}
+		return false;
 	}
 
 }
