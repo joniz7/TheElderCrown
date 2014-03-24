@@ -10,6 +10,7 @@ import model.entity.MidEntity;
 import model.entity.bottom.BottomEntity;
 import model.entity.bottom.HouseFloor;
 import model.entity.top.TopEntity;
+import model.entity.top.Tree;
 import model.villager.Villager;
 import model.entity.top.house.*;
 
@@ -151,6 +152,10 @@ public class WorldView implements PropertyChangeListener {
 				HouseCorner corner = (HouseCorner) entity;
 				view = new HouseCornerView(corner.getX(), corner.getY(), corner.getOrientation());
 				break;
+			case FOOD_STORAGE:
+				FoodStorage fs = (FoodStorage) entity;
+				view = new FoodStorageView(fs.getX(), fs.getY());
+				break;
 			}
 			PropertyChangeSupport pcs = entity.getPCS();
 			pcs.addPropertyChangeListener(view);
@@ -193,6 +198,18 @@ public class WorldView implements PropertyChangeListener {
 		}else if (name.equals("addVillagerUI")) {
 			Villager entity = (Villager) event.getNewValue();
 			EntityView view = new VillagerUI(entity);
+			PropertyChangeSupport pcs = entity.getPCS();
+			pcs.addPropertyChangeListener(view);
+			UI.add(view);
+		}else if (name.equals("addTreeUI")) {
+			Tree entity = (Tree) event.getNewValue();
+			EntityView view = new TreeUI();
+			PropertyChangeSupport pcs = entity.getPCS();
+			pcs.addPropertyChangeListener(view);
+			UI.add(view);
+		}else if (name.equals("addFoodStorageUI")) {
+			FoodStorage entity = (FoodStorage) event.getNewValue();
+			EntityView view = new FoodStorageUI();
 			PropertyChangeSupport pcs = entity.getPCS();
 			pcs.addPropertyChangeListener(view);
 			UI.add(view);

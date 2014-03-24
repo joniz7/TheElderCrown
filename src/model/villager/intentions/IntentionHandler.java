@@ -3,6 +3,7 @@ package model.villager.intentions;
 import java.util.PriorityQueue;
 
 import model.villager.Villager;
+import model.villager.intentions.gathering.GatherFoodIntent;
 
 public class IntentionHandler {
 
@@ -31,6 +32,9 @@ public class IntentionHandler {
 		pq.add(new DrinkIntent(villager));
 		pq.add(new SleepIntent(villager));
 		pq.add(new IdleIntent(villager));
+		
+		pq.add(new GatherFoodIntent(villager));
+		
 		//pq.add(new ExploreIntent(villager));
 	}
 	
@@ -43,7 +47,7 @@ public class IntentionHandler {
 		
 		//  Update order of intents
 		// TODO necessary to use PQ like this? quite resource intensive
-		if(timer % 50 == 0) {
+		if(timer % 150 == 0) {
 			PriorityQueue<Intent> newPQ = new PriorityQueue<Intent>(5, intentComparator);
 			while(!pq.isEmpty())
 				newPQ.add(pq.poll());

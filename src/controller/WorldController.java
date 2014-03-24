@@ -19,6 +19,8 @@ import model.World;
 import model.WorldMap;
 import model.entity.Agent;
 import model.entity.Entity;
+import model.entity.top.Tree;
+import model.entity.top.house.FoodStorage;
 import model.villager.Villager;
 import model.villager.intentions.MoveIntent;
 import model.villager.order.Order;
@@ -51,12 +53,16 @@ public class WorldController implements GameState {
 	
 	// The currently selected entity. Is changed by mouse clicking
 	private Villager selectedVillager;
+	private Tree selectedTree;
+	private FoodStorage selectedFoodStorage;
 	
 	@Override
 	public void mouseClicked(int button, int x, int y, int clickCount) {
 		Point windowPos = new Point(x,y);
 		if (button == 0) {
 			selectEntity(windowPos);
+			selectTree(windowPos);
+			selectFoodStorage(windowPos);
 		}else if (button == 1){
 			sendMoveOrder(windowPos);
 		}
@@ -107,6 +113,7 @@ public class WorldController implements GameState {
 				v.setShowUI(false);
 			}
 		}
+		
 		// Change current selection maybe show Villager UI
 		Entity e = world.getMidEntities().get(modelPos);
 		if(e instanceof Villager){
@@ -114,6 +121,70 @@ public class WorldController implements GameState {
 			selectedVillager.setShowUI(true);
 		} else {
 			selectedVillager = null;
+		}
+	}
+	
+	/**
+	 * Marks the entity at the clicked position as the currently selected entity.
+	 * Maybe shows a popup containing info about a tree
+	 * 
+	 * @param windowPos - the window coordinates
+	 */
+	private void selectTree(Point windowPos){
+		Point modelPos = WorldView.windowToModelCoordinates(windowPos);
+		
+		HashMap<Point, Entity> temp = (HashMap<Point, Entity>)world.getTopEntities().clone();
+		Iterator<Map.Entry<Point, Entity>> it = temp.entrySet().iterator();
+		
+		// Hide all Trees' UIs
+		while(it.hasNext()){
+			Map.Entry<Point, Entity> e = (Map.Entry<Point, Entity>) it.next();
+			System.out.println();
+			Entity agent = e.getValue();
+			if(agent instanceof Tree){
+				Tree t = (Tree) agent;
+				t.setShowUI(false);
+			}
+		}
+		// Change current selection maybe show Villager UI
+		Entity e = world.getTopEntities().get(modelPos);
+		if(e instanceof Tree){
+			selectedTree = (Tree) e;
+			selectedTree.setShowUI(true);
+		} else {
+			selectedTree = null;
+		}
+	}
+	
+	/**
+	 * Marks the entity at the clicked position as the currently selected entity.
+	 * Maybe shows a popup containing info about a tree
+	 * 
+	 * @param windowPos - the window coordinates
+	 */
+	private void selectFoodStorage(Point windowPos){
+		Point modelPos = WorldView.windowToModelCoordinates(windowPos);
+		
+		HashMap<Point, Entity> temp = (HashMap<Point, Entity>)world.getTopEntities().clone();
+		Iterator<Map.Entry<Point, Entity>> it = temp.entrySet().iterator();
+		
+		// Hide all Trees' UIs
+		while(it.hasNext()){
+			Map.Entry<Point, Entity> e = (Map.Entry<Point, Entity>) it.next();
+			System.out.println();
+			Entity agent = e.getValue();
+			if(agent instanceof FoodStorage){
+				FoodStorage t = (FoodStorage) agent;
+				t.setShowUI(false);
+			}
+		}
+		// Change current selection maybe show Villager UI
+		Entity e = world.getTopEntities().get(modelPos);
+		if(e instanceof FoodStorage){
+			selectedFoodStorage = (FoodStorage) e;
+			selectedFoodStorage.setShowUI(true);
+		} else {
+			selectedFoodStorage = null;
 		}
 	}
 

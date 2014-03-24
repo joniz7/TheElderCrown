@@ -1,6 +1,9 @@
 package model.entity.top;
 
 import model.entity.bottom.GrassTile;
+import model.item.food.Apple;
+import model.item.food.Food;
+import model.item.food.FoodSource;
 import util.EntityType;
 import util.Tickable;
 
@@ -9,11 +12,12 @@ import util.Tickable;
  * 
  * @author Simon E
  */
-public class Tree extends TopEntity implements Tickable{
+public class Tree extends TopEntity implements Tickable, FoodSource{
 	
-	private final int FRUIT_REGROWTH = 50000;
-	private int timer = 0, foodTicks = 1500;
-	private boolean fruit = true;
+	private final int FRUIT_REGROWTH = 5000;
+	private int timer = 0;
+	private boolean fruit = true, isShowUI = false;
+	private int fruitCount = 15;
 	
 	/**
 	 * The constructor which initialises all the necessary things for a tree.
@@ -40,22 +44,50 @@ public class Tree extends TopEntity implements Tickable{
 			// Send update to view
 			pcs.firePropertyChange("fruit", false, true);
 			fruit = true;
+			fruitCount = 15;
 		}
+		updateUI();
 	}
 	
 	/**
 	 * The method to call when the fruit of a tree has been eaten.
 	 */
-	public void eaten(){
+	public Apple getFood(){
 		// Send update to view
-		foodTicks--;
-		if(foodTicks <= 0){
+		fruitCount--;
+		if(fruitCount <= 0){
 			pcs.firePropertyChange("fruit", true, false);
 			fruit = false;
 			timer = 0;
 		}
+		return new Apple();
 	}
 
+	/**
+	 * Method for showing or hiding the UI for this Tree
+	 * 
+	 * @param show - true if the UI should be shown
+	 */
+	public void setShowUI(boolean show){
+		if(show){
+			pcs.firePropertyChange("status", null, "show");
+		}else{
+			pcs.firePropertyChange("status", null, "hide");	
+		}
+		isShowUI = show;
+	}
+	
+	public void updateUI(){
+		if(isShowUI){
+			pcs.firePropertyChange("status", fruitCount, "fruit");
+			
+			float regrowth = -80;
+			regrowth += (timer / (FRUIT_REGROWTH / 160));
+			
+			pcs.firePropertyChange("status", regrowth, "regrowth");
+		}
+	}
+	
 	/**
 	 * A method to check if the tree has fruit or not.
 	 * 
@@ -69,8 +101,8 @@ public class Tree extends TopEntity implements Tickable{
 	public Tree copy() {
 		Tree copy = new Tree(x, y);
 		copy.timer = timer;
-		copy.foodTicks = foodTicks;
 		copy.fruit = fruit;
+		copy.fruitCount = fruitCount;
 		return copy;
 		
 	}

@@ -466,10 +466,10 @@ public static Point findTile2(VillagersWorldPerception world, EntityType id, int
 			visited = new ArrayList<Point>();
 			
 			for(Point p : toVisit){
-				if(mids.get(p) != null && mids.get(p).getType() == id && mids.get(p).meetCriteria(crit) && 
+				if(mids.get(p) != null && (mids.get(p).getType() == id || id == null) && mids.get(p).meetCriteria(crit) && 
 						PathFinder.getPathToAdjacent(p.x, p.y, startX, startY) != null)
 					return p;
-				else if(tops.get(p) != null && tops.get(p).getType() == id && tops.get(p).meetCriteria(crit) && 
+				else if(tops.get(p) != null && (tops.get(p).getType() == id || id == null) && tops.get(p).meetCriteria(crit) && 
 						PathFinder.getPathToAdjacent(p.x, p.y, startX, startY) != null)
 					return p;
 				else {
@@ -479,10 +479,10 @@ public static Point findTile2(VillagersWorldPerception world, EntityType id, int
 			}
 			
 			for(Point p : toCheck){
-				if(mids.get(p) != null && mids.get(p).getType() == id && mids.get(p).meetCriteria(crit) && 
+				if(mids.get(p) != null && (mids.get(p).getType() == id || id == null) && mids.get(p).meetCriteria(crit) && 
 						PathFinder.getPathToAdjacent(p.x, p.y, startX, startY) != null)
 					return p;
-				else if(tops.get(p) != null && tops.get(p).getType() == id && tops.get(p).meetCriteria(crit) && 
+				else if(tops.get(p) != null && (tops.get(p).getType() == id || id == null) && tops.get(p).meetCriteria(crit) && 
 						PathFinder.getPathToAdjacent(p.x, p.y, startX, startY) != null)
 					return p;
 //				else
@@ -583,19 +583,19 @@ public static Point findTile2(VillagersWorldPerception world, EntityType id, int
 		
 		try{
 			if(mids.get(new Point(startX - 1, startY)) != null &&
-					mids.get(new Point(startX - 1, startY)).getType() == id &&
+					(mids.get(new Point(startX - 1, startY)).getType() == id || id == null) &&
 					mids.get(new Point(startX - 1, startY)).meetCriteria(crit))
 				return mids.get(new Point(startX - 1, startY));
 			if(mids.get(new Point(startX + 1, startY)) != null && 
-					mids.get(new Point(startX + 1, startY)).getType() == id &&
+					(mids.get(new Point(startX + 1, startY)).getType() == id || id == null) &&
 					mids.get(new Point(startX + 1, startY)).meetCriteria(crit))
 				return mids.get(new Point(startX + 1, startY));
 			if(mids.get(new Point(startX, startY - 1)) != null &&
-					mids.get(new Point(startX, startY - 1)).getType() == id &&
+					(mids.get(new Point(startX, startY - 1)).getType() == id || id == null) &&
 					mids.get(new Point(startX, startY - 1)).meetCriteria(crit))
 				return mids.get(new Point(startX, startY - 1));
 			if(mids.get(new Point(startX, startY + 1)) != null &&
-					mids.get(new Point(startX, startY + 1)).getType() == id &&
+					(mids.get(new Point(startX, startY + 1)).getType() == id || id == null) &&
 					mids.get(new Point(startX, startY + 1)).meetCriteria(crit))
 				return mids.get(new Point(startX, startY + 1));
 		}catch(ArrayIndexOutOfBoundsException e){
@@ -604,19 +604,19 @@ public static Point findTile2(VillagersWorldPerception world, EntityType id, int
 		
 		try{
 			if(tops.get(new Point(startX - 1, startY)) != null &&
-					tops.get(new Point(startX - 1, startY)).getType() == id &&
+					(tops.get(new Point(startX - 1, startY)).getType() == id || id == null) &&
 					tops.get(new Point(startX - 1, startY)).meetCriteria(crit))
 				return tops.get(new Point(startX - 1, startY));
 			if(tops.get(new Point(startX + 1, startY)) != null &&
-					tops.get(new Point(startX + 1, startY)).getType() == id &&
+					(tops.get(new Point(startX + 1, startY)).getType() == id || id == null) &&
 					tops.get(new Point(startX + 1, startY)).meetCriteria(crit))
 				return tops.get(new Point(startX + 1, startY));
 			if(tops.get(new Point(startX, startY - 1)) != null &&
-					tops.get(new Point(startX, startY - 1)).getType() == id &&
+					(tops.get(new Point(startX, startY - 1)).getType() == id || id == null) &&
 					tops.get(new Point(startX, startY - 1)).meetCriteria(crit))
 				return tops.get(new Point(startX, startY - 1));
 			if(tops.get(new Point(startX, startY + 1)) != null &&
-					tops.get(new Point(startX, startY + 1)).getType() == id &&
+					(tops.get(new Point(startX, startY + 1)).getType() == id || id == null) &&
 					tops.get(new Point(startX, startY + 1)).meetCriteria(crit))
 				return tops.get(new Point(startX, startY + 1));
 		}catch(ArrayIndexOutOfBoundsException e){

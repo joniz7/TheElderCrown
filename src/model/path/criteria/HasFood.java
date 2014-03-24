@@ -3,7 +3,7 @@ package model.path.criteria;
 import model.entity.Entity;
 import model.entity.top.Tree;
 
-public class HasFruit implements Criteria{
+public class HasFood implements Criteria{
 
 	@Override
 	public boolean match(Entity ge){

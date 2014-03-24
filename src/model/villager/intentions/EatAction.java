@@ -1,8 +1,9 @@
 package model.villager.intentions;
 
 import model.entity.top.Tree;
+import model.item.food.Food;
 import model.path.FindObject;
-import model.path.criteria.HasFruit;
+import model.path.criteria.HasFood;
 import model.villager.Villager;
 import model.villager.VillagersWorldPerception;
 import util.EntityType;
@@ -19,21 +20,26 @@ public class EatAction extends Action{
 
 	@Override
 	public void tick(VillagersWorldPerception world){
-		if(FindObject.getAdjacentObject(world, new HasFruit(), EntityType.TREE, villager.getX(),
+		if(villager.getActiveItem() instanceof Food){
+			Food f = (Food) villager.getActiveItem();
+			if(!f.consumed()){
+				villager.satisfyHunger(f.eaten());
+				
+				stacks++;
+				if(stacks > stacksToEat){
+					villager.updateStatus("statusEnd");
+					actionFinished();
+				}else if(f.consumed()){
+					villager.setActiveItem(null);
+					villager.updateStatus("statusEnd");
+				}
+			}
+		}else if(FindObject.getAdjacentObject(world, new HasFood(), EntityType.TREE, villager.getX(),
 				villager.getY()) != null) {
-			Tree tree = (Tree) FindObject.getAdjacentObject(world, new HasFruit(), EntityType.TREE, villager.getX(),
+			Tree tree = (Tree) FindObject.getAdjacentObject(world, new HasFood(), EntityType.TREE, villager.getX(),
 					villager.getY());
 			villager.updateStatus("eating");
-			tree.eaten();
-			villager.satisfyHunger(0.1f);
-			stacks++;
-			if(stacks > stacksToEat){
-				villager.updateStatus("statusEnd");
-				actionFinished();
-			}else if(!tree.hasFruit()){
-				villager.updateStatus("statusEnd");
-			}
-				
+			villager.setActiveItem(tree.getFood());
 		}else{
 			villager.updateStatus("statusEnd");
 			actionFailed();
