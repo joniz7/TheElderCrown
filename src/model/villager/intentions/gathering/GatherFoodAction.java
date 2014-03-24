@@ -29,12 +29,14 @@ public class GatherFoodAction extends Action{
 			if(stacks >= stacksToStore){
 				if(!villager.addToInventory(tree.getFood())){
 					villager.updateStatus("statusEnd");
+					System.out.println("GATHERFOOD FINISHED");
 					actionFinished();
 				}
 				stacks = 0;
 			}
 		}else{
 			villager.updateStatus("statusEnd");
+			System.out.println("GATHERFOOD FAILED");
 			actionFailed();
 		}
 	}

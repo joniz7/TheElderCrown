@@ -40,7 +40,7 @@ public class SleepAction extends Action {
 	@Override
 	public void tick(VillagersWorldPerception world){
 //		if(FindObject.findTile2((TestWorld) world, EntityType.HOUSE_FLOOR, villager.getX(), villager.getY()) != null) {
-
+		System.out.println("SLEEP!!!");
 		
 		if(FindObject.standingOnTile(world, EntityType.BED, villager.getX(), villager.getY())){
 			if(this.firstTick){

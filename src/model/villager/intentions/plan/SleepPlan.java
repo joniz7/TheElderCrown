@@ -76,7 +76,6 @@ public class SleepPlan extends Plan {
 		
 		}else if(bedPos == null){
 			actionQueue.addLast(new SleepAction(villager));
-		
 		}else{
 			isFinished = true;
 		}

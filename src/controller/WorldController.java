@@ -200,7 +200,6 @@ public class WorldController implements GameState {
 		// Hide all Trees' UIs
 		while(it.hasNext()){
 			Map.Entry<Point, Entity> e = (Map.Entry<Point, Entity>) it.next();
-			System.out.println();
 			Entity agent = e.getValue();
 			if(agent instanceof DrinkStorage){
 				DrinkStorage t = (DrinkStorage) agent;

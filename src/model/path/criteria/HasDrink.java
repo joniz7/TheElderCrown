@@ -1,6 +1,7 @@
 package model.path.criteria;
 
 import model.entity.Entity;
+import model.entity.bottom.WaterTile;
 import model.entity.top.Tree;
 import model.item.food.FoodSource;
 import model.item.liquid.DrinkSource;
@@ -16,6 +17,8 @@ public class HasDrink implements Criteria{
 				return true;
 			}else
 				return false;	
+		}else if(ge instanceof WaterTile){
+			return true;
 		}
 		return false;
 	}

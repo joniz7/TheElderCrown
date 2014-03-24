@@ -518,6 +518,7 @@ public static Point findTile2(VillagersWorldPerception world, EntityType id, int
 			if(stacks > 100 || visited.size() == 0){
 				System.out.println("FindObject: " + visited.size());
 				System.out.println("FindObject: " + crit);
+				System.out.println("FindObject: " + id);
 				Exception e = new Exception();
 				e.printStackTrace();
 				return null;

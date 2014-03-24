@@ -12,11 +12,15 @@ import model.villager.intentions.Intent;
 import model.villager.intentions.IntentionHandler;
 import model.villager.intentions.action.Action;
 import model.villager.intentions.action.DieAction;
+import model.villager.intentions.gathering.GatherFoodPlan;
 import model.villager.intentions.plan.DrinkPlan;
 import model.villager.intentions.plan.EatPlan;
 import model.villager.intentions.plan.ExplorePlan;
 import model.villager.intentions.plan.Plan;
 import model.villager.intentions.plan.SleepPlan;
+import model.villager.intentions.reminder.ProfessionLine;
+import model.villager.intentions.reminder.ProfessionLine.WorkLevel;
+import model.villager.intentions.reminder.profession.FoodGatherer;
 import model.villager.order.Order;
 import model.villager.util.NameGen;
 import util.EntityType;
@@ -34,6 +38,8 @@ public class Villager extends MidEntity implements Agent {
 	private String currentAction, currentPlan;
 	private Plan activePlan;
 
+	private ProfessionLine profession;
+	
 	private boolean mustExplore, isShowUI = false;
 	private int length, weight;
 	private String name;
@@ -50,6 +56,8 @@ public class Villager extends MidEntity implements Agent {
 		world = new VillagerWorld();
 		length = 140 + RandomClass.getRandomInt(50, 0);
 		weight = length / 4 + RandomClass.getRandomInt(length/4, 0);
+		
+		profession = new FoodGatherer(this, WorkLevel.MEDIUM);
 		
 		this.name = NameGen.newName(true);
 		ih = new IntentionHandler(this);
@@ -97,6 +105,14 @@ public class Villager extends MidEntity implements Agent {
 		
 		seeIfDead();
 		plan();
+		
+		if(profession != null)
+			profession.update(time);
+		
+		if(activePlan.getActiveAction() == null){
+			disposePlan();
+			plan();
+		}
 	}
 
 	/**
@@ -202,6 +218,11 @@ public class Villager extends MidEntity implements Agent {
 			activePlan = null;
 			ih.intentDone();
 		}
+	}
+	
+	public void workReminder(Plan plan){
+		this.disposePlan();
+		activePlan = plan;
 	}
 
 	public float getSpeed() {

@@ -140,12 +140,9 @@ public class VillagerUI extends UI {
 						icons[i].setImage(ImageLoader.getImage("item" + items[i].getName()));
 					else
 						icons[i].setImage(emptyIcon);
-				System.out.println("INVENTORY!");
 			}
 		}else{
 			super.propertyChange(event);
 		}
 	}
-	
-
 }
