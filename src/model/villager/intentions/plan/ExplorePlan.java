@@ -1,4 +1,4 @@
-package model.villager.intentions;
+package model.villager.intentions.plan;
 
 import java.awt.Point;
 import java.util.LinkedList;
@@ -7,6 +7,9 @@ import model.RandomWorld;
 import model.path.FindObject;
 import model.path.PathFinder;
 import model.villager.Villager;
+import model.villager.intentions.action.Action;
+import model.villager.intentions.action.IdleAction;
+import model.villager.intentions.action.MoveAction;
 
 import java.util.Random;
 
@@ -23,6 +26,7 @@ public class ExplorePlan extends Plan {
 	public ExplorePlan(Villager villager){
 		super(villager);
 		actionQueue = new LinkedList<Action>();
+		villager.updateStatus("exploring");
 		name = "Needs to explore";
 		
 		stacks = 0;
@@ -31,6 +35,7 @@ public class ExplorePlan extends Plan {
 			if(stacks > 100){
 				actionQueue.add(new IdleAction(villager));
 				isFinished = true;
+				villager.updateStatus("statusEnd");
 			}
 //			System.out.println("Finding point to explore");
 //			if(FindObject.isStuck(villager.getWorld(),villager.getX(),villager.getY())){

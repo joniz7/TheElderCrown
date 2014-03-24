@@ -1,6 +1,7 @@
 package model.villager.intentions;
 
 import model.villager.Villager;
+import model.villager.intentions.plan.Plan;
 
 public abstract class Intent{
 

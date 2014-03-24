@@ -1,7 +1,8 @@
-package model.villager.intentions;
+package model.villager.intentions.action;
 
 import model.entity.top.Tree;
 import model.item.food.Food;
+import model.item.food.FoodSource;
 import model.path.FindObject;
 import model.path.criteria.HasFood;
 import model.villager.Villager;
@@ -34,12 +35,12 @@ public class EatAction extends Action{
 					villager.updateStatus("statusEnd");
 				}
 			}
-		}else if(FindObject.getAdjacentObject(world, new HasFood(), EntityType.TREE, villager.getX(),
+		}else if(FindObject.getAdjacentObject(world, new HasFood(), null, villager.getX(),
 				villager.getY()) != null) {
-			Tree tree = (Tree) FindObject.getAdjacentObject(world, new HasFood(), EntityType.TREE, villager.getX(),
+			FoodSource fs = (FoodSource) FindObject.getAdjacentObject(world, new HasFood(), null, villager.getX(),
 					villager.getY());
 			villager.updateStatus("eating");
-			villager.setActiveItem(tree.getFood());
+			villager.setActiveItem(fs.getFood());
 		}else{
 			villager.updateStatus("statusEnd");
 			actionFailed();

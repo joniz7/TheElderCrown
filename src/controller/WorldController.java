@@ -20,6 +20,7 @@ import model.WorldMap;
 import model.entity.Agent;
 import model.entity.Entity;
 import model.entity.top.Tree;
+import model.entity.top.house.DrinkStorage;
 import model.entity.top.house.FoodStorage;
 import model.villager.Villager;
 import model.villager.intentions.MoveIntent;
@@ -55,6 +56,7 @@ public class WorldController implements GameState {
 	private Villager selectedVillager;
 	private Tree selectedTree;
 	private FoodStorage selectedFoodStorage;
+	private DrinkStorage selectedDrinkStorage;
 	
 	@Override
 	public void mouseClicked(int button, int x, int y, int clickCount) {
@@ -63,6 +65,7 @@ public class WorldController implements GameState {
 			selectEntity(windowPos);
 			selectTree(windowPos);
 			selectFoodStorage(windowPos);
+			selectDrinkStorage(windowPos);
 		}else if (button == 1){
 			sendMoveOrder(windowPos);
 		}
@@ -139,7 +142,7 @@ public class WorldController implements GameState {
 		// Hide all Trees' UIs
 		while(it.hasNext()){
 			Map.Entry<Point, Entity> e = (Map.Entry<Point, Entity>) it.next();
-			System.out.println();
+			//System.out.println();
 			Entity agent = e.getValue();
 			if(agent instanceof Tree){
 				Tree t = (Tree) agent;
@@ -171,7 +174,7 @@ public class WorldController implements GameState {
 		// Hide all Trees' UIs
 		while(it.hasNext()){
 			Map.Entry<Point, Entity> e = (Map.Entry<Point, Entity>) it.next();
-			System.out.println();
+			//System.out.println("");
 			Entity agent = e.getValue();
 			if(agent instanceof FoodStorage){
 				FoodStorage t = (FoodStorage) agent;
@@ -188,6 +191,32 @@ public class WorldController implements GameState {
 		}
 	}
 
+	private void selectDrinkStorage(Point windowPos){
+		Point modelPos = WorldView.windowToModelCoordinates(windowPos);
+		
+		HashMap<Point, Entity> temp = (HashMap<Point, Entity>)world.getTopEntities().clone();
+		Iterator<Map.Entry<Point, Entity>> it = temp.entrySet().iterator();
+		
+		// Hide all Trees' UIs
+		while(it.hasNext()){
+			Map.Entry<Point, Entity> e = (Map.Entry<Point, Entity>) it.next();
+			System.out.println();
+			Entity agent = e.getValue();
+			if(agent instanceof DrinkStorage){
+				DrinkStorage t = (DrinkStorage) agent;
+				t.setShowUI(false);
+			}
+		}
+		// Change current selection maybe show Villager UI
+		Entity e = world.getTopEntities().get(modelPos);
+		if(e instanceof DrinkStorage){
+			selectedDrinkStorage = (DrinkStorage) e;
+			selectedDrinkStorage.setShowUI(true);
+		} else {
+			selectedDrinkStorage = null;
+		}
+	}
+	
 	
 
 	@Override
@@ -198,8 +227,7 @@ public class WorldController implements GameState {
 
 	@Override
 	public void mouseMoved(int arg0, int arg1, int arg2, int arg3) {
-		// TODO Auto-generated method stub
-
+		world.setcPos(new Point(arg2, arg3));
 	}
 
 	@Override

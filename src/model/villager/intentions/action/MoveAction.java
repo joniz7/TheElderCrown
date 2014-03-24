@@ -1,4 +1,4 @@
-package model.villager.intentions;
+package model.villager.intentions.action;
 
 import java.awt.Point;
 
@@ -40,8 +40,16 @@ public class MoveAction extends Action{
 		if(path == null && crit != null){
 			Point p = FindObject.findObjectNeighbour(world, 
 					crit, type, villager.getX(), villager.getY());
-			path = PathFinder.getPathToAdjacent(villager.getX(), villager.getY(), 
-					p.x, p.y);
+
+			if(p == null){
+				System.out.println("WATER ABANDONDED ");
+				villager.actionDone();
+				villager.disposePlan();
+				villager.clearInventory();
+//				villager.setExplore();
+			}else
+				path = PathFinder.getPathToAdjacent(villager.getX(), villager.getY(), 
+						p.x, p.y);
 			type = null;
 		}
 		
@@ -89,11 +97,13 @@ public class MoveAction extends Action{
 	
 	@Override
 	protected void actionFailed() {
+		villager.updateStatus("statusEnd");
 		isFailed = true;
 	}
 
 	@Override
 	protected void actionFinished() {
+		villager.updateStatus("statusEnd");
 		isFinished = true;
 	}
 

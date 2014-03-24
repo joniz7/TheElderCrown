@@ -25,7 +25,7 @@ public class VillagerUI extends UI {
 	private String currentAction, currentPlan;
 	private String name;
 	private boolean show;
-	private Image meter, meterArrow;
+	private Image meter, meterArrow, inventory;
 	
 	/**
 	 * Creates a new Villager UI.
@@ -41,6 +41,7 @@ public class VillagerUI extends UI {
 		this.name = villager.getName();
 		meter = ImageLoader.getImage("meter");
 		meterArrow = ImageLoader.getImage("meterArrow");
+		inventory = ImageLoader.getImage("inventory");
 	}
 
 	@Override
@@ -68,6 +69,8 @@ public class VillagerUI extends UI {
 			g.drawString("Currently:", xOff + 30, yOff + 410);
 			g.drawString(currentPlan, xOff + 30, yOff + 450);
 			g.drawString(currentAction, xOff + 30, yOff + 470);
+			
+			g.drawImage(inventory, xOff + 55, yOff + 510);
 		}
 		return false;
 	}

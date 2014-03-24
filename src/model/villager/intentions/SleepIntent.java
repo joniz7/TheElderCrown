@@ -1,6 +1,8 @@
 package model.villager.intentions;
 
 import model.villager.Villager;
+import model.villager.intentions.plan.Plan;
+import model.villager.intentions.plan.SleepPlan;
 
 /**
  * Simple class to see when the villager needs to rest.
@@ -22,9 +24,15 @@ public class SleepIntent extends PrimitiveIntent {
 
 	@Override
 	public void calculateDesire() {
-		setDesire(-villager.getSleepiness() * 3);
-//		System.out.println("SleepIntent: " + desire);
-
+		int time = villager.getTime();
+		int hours = time / 750;
+		
+		if(hours >= 22 || hours < 8)
+			setDesire(-villager.getSleepiness() + 50);
+		else
+			setDesire(-villager.getSleepiness() - 75);
+		
+		System.out.println("Sleepy: " + desire + " at hour " + hours);
 	}
 
 }

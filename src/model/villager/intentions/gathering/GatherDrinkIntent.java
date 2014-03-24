@@ -6,20 +6,20 @@ import model.villager.intentions.action.IdleAction;
 import model.villager.intentions.plan.IdlePlan;
 import model.villager.intentions.plan.Plan;
 
-public class GatherFoodIntent extends Intent{
+public class GatherDrinkIntent extends Intent{
 
-	public GatherFoodIntent(Villager villager) {
+	public GatherDrinkIntent(Villager villager) {
 		super(villager);
 	}
 
 	@Override
 	public Plan getPlan(){
-		return new GatherFoodPlan(villager);
+		return new GatherDrinkPlan(villager);
 	}
 
 	@Override
 	public void calculateDesire() {
-		desire = -20;
+		desire = -19;
 	}
 
 }

@@ -5,6 +5,7 @@ import model.entity.bottom.HouseFloor;
 import model.path.FindObject;
 import model.villager.Villager;
 import model.villager.VillagersWorldPerception;
+import model.villager.intentions.action.Action;
 
 /**
  * The sleeping action. Villager checks if on a HOUSE_FLOOR tile and rests there for a while.

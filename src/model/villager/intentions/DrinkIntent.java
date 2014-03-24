@@ -1,6 +1,8 @@
 package model.villager.intentions;
 
 import model.villager.Villager;
+import model.villager.intentions.plan.DrinkPlan;
+import model.villager.intentions.plan.Plan;
 
 public class DrinkIntent extends PrimitiveIntent {
 	
@@ -15,8 +17,7 @@ public class DrinkIntent extends PrimitiveIntent {
 
 	@Override
 	public void calculateDesire() {
-		setDesire(-villager.getThirst() * 10);
-		//System.out.println("DrinkIntent: " + desire);
+		setDesire(-villager.getThirst() * 5);
 	}
 	
 }

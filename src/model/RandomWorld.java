@@ -10,17 +10,20 @@ import java.util.Random;
 
 import model.entity.Agent;
 import model.entity.Entity;
-import model.entity.MidEntity;
+import model.entity.bottom.Bed;
 import model.entity.bottom.BottomEntity;
 import model.entity.bottom.GrassTile;
 import model.entity.bottom.HouseFloor;
 import model.entity.bottom.WaterTile;
+import model.entity.mid.MidEntity;
 import model.entity.top.TopEntity;
 import model.entity.top.Tree;
+import model.entity.top.house.DrinkStorage;
 import model.entity.top.house.FoodStorage;
 import model.entity.top.house.HouseCorner;
 import model.entity.top.house.HouseDoor;
 import model.entity.top.house.HouseWall;
+import model.path.FindObject;
 import model.path.PathFinder;
 import model.villager.Villager;
 
@@ -74,8 +77,10 @@ public class RandomWorld extends World{
 		
 		generateLakes();
 		generateHouses();
-		generateGrass();
 		generateTrees();
+		generateGrass();
+		
+		new FindObject(this);
 		
 //		for(int i = 112; i < 128; i++) {
 //			for(int j = 112; j < 128; j++) {
@@ -111,7 +116,7 @@ public class RandomWorld extends World{
 		for(int i = 0; i < Constants.WORLD_WIDTH; i++) {
 			for(int j = 0; j < Constants.WORLD_HEIGHT; j++) {
 				Point pos = new Point(i, j);
-				if(!botEntities.containsKey(pos)){
+				if(!botEntities.containsKey(pos) && topEntities.get(pos) == null){
 				GrassTile grass = new GrassTile(i, j);
 				addEntity(pos, grass);
 				}
@@ -178,9 +183,13 @@ public class RandomWorld extends World{
 	 * A method that spawns a tree with a set probability on each grass tile.
 	 */
 	private void generateTrees() {
+		int sparsity;
 		for(int i = 0; i < Constants.WORLD_WIDTH - 1; i++) {
 			for(int j = 0; j < Constants.WORLD_HEIGHT - 1; j++) {
-				if(rnd.nextInt(TREE_SPARSITY) == 0 && botEntities.get(new Point(i + 1, j + 1)).getType() == EntityType.GRASS_TILE){
+				Point p = new Point(i + 1, j + 1);
+				sparsity = rnd.nextInt(TREE_SPARSITY);
+				if(sparsity == 0 && botEntities.get(p) == null || 
+						sparsity == 0 && botEntities.get(p) != null && botEntities.get(p).getType() == EntityType.GRASS_TILE){
 					Tree tree = new Tree(i + 1, j + 1);
 //					trees.add(tree);
 					tickables.add(tree);
@@ -214,6 +223,10 @@ public class RandomWorld extends World{
 		FoodStorage storage = new FoodStorage(38, 33);
 		addEntity(new Point(38, 33), storage);
 		addFoodStorageUI(new Point(38, 33), storage);
+		
+		DrinkStorage storage2 = new DrinkStorage(41, 33);
+		addEntity(new Point(41, 33), storage2);
+		addDrinkStorageUI(new Point(41, 33), storage2);
 	}
 	
 	/**
@@ -308,23 +321,37 @@ public class RandomWorld extends World{
 		}
 		cornerPut = false;
 		p.translate(1, 1);
-		//ADD FLOOR
-		HouseFloor floor;
-		for(int k=0; k<outerWidth-2; k++){
-			for(int l=0; l<outerHeight-2; l++){
-				floor = new HouseFloor(p.x, p.y);
-				addEntity(new Point(p.x, p.y), floor);
-				p.translate(0, 1);
-			}
-			p.translate(1, -(outerHeight-2)); //-2 to accoun for the absence of walls in this case.
-		}
+		
 		//ADD DOOR
 		Point doorPoint = new Point(x, y);
-		floor = new HouseFloor(x, y);
+		HouseFloor floor = new HouseFloor(x, y);
 		addEntity(doorPoint, floor);
 		topEntities.remove(doorPoint);
 		HouseDoor door = new HouseDoor(x, y, orientation);
 		addEntity(doorPoint, door);
+		
+		
+		//ADD FLOOR
+		Bed bed;
+		for(int k=0; k<outerWidth-2; k++){
+			for(int l=0; l<outerHeight-2; l++){
+				if((l==0 || l==outerHeight-3) && (k==0 || k==outerWidth-3)){
+					floor = new HouseFloor(p.x, p.y);
+					addEntity(new Point(p.x, p.y), floor);
+					if(p.x != doorPoint.x && p.y != doorPoint.y){
+						bed = new Bed(p.x,p.y);
+						addEntity(new Point(p.x, p.y), bed);
+					}
+					p.translate(0, 1);
+				}else{
+				floor = new HouseFloor(p.x, p.y);
+				addEntity(new Point(p.x, p.y), floor);
+				p.translate(0, 1);
+				}
+			}
+			p.translate(1, -(outerHeight-2)); //-2 to account for the absence of walls in this case.
+		}
+
 		
 	}
 
