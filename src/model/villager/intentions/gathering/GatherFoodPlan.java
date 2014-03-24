@@ -10,10 +10,10 @@ import model.path.PathFinder;
 import model.path.criteria.HasFood;
 import model.path.criteria.IsFoodStorage;
 import model.villager.Villager;
-import model.villager.intentions.Action;
-import model.villager.intentions.EatAction;
-import model.villager.intentions.MoveAction;
-import model.villager.intentions.Plan;
+import model.villager.intentions.action.Action;
+import model.villager.intentions.action.EatAction;
+import model.villager.intentions.action.MoveAction;
+import model.villager.intentions.plan.Plan;
 
 import org.newdawn.slick.util.pathfinding.Path;
 
@@ -34,6 +34,8 @@ public class GatherFoodPlan extends Plan{
 		// We're next to a tree. fill Inventory!
 		if(tree != null){
 			actionQueue.addLast(new GatherFoodAction(villager));
+			actionQueue.addLast(new MoveAction(villager, null, new IsFoodStorage()));
+			actionQueue.addLast(new StoreFoodAction(villager));
 		}
 		// We need to move, and then fill Inventory
 		else{
@@ -43,6 +45,7 @@ public class GatherFoodPlan extends Plan{
 			if(p != null){
 				movePath = PathFinder.getPathToAdjacent(villager.getX(), villager.getY(), p.x, p.y);
 			}else{
+				System.out.println("GATHERFOODPLAN: FAILED FINDING TREE");
 				villager.setExplore();
 				isFinished=true;
 			}

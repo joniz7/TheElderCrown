@@ -25,14 +25,19 @@ public class ImageLoader {
 		imageLib.put("door", loadImage("image", "door.png"));
 		imageLib.put("wall", loadImage("image", "wall.png"));
 		imageLib.put("storage", loadImage("image", "storage.png"));
+		imageLib.put("storage2", loadImage("image", "storage2.png"));
 		imageLib.put("tree", loadImage("image", "tree.png"));
 		imageLib.put("tree2", loadImage("image", "tree2.png"));
+		imageLib.put("bed", loadImage("image", "bed.png"));
 		
 		//Villager
 		imageLib.put("villager", loadImage("image", "villager.png"));
+		
 		imageLib.put("villagerUI", loadImage("image", "villagerUI.png"));
 		imageLib.put("meter", loadImage("image", "meter.png"));
 		imageLib.put("meterArrow", loadImage("image", "meterArrow.png"));
+		imageLib.put("inventory", loadImage("image", "inventory.png"));
+		
 		imageLib.put("villagerSleeping", loadImage("image", "villagerSleeping.png"));
 		imageLib.put("villagerEating", loadImage("image", "villagerEating.png"));
 		imageLib.put("villagerDead", loadImage("image", "villagerDead.png"));
@@ -44,8 +49,17 @@ public class ImageLoader {
 		imageLib.put("helper2", loadImage("image", "hit.png"));
 		imageLib.put("helper3", loadImage("image", "checker.png"));
 		
-		//UI
-		imageLib.put("leftArrow", loadImage("image", "leftArrow.png"));
+
+		//items
+		imageLib.put("itemEmpty", loadImage("image", "itemEmpty.png"));
+		imageLib.put("itemApple", loadImage("image", "itemApple.png"));
+		imageLib.put("itemWater", loadImage("image", "itemWater.png"));
+		
+		//misc
+		imageLib.put("light", loadImage("image", "light.png"));
+		imageLib.put("clock", loadImage("image", "clock.png"));
+		imageLib.put("clockBorder", loadImage("image", "clockBorder.png"));
+
 	}
 	
 	public static Image getImage(String name){

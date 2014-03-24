@@ -7,6 +7,10 @@ public class Food extends Item{
 	protected int foodTicks;
 	protected float saturation;
 	
+	public Food(String name){
+		super(name);
+	}
+	
 	public float eaten(){
 		foodTicks--;
 		return saturation;

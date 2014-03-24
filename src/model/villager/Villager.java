@@ -5,15 +5,18 @@ import java.awt.Point;
 import javax.naming.OperationNotSupportedException;
 
 import model.entity.Agent;
-import model.entity.MidEntity;
+import model.entity.mid.MidEntity;
 import model.entity.top.house.HouseWall;
 import model.item.Item;
-import model.villager.intentions.Action;
-import model.villager.intentions.DieAction;
 import model.villager.intentions.Intent;
-import model.villager.intentions.ExplorePlan;
 import model.villager.intentions.IntentionHandler;
-import model.villager.intentions.Plan;
+import model.villager.intentions.action.Action;
+import model.villager.intentions.action.DieAction;
+import model.villager.intentions.plan.DrinkPlan;
+import model.villager.intentions.plan.EatPlan;
+import model.villager.intentions.plan.ExplorePlan;
+import model.villager.intentions.plan.Plan;
+import model.villager.intentions.plan.SleepPlan;
 import model.villager.order.Order;
 import model.villager.util.NameGen;
 import util.EntityType;
@@ -23,37 +26,55 @@ import view.entity.mid.VillagerView;
 
 public class Villager extends MidEntity implements Agent {
 
-	private float hunger = 10f, thirst = 10f, speed = 30, sleepiness = 40f, laziness = 1f ;
+	private IntentionHandler ih;
+
+	private float hunger = 10f, thirst = 10f, speed = 30, sleepiness = 40f, laziness = 20f, obedience = 0 ;
 	private VillagerWorld world;
 	private boolean dead = false;
 	private String currentAction, currentPlan;
 	private Plan activePlan;
-	private IntentionHandler ih = new IntentionHandler(this);
+
 	private boolean mustExplore, isShowUI = false;
 	private int length, weight;
 	private String name;
+
 	private int age,ageprog;
 	
 	//The deathrisk based on age.
 	private int deathrisk;
+
+	private int sex; // 0 -female, 1 - male
+	private Point myBed = null;
+	
+	private int time;
 	
 	private Item activeItem;
 	private Item[] inventory = new Item[6];
 	
-	public Villager(int x, int y, int age) {
-		super(x, y, EntityType.VILLAGER);
+
+	public Villager(Point p, int age) {
+		super(p.x, p.y, EntityType.VILLAGER);
 		world = new VillagerWorld();
 		length = 140 + RandomClass.getRandomInt(50, 0);
 		weight = length / 4 + RandomClass.getRandomInt(length/4, 0);
+		
 		this.name = NameGen.newName(true);
 		this.age=age;
 		ageprog=0;
 		deathrisk=1;
+		ih = new IntentionHandler(this);
+		
+		this.sex = RandomClass.getRandomInt(2, 0);
+		if(sex == 0){
+			this.name = NameGen.newName(true);
+		}else{
+			this.name = NameGen.newName(false);
+		}
 		
 		currentAction = "Doing Nothing";
 		currentPlan = "Doing Nothing";
 		
-		System.out.println("New villager created: " + name+ " " +length+"  "+weight);
+		System.out.println("New villager created: " + name+ " " +length+"  "+weight+ " " +sex);
 	}
 	
 	public VillagersWorldPerception getWorld() {
@@ -67,9 +88,12 @@ public class Villager extends MidEntity implements Agent {
 	 * The villager is given a perception, which includes information
 	 * about her position, and possibly an order she should obey.
 	 */
-	public void update(Perception p) {
+	public void update(Perception p, int time) {
 		updatePos(p.position.x, p.position.y);
 		updateUI();
+		
+		this.time = time;
+		
 		world.updateBotEntities(p.botEntities);
 		world.updateMidEntities(p.midEntities);
 		world.updateTopEntities(p.topEntities);
@@ -100,14 +124,35 @@ public class Villager extends MidEntity implements Agent {
 
 	public void satisfyHunger(float f) {
 		this.hunger += f;
+		if(hunger > 80){
+			hunger = 80;
+			if(activePlan instanceof EatPlan){
+				disposePlan();
+				plan();
+			}
+		}
 	}
 	
 	public void satisfyThirst(float f) {
 		this.thirst += f;
+		if(thirst > 80){
+			thirst = 80;
+			if(activePlan instanceof DrinkPlan){
+				disposePlan();
+				plan();
+			}
+		}
 	}
 	
 	public void satisfySleep(float f){
 		this.sleepiness += f;
+		if(sleepiness > 80){
+			sleepiness = 80;
+			if(activePlan instanceof SleepPlan){
+				disposePlan();
+				plan();
+			}
+		}
 	}
 	
 	public void setExplore(){
@@ -115,9 +160,16 @@ public class Villager extends MidEntity implements Agent {
 	}
 	
 	private void adjustNeeds() {
-		hunger = hunger - 0.01f;
-		thirst = thirst - 0.01f;
-		sleepiness = sleepiness - 0.003f;
+		int hours = time / 750;
+		
+		if(hours >= 22 || hours < 8){
+
+		}else{
+			hunger = hunger - 0.01f;
+			thirst = thirst - 0.02f;
+		}
+		
+		sleepiness = sleepiness - 0.012f;
 	}
 	
 	private void seeIfDead() {
@@ -166,10 +218,12 @@ public class Villager extends MidEntity implements Agent {
 	}
 	
 	public void actionDone(){
-		if(!activePlan.isFinished())
+		if(!activePlan.isFinished()) {
 			activePlan.actionDone();
-		else
+		} else {
 			activePlan = null;
+			ih.intentDone();
+		}
 	}
 
 	public float getSpeed() {
@@ -200,6 +254,31 @@ public class Villager extends MidEntity implements Agent {
 		return weight;
 	}
 	
+	public int getSex(){
+		return sex;
+	}
+	
+	public boolean isMale(){
+		if(sex == 1){
+			return true;
+		}
+		return false;
+	}
+	
+	public boolean isFemale(){
+		if(sex == 0){
+			return true;
+		}
+		return false;
+	}
+	
+	public void setBed(Point p){
+		this.myBed = p;
+	}
+	
+	public Point getBedPos(){
+		return myBed;
+	}
 	
 	
 	/**
@@ -262,13 +341,18 @@ public class Villager extends MidEntity implements Agent {
 		return name;
 	}
 	
+	public float getObedience() {
+		return obedience;
+	}
+	
 	@Override
 	/**
 	 * Creates a new villager with the same position as this one.
 	 * Warning: this is not a complete copy by any means! Do not use!
 	 */
 	public Villager copy() {
-		Villager copy = new Villager(x,y,age);
+
+		Villager copy = new Villager(new Point(x,y),age);
 		return copy;
 //		throw new org.newdawn.slick.util.OperationNotSupportedException("what is a human mind?");
 		
@@ -283,9 +367,16 @@ public class Villager extends MidEntity implements Agent {
 	}
 	
 	public boolean addToInventory(Item item){
+		int count = 0;
+		for(int i = 0; i < inventory.length; i++)
+			if(inventory[i] == null)
+				count++;
+		System.out.println("FREE SPACE " + count);
+			
 		for(int i = 0; i < inventory.length; i++)
 			if(inventory[i] == null){
 				inventory[i] = item;
+				pcs.firePropertyChange("status", inventory, "inventory");
 				return true;
 			}
 		return false;
@@ -293,11 +384,13 @@ public class Villager extends MidEntity implements Agent {
 	
 	public void removeFromInventory(int index){
 		inventory[index] = null;
+		pcs.firePropertyChange("status", inventory, "inventory");
 	}
 	
 	public void clearInventory(){
 		for(int i = 0; i < inventory.length; i++)
 			inventory[i] = null;
+		pcs.firePropertyChange("status", inventory, "inventory");
 	}
 	
 	public Item[] getInventory(){
@@ -307,6 +400,8 @@ public class Villager extends MidEntity implements Agent {
 	public Plan getActivePlan() {
 		return activePlan;
 	}
-	
-	
+
+	public int getTime() {
+		return time;
+	}
 }

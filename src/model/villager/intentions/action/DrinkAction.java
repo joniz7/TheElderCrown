@@ -1,10 +1,12 @@
-package model.villager.intentions;
+package model.villager.intentions.action;
 
 import model.entity.top.Tree;
 import model.item.food.Food;
 import model.item.liquid.Drink;
+import model.item.liquid.DrinkSource;
 import model.item.liquid.WaterBowl;
 import model.path.FindObject;
+import model.path.criteria.HasDrink;
 import model.path.criteria.HasFood;
 import model.villager.Villager;
 import model.villager.VillagersWorldPerception;
@@ -40,12 +42,25 @@ public class DrinkAction extends Action{
 				villager.getY())) {
 			villager.updateStatus("drinking");
 			villager.setActiveItem(new WaterBowl());
+		}else if(FindObject.getAdjacentObject(world, new HasDrink(), null, villager.getX(),
+				villager.getY()) != null) {
+			villager.updateStatus("drinking");
+			DrinkSource ds = (DrinkSource) FindObject.getAdjacentObject(world, new HasDrink(), null, 
+					villager.getX(), villager.getY());
+			if(ds.hasDrink())
+				villager.setActiveItem(ds.getDrink());
 		}else{
 			villager.updateStatus("statusEnd");
 			actionFailed();
 		}
 			
 
+	}
+
+	@Override
+	public float getCost() {
+		// TODO Auto-generated method stub
+		return 0;
 	}
 
  }

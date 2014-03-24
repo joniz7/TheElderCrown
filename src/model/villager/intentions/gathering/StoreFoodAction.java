@@ -10,7 +10,7 @@ import model.path.criteria.HasFood;
 import model.path.criteria.IsFoodStorage;
 import model.villager.Villager;
 import model.villager.VillagersWorldPerception;
-import model.villager.intentions.Action;
+import model.villager.intentions.action.Action;
 
 public class StoreFoodAction extends Action{
 
@@ -19,7 +19,7 @@ public class StoreFoodAction extends Action{
 	public StoreFoodAction(Villager villager) {
 		super(villager);
 		name = "Storing Food";
-		stacksToStore = 100;
+		stacksToStore = 20;
 	}
 
 	@Override
@@ -54,5 +54,11 @@ public class StoreFoodAction extends Action{
 			System.out.println("FAIL");
 			actionFailed();
 		}
+	}
+
+	@Override
+	public float getCost() {
+		// TODO Auto-generated method stub
+		return 0;
 	}
 }

@@ -1,4 +1,4 @@
-package model.villager.intentions;
+package model.villager.intentions.action;
 
 import util.EntityType;
 import model.World;
@@ -21,6 +21,13 @@ public class ExploreAction extends Action {
 	public void tick(VillagersWorldPerception world){
 		//TODO: Use instead of only MoveAction
 		}
+
+
+	@Override
+	public float getCost() {
+		// TODO Auto-generated method stub
+		return 0;
+	}
 			
 
  }

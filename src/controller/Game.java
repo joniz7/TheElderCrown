@@ -24,7 +24,7 @@ public class Game extends StateBasedGame {
     public static int HEIGHT  = 600;
     private static int nativeHeight, nativeWidth;
     
-    public static final int FPS     = 60;
+    public static final int FPS     = 160;
     public static final double VERSION = 0.01;
 	private static String title = "The Elder Crown";
 	private static final int TICK_INTERVAL = 5;

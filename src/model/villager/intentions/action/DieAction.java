@@ -1,4 +1,4 @@
-package model.villager.intentions;
+package model.villager.intentions.action;
 
 import model.villager.Villager;
 import model.villager.VillagersWorldPerception;
@@ -13,6 +13,12 @@ public class DieAction extends Action{
 	@Override
 	public void tick(VillagersWorldPerception world) {
 		villager.updateStatus("dead");
+	}
+
+	@Override
+	public float getCost() {
+		// TODO Auto-generated method stub
+		return 0;
 	}
 
 }

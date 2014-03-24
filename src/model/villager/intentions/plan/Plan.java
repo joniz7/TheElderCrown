@@ -1,8 +1,9 @@
-package model.villager.intentions;
+package model.villager.intentions.plan;
 
 import java.util.LinkedList;
 
 import model.villager.Villager;
+import model.villager.intentions.action.Action;
 
 public class Plan {
 
@@ -23,6 +24,10 @@ public class Plan {
 	}
 	
 	public void actionDone() {
+		if(actionQueue.size() <= 0){
+			villager.disposePlan();
+			return;
+		}
 		actionQueue.pop();
 		if(actionQueue.size() <= 0)
 			isFinished = true;
@@ -31,10 +36,17 @@ public class Plan {
 	public boolean isFinished() {
 		return isFinished;
 	}
+	
+	public float getCost() {
+		float cost = 0;
+		for(Action a : actionQueue) {
+			cost += a.getCost();
+		}
+		
+		return cost;
+	}
 
 	public String getName() {
 		return name;
 	}
-	
-	
 }

@@ -5,6 +5,7 @@ import model.entity.bottom.HouseFloor;
 import model.path.FindObject;
 import model.villager.Villager;
 import model.villager.VillagersWorldPerception;
+import model.villager.intentions.action.Action;
 
 /**
  * The sleeping action. Villager checks if on a HOUSE_FLOOR tile and rests there for a while.
@@ -28,20 +29,19 @@ public class SleepAction extends Action {
 	public void tick(VillagersWorldPerception world){
 //		if(FindObject.findTile2((TestWorld) world, EntityType.HOUSE_FLOOR, villager.getX(), villager.getY()) != null) {
 		if(FindObject.standingOnTile(world, EntityType.HOUSE_FLOOR, villager.getX(), villager.getY())){
-			villager.updateStatus("sleeping");
 			villager.satisfySleep(0.1f);
 			stacks = stacks + 0.2f;
-			if(stacks > sleepToGet){
-				villager.updateStatus("statusEnd");
+			if(stacks > sleepToGet)
 				actionFinished();
-			}
-				
-		}else{
-			villager.updateStatus("statusEnd");
+		}else
 			actionFailed();
-		}
-			
 
+	}
+
+	@Override
+	public float getCost() {
+		// TODO Auto-generated method stub
+		return 0;
 	}
 
 }

@@ -2,7 +2,9 @@ package model.entity.top.house;
 
 import java.util.ArrayList;
 
+import model.item.food.Apple;
 import model.item.food.Food;
+import model.item.food.FoodSource;
 import util.EntityType;
 
 /**
@@ -11,7 +13,7 @@ import util.EntityType;
  * @author Simon E
  *
  */
-public class FoodStorage extends HousePart {
+public class FoodStorage extends HousePart implements FoodSource{
 	
 	private ArrayList<Food> food = new ArrayList<Food>();
 	private boolean isShowUI;
@@ -24,6 +26,8 @@ public class FoodStorage extends HousePart {
 	 */
 	public FoodStorage(int x, int y) {
 		super(x, y, EntityType.FOOD_STORAGE, true);
+		for(int i = 0; i < 25; i++)
+			food.add(new Apple());
 	}
 	
 	@Override
@@ -64,6 +68,11 @@ public class FoodStorage extends HousePart {
 		if(isShowUI){
 			pcs.firePropertyChange("status", food.size(), "fruit");
 		}
+	}
+
+	@Override
+	public boolean hasFood() {
+		return food.size() > 0;
 	}
 	
 }

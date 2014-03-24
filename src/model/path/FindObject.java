@@ -4,6 +4,7 @@ import java.awt.Point;
 import java.util.ArrayList;
 import java.util.HashMap;
 
+import model.World;
 import model.entity.Entity;
 import model.path.criteria.Criteria;
 import model.villager.VillagersWorldPerception;
@@ -28,6 +29,12 @@ public class FindObject {
 	 * i en enda algoritm. Har undvikit detta hittills eftersom
 	 * att just bottenlagret �r ganska speciellt, d� det enbart best�r av tiles.
 	 */
+	
+	private static World worldStatic;
+	
+	public FindObject(World world){
+		worldStatic = world;
+	}
 	
 	/**
 	 * This did the job that findTile2 does now, saves this code, just in case
@@ -208,6 +215,15 @@ public static Point findTile2(VillagersWorldPerception world, EntityType id, int
 		if(tiles.get(new Point(startX, startY)) != null && tiles.get(new Point(startX, startY)).getType() == id)
 			return true;
 		
+		return false;
+	}
+	
+	public static boolean standingOnObject(VillagersWorldPerception world, EntityType id, int startX, int startY){
+		HashMap<Point, Entity> objects = world.getMidEntities();
+
+		if(objects.get(new Point(startX, startY)) != null && objects.get(new Point(startX, startY)).getType() == id)
+			return true;
+
 		return false;
 	}
 
@@ -417,48 +433,55 @@ public static Point findTile2(VillagersWorldPerception world, EntityType id, int
 		HashMap<Point, Boolean> visitedHash = new HashMap<Point, Boolean>();
 		HashMap<Point, Entity> mids = world.getMidEntities();
 		HashMap<Point, Entity> tops = world.getTopEntities();
+		HashMap<Point, Entity> bots = world.getBotEntities();
 		
 		ArrayList<Point> visited = new ArrayList<Point>();
 		ArrayList<Point> toVisit = new ArrayList<Point>();
 		ArrayList<Point> toCheck = new ArrayList<Point>();
 		
 		visited.add(new Point(startX, startY));
-		
 		int stacks = 0;
 		boolean found = false;
 		while(!found){
-//			System.out.println("findobject2 loop");
+			//System.out.println("findobject2 loop");
 			stacks++;
 			//Add neighbors to visit
 			toVisit = new ArrayList<Point>();
 			toCheck = new ArrayList<Point>();
 			for(Point p : visited){
 				if(visitedHash.get(new Point(p.x + 1, p.y)) == null){
-					if(!world.blocked(null, p.x + 1, p.y))
+					if(!world.blocked(null, p.x + 1, p.y)){
 						toVisit.add(new Point(p.x + 1, p.y));
-					else
+					}else{
 						toCheck.add(new Point(p.x + 1, p.y));
+					}
 					visitedHash.put(new Point(p.x + 1, p.y), true);
+					
 				}
 				if(visitedHash.get(new Point(p.x - 1, p.y)) == null){
-					if(!world.blocked(null, p.x - 1, p.y))
+					if(!world.blocked(null, p.x - 1, p.y)){
 						toVisit.add(new Point(p.x - 1, p.y));
-					else
+					}else{
 						toCheck.add(new Point(p.x - 1, p.y));
+					}
 					visitedHash.put(new Point(p.x - 1, p.y), true);
+				
 				}
 				if(visitedHash.get(new Point(p.x, p.y + 1)) == null){
-					if(!world.blocked(null, p.x, p.y + 1))
+					if(!world.blocked(null, p.x, p.y + 1)){
 						toVisit.add(new Point(p.x, p.y + 1));
-					else
+					}else{
 						toCheck.add(new Point(p.x, p.y + 1));
+					}
 					visitedHash.put(new Point(p.x, p.y + 1), true);
+					
 				}
 				if(visitedHash.get(new Point(p.x, p.y - 1)) == null){
-					if(!world.blocked(null, p.x, p.y - 1))
+					if(!world.blocked(null, p.x, p.y - 1)){
 						toVisit.add(new Point(p.x, p.y - 1));
-					else
+					}else{
 						toCheck.add(new Point(p.x, p.y - 1));
+					}
 					visitedHash.put(new Point(p.x, p.y - 1), true);
 				}
 			}
@@ -470,6 +493,9 @@ public static Point findTile2(VillagersWorldPerception world, EntityType id, int
 						PathFinder.getPathToAdjacent(p.x, p.y, startX, startY) != null)
 					return p;
 				else if(tops.get(p) != null && (tops.get(p).getType() == id || id == null) && tops.get(p).meetCriteria(crit) && 
+						PathFinder.getPathToAdjacent(p.x, p.y, startX, startY) != null)
+					return p;
+				else if(bots.get(p) != null && (bots.get(p).getType() == id || id == null) && bots.get(p).meetCriteria(crit) && 
 						PathFinder.getPathToAdjacent(p.x, p.y, startX, startY) != null)
 					return p;
 				else {
@@ -491,6 +517,7 @@ public static Point findTile2(VillagersWorldPerception world, EntityType id, int
 			
 			if(stacks > 100 || visited.size() == 0){
 				System.out.println("FindObject: " + visited.size());
+				System.out.println("FindObject: " + crit);
 				Exception e = new Exception();
 				e.printStackTrace();
 				return null;
@@ -514,13 +541,15 @@ public static Point findTile2(VillagersWorldPerception world, EntityType id, int
 		long startTime = System.currentTimeMillis();
 		
 		if(isStuck(world, startX, startY)){
-//			System.out.println("STUCK");
+			System.out.println("STUCK");
 			return null;
 		}
 		
 		Point p = findObject2(world, crit, id, startX, startY);
-		if(p == null)
+		if(p == null){
+			System.out.println("CANT FIND");
 			return null;
+		}
 
 		long endTime = System.currentTimeMillis();
 //		System.out.println("FindObject, find Tree tile: " + (endTime - startTime));
@@ -626,16 +655,25 @@ public static Point findTile2(VillagersWorldPerception world, EntityType id, int
 		return null;
 	}
 	
+//	public static boolean isStuck(VillagersWorldPerception world, int startX, int startY){
+//		HashMap<Point, Entity> midEnts = world.getMidEntities();
+//		Point p = new Point(startX+1,startY);
+//		if(world.blocked(null, startX + 1, startY) || midEnts.containsKey(p))
+//			p.move(startX-1, startY);
+//			if(world.blocked(null, startX - 1, startY) || midEnts.containsKey(p))
+//				p.move(startX, startY+1);
+//				if(world.blocked(null, startX, startY + 1) || midEnts.containsKey(p))
+//					p.move(startX, startY-1);
+//					if(world.blocked(null, startX, startY - 1) || midEnts.containsKey(p))
+//						return true;
+//		return false;
+//	}
+	
 	public static boolean isStuck(VillagersWorldPerception world, int startX, int startY){
-		HashMap<Point, Entity> midEnts = world.getMidEntities();
-		Point p = new Point(startX+1,startY);
-		if(world.blocked(null, startX + 1, startY) || midEnts.containsKey(p))
-			p.move(startX-1, startY);
-			if(world.blocked(null, startX - 1, startY) || midEnts.containsKey(p))
-				p.move(startX, startY+1);
-				if(world.blocked(null, startX, startY + 1) || midEnts.containsKey(p))
-					p.move(startX, startY-1);
-					if(world.blocked(null, startX, startY - 1) || midEnts.containsKey(p))
+		if(worldStatic.blocked(null, startX + 1, startY))
+			if(worldStatic.blocked(null, startX - 1, startY))
+				if(worldStatic.blocked(null, startX, startY + 1))
+					if(worldStatic.blocked(null, startX, startY - 1))
 						return true;
 		return false;
 	}

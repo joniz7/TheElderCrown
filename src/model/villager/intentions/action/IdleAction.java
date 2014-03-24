@@ -1,4 +1,4 @@
-package model.villager.intentions;
+package model.villager.intentions.action;
 
 import util.EntityType;
 import model.World;
@@ -39,4 +39,11 @@ public class IdleAction extends Action {
 			actionFinished();
 		}
 	}
+
+	@Override
+	public float getCost() {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+
 }
