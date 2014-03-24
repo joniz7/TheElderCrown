@@ -43,6 +43,7 @@ public class WorldView implements PropertyChangeListener {
 	private int hours;
 	private float alpha, alphaMod;
 	private int cX, cY;
+	private float rot;
 	private boolean night = false;
 	
 	private static final int SCROLL_SPEED = 8;
@@ -50,7 +51,10 @@ public class WorldView implements PropertyChangeListener {
 	private static int cameraX, cameraY;
 	private static int worldXSize, worldYSize;
 	
+	//Day-Night-stuff
 	private Image lightMap = ImageLoader.getImage("light");
+	private Image clock = ImageLoader.getImage("clock");
+	private Image clockBorder = ImageLoader.getImage("clockBorder");
 	
 	// The size ofeach tile in pixels (?)
 	public static final int TILE_OFFSET = 20;
@@ -146,9 +150,15 @@ public class WorldView implements PropertyChangeListener {
 			g.setDrawMode(Graphics.MODE_NORMAL);
 		}
 		
-		
 		for(EntityView d : UI)
 			d.draw(g, cameraX, cameraY, width, height);
+		
+		
+		
+		g.rotate((width / 2), -110, rot);
+		g.drawImage(clock, (width / 2) - 170, -280);
+		g.rotate((width / 2), -110, -rot);
+		g.drawImage(clockBorder, (width / 2) - 150, 0);
 	}
 
 	/**
@@ -303,8 +313,9 @@ public class WorldView implements PropertyChangeListener {
 			}
 
 			alpha = alpha + alphaMod;
+			rot = time / 50;
 			
-			System.out.println("Hours -" + hours + " : " + alpha);
+//			System.out.println("Hours -" + hours + " : " + alpha);
 			
 			Point cPos = (Point) event.getOldValue();
 			if(cPos != null){

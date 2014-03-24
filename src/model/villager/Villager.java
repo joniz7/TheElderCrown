@@ -354,6 +354,7 @@ public class Villager extends MidEntity implements Agent {
 		for(int i = 0; i < inventory.length; i++)
 			if(inventory[i] == null){
 				inventory[i] = item;
+				pcs.firePropertyChange("status", inventory, "inventory");
 				return true;
 			}
 		return false;
@@ -361,11 +362,13 @@ public class Villager extends MidEntity implements Agent {
 	
 	public void removeFromInventory(int index){
 		inventory[index] = null;
+		pcs.firePropertyChange("status", inventory, "inventory");
 	}
 	
 	public void clearInventory(){
 		for(int i = 0; i < inventory.length; i++)
 			inventory[i] = null;
+		pcs.firePropertyChange("status", inventory, "inventory");
 	}
 	
 	public Item[] getInventory(){

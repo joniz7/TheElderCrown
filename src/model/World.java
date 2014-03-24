@@ -71,7 +71,7 @@ public abstract class World implements Tickable, VillagersWorldPerception, Prope
 
 	protected final PropertyChangeSupport pcs;
 	
-	private int time = 15000;
+	private int time = 14000;
 	
     public void addPropertyChangeListener(PropertyChangeListener listener) {
         this.pcs.addPropertyChangeListener(listener);
