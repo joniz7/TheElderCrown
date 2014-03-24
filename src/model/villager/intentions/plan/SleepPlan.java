@@ -70,6 +70,7 @@ public class SleepPlan extends Plan {
 				thisBed.getOther(villager).setBlocking(false);
 				villager.setBlocking(false);
 			}*/
+			
 			Path movePath = PathFinder.getPath(villager.getX(), villager.getY(), bedPos.x, bedPos.y);
 			actionQueue.add(new MoveAction(villager, movePath));
 			actionQueue.addLast(new SleepAction(villager, thisBed));

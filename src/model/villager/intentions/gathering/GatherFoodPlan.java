@@ -26,6 +26,7 @@ public class GatherFoodPlan extends Plan{
 		actionQueue = new LinkedList<Action>();
 		name = "Gathers food";
 		
+		System.out.println("Villager: " + villager);
 		villager.clearInventory();
 		
 		Tree tree = (Tree) FindObject.getAdjacentObject(villager.getWorld(), new HasFood(), 

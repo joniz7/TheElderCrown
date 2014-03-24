@@ -5,13 +5,7 @@ import model.villager.intentions.gathering.GatherFoodPlan;
 
 public class FoodGathering extends Routine{
 	
-	protected Villager villager;
-	
-	public FoodGathering(Villager villager){
-		super(villager);
-	}
-	
-	public void imposeRoutine(){
+	public void imposeRoutine(Villager villager){
 		villager.workReminder(new GatherFoodPlan(villager));
 	}
 	

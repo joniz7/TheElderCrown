@@ -28,9 +28,8 @@ public abstract class ReminderLine {
 		int hours = time / Constants.TICKS_HOUR;
 		if(routines.containsKey(hours))
 			activeRoutine = routines.get(hours);
-		if(activeRoutine == null)
-			activeRoutine = new FreeTimeRoutine(villager);
-		activeRoutine.imposeRoutine();
+		if(activeRoutine != null)
+			activeRoutine.imposeRoutine(villager);
 	}
 	
 	

@@ -73,6 +73,8 @@ public abstract class World implements Tickable, VillagersWorldPerception, Prope
 	
 	private int time = 14000;
 	
+	private Villager testSubject;
+	
     public void addPropertyChangeListener(PropertyChangeListener listener) {
         this.pcs.addPropertyChangeListener(listener);
     }
@@ -103,6 +105,8 @@ public abstract class World implements Tickable, VillagersWorldPerception, Prope
 			
 			if(time >= 18000)
 				time = 0;
+			
+			System.out.println("Villager!!!: " + testSubject);
 			
 			// Possibly create babies
 			if (spawnBabies && babyTimer++ >= spawnBabiesAfter) {
@@ -202,6 +206,7 @@ public abstract class World implements Tickable, VillagersWorldPerception, Prope
 			addEntity(p, v);
 			addVillagerUI(p, v);
 			v.getPCS().addPropertyChangeListener(this);
+			testSubject = v;
 		}
 		else {
 			System.out.println("Can't spawn baby: Too many people, too many problems");

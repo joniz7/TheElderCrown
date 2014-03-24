@@ -10,7 +10,7 @@ public abstract class ProfessionLine extends ReminderLine{
 	
 	public ProfessionLine(Villager villager, Routine routine, WorkLevel level) {
 		super(villager);
-		FreeTimeRoutine spareTime = new FreeTimeRoutine(villager);
+		FreeTimeRoutine spareTime = new FreeTimeRoutine();
 		
 		if(level == WorkLevel.HARD){
 			routines.put(8, routine);

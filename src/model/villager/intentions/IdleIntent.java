@@ -10,7 +10,7 @@ import model.villager.intentions.plan.Plan;
  *
  */
 
-public class IdleIntent extends Intent {
+public class IdleIntent extends PrimitiveIntent {
 
 	public IdleIntent(Villager villager) {
 		super(villager);
@@ -23,7 +23,7 @@ public class IdleIntent extends Intent {
 
 	@Override
 	public void calculateDesire() {
-		desire = -100;
+		desire = -75;
 	}
 	
 }
