@@ -196,6 +196,7 @@ public class WorldView implements PropertyChangeListener {
 			pcs.addPropertyChangeListener(view);
 			botGraphics.add(view);
 		}else if (name.equals("addVillagerUI")) {
+			
 			Villager entity = (Villager) event.getNewValue();
 			EntityView view = new VillagerUI(entity);
 			PropertyChangeSupport pcs = entity.getPCS();
@@ -212,10 +213,6 @@ public class WorldView implements PropertyChangeListener {
 			EntityView view = new FoodStorageUI();
 			PropertyChangeSupport pcs = entity.getPCS();
 			pcs.addPropertyChangeListener(view);
-			UI.add(view);
-		}else if(name.equals("addSlowTimeUI")){
-			EntityView view =new SlowTimeUI();
-			//PropertyChangeSupport psc = entity.getPCS();
 			UI.add(view);
 		}else if (name.equals("removeTopEntity")) {
 			// TODO search and remove from list

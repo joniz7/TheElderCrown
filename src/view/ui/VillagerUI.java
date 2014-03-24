@@ -36,6 +36,8 @@ public class VillagerUI extends UI {
 	public VillagerUI(Villager villager){
 		super("villagerUI");
 		show = false;
+		currentPlan="";
+		currentAction="";
 		length = villager.getLength();
 		weight = villager.getWeight();
 		this.name = villager.getName();

@@ -51,6 +51,10 @@ public class WorldController implements GameState {
 	private GameContainer appgc;
 	private Game game;
 	
+	//Simulation rate - lower means faster rate
+	private int simRate;
+	private int tickProgress;
+	
 	// The currently selected entity. Is changed by mouse clicking
 	private Villager selectedVillager;
 	private Tree selectedTree;
@@ -63,6 +67,7 @@ public class WorldController implements GameState {
 			selectEntity(windowPos);
 			selectTree(windowPos);
 			selectFoodStorage(windowPos);
+			
 		}else if (button == 1){
 			sendMoveOrder(windowPos);
 		}
@@ -186,9 +191,7 @@ public class WorldController implements GameState {
 		} else {
 			selectedFoodStorage = null;
 		}
-	}
-
-	
+	}	
 
 	@Override
 	public void mouseDragged(int arg0, int arg1, int arg2, int arg3) {
@@ -257,6 +260,10 @@ public class WorldController implements GameState {
 			isADown = true;
 		if(e == 'd' || e == 'D')
 			isDDown = true;
+		if(e == '+' )
+			simRate--;
+		if(e=='-')
+			simRate++;
 		if(key == Input.KEY_ESCAPE){
 			getGame().enterState(1, new FadeOutTransition(Color.black), new FadeInTransition(Color.black));
 		}
@@ -380,6 +387,7 @@ public class WorldController implements GameState {
 		this.game = (Game)game;
 		this.appgc = appgc;
 		new ImageLoader();
+		simRate=1;
 	}
 	
 	/**
@@ -448,7 +456,11 @@ public class WorldController implements GameState {
 	 */
 	public void update(GameContainer arg0, StateBasedGame arg1, int arg2)
 			throws SlickException {
-		world.tick();
+		tickProgress++;
+		if(tickProgress > simRate){
+			world.tick();
+			tickProgress=0;
+		}		
 		moveCamera();
 		if(isExit){
 			getGame().exit();
