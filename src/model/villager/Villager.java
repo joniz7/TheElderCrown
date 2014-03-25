@@ -1,12 +1,13 @@
 package model.villager;
 
 import java.awt.Point;
-
-import javax.naming.OperationNotSupportedException;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.Map.Entry;
 
 import model.entity.Agent;
+import model.entity.Entity;
 import model.entity.mid.MidEntity;
-import model.entity.top.house.HouseWall;
 import model.item.Item;
 import model.villager.intentions.Intent;
 import model.villager.intentions.IntentionHandler;
@@ -25,6 +26,8 @@ import view.entity.EntityView;
 import view.entity.mid.VillagerView;
 
 public class Villager extends MidEntity implements Agent {
+
+	private static final long serialVersionUID = 1L;
 
 	private IntentionHandler ih;
 
@@ -50,6 +53,8 @@ public class Villager extends MidEntity implements Agent {
 	
 	private Item activeItem;
 	private Item[] inventory = new Item[6];
+
+	private HashMap<Villager, Point> nearbyVillagers;
 	
 
 	public Villager(Point p, int age) {
@@ -95,8 +100,20 @@ public class Villager extends MidEntity implements Agent {
 		this.time = time;
 		
 		world.updateBotEntities(p.botEntities);
-		world.updateMidEntities(p.midEntities);
 		world.updateTopEntities(p.topEntities);
+		
+		Iterator<Entry<Point, Entity>> it = p.midEntities.entrySet().iterator();
+		nearbyVillagers = new HashMap<Villager, Point>();
+		Entry<Point, Entity> ent = null;
+		while(it.hasNext()){
+			ent = it.next();
+			if(ent.getValue().getType() == EntityType.VILLAGER){
+				nearbyVillagers.put((Villager) ent.getValue(), ent.getKey());
+			}else{
+				world.updateMidEntity(ent.getValue(), ent.getKey());
+			}
+		}
+		
 		
 		ageprog++;
 		seeIfBirthday();
