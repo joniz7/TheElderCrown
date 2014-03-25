@@ -55,6 +55,7 @@ public class Villager extends MidEntity implements Agent {
 	private Item[] inventory = new Item[6];
 
 	private HashMap<Villager, Point> nearbyVillagers;
+	private HashMap<Agent, Point> nearbyAgents;
 	
 
 	public Villager(Point p, int age) {
@@ -104,11 +105,15 @@ public class Villager extends MidEntity implements Agent {
 		
 		Iterator<Entry<Point, Entity>> it = p.midEntities.entrySet().iterator();
 		nearbyVillagers = new HashMap<Villager, Point>();
+		nearbyAgents = new HashMap<Agent, Point>();
 		Entry<Point, Entity> ent = null;
 		while(it.hasNext()){
 			ent = it.next();
-			if(ent.getValue().getType() == EntityType.VILLAGER){
-				nearbyVillagers.put((Villager) ent.getValue(), ent.getKey());
+			if(ent.getValue() instanceof Agent){
+				nearbyAgents.put((Agent) ent.getValue(), ent.getKey());
+				if(ent.getValue().getType() == EntityType.VILLAGER){
+					nearbyVillagers.put((Villager) ent.getValue(), ent.getKey());
+				}
 			}else{
 				world.updateMidEntity(ent.getValue(), ent.getKey());
 			}
@@ -420,5 +425,13 @@ public class Villager extends MidEntity implements Agent {
 
 	public int getTime() {
 		return time;
+	}
+	
+	public HashMap<Villager, Point> getNearbyVillagers(){
+		return nearbyVillagers;
+	}
+	
+	public HashMap<Agent, Point> getNearbyAgnets(){
+		return nearbyAgents;
 	}
 }
