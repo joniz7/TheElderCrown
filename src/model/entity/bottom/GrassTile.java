@@ -4,6 +4,8 @@ import util.EntityType;
 
 public class GrassTile extends Tile{
 
+	private static final long serialVersionUID = 1L;
+
 	public GrassTile(int x, int y) {
 		super(x ,y, EntityType.GRASS_TILE, false);
 	}

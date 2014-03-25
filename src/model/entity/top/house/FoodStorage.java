@@ -15,6 +15,7 @@ import util.EntityType;
  */
 public class FoodStorage extends HousePart implements FoodSource{
 	
+	private static final long serialVersionUID = 1L;
 	private ArrayList<Food> food = new ArrayList<Food>();
 	private boolean isShowUI;
 	

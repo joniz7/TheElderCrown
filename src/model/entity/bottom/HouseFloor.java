@@ -4,6 +4,8 @@ import util.EntityType;
 
 public class HouseFloor extends Tile {
 
+	private static final long serialVersionUID = 1L;
+
 	/**
 	 * The general constructor for a HouseFloor.
 	 * 

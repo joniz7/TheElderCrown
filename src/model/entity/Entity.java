@@ -18,6 +18,8 @@ import util.InterpolPosition;
  */
 public abstract class Entity implements Copyable, Serializable {
 	
+	private static final long serialVersionUID = 1L;
+
 	// This entity's belief of its position
 	protected int x, y;
 	
