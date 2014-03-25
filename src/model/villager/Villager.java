@@ -28,28 +28,25 @@ public class Villager extends MidEntity implements Agent {
 
 	private IntentionHandler ih;
 
-	private float hunger = 10f, thirst = 10f, speed = 30, sleepiness = 40f, laziness = 20f, obedience = 0 ;
 	private VillagerWorld world;
 	private boolean dead = false;
-	private String currentAction, currentPlan;
-	private Plan activePlan;
-
 	private boolean mustExplore, isShowUI = false;
-	private int length, weight;
+	
+	private String currentAction, currentPlan;
 	private String name;
-
+	private Plan activePlan;
+	private int length, weight;
 	private int age,ageprog;
-	
-	//The deathrisk based on age.
-	private int deathrisk;
-
 	private int sex; // 0 -female, 1 - male
-	private Point myBed = null;
-	
 	private int time;
-	
+	private int deathrisk; //The deathrisk based on age.
+	private Point myBed = null;
 	private Item activeItem;
 	private Item[] inventory = new Item[6];
+	
+	private float hunger, thirst, speed, sleepiness, laziness, obedience;
+	private float currentHunger, currentThirst, currentSleepiness, currentLaziness;
+	
 	
 
 	public Villager(Point p, int age) {
@@ -58,7 +55,6 @@ public class Villager extends MidEntity implements Agent {
 		length = 140 + RandomClass.getRandomInt(50, 0);
 		weight = length / 4 + RandomClass.getRandomInt(length/4, 0);
 		
-		this.name = NameGen.newName(true);
 		this.age=age;
 		ageprog=0;
 		deathrisk=1;
@@ -70,6 +66,21 @@ public class Villager extends MidEntity implements Agent {
 		}else{
 			this.name = NameGen.newName(false);
 		}
+		
+		//Randomize starting values for needs, wants and stats.
+		this.hunger = RandomClass.getRandomInt(20, 5);
+		this.thirst = RandomClass.getRandomInt(20, 5);
+		this.sleepiness = RandomClass.getRandomInt(20, 5);
+		this.speed = RandomClass.getRandomInt(11, 25);
+		this.laziness = RandomClass.getRandomInt(20, 5);
+		this.obedience = RandomClass.getRandomInt(20, 1);
+		
+		this.currentHunger = 50+hunger;
+		this.currentThirst = 50+thirst;
+		this.currentSleepiness = 40+sleepiness;
+		this.currentLaziness = 50+laziness;
+		
+		
 		
 		currentAction = "Doing Nothing";
 		currentPlan = "Doing Nothing";
@@ -123,9 +134,9 @@ public class Villager extends MidEntity implements Agent {
 	}
 
 	public void satisfyHunger(float f) {
-		this.hunger += f;
-		if(hunger > 80){
-			hunger = 80;
+		this.currentHunger += f;
+		if(currentHunger > 80){
+			currentHunger = 80;
 			if(activePlan instanceof EatPlan){
 				disposePlan();
 				plan();
@@ -134,9 +145,9 @@ public class Villager extends MidEntity implements Agent {
 	}
 	
 	public void satisfyThirst(float f) {
-		this.thirst += f;
-		if(thirst > 80){
-			thirst = 80;
+		this.currentThirst += f;
+		if(currentThirst > 80){
+			currentThirst = 80;
 			if(activePlan instanceof DrinkPlan){
 				disposePlan();
 				plan();
@@ -145,9 +156,9 @@ public class Villager extends MidEntity implements Agent {
 	}
 	
 	public void satisfySleep(float f){
-		this.sleepiness += f;
-		if(sleepiness > 80){
-			sleepiness = 80;
+		this.currentSleepiness += f;
+		if(currentSleepiness > 80){
+			currentSleepiness = 80;
 			if(activePlan instanceof SleepPlan){
 				disposePlan();
 				plan();
@@ -165,11 +176,11 @@ public class Villager extends MidEntity implements Agent {
 		if(hours >= 22 || hours < 8){
 
 		}else{
-			hunger = hunger - 0.01f;
-			thirst = thirst - 0.02f;
+			currentHunger = currentHunger - (hunger*0.01f);
+			currentThirst = currentThirst - (thirst*0.01f);
 		}
 		
-		sleepiness = sleepiness - 0.012f;
+		currentSleepiness = currentSleepiness - (sleepiness*0.01f);
 	}
 	
 	private void seeIfDead() {
@@ -244,6 +255,22 @@ public class Villager extends MidEntity implements Agent {
 	
 	public float getLaziness(){
 		return laziness;
+	}
+	
+	public float getCurrentHunger() {
+		return currentHunger;
+	}
+
+	public float getCurrentThirst() {
+		return currentThirst;
+	}
+	
+	public float getCurrentSleepiness(){
+		return currentSleepiness;
+	}
+	
+	public float getCurrentLaziness(){
+		return currentLaziness;
 	}
 	
 	public int getLength() {

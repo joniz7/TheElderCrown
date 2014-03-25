@@ -11,12 +11,11 @@ import util.EntityType;
 
 public class EatAction extends Action{
 
-	private int stacks, stacksToEat;
 	
 	public EatAction(Villager villager) {
 		super(villager);
 		name = "Eating";
-		stacksToEat = 500;
+
 	}
 
 	@Override
@@ -25,9 +24,8 @@ public class EatAction extends Action{
 			Food f = (Food) villager.getActiveItem();
 			if(!f.consumed()){
 				villager.satisfyHunger(f.eaten());
-				
-				stacks++;
-				if(stacks > stacksToEat){
+
+				if(villager.getCurrentHunger() > 79){
 					villager.updateStatus("statusEnd");
 					actionFinished();
 				}else if(f.consumed()){

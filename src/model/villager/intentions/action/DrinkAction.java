@@ -14,12 +14,10 @@ import util.EntityType;
 
 public class DrinkAction extends Action{
 
-	private int stacks, stacksToDrink;
 	
 	public DrinkAction(Villager villager) {
 		super(villager);
 		name = "Drinking";
-		stacksToDrink = 250;
 	}
 
 	@Override
@@ -29,8 +27,7 @@ public class DrinkAction extends Action{
 			if(!d.consumed()){
 				villager.satisfyThirst(d.drunk());
 				
-				stacks++;
-				if(stacks > stacksToDrink){
+				if(villager.getCurrentThirst() > 79){
 					villager.updateStatus("statusEnd");
 					actionFinished();
 				}else if(d.consumed()){
