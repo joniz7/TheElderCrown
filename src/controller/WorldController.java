@@ -1,6 +1,8 @@
 package controller;
 
 import java.awt.Point;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
@@ -12,6 +14,8 @@ import java.nio.file.Paths;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
+
+import javax.swing.Timer;
 
 import model.MapWorld;
 import model.RandomWorld;
@@ -51,10 +55,11 @@ public class WorldController implements GameState {
 	private boolean isExit;
 	private GameContainer appgc;
 	private Game game;
-	
-	//Simulation rate - lower means faster rate
-	private int simRate;
-	private int tickProgress;
+	private TimeController timeController;
+	private Timer timer;
+	ActionListener action;
+	//Delay in ms between ticks
+	private int tickDelay;
 	
 	// The currently selected entity. Is changed by mouse clicking
 	private Villager selectedVillager;
@@ -292,10 +297,15 @@ public class WorldController implements GameState {
 			isADown = true;
 		if(e == 'd' || e == 'D')
 			isDDown = true;
-		if(e == '+' )
-			simRate--;
-		if(e=='-')
-			simRate++;
+		if(e == '+' ){
+			tickDelay--;
+			time();
+		}
+		if(e=='-'){
+			tickDelay++;
+			time();
+		}			
+			
 		if(key == Input.KEY_ESCAPE){
 			getGame().enterState(1, new FadeOutTransition(Color.black), new FadeInTransition(Color.black));
 		}
@@ -419,7 +429,17 @@ public class WorldController implements GameState {
 		this.game = (Game)game;
 		this.appgc = appgc;
 		new ImageLoader();
-		simRate=1;
+		tickDelay=100;
+		
+		//Actionlistener that listens to timer with tickDelay
+        ActionListener action = new ActionListener(){   
+            @Override
+            public void actionPerformed(ActionEvent event) {
+               world.tick();
+            }
+        };
+        timer=new Timer(tickDelay, action);
+        timer.setInitialDelay(0);
 	}
 	
 	/**
@@ -428,6 +448,7 @@ public class WorldController implements GameState {
 	 */
 	public void initRandomWorld() {
 		world = new RandomWorld();
+		timer.start();
 		view = new WorldView(appgc.getWidth(), appgc.getHeight());
 		// Set up View listening to World
 		world.addPropertyChangeListener(view);
@@ -452,12 +473,12 @@ public class WorldController implements GameState {
 		WorldMap map = loadWorldMap(f);
 		
 		world = new MapWorld(map);
+		timer.start();
 		view = new WorldView(appgc.getWidth(), appgc.getHeight());
 		// Set up View listening to World
 		world.addPropertyChangeListener(view);
 		world.initialize();
 		isExit = false;
-		
 		// Allow the user to see the game
 		game.setGameInitialized(true);
 	}
@@ -488,11 +509,6 @@ public class WorldController implements GameState {
 	 */
 	public void update(GameContainer arg0, StateBasedGame arg1, int arg2)
 			throws SlickException {
-		tickProgress++;
-		if(tickProgress > simRate){
-			world.tick();
-			tickProgress=0;
-		}		
 		moveCamera();
 		if(isExit){
 			getGame().exit();
@@ -588,6 +604,17 @@ public class WorldController implements GameState {
 		}
 
 		return map;
+		
+	}
+	
+	public void addListener(){
+
+	}
+	
+	public void time(){
+		timer.stop();
+		timer=new Timer(tickDelay, action);
+		timer.start();
 		
 	}
 	
