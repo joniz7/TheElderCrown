@@ -64,6 +64,7 @@ public abstract class World implements Tickable, VillagersWorldPerception, Prope
 	
 	// World configuration
 	private final int VIEW_DISTANCE = 10;
+
 	public final int VILLAGER_SPAWN_POS = 40, VILLAGER_COUNT = 6;
 	
 	// Keep track of when to spawn babies
@@ -134,7 +135,6 @@ public abstract class World implements Tickable, VillagersWorldPerception, Prope
 	 */
 	@SuppressWarnings("unchecked")
 	private void updateAgents() {
-
 		// Update all villagers
 		HashMap<Point, Agent> temp = (HashMap<Point, Agent>)agents.clone();
 		Iterator<Map.Entry<Point, Agent>> it = temp.entrySet().iterator();
@@ -321,7 +321,6 @@ public abstract class World implements Tickable, VillagersWorldPerception, Prope
 	 */
 	public void initialize() {
 		new PathFinder(this);
-		
 		// Send camera position update to view
 		Point pos = new Point(VILLAGER_SPAWN_POS, VILLAGER_SPAWN_POS);
 		pcs.firePropertyChange("camera", null, pos);
