@@ -5,7 +5,6 @@ import java.awt.Point;
 import model.path.FindObject;
 import model.path.PathFinder;
 import model.path.criteria.Criteria;
-import model.path.criteria.IsFoodStorage;
 import model.villager.Villager;
 import model.villager.VillagersWorldPerception;
 

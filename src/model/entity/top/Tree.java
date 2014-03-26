@@ -1,8 +1,6 @@
 package model.entity.top;
 
-import model.entity.bottom.GrassTile;
 import model.item.food.Apple;
-import model.item.food.Food;
 import model.item.food.FoodSource;
 import util.EntityType;
 import util.Tickable;
@@ -14,6 +12,7 @@ import util.Tickable;
  */
 public class Tree extends TopEntity implements Tickable, FoodSource{
 	
+	private static final long serialVersionUID = 1L;
 	private final int FRUIT_REGROWTH = 5000;
 	private int timer = 0;
 	private boolean fruit = true, isShowUI = false;

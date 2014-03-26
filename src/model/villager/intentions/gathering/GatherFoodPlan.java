@@ -3,7 +3,6 @@ package model.villager.intentions.gathering;
 import java.awt.Point;
 import java.util.LinkedList;
 
-import model.RandomWorld;
 import model.entity.top.Tree;
 import model.path.FindObject;
 import model.path.PathFinder;
@@ -11,7 +10,6 @@ import model.path.criteria.HasFood;
 import model.path.criteria.IsFoodStorage;
 import model.villager.Villager;
 import model.villager.intentions.action.Action;
-import model.villager.intentions.action.EatAction;
 import model.villager.intentions.action.MoveAction;
 import model.villager.intentions.plan.Plan;
 

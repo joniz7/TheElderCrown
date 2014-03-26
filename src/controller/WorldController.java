@@ -101,6 +101,7 @@ public class WorldController implements GameState {
 	 * 
 	 * @param windowPos - the window coordinates
 	 */
+	@SuppressWarnings("unchecked")
 	private void selectEntity(Point windowPos){
 		Point modelPos = WorldView.windowToModelCoordinates(windowPos);
 		
@@ -133,6 +134,7 @@ public class WorldController implements GameState {
 	 * 
 	 * @param windowPos - the window coordinates
 	 */
+	@SuppressWarnings("unchecked")
 	private void selectTree(Point windowPos){
 		Point modelPos = WorldView.windowToModelCoordinates(windowPos);
 		
@@ -165,6 +167,7 @@ public class WorldController implements GameState {
 	 * 
 	 * @param windowPos - the window coordinates
 	 */
+	@SuppressWarnings("unchecked")
 	private void selectFoodStorage(Point windowPos){
 		Point modelPos = WorldView.windowToModelCoordinates(windowPos);
 		
@@ -191,6 +194,7 @@ public class WorldController implements GameState {
 		}
 	}
 
+	@SuppressWarnings("unchecked")
 	private void selectDrinkStorage(Point windowPos){
 		Point modelPos = WorldView.windowToModelCoordinates(windowPos);
 		

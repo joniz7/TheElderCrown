@@ -1,8 +1,5 @@
 package model.item;
 
-import org.newdawn.slick.Image;
-
-import util.ImageLoader;
 
 public abstract class Item {
 

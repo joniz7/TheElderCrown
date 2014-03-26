@@ -539,7 +539,7 @@ public static Point findTile2(VillagersWorldPerception world, EntityType id, int
 	 * @return - The Point to walk to in order to interact with object
 	 */
 	public static Point findObjectNeighbour(VillagersWorldPerception world, Criteria crit, EntityType id, int startX, int startY){
-		long startTime = System.currentTimeMillis();
+//		long startTime = System.currentTimeMillis();
 		
 		if(isStuck(world, startX, startY)){
 			System.out.println("STUCK");
@@ -552,7 +552,7 @@ public static Point findTile2(VillagersWorldPerception world, EntityType id, int
 			return null;
 		}
 
-		long endTime = System.currentTimeMillis();
+//		long endTime = System.currentTimeMillis();
 //		System.out.println("FindObject, find Tree tile: " + (endTime - startTime));
 		
 		HashMap<Point, Entity> tiles = world.getBotEntities();

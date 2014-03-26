@@ -1,11 +1,12 @@
 package model.entity.bottom;
 
+import model.villager.Villager;
 import util.Copyable;
 import util.EntityType;
-import model.villager.*;
 
 public class Bed extends BottomEntity {
 	
+	private static final long serialVersionUID = 1L;
 	private boolean isClaimedByMale;
 	private boolean isClaimedByFemale;
 	private Villager female;

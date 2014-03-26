@@ -10,6 +10,7 @@ import util.EntityType;
  */
 public class HouseWall extends HousePart {
 	
+	private static final long serialVersionUID = 1L;
 	private int orientation;
 
 	/**

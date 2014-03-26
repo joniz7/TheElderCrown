@@ -10,8 +10,6 @@ import org.newdawn.slick.Graphics;
 import org.newdawn.slick.Image;
 
 import util.ImageLoader;
-import util.RandomClass;
-import view.entity.EntityView;
 import view.ui.icons.ItemIcon;
 
 /**

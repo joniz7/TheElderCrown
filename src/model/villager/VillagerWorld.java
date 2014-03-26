@@ -12,7 +12,6 @@ import model.entity.bottom.NullTile;
 import org.newdawn.slick.util.pathfinding.PathFindingContext;
 
 import util.Constants;
-import util.EntityType;
 
 public class VillagerWorld implements VillagersWorldPerception {
 	
@@ -94,8 +93,7 @@ public class VillagerWorld implements VillagersWorldPerception {
 	}
 
 	public void updateBotEntities(HashMap<Point, Entity> bots) {
-		Set<Entry<Point, Entity>> ents = bots.entrySet();
-		Iterator<Entry<Point, Entity>> it = ents.iterator();
+		Iterator<Entry<Point, Entity>> it = bots.entrySet().iterator();
 		Entry<Point, Entity> ent;
 		while(it.hasNext()){
 			ent = it.next();
@@ -104,15 +102,9 @@ public class VillagerWorld implements VillagersWorldPerception {
 					ent.getValue());
 		}
 	}
-
-	public void updateMidEntities(HashMap<Point, Entity> mids) {
-		Set<Entry<Point, Entity>> ents = mids.entrySet();
-		Iterator<Entry<Point, Entity>> it = ents.iterator();
-		Entry<Point, Entity> ent;
-		while(it.hasNext()){
-			ent = it.next();
-			midEntities.put(ent.getKey(), ent.getValue());
-		}
+	
+	public void updateMidEntity(Entity ent, Point pos){
+		midEntities.put(pos, ent);
 	}
 
 	public void updateTopEntities(HashMap<Point, Entity> tops) {
