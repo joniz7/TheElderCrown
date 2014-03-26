@@ -138,7 +138,7 @@ public class Villager extends MidEntity implements Agent {
 			addOrder(p.order);
 		}
 		
-		seeIfDead();
+		//seeIfDead();
 		plan();
 		
 //		if(profession != null)
