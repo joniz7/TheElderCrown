@@ -263,6 +263,7 @@ public class WorldView implements PropertyChangeListener {
 			pcs.addPropertyChangeListener(view);
 			botGraphics.add(view);
 		}else if (name.equals("addVillagerUI")) {
+			
 			Villager entity = (Villager) event.getNewValue();
 			EntityView view = new VillagerUI(entity);
 			PropertyChangeSupport pcs = entity.getPCS();
