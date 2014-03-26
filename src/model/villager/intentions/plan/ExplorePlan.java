@@ -49,8 +49,9 @@ public class ExplorePlan extends Plan {
 			}
 
 		}
-			actionQueue.add(new MoveAction(villager, path));
-		}
+		
+		actionQueue.add(new MoveAction(villager, path));
+	}
 	
 	public static int randInt(int min, int max) {
 
