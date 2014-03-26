@@ -59,8 +59,8 @@ public class Villager extends MidEntity implements Agent {
 	private Item activeItem;
 	private Item[] inventory = new Item[6];
 
-	private HashMap<Villager, Point> nearbyVillagers;
-	private HashMap<Agent, Point> nearbyAgents;
+	private HashMap<Point, Villager> nearbyVillagers;
+	private HashMap<Point, Agent> nearbyAgents;
 	
 
 	public Villager(Point p, int age) {
@@ -110,22 +110,8 @@ public class Villager extends MidEntity implements Agent {
 		world.updateBotEntities(p.botEntities);
 		world.updateTopEntities(p.topEntities);
 		
-		Iterator<Entry<Point, Entity>> it = p.midEntities.entrySet().iterator();
-		nearbyVillagers = new HashMap<Villager, Point>();
-		nearbyAgents = new HashMap<Agent, Point>();
-		Entry<Point, Entity> ent = null;
-		while(it.hasNext()){
-			ent = it.next();
-			if(ent.getValue() instanceof Agent){
-				nearbyAgents.put((Agent) ent.getValue(), ent.getKey());
-				if(ent.getValue().getType() == EntityType.VILLAGER){
-					nearbyVillagers.put((Villager) ent.getValue(), ent.getKey());
-				}
-			}else{
-				world.updateMidEntity(ent.getValue(), ent.getKey());
-			}
-		}
-		
+		nearbyVillagers = p.villagers;
+		nearbyAgents = p.agents;		
 		
 		ageprog++;
 		seeIfBirthday();
@@ -460,11 +446,11 @@ public class Villager extends MidEntity implements Agent {
 		return time;
 	}
 	
-	public HashMap<Villager, Point> getNearbyVillagers(){
+	public HashMap<Point, Villager> getNearbyVillagers(){
 		return nearbyVillagers;
 	}
 	
-	public HashMap<Agent, Point> getNearbyAgnets(){
+	public HashMap<Point, Agent> getNearbyAgents(){
 		return nearbyAgents;
 	}
 }

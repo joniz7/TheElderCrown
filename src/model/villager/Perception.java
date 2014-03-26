@@ -7,6 +7,7 @@ import java.util.List;
 import java.util.Set;
 import java.util.Map.Entry;
 
+import model.entity.Agent;
 import model.entity.Entity;
 import model.villager.order.Order;
 
@@ -21,10 +22,17 @@ public class Perception {
 	public Point position;
 	public Order order;
 	public HashMap<Point, Entity> botEntities;
-	public HashMap<Point, Entity> midEntities;
 	public HashMap<Point, Entity> topEntities;
-	// All villagers we currently see. May be null
+	
+	
+	// All agents and villagers we currently see
+	// All Villagers appear twice - in both hashmaps
+	// The hashmaps may be null, if no agents/villagers exist in sight
 	public HashMap<Point, Villager> villagers;
+	public HashMap<Point, Agent> agents;
+	
+	// All midEntities not already in villagers/agents
+	public HashMap<Point, Entity> midEntities;
 	
 	/**
 	 * Checks whether this perception contains any villagers other than myself

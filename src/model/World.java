@@ -168,17 +168,30 @@ public abstract class World implements Tickable, VillagersWorldPerception, Prope
 
 					Entity midEntity = midEntities.get(p); 
 					if(midEntity != null){
-						tempMidEnt.put(p, midEntity);
 						
-						// If we see another villager which is not us,
-						if ((midEntity instanceof Villager) 
+						// If we see another agent which is not us,
+						if ((midEntity instanceof Agent) 
 								&& !midEntity.equals(entity)) {
-							// Create villager hashmap if not exists
-							if (perception.villagers == null) {
-								perception.villagers = new HashMap<Point, Villager>();
+							// Create agent hashmap if not exists
+							if (perception.agents == null) {
+								perception.agents = new HashMap<Point, Agent>();
 							}
-							// Add to the observed villagers
-							perception.villagers.put(p, (Villager)midEntity);
+							// Add to the observed agents
+							perception.agents.put(p, (Agent)midEntity);
+							
+							// Is he/she is a villager?
+							if (midEntity.getType() == EntityType.VILLAGER) {
+								// Create villager hashmap if not exists
+								if (perception.villagers == null) {
+									perception.villagers = new HashMap<Point, Villager>();
+								}
+								// Add to the observed villagers
+								perception.villagers.put(p, (Villager)midEntity);
+							}	
+						}
+						// Entity is regular midEntity
+						else {
+							tempMidEnt.put(p, midEntity);
 						}
 					}
 					
