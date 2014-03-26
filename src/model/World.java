@@ -64,7 +64,7 @@ public abstract class World implements Tickable, VillagersWorldPerception, Prope
 	
 	// World configuration
 	private final int VIEW_DISTANCE = 10;
-	public final int VILLAGER_SPAWN_POS = 40, VILLAGER_COUNT = 1;
+	public final int VILLAGER_SPAWN_POS = 40, VILLAGER_COUNT = 2;
 	
 	// Keep track of when to spawn babies
 	private boolean spawnBabies = false;
@@ -107,7 +107,7 @@ public abstract class World implements Tickable, VillagersWorldPerception, Prope
 			if(time >= 18000)
 				time = 0;
 			
-			System.out.println("Villager!!!: " + testSubject);
+//			System.out.println("Villager!!!: " + testSubject);
 			
 			// Possibly create babies
 			if (spawnBabies && babyTimer++ >= spawnBabiesAfter) {
@@ -165,9 +165,24 @@ public abstract class World implements Tickable, VillagersWorldPerception, Prope
 					if(botEntities.get(p) != null){
 						tempBotEnt.put(p, botEntities.get(p));
 					}
-					if(midEntities.get(p) != null){
-						tempMidEnt.put(p, midEntities.get(p));
+
+					Entity midEntity = midEntities.get(p); 
+					if(midEntity != null){
+						tempMidEnt.put(p, midEntity);
+						
+						// If we see another villager which is not us,
+						if ((midEntity instanceof Villager) 
+								&& !midEntity.equals(entity)) {
+							// Create villager hashmap if not exists
+							if (perception.villagers == null) {
+								perception.villagers = new HashMap<Point, Villager>();
+							}
+							// Add to the observed villagers
+							perception.villagers.put(p, (Villager)midEntity);
+						}
 					}
+					
+					
 					if(topEntities.get(p) != null){
 						tempTopEnt.put(p, topEntities.get(p));
 					}

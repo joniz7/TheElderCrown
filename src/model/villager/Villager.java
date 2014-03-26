@@ -13,7 +13,6 @@ import model.villager.intentions.Intent;
 import model.villager.intentions.IntentionHandler;
 import model.villager.intentions.action.Action;
 import model.villager.intentions.action.DieAction;
-import model.villager.intentions.gathering.GatherFoodPlan;
 import model.villager.intentions.plan.DrinkPlan;
 import model.villager.intentions.plan.EatPlan;
 import model.villager.intentions.plan.ExplorePlan;
@@ -132,6 +131,11 @@ public class Villager extends MidEntity implements Agent {
 		seeIfBirthday();
 		adjustNeeds();
 		
+		// If we see any other villagers, we may initiate an interaction
+		if (p.hasVillagers()) {
+			maybeSocialise(p.villagers);
+		}
+		
 		// If order was received, take it into consideration when planning
 		if (p.order != null) {
 			addOrder(p.order);
@@ -158,6 +162,14 @@ public class Villager extends MidEntity implements Agent {
 		// TODO modify intent desire before adding,
 		//      based on obedience and other parameters
 		ih.addIntent(i);
+	}
+	
+	/**
+	 * Maybe initialise an interaction with another villager,
+	 * if our social need/relation is high enough.
+	 */
+	private void maybeSocialise(HashMap<Point, Villager> villagers) {
+		System.out.println("Maybe socialise!");
 	}
 
 	public void satisfyHunger(float f) {
