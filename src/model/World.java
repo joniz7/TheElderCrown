@@ -64,7 +64,7 @@ public abstract class World implements Tickable, VillagersWorldPerception, Prope
 	
 	// World configuration
 	private final int VIEW_DISTANCE = 10;
-	public final int VILLAGER_SPAWN_POS = 40, VILLAGER_COUNT = 1;
+	public final int VILLAGER_SPAWN_POS = 40, VILLAGER_COUNT = 2;
 	
 	// Keep track of when to spawn babies
 	private boolean spawnBabies = false;
@@ -107,7 +107,7 @@ public abstract class World implements Tickable, VillagersWorldPerception, Prope
 			if(time >= 18000)
 				time = 0;
 			
-			System.out.println("Villager!!!: " + testSubject);
+//			System.out.println("Villager!!!: " + testSubject);
 			
 			// Possibly create babies
 			if (spawnBabies && babyTimer++ >= spawnBabiesAfter) {
@@ -165,9 +165,37 @@ public abstract class World implements Tickable, VillagersWorldPerception, Prope
 					if(botEntities.get(p) != null){
 						tempBotEnt.put(p, botEntities.get(p));
 					}
-					if(midEntities.get(p) != null){
-						tempMidEnt.put(p, midEntities.get(p));
+
+					Entity midEntity = midEntities.get(p); 
+					if(midEntity != null){
+						
+						// If we see another agent which is not us,
+						if ((midEntity instanceof Agent) 
+								&& !midEntity.equals(entity)) {
+							// Create agent hashmap if not exists
+							if (perception.agents == null) {
+								perception.agents = new HashMap<Point, Agent>();
+							}
+							// Add to the observed agents
+							perception.agents.put(p, (Agent)midEntity);
+							
+							// Is he/she is a villager?
+							if (midEntity.getType() == EntityType.VILLAGER) {
+								// Create villager hashmap if not exists
+								if (perception.villagers == null) {
+									perception.villagers = new HashMap<Point, Villager>();
+								}
+								// Add to the observed villagers
+								perception.villagers.put(p, (Villager)midEntity);
+							}	
+						}
+						// Entity is regular midEntity
+						else {
+							tempMidEnt.put(p, midEntity);
+						}
 					}
+					
+					
 					if(topEntities.get(p) != null){
 						tempTopEnt.put(p, topEntities.get(p));
 					}
