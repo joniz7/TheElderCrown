@@ -23,7 +23,7 @@ public class IdleIntent extends Intent {
 
 	@Override
 	public void calculateDesire() {
-		desire = -100;
+		setDesire(-villager.getLaziness());
 	}
 	
 }

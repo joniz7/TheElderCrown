@@ -17,7 +17,7 @@ public class EatIntent extends PrimitiveIntent {
 
 	@Override
 	public void calculateDesire() {
-		setDesire(-villager.getHunger() * 3);
+		setDesire(-villager.getHunger());
 //		System.out.println("EatIntent: " + desire);
 	}
 	

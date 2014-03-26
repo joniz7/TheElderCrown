@@ -42,6 +42,7 @@ public class Villager extends MidEntity implements Agent {
 	private int sex; // 0 -female, 1 - male
 	private int time;
 	private int deathrisk; //The deathrisk based on age.
+	private int modifier;
 	private Point myBed = null;
 	private Item activeItem;
 	private Item[] inventory = new Item[6];
@@ -76,11 +77,12 @@ public class Villager extends MidEntity implements Agent {
 		this.speed = RandomClass.getRandomInt(10, 25);
 		this.laziness = RandomClass.getRandomInt(10, 1);
 		this.obedience = RandomClass.getRandomInt(10, 1);
+		this.modifier = RandomClass.getRandomInt(3, 1);
 		
-		this.currentHunger = 50+hunger;
-		this.currentThirst = 50+thirst;
-		this.currentSleepiness = 40+sleepiness;
-		this.currentLaziness = 50+laziness;
+		this.currentHunger = 50-modifier*hunger;
+		this.currentThirst = 50-modifier*thirst;
+		this.currentSleepiness = 40-modifier*sleepiness;
+		this.currentLaziness = 50-modifier*laziness;
 		
 		
 		
@@ -184,10 +186,11 @@ public class Villager extends MidEntity implements Agent {
 	}
 	
 	private void adjustNeeds() {
-		int hours = time / 750;
+		int hours = time / Constants.TICKS_HOUR;
 		
-		if(hours >= 22 || hours < 8){
-
+		if(hours >= Constants.NIGHT_HOUR || hours < Constants.DAY_HOUR){
+			currentHunger = currentHunger - (hunger*0.0005f);
+			currentThirst = currentThirst - (thirst*0.0005f);
 		}else{
 			currentHunger = currentHunger - (hunger*0.001f);
 			currentThirst = currentThirst - (thirst*0.001f);
@@ -197,7 +200,7 @@ public class Villager extends MidEntity implements Agent {
 	}
 	
 	private void seeIfDead() {
-		if(hunger < -100.f || thirst < -100.f || RandomClass.getRandomInt(10000, deathrisk) >= 10000) {
+		if(hunger < -Constants.MAX_HUNGER || thirst < -Constants.MAX_THIRST || RandomClass.getRandomInt(1000000, deathrisk) >= 1000000) {
 			dead = true;
 		}
 	}
