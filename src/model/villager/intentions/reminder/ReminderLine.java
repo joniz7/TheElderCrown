@@ -2,10 +2,9 @@ package model.villager.intentions.reminder;
 
 import java.util.HashMap;
 
-import util.Constants;
 import model.villager.Villager;
-import model.villager.intentions.routine.FreeTimeRoutine;
 import model.villager.intentions.routine.Routine;
+import util.Constants;
 
 /**
  * Reminder time-lines is a system for giving villagers a sense of
