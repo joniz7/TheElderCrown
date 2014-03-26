@@ -65,6 +65,8 @@ public class IntentionHandler {
 			lastIntent = pq.peek();
 			activePlan = lastIntent.getPlan();
 			villager.updateStatus("statusEnd");
+		} else if(activePlan != null) {
+			activePlan = lastIntent.getPlan();
 		}
 		
 		return activePlan;
