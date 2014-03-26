@@ -11,6 +11,8 @@ import util.EntityType;
  */
 public abstract class BottomEntity extends Entity {
 	
+	private static final long serialVersionUID = 1L;
+
 	/**
 	 * Constructs a new, non-blocking BottomEntity.
 	 * 

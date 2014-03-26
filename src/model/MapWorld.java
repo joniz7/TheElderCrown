@@ -1,8 +1,5 @@
 package model;
 
-import java.beans.PropertyChangeEvent;
-
-import org.newdawn.slick.util.OperationNotSupportedException;
 
 /**
  * A world which loads a map
@@ -11,6 +8,7 @@ import org.newdawn.slick.util.OperationNotSupportedException;
  */
 public class MapWorld extends World {
 
+	private static final long serialVersionUID = 1L;
 	// The map that is loaded during initialisation 
 	private WorldMap map;
 	

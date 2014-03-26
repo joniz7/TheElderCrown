@@ -2,8 +2,6 @@ package model.villager.intentions.gathering;
 
 import model.villager.Villager;
 import model.villager.intentions.Intent;
-import model.villager.intentions.action.IdleAction;
-import model.villager.intentions.plan.IdlePlan;
 import model.villager.intentions.plan.Plan;
 
 public class GatherFoodIntent extends Intent{

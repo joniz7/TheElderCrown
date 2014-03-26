@@ -40,6 +40,7 @@ import util.RandomClass;
 import util.Tickable;
 
 public abstract class World implements Tickable, VillagersWorldPerception, PropertyChangeListener {
+	private static final long serialVersionUID = 1L;
 
 	// Tickable objects (e.g. trees)
 	protected List<Tickable> tickables;
@@ -74,6 +75,8 @@ public abstract class World implements Tickable, VillagersWorldPerception, Prope
 	
 	private int time = 14000;
 	
+	private Villager testSubject;
+	
     public void addPropertyChangeListener(PropertyChangeListener listener) {
         this.pcs.addPropertyChangeListener(listener);
     }
@@ -95,7 +98,6 @@ public abstract class World implements Tickable, VillagersWorldPerception, Prope
 		shouldExit = false;
 	}
 	
-	@SuppressWarnings("unchecked")
 	@Override
 	public void tick(){
 		if(!paused) {
@@ -104,6 +106,8 @@ public abstract class World implements Tickable, VillagersWorldPerception, Prope
 			
 			if(time >= 18000)
 				time = 0;
+			
+			System.out.println("Villager!!!: " + testSubject);
 			
 			// Possibly create babies
 			if (spawnBabies && babyTimer++ >= spawnBabiesAfter) {
@@ -128,61 +132,65 @@ public abstract class World implements Tickable, VillagersWorldPerception, Prope
 	 * 1. Sends them input
 	 * 2. Gets and resolves their action
 	 */
+	@SuppressWarnings("unchecked")
 	private void updateAgents() {
-			// Update all villagers
-			HashMap<Point, Agent> temp = (HashMap<Point, Agent>)agents.clone();
-			Iterator<Map.Entry<Point, Agent>> it = temp.entrySet().iterator();
-			
-			HashMap<Point, Entity> tempBotEnt;
-			HashMap<Point, Entity> tempMidEnt;
-			HashMap<Point, Entity> tempTopEnt;
-			Perception perception;
-			
-			while(it.hasNext()) {
-				tempBotEnt = new HashMap<Point, Entity>();
-				tempMidEnt = new HashMap<Point, Entity>();
-				tempTopEnt = new HashMap<Point, Entity>();
-				perception = new Perception();
-				
-				Map.Entry<Point, Agent> e = (Map.Entry<Point, Agent>) it.next();
-				
-				perception.position = e.getKey();
-				Agent agent = e.getValue();
-				Entity entity = (Entity)agent;
-				
-				for(int i=(-VIEW_DISTANCE); i<VIEW_DISTANCE*2; i++){
-					for(int j=(-VIEW_DISTANCE); j<VIEW_DISTANCE*2; j++){
-						Point p = new Point(perception.position.x+i,perception.position.y+j);
-						if(botEntities.get(p) != null){
-							tempBotEnt.put(p, botEntities.get(p));
-						}
-						if(midEntities.get(p) != null){
-							tempMidEnt.put(p, midEntities.get(p));
-						}
-						if(topEntities.get(p) != null){
-							tempTopEnt.put(p, topEntities.get(p));
-						}
-					}
-				}
-				perception.botEntities = tempBotEnt;
-				perception.midEntities = tempMidEnt;
-				perception.topEntities = tempTopEnt;
-				
-	 			// Has this agent been given an order?
-				for(Order o : orders) {
-					if (o.getToId() == entity.getId()) {
-						// Send order information in update 
-						perception.order = o;
-						orders.remove(o);		
-					}
-				}
+		// Update all villagers
+		HashMap<Point, Agent> temp = (HashMap<Point, Agent>)agents.clone();
+		Iterator<Map.Entry<Point, Agent>> it = temp.entrySet().iterator();
 
-				agent.update(perception, time);
-				Action activeAction = agent.getAction();
-				if(activeAction != null && !activeAction.isFailed() && !activeAction.isFinished())
-					activeAction.tick(this);
-				else
-					agent.actionDone();
+		HashMap<Point, Entity> tempBotEnt;
+		HashMap<Point, Entity> tempMidEnt;
+		HashMap<Point, Entity> tempTopEnt;
+		Perception perception;
+
+		//build perception
+		while(it.hasNext()) {
+			tempBotEnt = new HashMap<Point, Entity>();
+			tempMidEnt = new HashMap<Point, Entity>();
+			tempTopEnt = new HashMap<Point, Entity>();
+			perception = new Perception();
+
+			Map.Entry<Point, Agent> e = (Map.Entry<Point, Agent>) it.next();
+			if(e.getValue().isDead()){
+				//TODO MAybe remove from list of agents... Handle the dead?
+			}
+			perception.position = e.getKey();
+			Agent agent = e.getValue();
+			Entity entity = (Entity)agent;
+
+			for(int i=(-VIEW_DISTANCE); i<VIEW_DISTANCE*2; i++){
+				for(int j=(-VIEW_DISTANCE); j<VIEW_DISTANCE*2; j++){
+					Point p = new Point(perception.position.x+i,perception.position.y+j);
+					if(botEntities.get(p) != null){
+						tempBotEnt.put(p, botEntities.get(p));
+					}
+					if(midEntities.get(p) != null){
+						tempMidEnt.put(p, midEntities.get(p));
+					}
+					if(topEntities.get(p) != null){
+						tempTopEnt.put(p, topEntities.get(p));
+					}
+				}
+			}
+			perception.botEntities = tempBotEnt;
+			perception.midEntities = tempMidEnt;
+			perception.topEntities = tempTopEnt;
+
+			// Has this agent been given an order?
+			for(Order o : orders) {
+				if (o.getToId() == entity.getId()) {
+					// Send order information in update 
+					perception.order = o;
+					orders.remove(o);		
+				}
+			}
+
+			agent.update(perception, time);
+			Action activeAction = agent.getAction();
+			if(activeAction != null && !activeAction.isFailed() && !activeAction.isFinished())
+				activeAction.tick(this);
+			else
+				agent.actionDone();
 
 		}
 	}
@@ -202,6 +210,7 @@ public abstract class World implements Tickable, VillagersWorldPerception, Prope
 			addEntity(p, v);
 			addVillagerUI(p, v);
 			v.getPCS().addPropertyChangeListener(this);
+			testSubject = v;
 		}
 		else {
 			System.out.println("Can't spawn baby: Too many people, too many problems");

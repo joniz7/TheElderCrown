@@ -109,6 +109,7 @@ public class WorldController implements GameState {
 	 * 
 	 * @param windowPos - the window coordinates
 	 */
+	@SuppressWarnings("unchecked")
 	private void selectEntity(Point windowPos){
 		Point modelPos = WorldView.windowToModelCoordinates(windowPos);
 		
@@ -141,6 +142,7 @@ public class WorldController implements GameState {
 	 * 
 	 * @param windowPos - the window coordinates
 	 */
+	@SuppressWarnings("unchecked")
 	private void selectTree(Point windowPos){
 		Point modelPos = WorldView.windowToModelCoordinates(windowPos);
 		
@@ -173,6 +175,7 @@ public class WorldController implements GameState {
 	 * 
 	 * @param windowPos - the window coordinates
 	 */
+	@SuppressWarnings("unchecked")
 	private void selectFoodStorage(Point windowPos){
 		Point modelPos = WorldView.windowToModelCoordinates(windowPos);
 		
@@ -202,6 +205,7 @@ public class WorldController implements GameState {
 
 
 
+	@SuppressWarnings("unchecked")
 	private void selectDrinkStorage(Point windowPos){
 		Point modelPos = WorldView.windowToModelCoordinates(windowPos);
 		
@@ -211,7 +215,6 @@ public class WorldController implements GameState {
 		// Hide all Trees' UIs
 		while(it.hasNext()){
 			Map.Entry<Point, Entity> e = (Map.Entry<Point, Entity>) it.next();
-			System.out.println();
 			Entity agent = e.getValue();
 			if(agent instanceof DrinkStorage){
 				DrinkStorage t = (DrinkStorage) agent;

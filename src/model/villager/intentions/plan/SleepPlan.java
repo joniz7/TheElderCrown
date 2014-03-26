@@ -4,7 +4,6 @@ import java.awt.Point;
 import java.util.LinkedList;
 
 import model.entity.bottom.Bed;
-import model.entity.bottom.HouseFloor;
 import model.path.FindObject;
 import model.path.PathFinder;
 import model.path.criteria.IsUnclaimed;
@@ -44,7 +43,7 @@ public class SleepPlan extends Plan {
 		
 		
 		//If villager has no assigned bed, find the closest unclaimed and claim it.
-		if(villager.getBedPos()==null){
+		if(this.villager.getBedPos()==null){
 			IsUnclaimed bedcriteria = new IsUnclaimed(villager);
 			bedPos = FindObject.findObject2(villager.getWorld(), bedcriteria, EntityType.BED, villager.getX(), villager.getY());
 			villager.setBed(bedPos);
@@ -70,13 +69,13 @@ public class SleepPlan extends Plan {
 				thisBed.getOther(villager).setBlocking(false);
 				villager.setBlocking(false);
 			}*/
+			
 			Path movePath = PathFinder.getPath(villager.getX(), villager.getY(), bedPos.x, bedPos.y);
 			actionQueue.add(new MoveAction(villager, movePath));
 			actionQueue.addLast(new SleepAction(villager, thisBed));
 		
 		}else if(bedPos == null){
 			actionQueue.addLast(new SleepAction(villager));
-		
 		}else{
 			isFinished = true;
 		}

@@ -1,22 +1,27 @@
 package model.villager;
 
 import java.awt.Point;
-
-import javax.naming.OperationNotSupportedException;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.Map.Entry;
 
 import model.entity.Agent;
+import model.entity.Entity;
 import model.entity.mid.MidEntity;
-import model.entity.top.house.HouseWall;
 import model.item.Item;
 import model.villager.intentions.Intent;
 import model.villager.intentions.IntentionHandler;
 import model.villager.intentions.action.Action;
 import model.villager.intentions.action.DieAction;
+import model.villager.intentions.gathering.GatherFoodPlan;
 import model.villager.intentions.plan.DrinkPlan;
 import model.villager.intentions.plan.EatPlan;
 import model.villager.intentions.plan.ExplorePlan;
 import model.villager.intentions.plan.Plan;
 import model.villager.intentions.plan.SleepPlan;
+import model.villager.intentions.reminder.ProfessionLine;
+import model.villager.intentions.reminder.ProfessionLine.WorkLevel;
+import model.villager.intentions.reminder.profession.FoodGatherer;
 import model.villager.order.Order;
 import model.villager.util.NameGen;
 import util.EntityType;
@@ -26,6 +31,8 @@ import view.entity.mid.VillagerView;
 
 public class Villager extends MidEntity implements Agent {
 
+	private static final long serialVersionUID = 1L;
+
 	private IntentionHandler ih;
 
 	private float hunger = 10f, thirst = 10f, speed = 30, sleepiness = 40f, laziness = 20f, obedience = 0 ;
@@ -34,6 +41,8 @@ public class Villager extends MidEntity implements Agent {
 	private String currentAction, currentPlan;
 	private Plan activePlan;
 
+	private ProfessionLine profession;
+	
 	private boolean mustExplore, isShowUI = false;
 	private int length, weight;
 	private String name;
@@ -50,6 +59,9 @@ public class Villager extends MidEntity implements Agent {
 	
 	private Item activeItem;
 	private Item[] inventory = new Item[6];
+
+	private HashMap<Villager, Point> nearbyVillagers;
+	private HashMap<Agent, Point> nearbyAgents;
 	
 
 	public Villager(Point p, int age) {
@@ -57,6 +69,8 @@ public class Villager extends MidEntity implements Agent {
 		world = new VillagerWorld();
 		length = 140 + RandomClass.getRandomInt(50, 0);
 		weight = length / 4 + RandomClass.getRandomInt(length/4, 0);
+		
+		profession = new FoodGatherer(this, WorkLevel.MEDIUM);
 		
 		this.name = NameGen.newName(true);
 		this.age=age;
@@ -95,8 +109,24 @@ public class Villager extends MidEntity implements Agent {
 		this.time = time;
 		
 		world.updateBotEntities(p.botEntities);
-		world.updateMidEntities(p.midEntities);
 		world.updateTopEntities(p.topEntities);
+		
+		Iterator<Entry<Point, Entity>> it = p.midEntities.entrySet().iterator();
+		nearbyVillagers = new HashMap<Villager, Point>();
+		nearbyAgents = new HashMap<Agent, Point>();
+		Entry<Point, Entity> ent = null;
+		while(it.hasNext()){
+			ent = it.next();
+			if(ent.getValue() instanceof Agent){
+				nearbyAgents.put((Agent) ent.getValue(), ent.getKey());
+				if(ent.getValue().getType() == EntityType.VILLAGER){
+					nearbyVillagers.put((Villager) ent.getValue(), ent.getKey());
+				}
+			}else{
+				world.updateMidEntity(ent.getValue(), ent.getKey());
+			}
+		}
+		
 		
 		ageprog++;
 		seeIfBirthday();
@@ -109,6 +139,14 @@ public class Villager extends MidEntity implements Agent {
 		
 		seeIfDead();
 		plan();
+		
+//		if(profession != null)
+//			profession.update(time);
+		
+		if(activePlan.getActiveAction() == null){
+			disposePlan();
+			plan();
+		}
 	}
 
 	/**
@@ -224,6 +262,11 @@ public class Villager extends MidEntity implements Agent {
 			activePlan = null;
 			ih.intentDone();
 		}
+	}
+	
+	public void workReminder(Plan plan){
+		this.disposePlan();
+		activePlan = plan;
 	}
 
 	public float getSpeed() {
@@ -403,5 +446,13 @@ public class Villager extends MidEntity implements Agent {
 
 	public int getTime() {
 		return time;
+	}
+	
+	public HashMap<Villager, Point> getNearbyVillagers(){
+		return nearbyVillagers;
+	}
+	
+	public HashMap<Agent, Point> getNearbyAgnets(){
+		return nearbyAgents;
 	}
 }

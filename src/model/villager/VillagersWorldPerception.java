@@ -3,12 +3,9 @@ package model.villager;
 import java.awt.Point;
 import java.util.HashMap;
 
-import org.newdawn.slick.util.pathfinding.TileBasedMap;
-
 import model.entity.Entity;
-import model.entity.bottom.BottomEntity;
-import model.entity.mid.MidEntity;
-import model.entity.top.TopEntity;
+
+import org.newdawn.slick.util.pathfinding.TileBasedMap;
 
 public interface VillagersWorldPerception extends TileBasedMap{
 	

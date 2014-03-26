@@ -1,22 +1,14 @@
 package model.villager.intentions.plan;
 
-import java.awt.Point;
 import java.util.LinkedList;
 
-import model.RandomWorld;
-import model.entity.top.Tree;
 import model.item.food.FoodSource;
 import model.path.FindObject;
-import model.path.PathFinder;
 import model.path.criteria.HasFood;
 import model.villager.Villager;
 import model.villager.intentions.action.Action;
 import model.villager.intentions.action.EatAction;
 import model.villager.intentions.action.MoveAction;
-
-import org.newdawn.slick.util.pathfinding.Path;
-
-import util.EntityType;
 
 public class EatPlan extends Plan{
 

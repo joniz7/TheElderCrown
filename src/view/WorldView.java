@@ -1,20 +1,21 @@
 package view;
 
 import java.awt.Point;
-import java.awt.image.BufferedImage;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.beans.PropertyChangeSupport;
 import java.util.ArrayList;
 
-import model.entity.bottom.Bed;
 import model.entity.bottom.BottomEntity;
-import model.entity.bottom.HouseFloor;
 import model.entity.mid.MidEntity;
 import model.entity.top.TopEntity;
 import model.entity.top.Tree;
+import model.entity.top.house.DrinkStorage;
+import model.entity.top.house.FoodStorage;
+import model.entity.top.house.HouseCorner;
+import model.entity.top.house.HouseDoor;
+import model.entity.top.house.HouseWall;
 import model.villager.Villager;
-import model.entity.top.house.*;
 
 import org.newdawn.slick.Color;
 import org.newdawn.slick.Graphics;
@@ -28,8 +29,16 @@ import view.entity.bot.WaterTileView;
 import view.entity.mid.BedView;
 import view.entity.mid.VillagerView;
 import view.entity.top.TreeView;
-import view.entity.top.house.*;
-import view.ui.*;
+import view.entity.top.house.DrinkStorageView;
+import view.entity.top.house.FoodStorageView;
+import view.entity.top.house.HouseCornerView;
+import view.entity.top.house.HouseDoorView;
+import view.entity.top.house.HouseFloorView;
+import view.entity.top.house.HouseWallView;
+import view.ui.DrinkStorageUI;
+import view.ui.FoodStorageUI;
+import view.ui.TreeUI;
+import view.ui.VillagerUI;
 
 public class WorldView implements PropertyChangeListener {
 
@@ -244,11 +253,9 @@ public class WorldView implements PropertyChangeListener {
 				view = new WaterTileView(entity.getX(), entity.getY());
 				break;
 			case HOUSE_FLOOR:
-				HouseFloor floor = (HouseFloor) entity;
-				view = new HouseFloorView(floor.getX(), floor.getY());
+				view = new HouseFloorView(entity.getX(), entity.getY());
 				break;
 			case BED:
-				Bed bed = (Bed) entity;
 				view = new BedView(entity.getX(),entity.getY());
 				break;
 			}

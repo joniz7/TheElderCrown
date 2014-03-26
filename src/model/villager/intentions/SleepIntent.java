@@ -31,8 +31,6 @@ public class SleepIntent extends PrimitiveIntent {
 			setDesire(-villager.getSleepiness() + 50);
 		else
 			setDesire(-villager.getSleepiness() - 75);
-//		
-//		System.out.println("Sleepy: " + desire + " at hour " + hours);
 	}
 
 }

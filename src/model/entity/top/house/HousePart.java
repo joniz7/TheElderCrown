@@ -11,6 +11,8 @@ import util.EntityType;
  */
 public abstract class HousePart extends TopEntity {
 	
+	private static final long serialVersionUID = 1L;
+
 	/**
 	 * The constructor which creates the house and orients it properly.
 	 * 
