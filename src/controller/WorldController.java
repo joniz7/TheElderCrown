@@ -55,7 +55,6 @@ public class WorldController implements GameState {
 	private boolean isExit;
 	private GameContainer appgc;
 	private Game game;
-	private TimeController timeController;
 	private Timer timer;
 	ActionListener action;
 	//Delay in ms between ticks
@@ -298,11 +297,11 @@ public class WorldController implements GameState {
 		if(e == 'd' || e == 'D')
 			isDDown = true;
 		if(e == '+' ){
-			tickDelay--;
+			tickDelay=tickDelay-5;
 			time();
 		}
 		if(e=='-'){
-			tickDelay++;
+			tickDelay=tickDelay+5;
 			time();
 		}			
 			
@@ -432,7 +431,7 @@ public class WorldController implements GameState {
 		tickDelay=100;
 		
 		//Actionlistener that listens to timer with tickDelay
-        ActionListener action = new ActionListener(){   
+        action = new ActionListener(){   
             @Override
             public void actionPerformed(ActionEvent event) {
                world.tick();
@@ -614,6 +613,7 @@ public class WorldController implements GameState {
 	public void time(){
 		timer.stop();
 		timer=new Timer(tickDelay, action);
+		timer.setInitialDelay(0);
 		timer.start();
 		
 	}
