@@ -1,14 +1,11 @@
 package model.villager.intentions.gathering;
 
-import util.EntityType;
-import model.entity.top.Tree;
-import model.item.food.Food;
 import model.item.liquid.WaterBowl;
 import model.path.FindObject;
-import model.path.criteria.HasFood;
 import model.villager.Villager;
 import model.villager.VillagersWorldPerception;
 import model.villager.intentions.action.Action;
+import util.EntityType;
 
 public class GatherDrinkAction extends Action{
 

@@ -8,7 +8,6 @@ import java.util.Map.Entry;
 import model.entity.Agent;
 import model.entity.Entity;
 import model.entity.mid.MidEntity;
-import model.entity.top.house.HouseWall;
 import model.item.Item;
 import model.villager.intentions.Intent;
 import model.villager.intentions.IntentionHandler;
@@ -39,24 +38,34 @@ public class Villager extends MidEntity implements Agent {
 
 	private VillagerWorld world;
 	private boolean dead = false;
+	private boolean mustExplore, isShowUI = false;
+	
 	private String currentAction, currentPlan;
 	private String name;
 	private Plan activePlan;
+<<<<<<< HEAD
+=======
+
 	private ProfessionLine profession;
+	
 	private boolean mustExplore, isShowUI = false;
+>>>>>>> dev
 	private int length, weight;
 	private int age,ageprog;
 	private int sex; // 0 -female, 1 - male
+	private int time;
 	private int deathrisk; //The deathrisk based on age.
 	private int modifier;
 	private Point myBed = null;
-	private int time;
 	private Item activeItem;
 	private Item[] inventory = new Item[6];
-	private float hunger, thirst, speed, sleepiness, laziness, obedience;
-	private float currentHunger, currentThirst, currentSleepiness, currentLaziness;
+
 	private HashMap<Point, Villager> nearbyVillagers;
 	private HashMap<Point, Agent> nearbyAgents;
+	
+	private float hunger, thirst, speed, sleepiness, laziness, obedience;
+	private float currentHunger, currentThirst, currentSleepiness, currentLaziness;
+	
 	
 
 	public Villager(Point p, int age) {
@@ -65,8 +74,12 @@ public class Villager extends MidEntity implements Agent {
 		length = 140 + RandomClass.getRandomInt(50, 0);
 		weight = length / 4 + RandomClass.getRandomInt(length/4, 0);
 		
+<<<<<<< HEAD
+=======
 		profession = new FoodGatherer(this, WorkLevel.MEDIUM);
 		
+		this.name = NameGen.newName(true);
+>>>>>>> dev
 		this.age=age;
 		ageprog=0;
 		deathrisk=1;
@@ -264,11 +277,6 @@ public class Villager extends MidEntity implements Agent {
 			currentPlan = activePlan.getName();
 		}
 	}
-	
-	public void workReminder(Plan plan){
-		this.disposePlan();
-		activePlan = plan;
-	}
 
 	public Action getAction() {
 		if(dead) {
@@ -288,6 +296,11 @@ public class Villager extends MidEntity implements Agent {
 			activePlan = null;
 			ih.intentDone();
 		}
+	}
+	
+	public void workReminder(Plan plan){
+		this.disposePlan();
+		activePlan = plan;
 	}
 
 	public float getSpeed() {

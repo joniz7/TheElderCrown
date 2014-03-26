@@ -1,13 +1,10 @@
 package model.villager.intentions.action;
 
-import model.entity.top.Tree;
-import model.item.food.Food;
 import model.item.liquid.Drink;
 import model.item.liquid.DrinkSource;
 import model.item.liquid.WaterBowl;
 import model.path.FindObject;
 import model.path.criteria.HasDrink;
-import model.path.criteria.HasFood;
 import model.villager.Villager;
 import model.villager.VillagersWorldPerception;
 import util.Constants;

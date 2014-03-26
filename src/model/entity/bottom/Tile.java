@@ -9,6 +9,8 @@ import util.EntityType;
  */
 public abstract class Tile extends BottomEntity{
 
+	private static final long serialVersionUID = 1L;
+
 	public Tile(int x, int y, EntityType id) {
 		super(x ,y, id);
 		updatePos(x,y);

@@ -1,6 +1,5 @@
 package model.item.food;
 
-import model.path.criteria.HasFood;
 
 public interface FoodSource{
 

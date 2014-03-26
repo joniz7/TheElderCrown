@@ -47,7 +47,7 @@ public abstract class World implements Tickable, VillagersWorldPerception, Prope
 	
 	// Agents (e.g. villagers)
 	protected HashMap<Point, Agent> agents;
-
+	
 	// Cursor position
 	protected Point cPos;
 	
@@ -64,7 +64,11 @@ public abstract class World implements Tickable, VillagersWorldPerception, Prope
 	
 	// World configuration
 	private final int VIEW_DISTANCE = 10;
+<<<<<<< HEAD
+	public final int VILLAGER_SPAWN_POS = 40, VILLAGER_COUNT = 8;
+=======
 	public final int VILLAGER_SPAWN_POS = 40, VILLAGER_COUNT = 2;
+>>>>>>> dev
 	
 	// Keep track of when to spawn babies
 	private boolean spawnBabies = false;

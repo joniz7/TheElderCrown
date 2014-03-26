@@ -3,7 +3,6 @@ package view;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.lwjgl.opengl.Drawable;
 import org.newdawn.slick.Color;
 import org.newdawn.slick.Graphics;
 

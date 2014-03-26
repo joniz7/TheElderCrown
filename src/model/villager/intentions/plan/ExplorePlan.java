@@ -2,20 +2,15 @@ package model.villager.intentions.plan;
 
 import java.awt.Point;
 import java.util.LinkedList;
+import java.util.Random;
 
-import model.RandomWorld;
-import model.path.FindObject;
 import model.path.PathFinder;
 import model.villager.Villager;
 import model.villager.intentions.action.Action;
 import model.villager.intentions.action.IdleAction;
 import model.villager.intentions.action.MoveAction;
 
-import java.util.Random;
-
 import org.newdawn.slick.util.pathfinding.Path;
-
-import util.EntityType;
 
 public class ExplorePlan extends Plan {
 	
