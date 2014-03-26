@@ -2,7 +2,6 @@ package model.path.criteria;
 
 import model.entity.Entity;
 import model.entity.top.house.DrinkStorage;
-import model.entity.top.house.FoodStorage;
 
 public class IsDrinkStorage implements Criteria{
 

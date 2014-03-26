@@ -2,15 +2,11 @@ package view.ui;
 
 import java.beans.PropertyChangeEvent;
 
-import model.villager.Villager;
-
 import org.newdawn.slick.Color;
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.Image;
 
 import util.ImageLoader;
-import util.RandomClass;
-import view.entity.EntityView;
 
 /**
  * The UI representation of a villager.

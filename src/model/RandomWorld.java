@@ -1,22 +1,13 @@
 package model;
 
 import java.awt.Point;
-import java.beans.PropertyChangeEvent;
 import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.Map;
 import java.util.Random;
 
-import model.entity.Agent;
-import model.entity.Entity;
 import model.entity.bottom.Bed;
-import model.entity.bottom.BottomEntity;
 import model.entity.bottom.GrassTile;
 import model.entity.bottom.HouseFloor;
 import model.entity.bottom.WaterTile;
-import model.entity.mid.MidEntity;
-import model.entity.top.TopEntity;
 import model.entity.top.Tree;
 import model.entity.top.house.DrinkStorage;
 import model.entity.top.house.FoodStorage;
@@ -24,15 +15,8 @@ import model.entity.top.house.HouseCorner;
 import model.entity.top.house.HouseDoor;
 import model.entity.top.house.HouseWall;
 import model.path.FindObject;
-import model.path.PathFinder;
-import model.villager.Villager;
-
-import org.newdawn.slick.util.pathfinding.PathFindingContext;
-
 import util.Constants;
 import util.EntityType;
-import util.NoPositionFoundException;
-import util.NoSuchEntityException;
 
 /**
  * A world whose map is generated randomly on load
@@ -43,11 +27,13 @@ public class RandomWorld extends World{
 	
 	// -- World configuration --
 
+	private static final long serialVersionUID = 1L;
+
 	// Size of world
 	private final int WIDTH = 200, HEIGHT = 200;
 
 	// Villagers
-	private final int VILLAGER_SPAWN_POS = 40, VILLAGER_COUNT = 5;
+	private final int VILLAGER_SPAWN_POS = 40;
 
 	// Lakes 
 	private final float LAKE_COUNT = 8, LAKE_WEIGHT = 1f, LAKE_LOSS = 0.02f;

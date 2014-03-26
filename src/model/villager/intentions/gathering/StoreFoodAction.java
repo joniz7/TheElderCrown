@@ -1,16 +1,14 @@
 package model.villager.intentions.gathering;
 
-import util.EntityType;
-import model.entity.top.Tree;
 import model.entity.top.house.FoodStorage;
 import model.item.Item;
 import model.item.food.Food;
 import model.path.FindObject;
-import model.path.criteria.HasFood;
 import model.path.criteria.IsFoodStorage;
 import model.villager.Villager;
 import model.villager.VillagersWorldPerception;
 import model.villager.intentions.action.Action;
+import util.EntityType;
 
 public class StoreFoodAction extends Action{
 

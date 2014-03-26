@@ -1,13 +1,11 @@
 package model.villager.intentions.action;
 
-import model.entity.top.Tree;
 import model.item.food.Food;
 import model.item.food.FoodSource;
 import model.path.FindObject;
 import model.path.criteria.HasFood;
 import model.villager.Villager;
 import model.villager.VillagersWorldPerception;
-import util.EntityType;
 
 public class EatAction extends Action{
 

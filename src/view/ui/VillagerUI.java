@@ -2,6 +2,7 @@ package view.ui;
 
 import java.beans.PropertyChangeEvent;
 
+import model.item.Item;
 import model.villager.Villager;
 
 import org.newdawn.slick.Color;
@@ -9,8 +10,7 @@ import org.newdawn.slick.Graphics;
 import org.newdawn.slick.Image;
 
 import util.ImageLoader;
-import util.RandomClass;
-import view.entity.EntityView;
+import view.ui.icons.ItemIcon;
 
 /**
  * The UI representation of a villager.
@@ -25,7 +25,8 @@ public class VillagerUI extends UI {
 	private String currentAction, currentPlan;
 	private String name;
 	private boolean show;
-	private Image meter, meterArrow, inventory;
+	private Image meter, meterArrow, inventory, emptyIcon;
+	private ItemIcon[] icons = new ItemIcon[6];
 	
 	/**
 	 * Creates a new Villager UI.
@@ -42,6 +43,10 @@ public class VillagerUI extends UI {
 		meter = ImageLoader.getImage("meter");
 		meterArrow = ImageLoader.getImage("meterArrow");
 		inventory = ImageLoader.getImage("inventory");
+		emptyIcon = ImageLoader.getImage("itemEmpty");
+		
+		for(int i = 0; i < icons.length; i++)
+			icons[i] = new ItemIcon("itemIcon");
 	}
 
 	@Override
@@ -71,6 +76,19 @@ public class VillagerUI extends UI {
 			g.drawString(currentAction, xOff + 30, yOff + 470);
 			
 			g.drawImage(inventory, xOff + 55, yOff + 510);
+			if(icons[0] != null)
+				icons[0].draw(xOff + 58, yOff + 513, g, emptyIcon);
+			if(icons[1] != null)
+				icons[1].draw(xOff + 101, yOff + 513, g, emptyIcon);
+			if(icons[2] != null)
+				icons[2].draw(xOff + 144, yOff + 513, g, emptyIcon);
+			if(icons[3] != null)
+				icons[3].draw(xOff + 58, yOff + 556, g, emptyIcon);
+			if(icons[4] != null)
+				icons[4].draw(xOff + 101, yOff + 556, g, emptyIcon);
+			if(icons[5] != null)
+				icons[5].draw(xOff + 144, yOff + 556, g, emptyIcon);
+			
 		}
 		return false;
 	}
@@ -113,11 +131,16 @@ public class VillagerUI extends UI {
 				currentAction = (String) event.getOldValue();
 			}else if(status.compareTo("plan") == 0){
 				currentPlan = (String) event.getOldValue();
+			}else if(status.compareTo("inventory") == 0){
+				Item[] items = (Item[]) event.getOldValue();
+				for(int i = 0; i < items.length; i++)
+					if(items[i] != null)
+						icons[i].setImage(ImageLoader.getImage("item" + items[i].getName()));
+					else
+						icons[i].setImage(emptyIcon);
 			}
 		}else{
 			super.propertyChange(event);
 		}
 	}
-	
-
 }

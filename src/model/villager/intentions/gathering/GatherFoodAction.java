@@ -1,13 +1,12 @@
 package model.villager.intentions.gathering;
 
-import util.EntityType;
 import model.entity.top.Tree;
-import model.item.food.Food;
 import model.path.FindObject;
 import model.path.criteria.HasFood;
 import model.villager.Villager;
 import model.villager.VillagersWorldPerception;
 import model.villager.intentions.action.Action;
+import util.EntityType;
 
 public class GatherFoodAction extends Action{
 
@@ -29,12 +28,14 @@ public class GatherFoodAction extends Action{
 			if(stacks >= stacksToStore){
 				if(!villager.addToInventory(tree.getFood())){
 					villager.updateStatus("statusEnd");
+					System.out.println("GATHERFOOD FINISHED");
 					actionFinished();
 				}
 				stacks = 0;
 			}
 		}else{
 			villager.updateStatus("statusEnd");
+			System.out.println("GATHERFOOD FAILED");
 			actionFailed();
 		}
 	}

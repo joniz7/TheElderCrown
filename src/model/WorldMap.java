@@ -5,7 +5,6 @@ import java.io.Serializable;
 import java.util.HashMap;
 import java.util.List;
 
-import model.entity.Agent;
 import model.entity.Entity;
 import util.Tickable;
 

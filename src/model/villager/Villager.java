@@ -1,12 +1,13 @@
 package model.villager;
 
 import java.awt.Point;
-
-import javax.naming.OperationNotSupportedException;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.Map.Entry;
 
 import model.entity.Agent;
+import model.entity.Entity;
 import model.entity.mid.MidEntity;
-import model.entity.top.house.HouseWall;
 import model.item.Item;
 import model.villager.intentions.Intent;
 import model.villager.intentions.IntentionHandler;
@@ -17,6 +18,9 @@ import model.villager.intentions.plan.EatPlan;
 import model.villager.intentions.plan.ExplorePlan;
 import model.villager.intentions.plan.Plan;
 import model.villager.intentions.plan.SleepPlan;
+import model.villager.intentions.reminder.ProfessionLine;
+import model.villager.intentions.reminder.ProfessionLine.WorkLevel;
+import model.villager.intentions.reminder.profession.FoodGatherer;
 import model.villager.order.Order;
 import model.villager.util.NameGen;
 import util.EntityType;
@@ -26,6 +30,8 @@ import view.entity.mid.VillagerView;
 
 public class Villager extends MidEntity implements Agent {
 
+	private static final long serialVersionUID = 1L;
+
 	private IntentionHandler ih;
 
 	private float hunger = 10f, thirst = 10f, speed = 30, sleepiness = 40f, laziness = 20f, obedience = 0 ;
@@ -34,9 +40,17 @@ public class Villager extends MidEntity implements Agent {
 	private String currentAction, currentPlan;
 	private Plan activePlan;
 
+	private ProfessionLine profession;
+	
 	private boolean mustExplore, isShowUI = false;
 	private int length, weight;
 	private String name;
+
+	private int age,ageprog;
+	
+	//The deathrisk based on age.
+	private int deathrisk;
+
 	private int sex; // 0 -female, 1 - male
 	private Point myBed = null;
 	
@@ -44,14 +58,23 @@ public class Villager extends MidEntity implements Agent {
 	
 	private Item activeItem;
 	private Item[] inventory = new Item[6];
+
+	private HashMap<Point, Villager> nearbyVillagers;
+	private HashMap<Point, Agent> nearbyAgents;
 	
-	public Villager(Point p) {
+
+	public Villager(Point p, int age) {
 		super(p.x, p.y, EntityType.VILLAGER);
 		world = new VillagerWorld();
 		length = 140 + RandomClass.getRandomInt(50, 0);
 		weight = length / 4 + RandomClass.getRandomInt(length/4, 0);
 		
+		profession = new FoodGatherer(this, WorkLevel.MEDIUM);
+		
 		this.name = NameGen.newName(true);
+		this.age=age;
+		ageprog=0;
+		deathrisk=1;
 		ih = new IntentionHandler(this);
 		
 		this.sex = RandomClass.getRandomInt(2, 0);
@@ -85,10 +108,19 @@ public class Villager extends MidEntity implements Agent {
 		this.time = time;
 		
 		world.updateBotEntities(p.botEntities);
-		world.updateMidEntities(p.midEntities);
 		world.updateTopEntities(p.topEntities);
-
+		
+		nearbyVillagers = p.villagers;
+		nearbyAgents = p.agents;		
+		
+		ageprog++;
+		seeIfBirthday();
 		adjustNeeds();
+		
+		// If we see any other villagers, we may initiate an interaction
+		if (p.hasVillagers()) {
+			maybeSocialise(p.villagers);
+		}
 		
 		// If order was received, take it into consideration when planning
 		if (p.order != null) {
@@ -97,6 +129,14 @@ public class Villager extends MidEntity implements Agent {
 		
 		seeIfDead();
 		plan();
+		
+//		if(profession != null)
+//			profession.update(time);
+		
+		if(activePlan.getActiveAction() == null){
+			disposePlan();
+			plan();
+		}
 	}
 
 	/**
@@ -108,6 +148,14 @@ public class Villager extends MidEntity implements Agent {
 		// TODO modify intent desire before adding,
 		//      based on obedience and other parameters
 		ih.addIntent(i);
+	}
+	
+	/**
+	 * Maybe initialise an interaction with another villager,
+	 * if our social need/relation is high enough.
+	 */
+	private void maybeSocialise(HashMap<Point, Villager> villagers) {
+		System.out.println("Maybe socialise!");
 	}
 
 	public void satisfyHunger(float f) {
@@ -161,8 +209,18 @@ public class Villager extends MidEntity implements Agent {
 	}
 	
 	private void seeIfDead() {
-		if(hunger < -100.f || thirst < -100.f) {
+		if(hunger < -100.f || thirst < -100.f || RandomClass.getRandomInt(10000, deathrisk) >= 10000) {
 			dead = true;
+		}
+	}
+	
+	private void seeIfBirthday(){
+		if(ageprog>100){
+			age++;
+			ageprog=0;
+			if(age>30){				
+				deathrisk++;				
+			}
 		}
 	}
 	
@@ -202,6 +260,11 @@ public class Villager extends MidEntity implements Agent {
 			activePlan = null;
 			ih.intentDone();
 		}
+	}
+	
+	public void workReminder(Plan plan){
+		this.disposePlan();
+		activePlan = plan;
 	}
 
 	public float getSpeed() {
@@ -329,8 +392,8 @@ public class Villager extends MidEntity implements Agent {
 	 * Warning: this is not a complete copy by any means! Do not use!
 	 */
 	public Villager copy() {
-		Point p = new Point(x,y);
-		Villager copy = new Villager(p);
+
+		Villager copy = new Villager(new Point(x,y),age);
 		return copy;
 //		throw new org.newdawn.slick.util.OperationNotSupportedException("what is a human mind?");
 		
@@ -354,6 +417,7 @@ public class Villager extends MidEntity implements Agent {
 		for(int i = 0; i < inventory.length; i++)
 			if(inventory[i] == null){
 				inventory[i] = item;
+				pcs.firePropertyChange("status", inventory, "inventory");
 				return true;
 			}
 		return false;
@@ -361,11 +425,13 @@ public class Villager extends MidEntity implements Agent {
 	
 	public void removeFromInventory(int index){
 		inventory[index] = null;
+		pcs.firePropertyChange("status", inventory, "inventory");
 	}
 	
 	public void clearInventory(){
 		for(int i = 0; i < inventory.length; i++)
 			inventory[i] = null;
+		pcs.firePropertyChange("status", inventory, "inventory");
 	}
 	
 	public Item[] getInventory(){
@@ -378,5 +444,13 @@ public class Villager extends MidEntity implements Agent {
 
 	public int getTime() {
 		return time;
+	}
+	
+	public HashMap<Point, Villager> getNearbyVillagers(){
+		return nearbyVillagers;
+	}
+	
+	public HashMap<Point, Agent> getNearbyAgents(){
+		return nearbyAgents;
 	}
 }
