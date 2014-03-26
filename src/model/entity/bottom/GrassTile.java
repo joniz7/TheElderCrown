@@ -12,4 +12,10 @@ public class GrassTile extends Tile{
 	public GrassTile copy() {
 		return new GrassTile(x, y);
 	}
+	
+	@Override
+	public float getSleepValue(){
+		return 0.02f;
+	}
+	
 }

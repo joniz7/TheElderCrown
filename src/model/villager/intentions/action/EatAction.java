@@ -7,6 +7,7 @@ import model.path.FindObject;
 import model.path.criteria.HasFood;
 import model.villager.Villager;
 import model.villager.VillagersWorldPerception;
+import util.Constants;
 import util.EntityType;
 
 public class EatAction extends Action{
@@ -25,7 +26,7 @@ public class EatAction extends Action{
 			if(!f.consumed()){
 				villager.satisfyHunger(f.eaten());
 
-				if(villager.getCurrentHunger() > 79){
+				if(villager.getHunger() >= Constants.MAX_HUNGER){
 					villager.updateStatus("statusEnd");
 					actionFinished();
 				}else if(f.consumed()){

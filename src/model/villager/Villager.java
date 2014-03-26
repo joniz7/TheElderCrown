@@ -15,10 +15,12 @@ import model.villager.intentions.action.DieAction;
 import model.villager.intentions.plan.DrinkPlan;
 import model.villager.intentions.plan.EatPlan;
 import model.villager.intentions.plan.ExplorePlan;
+import model.villager.intentions.plan.IdlePlan;
 import model.villager.intentions.plan.Plan;
 import model.villager.intentions.plan.SleepPlan;
 import model.villager.order.Order;
 import model.villager.util.NameGen;
+import util.Constants;
 import util.EntityType;
 import util.RandomClass;
 import view.entity.EntityView;
@@ -68,12 +70,12 @@ public class Villager extends MidEntity implements Agent {
 		}
 		
 		//Randomize starting values for needs, wants and stats.
-		this.hunger = RandomClass.getRandomInt(20, 5);
-		this.thirst = RandomClass.getRandomInt(20, 5);
-		this.sleepiness = RandomClass.getRandomInt(20, 5);
-		this.speed = RandomClass.getRandomInt(11, 25);
-		this.laziness = RandomClass.getRandomInt(20, 5);
-		this.obedience = RandomClass.getRandomInt(20, 1);
+		this.hunger = RandomClass.getRandomInt(10, 1);
+		this.thirst = RandomClass.getRandomInt(10, 1);
+		this.sleepiness = RandomClass.getRandomInt(10, 1);
+		this.speed = RandomClass.getRandomInt(10, 25);
+		this.laziness = RandomClass.getRandomInt(10, 1);
+		this.obedience = RandomClass.getRandomInt(10, 1);
 		
 		this.currentHunger = 50+hunger;
 		this.currentThirst = 50+thirst;
@@ -135,8 +137,8 @@ public class Villager extends MidEntity implements Agent {
 
 	public void satisfyHunger(float f) {
 		this.currentHunger += f;
-		if(currentHunger > 80){
-			currentHunger = 80;
+		if(currentHunger > Constants.MAX_HUNGER){
+			currentHunger = Constants.MAX_HUNGER;
 			if(activePlan instanceof EatPlan){
 				disposePlan();
 				plan();
@@ -146,8 +148,8 @@ public class Villager extends MidEntity implements Agent {
 	
 	public void satisfyThirst(float f) {
 		this.currentThirst += f;
-		if(currentThirst > 80){
-			currentThirst = 80;
+		if(currentThirst > Constants.MAX_THIRST){
+			currentThirst = Constants.MAX_THIRST;
 			if(activePlan instanceof DrinkPlan){
 				disposePlan();
 				plan();
@@ -157,9 +159,20 @@ public class Villager extends MidEntity implements Agent {
 	
 	public void satisfySleep(float f){
 		this.currentSleepiness += f;
-		if(currentSleepiness > 80){
-			currentSleepiness = 80;
+		if(currentSleepiness > Constants.MAX_SLEEP){
+			currentSleepiness = Constants.MAX_SLEEP;
 			if(activePlan instanceof SleepPlan){
+				disposePlan();
+				plan();
+			}
+		}
+	}
+	
+	public void satisfyLazy(float f){
+		this.currentLaziness += f;
+		if(currentLaziness > Constants.MAX_LAZINESS){
+			currentLaziness = Constants.MAX_LAZINESS;
+			if(activePlan instanceof IdlePlan){
 				disposePlan();
 				plan();
 			}
@@ -176,11 +189,11 @@ public class Villager extends MidEntity implements Agent {
 		if(hours >= 22 || hours < 8){
 
 		}else{
-			currentHunger = currentHunger - (hunger*0.01f);
-			currentThirst = currentThirst - (thirst*0.01f);
+			currentHunger = currentHunger - (hunger*0.001f);
+			currentThirst = currentThirst - (thirst*0.001f);
 		}
 		
-		currentSleepiness = currentSleepiness - (sleepiness*0.01f);
+		currentSleepiness = currentSleepiness - (sleepiness*0.001f);
 	}
 	
 	private void seeIfDead() {
@@ -241,35 +254,35 @@ public class Villager extends MidEntity implements Agent {
 		return speed;
 	}
 
-	public float getHunger() {
+	public float getHowHungry() {
 		return hunger;
 	}
 
-	public float getThirst() {
+	public float getHowThirsty() {
 		return thirst;
 	}
 	
-	public float getSleepiness(){
+	public float getHowSleepy(){
 		return sleepiness;
 	}
 	
-	public float getLaziness(){
+	public float getHowLazy(){
 		return laziness;
 	}
 	
-	public float getCurrentHunger() {
+	public float getHunger() {
 		return currentHunger;
 	}
 
-	public float getCurrentThirst() {
+	public float getThirst() {
 		return currentThirst;
 	}
 	
-	public float getCurrentSleepiness(){
+	public float getSleepiness(){
 		return currentSleepiness;
 	}
 	
-	public float getCurrentLaziness(){
+	public float getLaziness(){
 		return currentLaziness;
 	}
 	
@@ -336,9 +349,9 @@ public class Villager extends MidEntity implements Agent {
 	
 	public void updateUI(){
 		if(isShowUI){
-			pcs.firePropertyChange("status", hunger, "hunger");
-			pcs.firePropertyChange("status", thirst, "thirst");
-			pcs.firePropertyChange("status", sleepiness, "sleepiness");
+			pcs.firePropertyChange("status", currentHunger, "hunger");
+			pcs.firePropertyChange("status", currentThirst, "thirst");
+			pcs.firePropertyChange("status", currentSleepiness, "sleepiness");
 			
 			pcs.firePropertyChange("status", currentAction, "action");
 			pcs.firePropertyChange("status", currentPlan, "plan");

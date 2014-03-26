@@ -11,6 +11,7 @@ public class Bed extends BottomEntity {
 	private Villager female;
 	private Villager male;
 	private boolean isUsed = false;
+	private float sleepValue = 0.2f;
 
 	public Bed(int x, int y) {
 		super(x, y, EntityType.BED, false);
@@ -28,6 +29,11 @@ public class Bed extends BottomEntity {
 		copy.male = male;
 		copy.isUsed = isUsed;
 		return copy;
+	}
+	
+	@Override
+	public float getSleepValue(){
+		return sleepValue;
 	}
 
 	public boolean isClaimedByMale() {

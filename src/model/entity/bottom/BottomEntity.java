@@ -34,4 +34,8 @@ public abstract class BottomEntity extends Entity {
 		super(x, y, id, blocking);
 	}
 
+	public float getSleepValue(){
+		return 0f;
+	}
+	
 }

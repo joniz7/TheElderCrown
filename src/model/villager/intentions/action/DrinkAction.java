@@ -10,6 +10,7 @@ import model.path.criteria.HasDrink;
 import model.path.criteria.HasFood;
 import model.villager.Villager;
 import model.villager.VillagersWorldPerception;
+import util.Constants;
 import util.EntityType;
 
 public class DrinkAction extends Action{
@@ -27,7 +28,7 @@ public class DrinkAction extends Action{
 			if(!d.consumed()){
 				villager.satisfyThirst(d.drunk());
 				
-				if(villager.getCurrentThirst() > 79){
+				if(villager.getThirst() >= Constants.MAX_THIRST){
 					villager.updateStatus("statusEnd");
 					actionFinished();
 				}else if(d.consumed()){

@@ -1,5 +1,6 @@
 package model.villager.intentions.action;
 
+import util.Constants;
 import util.EntityType;
 import model.World;
 import model.entity.top.Tree;
@@ -33,8 +34,8 @@ public class IdleAction extends Action {
 			villager.updateStatus("idling");
 			firstTick = false;
 		}
-		stacks++;
-		if(stacks > idleTime){
+		villager.satisfyLazy(0.5f);
+		if(villager.getLaziness() >= Constants.MAX_LAZINESS){
 			villager.updateStatus("statusEnd");
 			actionFinished();
 		}
