@@ -35,7 +35,7 @@ public class GatherDrinkPlan extends Plan{
 		}
 		// We need to move, and then fill Inventory
 		else{
-			Point p = FindObject.findTileNeighbour(villager.getWorld(), EntityType.WATER_TILE, 
+			Point p = FindObject.findObjectNeighbour(villager.getWorld(), EntityType.WATER_TILE, 
 					villager.getX(), villager.getY());
 			Path movePath = null;
 			if(p != null){

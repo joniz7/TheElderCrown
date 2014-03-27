@@ -22,7 +22,7 @@ public class DrinkPlan extends Plan{
 		actionQueue = new LinkedList<Action>();
 		name = "Wants to drink";
 		
-		Point p = FindObject.findTileNeighbour(villager.getWorld(), EntityType.WATER_TILE, 
+		Point p = FindObject.findObjectNeighbour(villager.getWorld(), EntityType.WATER_TILE, 
 				villager.getX(), villager.getY());
 		Point p2 = FindObject.findObjectNeighbour(villager.getWorld(), new HasDrink(), null,
 				villager.getX(), villager.getY());

@@ -2,7 +2,9 @@ package model.villager.intentions.plan;
 
 import java.awt.Point;
 
+import model.path.FindObject;
 import model.villager.Villager;
+import model.villager.VillagersWorldPerception;
 
 /**
  * A plan to socialise with another villager, whom have called out to us.
@@ -29,10 +31,16 @@ public class SocialisePlan extends Plan{
 		// WaitForAction
 		// TalkAction
 		
-		/*
 		System.out.println("Starting to find another villager \n");
+		
+		
+		/*
 		Villager otherVillager = (Villager) FindObject.getAdjacentObject(villager.getWorld(), new isSocial(),
 		EntityType.VILLAGER, villager.getX(), villager.getY());
+		
+		
+		
+		
 		if(otherVillager != null){
 		actionQueue.addLast(new SocialAction(villager));
 		otherVillager.setAction(new SocialPlan(otherVillager));
