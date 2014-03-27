@@ -7,16 +7,15 @@ import model.path.FindObject;
 import model.path.criteria.HasDrink;
 import model.villager.Villager;
 import model.villager.VillagersWorldPerception;
+import util.Constants;
 import util.EntityType;
 
 public class DrinkAction extends Action{
 
-	private int stacks, stacksToDrink;
 	
 	public DrinkAction(Villager villager) {
 		super(villager);
 		name = "Drinking";
-		stacksToDrink = 250;
 	}
 
 	@Override
@@ -27,8 +26,7 @@ public class DrinkAction extends Action{
 			if(!d.consumed()){
 				villager.satisfyThirst(d.drunk());
 				
-				stacks++;
-				if(stacks > stacksToDrink){
+				if(villager.getThirst() >= Constants.MAX_THIRST){
 					villager.updateStatus("statusEnd");
 					actionFinished();
 				}else if(d.consumed()){

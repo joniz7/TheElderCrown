@@ -20,5 +20,10 @@ public abstract class Tile extends BottomEntity{
 		super(x ,y, id, blocking);
 		updatePos(x,y);
 	}
+	
+	@Override
+	public float getSleepValue(){
+		return 0f;
+	}
 
 }

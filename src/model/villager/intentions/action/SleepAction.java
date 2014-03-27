@@ -1,5 +1,6 @@
 package model.villager.intentions.action;
 
+import util.Constants;
 import util.EntityType;
 import model.entity.bottom.Bed;
 import model.entity.bottom.HouseFloor;
@@ -17,7 +18,6 @@ import model.villager.VillagersWorldPerception;
 
 public class SleepAction extends Action {
 
-	private float stacks, sleepToGet;
 	private HouseFloor floor;
 	private Bed thisBed;
 	private boolean usedAtStart = false;
@@ -25,13 +25,11 @@ public class SleepAction extends Action {
 	
 	public SleepAction(Villager villager) {
 		super(villager);
-		sleepToGet = 250; // villager.getSleepiness();
 		name = "Sleeping";
 	}
 	
 	public SleepAction(Villager villager, Bed thisBed) {
 		super(villager);
-		sleepToGet = 250; // villager.getSleepiness();
 		name = "Sleeping";
 		this.thisBed = thisBed;
 	}
@@ -46,16 +44,18 @@ public class SleepAction extends Action {
 			if(this.firstTick){
 				//System.out.println("Sleeping on bed!");
 				villager.setBlocking(false);
-				thisBed.setUsed(true);
+				thisBed.setUsed();
 				villager.updateStatus("sleeping");
 				firstTick = false;
 			}
-			villager.satisfySleep(0.029f);
-			stacks = stacks + 0.3f;
-			if(stacks > sleepToGet){
-				villager.setBlocking(true);
-				villager.updateStatus("statusEnd");
-				actionFinished();
+			villager.satisfySleep(thisBed.getSleepValue());
+			if(villager.getSleepiness() >= Constants.MAX_SLEEP){
+				if(villager.getMostNeed() > villager.getSleepiness() + 50){
+					villager.setBlocking(true);
+					villager.updateStatus("statusEnd");
+					thisBed.removeUsed();
+					actionFinished();
+				}
 			}
 			
 		}else if(FindObject.standingOnTile(world, EntityType.GRASS_TILE, villager.getX(), villager.getY())){
@@ -66,8 +66,7 @@ public class SleepAction extends Action {
 				firstTick = false;
 			}
 			villager.satisfySleep(0.1f);
-			stacks = stacks + 0.1f;
-			if(stacks > sleepToGet){
+			if(villager.getSleepiness() >= Constants.MAX_SLEEP){
 				villager.updateStatus("statusEnd");
 				villager.setBlocking(true);
 				actionFinished();
@@ -80,8 +79,7 @@ public class SleepAction extends Action {
 				firstTick = false;
 			}
 			villager.satisfySleep(0.1f);
-			stacks = stacks + 0.2f;
-			if(stacks > sleepToGet){
+			if(villager.getSleepiness() >= Constants.MAX_SLEEP){
 				villager.updateStatus("statusEnd");
 				villager.setBlocking(true);
 				actionFinished();

@@ -8,7 +8,6 @@ import java.util.Map.Entry;
 import model.entity.Agent;
 import model.entity.Entity;
 import model.entity.mid.MidEntity;
-import model.entity.top.house.HouseWall;
 import model.item.Item;
 import model.villager.intentions.Intent;
 import model.villager.intentions.IntentionHandler;
@@ -27,7 +26,7 @@ import model.villager.order.Order;
 import model.villager.util.NameGen;
 import util.Constants;
 import util.EntityType;
-import util.UtilClass;
+import util.RandomClass;
 import view.entity.EntityView;
 import view.entity.mid.VillagerView;
 
@@ -39,40 +38,54 @@ public class Villager extends MidEntity implements Agent {
 
 	private VillagerWorld world;
 	private boolean dead = false;
+	private boolean mustExplore, isShowUI = false;
+	
 	private String currentAction, currentPlan;
 	private String name;
 	private Plan activePlan;
+<<<<<<< HEAD
+=======
+
 	private ProfessionLine profession;
+	
 	private boolean mustExplore, isShowUI = false;
+>>>>>>> dev
 	private int length, weight;
 	private int age,ageprog;
 	private int sex; // 0 -female, 1 - male
+	private int time;
 	private int deathrisk; //The deathrisk based on age.
 	private int modifier;
 	private Point myBed = null;
-	private int time;
 	private Item activeItem;
 	private Item[] inventory = new Item[6];
-	private float hunger, thirst, speed, sleepiness, laziness, obedience;
-	private float currentHunger, currentThirst, currentSleepiness, currentLaziness;
+
 	private HashMap<Point, Villager> nearbyVillagers;
 	private HashMap<Point, Agent> nearbyAgents;
+	
+	private float hunger, thirst, speed, sleepiness, laziness, obedience;
+	private float currentHunger, currentThirst, currentSleepiness, currentLaziness;
+	
 	
 
 	public Villager(Point p, int age) {
 		super(p.x, p.y, EntityType.VILLAGER);
 		world = new VillagerWorld();
-		length = 140 + UtilClass.getRandomInt(50, 0);
-		weight = length / 4 + UtilClass.getRandomInt(length/4, 0);
+		length = 140 + RandomClass.getRandomInt(50, 0);
+		weight = length / 4 + RandomClass.getRandomInt(length/4, 0);
 		
+<<<<<<< HEAD
+=======
 		profession = new FoodGatherer(this, WorkLevel.MEDIUM);
 		
+		this.name = NameGen.newName(true);
+>>>>>>> dev
 		this.age=age;
 		ageprog=0;
 		deathrisk=1;
 		ih = new IntentionHandler(this);
 		
-		this.sex = UtilClass.getRandomInt(2, 0);
+		this.sex = RandomClass.getRandomInt(2, 0);
 		if(sex == 0){
 			this.name = NameGen.newName(true);
 		}else{
@@ -80,13 +93,13 @@ public class Villager extends MidEntity implements Agent {
 		}
 		
 		//Randomize starting values for needs, wants and stats.
-		this.hunger = UtilClass.getRandomInt(20, 1);
-		this.thirst = UtilClass.getRandomInt(20, 1);
-		this.sleepiness = UtilClass.getRandomInt(20, 1);
-		this.speed = UtilClass.getRandomInt(10, 25);
-		this.laziness = UtilClass.getRandomInt(20, 1);
-		this.obedience = UtilClass.getRandomInt(20, 1);
-		this.modifier = UtilClass.getRandomInt(5, 1);
+		this.hunger = RandomClass.getRandomInt(10, 1);
+		this.thirst = RandomClass.getRandomInt(10, 1);
+		this.sleepiness = RandomClass.getRandomInt(10, 1);
+		this.speed = RandomClass.getRandomInt(10, 25);
+		this.laziness = RandomClass.getRandomInt(10, 1);
+		this.obedience = RandomClass.getRandomInt(10, 1);
+		this.modifier = RandomClass.getRandomInt(3, 1);
 		
 		this.currentHunger = 50-modifier*hunger;
 		this.currentThirst = 50-modifier*thirst;
@@ -138,7 +151,7 @@ public class Villager extends MidEntity implements Agent {
 			addOrder(p.order);
 		}
 		
-		//seeIfDead();
+		seeIfDead();
 		plan();
 		
 //		if(profession != null)
@@ -229,11 +242,10 @@ public class Villager extends MidEntity implements Agent {
 		}
 		
 		currentSleepiness = currentSleepiness - (sleepiness*0.001f);
-		currentLaziness = currentLaziness - (laziness*0.001f);
 	}
 	
 	private void seeIfDead() {
-		if(hunger < -Constants.MAX_HUNGER || thirst < -Constants.MAX_THIRST || UtilClass.getRandomInt(1000000, deathrisk) >= 1000000) {
+		if(hunger < -Constants.MAX_HUNGER || thirst < -Constants.MAX_THIRST || RandomClass.getRandomInt(1000000, deathrisk) >= 1000000) {
 			dead = true;
 		}
 	}
@@ -265,11 +277,6 @@ public class Villager extends MidEntity implements Agent {
 			currentPlan = activePlan.getName();
 		}
 	}
-	
-	public void workReminder(Plan plan){
-		this.disposePlan();
-		activePlan = plan;
-	}
 
 	public Action getAction() {
 		if(dead) {
@@ -289,6 +296,11 @@ public class Villager extends MidEntity implements Agent {
 			activePlan = null;
 			ih.intentDone();
 		}
+	}
+	
+	public void workReminder(Plan plan){
+		this.disposePlan();
+		activePlan = plan;
 	}
 
 	public float getSpeed() {
@@ -359,11 +371,6 @@ public class Villager extends MidEntity implements Agent {
 	
 	public Point getBedPos(){
 		return myBed;
-	}
-	
-	//Naming? Should return the lowest value, but its the mostly needed one since needs are negative
-	public float getMostNeed(){
-		return UtilClass.findMin(currentHunger, currentThirst, currentSleepiness, currentLaziness);
 	}
 	
 	
