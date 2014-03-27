@@ -251,6 +251,21 @@ public static Point findTile2(VillagersWorldPerception world, EntityType id, int
 			return null;
 		}
 		
+		if(startX == p.x - 1 && startY == p.y){
+			System.out.println("Already adjacent");
+			return p;
+		}else if(startX == p.x + 1 && startY == p.y){
+			System.out.println("Already adjacent");
+			return p;
+		}else if(startX == p.x && startY == p.y - 1){
+			System.out.println("Already adjacent");
+			return p;
+		}else if(startX == p.x && startY == p.y + 1){
+			System.out.println("Already adjacent");
+			return p;
+		}
+			
+		
 		long endTime = System.currentTimeMillis();
 		System.out.println("FindObject, find water tile: " + (endTime - startTime));
 		
@@ -293,7 +308,7 @@ public static Point findTile2(VillagersWorldPerception world, EntityType id, int
 			int finalY = bestPath.getStep(bestPath.getLength() - 1).getY();
 			return new Point(finalX, finalY);
 		}catch(NullPointerException e){
-			new Helper3View(startX, startY);
+			worldStatic.addHelper(p);
 			world.setPaused(true);
 			
 			e.printStackTrace();
@@ -511,6 +526,9 @@ public static Point findTile2(VillagersWorldPerception world, EntityType id, int
 				else if(tops.get(p) != null && (tops.get(p).getType() == id || id == null) && tops.get(p).meetCriteria(crit) && 
 						PathFinder.getPathToAdjacent(p.x, p.y, startX, startY) != null)
 					return p;
+				else if(bots.get(p) != null && (bots.get(p).getType() == id || id == null) && bots.get(p).meetCriteria(crit) && 
+						PathFinder.getPathToAdjacent(p.x, p.y, startX, startY) != null)
+					return p;
 //				else
 //					View.addTopGraphic(new Helper1View(p.x, p.y));
 			}
@@ -561,8 +579,6 @@ public static Point findTile2(VillagersWorldPerception world, EntityType id, int
 		Path p2 = null;
 		Path p3 = null;
 		Path p4 = null;
-		
-
 			
 		if(p.getX() > 0 && tiles.get(new Point((int) p.getX() - 1, (int) p.getY())).getType() == EntityType.GRASS_TILE)
 			p1 = PathFinder.getPath(startX, startY, (int) p.getX() - 1, (int) p.getY());
@@ -600,10 +616,18 @@ public static Point findTile2(VillagersWorldPerception world, EntityType id, int
 		if(p4 != null && bestPath.getLength() > p4.getLength())
 			bestPath = p4;
 		
-		int finalX = bestPath.getStep(bestPath.getLength() - 1).getX();
-		int finalY = bestPath.getStep(bestPath.getLength() - 1).getY();
+		try{
+			int finalX = bestPath.getStep(bestPath.getLength() - 1).getX();
+			int finalY = bestPath.getStep(bestPath.getLength() - 1).getY();
+			
+			return new Point(finalX, finalY);
+		}catch(NullPointerException e){
+			worldStatic.addHelper(p);
+			worldStatic.setPaused(true);
+			
+			return null;
+		}
 		
-		return new Point(finalX, finalY);
 	}
 	
 

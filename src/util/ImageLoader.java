@@ -45,7 +45,7 @@ public class ImageLoader {
 		imageLib.put("villagerExploring", loadImage("image", "villagerExploring.png"));
 		
 		//Debugging
-		imageLib.put("helper", loadImage("image", "miss.png"));
+		imageLib.put("helper", loadImage("image", "checker.png"));
 		imageLib.put("helper2", loadImage("image", "hit.png"));
 		imageLib.put("helper3", loadImage("image", "checker.png"));
 		

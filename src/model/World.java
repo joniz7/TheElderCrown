@@ -246,6 +246,29 @@ public abstract class World implements Tickable, VillagersWorldPerception, Prope
 		}
 	}
 	
+	/**
+	 * Create a new Elder in the world at the specified point.
+	 * Also creates UI and registers view bindings.
+	 * 
+	 *  @param p - the point to place the villager at.
+	 *  		   If occupied in middle layer, this method does nothing
+	 */
+	private void newElder(Point p, int age) {
+		// Spawn only if position is empty
+		if (midEntities.get(p) == null) {
+			System.out.println("A baby is born!");
+			Villager v = new Villager(p,age);
+			addEntity(p, v);
+			addVillagerUI(p, v);
+			v.getPCS().addPropertyChangeListener(this);
+			v.makeElder();
+			testSubject = v;
+		}
+		else {
+			System.out.println("Can't spawn baby: Too many people, too many problems");
+		}
+	}
+	
 	@Override
 	/**
 	 * Checks whether the given position is blocked in any layer.
@@ -336,8 +359,14 @@ public abstract class World implements Tickable, VillagersWorldPerception, Prope
 	protected final void initializeVillagers() {
 		
 		for(int i = 0; i < VILLAGER_COUNT; i++) {
-			Point pos = new Point(VILLAGER_SPAWN_POS + 5, VILLAGER_SPAWN_POS+i);
-			newVillager(pos, UtilClass.getRandomInt(10, 15));
+			if(i == 0){
+				Point pos = new Point(VILLAGER_SPAWN_POS + 5, VILLAGER_SPAWN_POS+i);
+				newElder(pos, UtilClass.getRandomInt(10, 15));
+			}else{
+				Point pos = new Point(VILLAGER_SPAWN_POS + 5, VILLAGER_SPAWN_POS+i);
+				newVillager(pos, UtilClass.getRandomInt(10, 15));
+			}
+			
 		}
 	}
 	
@@ -407,6 +436,10 @@ public abstract class World implements Tickable, VillagersWorldPerception, Prope
 	public void addEntity(Point point, TopEntity entity) {
 		topEntities.put(point, entity);
 		pcs.firePropertyChange("addTopEntity", null, entity);
+	}
+	
+	public void addHelper(Point point){
+		pcs.firePropertyChange("helper", point, null);
 	}
 	
 	/**

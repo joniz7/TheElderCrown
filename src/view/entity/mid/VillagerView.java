@@ -19,7 +19,7 @@ public class VillagerView extends EntityView {
 	private Color c;
 	private String currentStatus;
 	private Boolean drawImage;
-	private boolean highlight;
+	private boolean highlight, isElder;
 	
 	/**
 	 * Creates a new VillagerView.
@@ -64,9 +64,18 @@ public class VillagerView extends EntityView {
 					g.drawOval(transposedX + (20 - diameter)/2, transposedY + (20 - diameter)/2,
 							diameter, diameter);
 				}else{
-					g.setColor(new Color(0, 0, 0));
-					g.drawOval(transposedX + (20 - diameter)/2, transposedY + (20 - diameter)/2,
-							diameter, diameter);
+					if(isElder){
+						g.setColor(new Color(255, 255, 0));
+						g.drawOval(transposedX + (20 - diameter)/2, transposedY + (20 - diameter)/2,
+								diameter, diameter);
+						g.setColor(new Color(255, 255, 0));
+						g.drawOval(transposedX + (20 - diameter + 6)/2, transposedY + (20 - diameter + 6)/2,
+								diameter - 6, diameter - 6);
+					}else{
+						g.setColor(new Color(0, 0, 0));
+						g.drawOval(transposedX + (20 - diameter)/2, transposedY + (20 - diameter)/2,
+								diameter, diameter);
+					}
 				}
 				
 				if(drawImage){
@@ -83,10 +92,6 @@ public class VillagerView extends EntityView {
 					}
 					g.drawImage(image, transposedX, transposedY);
 				}
-				
-				
-				
-
 				return true;
 			}
 		return false;
@@ -126,8 +131,9 @@ public class VillagerView extends EntityView {
 				highlight = true;
 			}else if(status.compareTo("unHighlight")==0){
 				highlight = false;
+			}else if(status.compareTo("elder") == 0){
+				isElder = true;
 			}
-			
 		}else{
 			super.propertyChange(event);
 		}

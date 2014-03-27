@@ -38,7 +38,7 @@ public class Villager extends MidEntity implements Agent {
 	private IntentionHandler ih;
 
 	private VillagerWorld world;
-	private boolean dead = false;
+	private boolean dead = false, isElder = false;;
 	private String currentAction, currentPlan;
 	private String name;
 	private Plan activePlan;
@@ -59,7 +59,7 @@ public class Villager extends MidEntity implements Agent {
 	private HashMap<Point, Agent> nearbyAgents;
 	
 
-	public Villager(Point p, int age) {
+	public Villager(Point p, int age){
 		super(p.x, p.y, EntityType.VILLAGER);
 		world = new VillagerWorld();
 		length = 140 + UtilClass.getRandomInt(50, 0);
@@ -166,7 +166,7 @@ public class Villager extends MidEntity implements Agent {
 	 * if our social need/relation is high enough.
 	 */
 	private void maybeSocialise(HashMap<Point, Villager> villagers) {
-		System.out.println("Maybe socialise!");
+//		System.out.println("Maybe socialise!");
 	}
 
 	public void satisfyHunger(float f) {
@@ -497,5 +497,10 @@ public class Villager extends MidEntity implements Agent {
 	
 	public HashMap<Point, Agent> getNearbyAgents(){
 		return nearbyAgents;
+	}
+	
+	public void makeElder(){
+		isElder = true;
+		pcs.firePropertyChange("status", true, "elder");
 	}
 }
