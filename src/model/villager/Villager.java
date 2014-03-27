@@ -23,6 +23,7 @@ import model.villager.intentions.plan.SleepPlan;
 import model.villager.intentions.reminder.ProfessionLine;
 import model.villager.intentions.reminder.ProfessionLine.WorkLevel;
 import model.villager.intentions.reminder.profession.FoodGatherer;
+import model.villager.intentions.reminder.profession.WaterGatherer;
 import model.villager.order.Order;
 import model.villager.util.NameGen;
 import util.Constants;
@@ -65,7 +66,7 @@ public class Villager extends MidEntity implements Agent {
 		length = 140 + UtilClass.getRandomInt(50, 0);
 		weight = length / 4 + UtilClass.getRandomInt(length/4, 0);
 		
-		profession = new FoodGatherer(this, WorkLevel.MEDIUM);
+		profession = new WaterGatherer(this, WorkLevel.MEDIUM);
 		
 		this.age=age;
 		ageprog=0;
@@ -141,8 +142,8 @@ public class Villager extends MidEntity implements Agent {
 		//seeIfDead();
 		plan();
 		
-//		if(profession != null)
-//			profession.update(time);
+		if(profession != null)
+			profession.update(time);
 		
 		if(activePlan.getActiveAction() == null){
 			disposePlan();
@@ -233,9 +234,9 @@ public class Villager extends MidEntity implements Agent {
 	}
 	
 	private void seeIfDead() {
-		if(hunger < -Constants.MAX_HUNGER || thirst < -Constants.MAX_THIRST || UtilClass.getRandomInt(1000000, deathrisk) >= 1000000) {
-			dead = true;
-		}
+//		if(hunger < -Constants.MAX_HUNGER || thirst < -Constants.MAX_THIRST || UtilClass.getRandomInt(1000000, deathrisk) >= 1000000) {
+//			dead = true;
+//		}
 	}
 	
 	private void seeIfBirthday(){
@@ -273,7 +274,7 @@ public class Villager extends MidEntity implements Agent {
 
 	public Action getAction() {
 		if(dead) {
-			return new DieAction(this);
+//			return new DieAction(this);
 		}
 		return activePlan.getActiveAction();
 	}

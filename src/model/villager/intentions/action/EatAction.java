@@ -35,6 +35,9 @@ public class EatAction extends Action{
 					villager.setActiveItem(null);
 					villager.updateStatus("statusEnd");
 				}
+			}else{
+				villager.setActiveItem(null);
+				villager.updateStatus("statusEnd");
 			}
 		}else if(FindObject.getAdjacentObject(world, new HasFood(), null, villager.getX(),
 				villager.getY()) != null) {
