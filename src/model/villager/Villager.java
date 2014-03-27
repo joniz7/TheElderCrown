@@ -11,6 +11,7 @@ import model.entity.mid.MidEntity;
 import model.item.Item;
 import model.villager.intentions.Intent;
 import model.villager.intentions.IntentionHandler;
+import model.villager.intentions.SocialiseIntent;
 import model.villager.intentions.action.Action;
 import model.villager.intentions.action.DieAction;
 import model.villager.intentions.plan.DrinkPlan;
@@ -165,8 +166,20 @@ public class Villager extends MidEntity implements Agent {
 	private void maybeSocialise(HashMap<Point, Villager> villagers) {
 
 		if (currentSocial < social*socialLimit) {
+			// TODO if not already socialising etc
+			
+			// Initialise a social interaction
 			Entry<Point, Villager> other = getBestFriend(villagers);
-			System.out.println("Best friend:"+other.getValue());
+			Villager otherVillager = other.getValue();
+			Point otherPos = other.getKey();
+			
+			// TODO Find out where we should meet
+			Point nearbyPos = null;
+			
+			// Create SocialiseIntent and order for other villager
+			Intent othersIntent = new SocialiseIntent(otherVillager, nearbyPos, this.getId());
+			Order socialiseOrder = new Order(this.getId(), otherVillager.getId(), othersIntent);
+			
 		}
 		
 	}
@@ -329,6 +342,10 @@ public class Villager extends MidEntity implements Agent {
 	
 	public float getSleepiness(){
 		return currentSleepiness;
+	}
+	
+	public float getSocial() {
+		return currentSocial;
 	}
 	
 	public float getLaziness(){
