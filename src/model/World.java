@@ -65,7 +65,7 @@ public abstract class World implements Tickable, VillagersWorldPerception, Prope
 	// World configuration
 	private final int VIEW_DISTANCE = 10;
 
-	public final int VILLAGER_SPAWN_POS = 40, VILLAGER_COUNT = 1;
+	public final int VILLAGER_SPAWN_POS = 40, VILLAGER_COUNT = 8;
 	
 	// Keep track of when to spawn babies
 	private boolean spawnBabies = false;
@@ -691,7 +691,7 @@ public abstract class World implements Tickable, VillagersWorldPerception, Prope
 			} catch (NoPositionFoundException e) {
 				e.printStackTrace();
 			}
-			if(!midBlocked(pos)) {
+			if(!midBlocked(pos) && agents.get(pos) == null) {
 				agents.put(pos, villager);
 				midEntities.put(pos, villager);
 				agents.remove(p);

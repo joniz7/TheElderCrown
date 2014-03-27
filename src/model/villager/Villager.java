@@ -234,9 +234,9 @@ public class Villager extends MidEntity implements Agent {
 	}
 	
 	private void seeIfDead() {
-//		if(hunger < -Constants.MAX_HUNGER || thirst < -Constants.MAX_THIRST || UtilClass.getRandomInt(1000000, deathrisk) >= 1000000) {
-//			dead = true;
-//		}
+		if(hunger < -Constants.MAX_HUNGER || thirst < -Constants.MAX_THIRST || UtilClass.getRandomInt(1000000, deathrisk) >= 1000000) {
+			dead = true;
+		}
 	}
 	
 	private void seeIfBirthday(){
@@ -274,7 +274,7 @@ public class Villager extends MidEntity implements Agent {
 
 	public Action getAction() {
 		if(dead) {
-//			return new DieAction(this);
+			return new DieAction(this);
 		}
 		return activePlan.getActiveAction();
 	}
