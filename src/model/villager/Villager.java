@@ -80,12 +80,12 @@ public class Villager extends MidEntity implements Agent {
 		}
 		
 		//Randomize starting values for needs, wants and stats.
-		this.hunger = UtilClass.getRandomInt(10, 1);
-		this.thirst = UtilClass.getRandomInt(10, 1);
-		this.sleepiness = UtilClass.getRandomInt(10, 1);
+		this.hunger = UtilClass.getRandomInt(20, 1);
+		this.thirst = UtilClass.getRandomInt(20, 1);
+		this.sleepiness = UtilClass.getRandomInt(20, 1);
 		this.speed = UtilClass.getRandomInt(10, 25);
-		this.laziness = UtilClass.getRandomInt(10, 1);
-		this.obedience = UtilClass.getRandomInt(10, 1);
+		this.laziness = UtilClass.getRandomInt(20, 1);
+		this.obedience = UtilClass.getRandomInt(20, 1);
 		this.modifier = UtilClass.getRandomInt(5, 1);
 		
 		this.currentHunger = 50-modifier*hunger;
