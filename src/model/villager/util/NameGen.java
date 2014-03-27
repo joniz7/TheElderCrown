@@ -1,6 +1,6 @@
 package model.villager.util;
 
-import util.RandomClass;
+import util.UtilClass;
 
 public class NameGen {
 
@@ -19,15 +19,15 @@ public class NameGen {
 	public static String newName(boolean female){
 		String nameBase = "";
 		
-		int length = RandomClass.getRandomInt(3, 1);
+		int length = UtilClass.getRandomInt(3, 1);
 		
 		for(int i = 0; i < length; i++)
-			nameBase = nameBase + nameParts[RandomClass.getRandomInt(nameParts.length, 0)];
+			nameBase = nameBase + nameParts[UtilClass.getRandomInt(nameParts.length, 0)];
 		
 		if(female)
-			nameBase = nameBase + femaleEnding[RandomClass.getRandomInt(femaleEnding.length, 0)];
+			nameBase = nameBase + femaleEnding[UtilClass.getRandomInt(femaleEnding.length, 0)];
 		else
-			nameBase = nameBase + maleEnding[RandomClass.getRandomInt(maleEnding.length, 0)];
+			nameBase = nameBase + maleEnding[UtilClass.getRandomInt(maleEnding.length, 0)];
 		
 		return nameBase;
 	}

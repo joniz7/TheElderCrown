@@ -27,7 +27,7 @@ import model.villager.order.Order;
 import model.villager.util.NameGen;
 import util.Constants;
 import util.EntityType;
-import util.RandomClass;
+import util.UtilClass;
 import view.entity.EntityView;
 import view.entity.mid.VillagerView;
 
@@ -62,8 +62,8 @@ public class Villager extends MidEntity implements Agent {
 	public Villager(Point p, int age) {
 		super(p.x, p.y, EntityType.VILLAGER);
 		world = new VillagerWorld();
-		length = 140 + RandomClass.getRandomInt(50, 0);
-		weight = length / 4 + RandomClass.getRandomInt(length/4, 0);
+		length = 140 + UtilClass.getRandomInt(50, 0);
+		weight = length / 4 + UtilClass.getRandomInt(length/4, 0);
 		
 		profession = new FoodGatherer(this, WorkLevel.MEDIUM);
 		
@@ -72,7 +72,7 @@ public class Villager extends MidEntity implements Agent {
 		deathrisk=1;
 		ih = new IntentionHandler(this);
 		
-		this.sex = RandomClass.getRandomInt(2, 0);
+		this.sex = UtilClass.getRandomInt(2, 0);
 		if(sex == 0){
 			this.name = NameGen.newName(true);
 		}else{
@@ -80,13 +80,13 @@ public class Villager extends MidEntity implements Agent {
 		}
 		
 		//Randomize starting values for needs, wants and stats.
-		this.hunger = RandomClass.getRandomInt(10, 1);
-		this.thirst = RandomClass.getRandomInt(10, 1);
-		this.sleepiness = RandomClass.getRandomInt(10, 1);
-		this.speed = RandomClass.getRandomInt(10, 25);
-		this.laziness = RandomClass.getRandomInt(10, 1);
-		this.obedience = RandomClass.getRandomInt(10, 1);
-		this.modifier = RandomClass.getRandomInt(3, 1);
+		this.hunger = UtilClass.getRandomInt(10, 1);
+		this.thirst = UtilClass.getRandomInt(10, 1);
+		this.sleepiness = UtilClass.getRandomInt(10, 1);
+		this.speed = UtilClass.getRandomInt(10, 25);
+		this.laziness = UtilClass.getRandomInt(10, 1);
+		this.obedience = UtilClass.getRandomInt(10, 1);
+		this.modifier = UtilClass.getRandomInt(5, 1);
 		
 		this.currentHunger = 50-modifier*hunger;
 		this.currentThirst = 50-modifier*thirst;
@@ -229,10 +229,11 @@ public class Villager extends MidEntity implements Agent {
 		}
 		
 		currentSleepiness = currentSleepiness - (sleepiness*0.001f);
+		currentLaziness = currentLaziness - (laziness*0.001f);
 	}
 	
 	private void seeIfDead() {
-		if(hunger < -Constants.MAX_HUNGER || thirst < -Constants.MAX_THIRST || RandomClass.getRandomInt(1000000, deathrisk) >= 1000000) {
+		if(hunger < -Constants.MAX_HUNGER || thirst < -Constants.MAX_THIRST || UtilClass.getRandomInt(1000000, deathrisk) >= 1000000) {
 			dead = true;
 		}
 	}
@@ -359,6 +360,10 @@ public class Villager extends MidEntity implements Agent {
 	public Point getBedPos(){
 		return myBed;
 	}
+	
+	/*public float getMaxNeed(){
+		;
+	}*/
 	
 	
 	/**

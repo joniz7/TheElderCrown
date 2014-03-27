@@ -5,7 +5,7 @@ import java.beans.PropertyChangeEvent;
 import org.newdawn.slick.Color;
 import org.newdawn.slick.Graphics;
 
-import util.RandomClass;
+import util.UtilClass;
 import view.entity.EntityView;
 
 /**
@@ -30,8 +30,8 @@ public class VillagerView extends EntityView {
 		super("villager", x, y);
 		this.height = height;
 		this.weight = weight;
-		c = new Color(RandomClass.getRandomInt(200, 25), RandomClass.getRandomInt(200, 50), 
-				RandomClass.getRandomInt(200, 25));
+		c = new Color(UtilClass.getRandomInt(200, 25), UtilClass.getRandomInt(200, 50), 
+				UtilClass.getRandomInt(200, 25));
 		currentStatus="awake";
 		drawImage=false;
 	}
