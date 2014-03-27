@@ -94,8 +94,6 @@ public class Villager extends MidEntity implements Agent {
 		this.currentSleepiness = 40-modifier*sleepiness;
 		this.currentLaziness = 50-modifier*laziness;
 		
-		
-		
 		currentAction = "Doing Nothing";
 		currentPlan = "Doing Nothing";
 		
