@@ -20,7 +20,7 @@ import view.ui.icons.ItemIcon;
 public class VillagerUI extends UI {
 
 	private int length, weight, xOff = 10, yOff = 10;
-	private float hungerOff, thirstOff, sleepOff;
+	private float hungerOff, thirstOff, sleepOff, social;
 	private Color c;
 	private String currentAction, currentPlan;
 	private String name;
@@ -72,8 +72,13 @@ public class VillagerUI extends UI {
 			g.drawImage(meter, xOff + 40, yOff + 355);
 			g.drawImage(meterArrow, xOff + 110 + sleepOff, yOff + 347);
 			g.drawString("Sleep", xOff + 90, yOff + 368);
+
+			g.drawImage(meter, xOff + 40, yOff + 395);
+			g.drawImage(meterArrow, xOff + 110 + social, yOff + 387);
+			g.drawString("Social", xOff + 90, yOff + 408);
 			
-			g.drawString("Currently:", xOff + 30, yOff + 410);
+			// 55 diff
+			g.drawString("Currently:", xOff + 30, yOff + 430);
 			g.drawString(currentPlan, xOff + 30, yOff + 450);
 			g.drawString(currentAction, xOff + 30, yOff + 470);
 			
@@ -129,7 +134,15 @@ public class VillagerUI extends UI {
 					sleepOff = 80;
 				else if(sleepOff < -80)
 					sleepOff = -80;
-			}else if(status.compareTo("action") == 0){
+			}
+			else if(status.compareTo("social") == 0){
+				social = (Float) event.getOldValue();
+				if(social > 80)
+					social = 80;
+				else if(social < -80)
+					social = -80;
+			}
+			else if(status.compareTo("action") == 0){
 				currentAction = (String) event.getOldValue();
 			}else if(status.compareTo("plan") == 0){
 				currentPlan = (String) event.getOldValue();

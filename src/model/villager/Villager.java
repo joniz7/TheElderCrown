@@ -34,7 +34,15 @@ public class Villager extends MidEntity implements Agent {
 
 	private IntentionHandler ih;
 
-	private float hunger = 10f, thirst = 10f, speed = 30, sleepiness = 40f, laziness = 20f, obedience = 0 ;
+	// Current needs (are adjusted all the time)
+	private float currentHunger = 10f, currentThirst = 10f, currentSleepiness = 40f, currentSocial = 10f;
+	// Characteristics (act as modifiers)
+	private float speed = 30, laziness = 20f, obedience = 0;
+	private float social = 0.5f; // Need of other people; [0,1] where 0 is a loner  
+	// Limits, i.e. when we should trigger actions) (modified by modifiers)
+	private float socialLimit = 3; // TODO update
+	
+	
 	private VillagerWorld world;
 	private boolean dead = false;
 	private String currentAction, currentPlan;
@@ -155,13 +163,50 @@ public class Villager extends MidEntity implements Agent {
 	 * if our social need/relation is high enough.
 	 */
 	private void maybeSocialise(HashMap<Point, Villager> villagers) {
-		System.out.println("Maybe socialise!");
+
+		if (currentSocial < social*socialLimit) {
+			Entry<Point, Villager> other = getBestFriend(villagers);
+			System.out.println("Best friend:"+other.getValue());
+		}
+		
+	}
+	
+	/**
+	 * Looks through a hashmap of villager, and finds the one I like the most.
+	 * Is based on my relationship with other villagers
+	 * (Atm no relationships, so is hardcoded)
+	 * 
+	 * @param villagers - A hashmap of villagers I should choose from 
+	 * @return my best friend (of those available)
+	 */
+	private Entry<Point, Villager> getBestFriend(HashMap<Point, Villager> villagers) {
+		
+		// The best match (currently, selects the villager with the lowest ID)
+		Entry<Point, Villager> bestFriend = null;
+		int bestFriendsId = -1;
+		
+		// Loop through the hashmap
+		Iterator<Entry<Point,Villager>> it = villagers.entrySet().iterator();
+		while (it.hasNext()) {
+			Entry<Point, Villager> entry = it.next();
+			Villager v = (Villager)entry.getValue();
+			// Replace best friend if this one is a better match. Harsh
+			if (bestFriendsId == -1 || v.getId()<bestFriendsId) {
+				bestFriend = entry;
+				bestFriendsId = v.getId();
+			}
+		}
+		
+		if (bestFriend == null) {
+			System.err.println("Warning: No best friend found!");
+		}
+		return bestFriend;
 	}
 
 	public void satisfyHunger(float f) {
-		this.hunger += f;
-		if(hunger > 80){
-			hunger = 80;
+		this.currentHunger += f;
+		if(currentHunger > 80){
+			currentHunger = 80;
 			if(activePlan instanceof EatPlan){
 				disposePlan();
 				plan();
@@ -170,9 +215,9 @@ public class Villager extends MidEntity implements Agent {
 	}
 	
 	public void satisfyThirst(float f) {
-		this.thirst += f;
-		if(thirst > 80){
-			thirst = 80;
+		this.currentThirst += f;
+		if(currentThirst > 80){
+			currentThirst = 80;
 			if(activePlan instanceof DrinkPlan){
 				disposePlan();
 				plan();
@@ -181,9 +226,9 @@ public class Villager extends MidEntity implements Agent {
 	}
 	
 	public void satisfySleep(float f){
-		this.sleepiness += f;
-		if(sleepiness > 80){
-			sleepiness = 80;
+		this.currentSleepiness += f;
+		if(currentSleepiness > 80){
+			currentSleepiness = 80;
 			if(activePlan instanceof SleepPlan){
 				disposePlan();
 				plan();
@@ -198,18 +243,21 @@ public class Villager extends MidEntity implements Agent {
 	private void adjustNeeds() {
 		int hours = time / 750;
 		
+		// Adjust needs differently during night
 		if(hours >= 22 || hours < 8){
-
-		}else{
-			hunger = hunger - 0.01f;
-			thirst = thirst - 0.02f;
+			currentSocial -= 0.005f;
+		}
+		else{
+			currentHunger -= 0.01f;
+			currentThirst -= 0.02f;
+			currentSocial -= 0.02f;
 		}
 		
-		sleepiness = sleepiness - 0.012f;
+		currentSleepiness = currentSleepiness - 0.012f;
 	}
 	
 	private void seeIfDead() {
-		if(hunger < -100.f || thirst < -100.f || RandomClass.getRandomInt(10000, deathrisk) >= 10000) {
+		if(currentHunger < -100.f || currentThirst < -100.f || RandomClass.getRandomInt(10000, deathrisk) >= 10000) {
 			dead = true;
 		}
 	}
@@ -272,15 +320,15 @@ public class Villager extends MidEntity implements Agent {
 	}
 
 	public float getHunger() {
-		return hunger;
+		return currentHunger;
 	}
 
 	public float getThirst() {
-		return thirst;
+		return currentThirst;
 	}
 	
 	public float getSleepiness(){
-		return sleepiness;
+		return currentSleepiness;
 	}
 	
 	public float getLaziness(){
@@ -350,23 +398,14 @@ public class Villager extends MidEntity implements Agent {
 	
 	public void updateUI(){
 		if(isShowUI){
-			pcs.firePropertyChange("status", hunger, "hunger");
-			pcs.firePropertyChange("status", thirst, "thirst");
-			pcs.firePropertyChange("status", sleepiness, "sleepiness");
+			pcs.firePropertyChange("status", currentHunger, "hunger");
+			pcs.firePropertyChange("status", currentThirst, "thirst");
+			pcs.firePropertyChange("status", currentSleepiness, "sleepiness");
+			pcs.firePropertyChange("status", currentSocial, "social");
 			
 			pcs.firePropertyChange("status", currentAction, "action");
 			pcs.firePropertyChange("status", currentPlan, "plan");
 		}
-	}
-	
-	/**
-	 * Creates and returns a new VillagerView.
-	 * Registers the view as our listener.
-	 */
-	public EntityView createView() {
-		EntityView view = new VillagerView(x, y, length, weight);
-		pcs.addPropertyChangeListener(view);
-		return view;
 	}
 
 	public void attemptMove(Point newPos) {
