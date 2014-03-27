@@ -29,7 +29,7 @@ public class SleepIntent extends PrimitiveIntent {
 		int hours = time / Constants.TICKS_HOUR;
 		
 		if(hours >= Constants.NIGHT_HOUR || hours < Constants.DAY_HOUR)
-			setDesire(-villager.getSleepiness() + 50);
+			setDesire(-villager.getSleepiness());
 		else
 			setDesire(-villager.getSleepiness() - 75);
 	}

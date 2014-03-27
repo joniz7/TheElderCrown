@@ -44,15 +44,18 @@ public class SleepAction extends Action {
 			if(this.firstTick){
 				//System.out.println("Sleeping on bed!");
 				villager.setBlocking(false);
-				thisBed.setUsed(true);
+				thisBed.setUsed();
 				villager.updateStatus("sleeping");
 				firstTick = false;
 			}
 			villager.satisfySleep(thisBed.getSleepValue());
 			if(villager.getSleepiness() >= Constants.MAX_SLEEP){
-				villager.setBlocking(true);
-				villager.updateStatus("statusEnd");
-				actionFinished();
+				if(villager.getMostNeed() > villager.getSleepiness() + 50){
+					villager.setBlocking(true);
+					villager.updateStatus("statusEnd");
+					thisBed.removeUsed();
+					actionFinished();
+				}
 			}
 			
 		}else if(FindObject.standingOnTile(world, EntityType.GRASS_TILE, villager.getX(), villager.getY())){

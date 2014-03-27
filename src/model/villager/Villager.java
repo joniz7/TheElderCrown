@@ -361,9 +361,10 @@ public class Villager extends MidEntity implements Agent {
 		return myBed;
 	}
 	
-	/*public float getMaxNeed(){
-		;
-	}*/
+	//Naming? Should return the lowest value, but its the mostly needed one since needs are negative
+	public float getMostNeed(){
+		return UtilClass.findMin(currentHunger, currentThirst, currentSleepiness, currentLaziness);
+	}
 	
 	
 	/**

@@ -11,7 +11,7 @@ public class Bed extends BottomEntity {
 	private boolean isClaimedByFemale;
 	private Villager female;
 	private Villager male;
-	private boolean isUsed = false;
+	private int UsedBy = 0;
 	private float sleepValue = 0.2f;
 
 	public Bed(int x, int y) {
@@ -28,7 +28,7 @@ public class Bed extends BottomEntity {
 		copy.isClaimedByMale = isClaimedByMale;
 		copy.female = female;
 		copy.male = male;
-		copy.isUsed = isUsed;
+		copy.UsedBy = UsedBy;
 		return copy;
 	}
 	
@@ -88,12 +88,16 @@ public class Bed extends BottomEntity {
 		this.male = male;
 	}
 
-	public boolean isUsed() {
-		return isUsed;
+	public int UsedBy() {
+		return UsedBy;
 	}
 
-	public void setUsed(boolean isUsed) {
-		this.isUsed = isUsed;
+	public void setUsed() {
+		UsedBy++;
+	}
+	
+	public void removeUsed() {
+		UsedBy--;
 	}
 
 	public boolean isFree() {
