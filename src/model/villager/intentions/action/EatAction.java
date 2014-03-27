@@ -19,6 +19,7 @@ public class EatAction extends Action{
 
 	@Override
 	public void tick(VillagersWorldPerception world){
+		villager.updateStatus("eating");
 		if(villager.getActiveItem() instanceof Food){
 			Food f = (Food) villager.getActiveItem();
 			if(!f.consumed()){
@@ -37,7 +38,6 @@ public class EatAction extends Action{
 				villager.getY()) != null) {
 			FoodSource fs = (FoodSource) FindObject.getAdjacentObject(world, new HasFood(), null, villager.getX(),
 					villager.getY());
-			villager.updateStatus("eating");
 			villager.setActiveItem(fs.getFood());
 		}else{
 			villager.updateStatus("statusEnd");

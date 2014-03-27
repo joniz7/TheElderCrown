@@ -13,7 +13,6 @@ import model.villager.intentions.Intent;
 import model.villager.intentions.IntentionHandler;
 import model.villager.intentions.action.Action;
 import model.villager.intentions.action.DieAction;
-import model.villager.intentions.gathering.GatherFoodPlan;
 import model.villager.intentions.plan.DrinkPlan;
 import model.villager.intentions.plan.EatPlan;
 import model.villager.intentions.plan.ExplorePlan;
@@ -60,8 +59,8 @@ public class Villager extends MidEntity implements Agent {
 	private Item activeItem;
 	private Item[] inventory = new Item[6];
 
-	private HashMap<Villager, Point> nearbyVillagers;
-	private HashMap<Agent, Point> nearbyAgents;
+	private HashMap<Point, Villager> nearbyVillagers;
+	private HashMap<Point, Agent> nearbyAgents;
 	
 
 	public Villager(Point p, int age) {
@@ -111,33 +110,24 @@ public class Villager extends MidEntity implements Agent {
 		world.updateBotEntities(p.botEntities);
 		world.updateTopEntities(p.topEntities);
 		
-		Iterator<Entry<Point, Entity>> it = p.midEntities.entrySet().iterator();
-		nearbyVillagers = new HashMap<Villager, Point>();
-		nearbyAgents = new HashMap<Agent, Point>();
-		Entry<Point, Entity> ent = null;
-		while(it.hasNext()){
-			ent = it.next();
-			if(ent.getValue() instanceof Agent){
-				nearbyAgents.put((Agent) ent.getValue(), ent.getKey());
-				if(ent.getValue().getType() == EntityType.VILLAGER){
-					nearbyVillagers.put((Villager) ent.getValue(), ent.getKey());
-				}
-			}else{
-				world.updateMidEntity(ent.getValue(), ent.getKey());
-			}
-		}
-		
+		nearbyVillagers = p.villagers;
+		nearbyAgents = p.agents;		
 		
 		ageprog++;
 		seeIfBirthday();
 		adjustNeeds();
+		
+		// If we see any other villagers, we may initiate an interaction
+		if (p.hasVillagers()) {
+			maybeSocialise(p.villagers);
+		}
 		
 		// If order was received, take it into consideration when planning
 		if (p.order != null) {
 			addOrder(p.order);
 		}
 		
-		seeIfDead();
+		//seeIfDead();
 		plan();
 		
 //		if(profession != null)
@@ -158,6 +148,14 @@ public class Villager extends MidEntity implements Agent {
 		// TODO modify intent desire before adding,
 		//      based on obedience and other parameters
 		ih.addIntent(i);
+	}
+	
+	/**
+	 * Maybe initialise an interaction with another villager,
+	 * if our social need/relation is high enough.
+	 */
+	private void maybeSocialise(HashMap<Point, Villager> villagers) {
+		System.out.println("Maybe socialise!");
 	}
 
 	public void satisfyHunger(float f) {
@@ -448,11 +446,11 @@ public class Villager extends MidEntity implements Agent {
 		return time;
 	}
 	
-	public HashMap<Villager, Point> getNearbyVillagers(){
+	public HashMap<Point, Villager> getNearbyVillagers(){
 		return nearbyVillagers;
 	}
 	
-	public HashMap<Agent, Point> getNearbyAgnets(){
+	public HashMap<Point, Agent> getNearbyAgents(){
 		return nearbyAgents;
 	}
 }

@@ -21,6 +21,7 @@ public class DrinkAction extends Action{
 
 	@Override
 	public void tick(VillagersWorldPerception world){
+		villager.updateStatus("drinking");
 		if(villager.getActiveItem() instanceof Drink){
 			Drink d = (Drink) villager.getActiveItem();
 			if(!d.consumed()){
