@@ -4,6 +4,7 @@ import java.awt.Point;
 import java.util.HashMap;
 
 import model.entity.Entity;
+import model.villager.order.Order;
 
 import org.newdawn.slick.util.pathfinding.TileBasedMap;
 
@@ -20,5 +21,7 @@ public interface VillagersWorldPerception extends TileBasedMap{
 	public HashMap<Point, Entity> getMidEntities();
 
 	public HashMap<Point, Entity> getTopEntities();
+	
+	public void addOrder(Order o);
 
 }

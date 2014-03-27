@@ -6,9 +6,9 @@ import java.util.Iterator;
 import java.util.Map.Entry;
 
 import model.entity.Agent;
-import model.entity.Entity;
 import model.entity.mid.MidEntity;
 import model.item.Item;
+import model.path.FindObject;
 import model.villager.intentions.Intent;
 import model.villager.intentions.IntentionHandler;
 import model.villager.intentions.SocialiseIntent;
@@ -26,8 +26,6 @@ import model.villager.order.Order;
 import model.villager.util.NameGen;
 import util.EntityType;
 import util.RandomClass;
-import view.entity.EntityView;
-import view.entity.mid.VillagerView;
 
 public class Villager extends MidEntity implements Agent {
 
@@ -173,12 +171,16 @@ public class Villager extends MidEntity implements Agent {
 			Villager otherVillager = other.getValue();
 			Point otherPos = other.getKey();
 			
-			// TODO Find out where we should meet
-			Point nearbyPos = null;
-			
+			// Find out where we should meet
+			Point nearbyPos = FindObject.findTileNeighbour(otherVillager.getWorld(), this.getPosition(), otherVillager.getX(), otherVillager.getY());
+
 			// Create SocialiseIntent and order for other villager
 			Intent othersIntent = new SocialiseIntent(otherVillager, nearbyPos, this.getId());
 			Order socialiseOrder = new Order(this.getId(), otherVillager.getId(), othersIntent);
+			
+			// Create SocialiseInitIntent for myself
+			
+			
 			
 		}
 		

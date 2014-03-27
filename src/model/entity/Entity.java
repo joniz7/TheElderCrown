@@ -103,6 +103,15 @@ public abstract class Entity implements Copyable, Serializable {
 	}
 
 	/**
+	 * A method to find the row of the Entity.
+	 * 
+	 * @return the row in which the Entity is.
+	 */
+	public Point getPosition() {
+		return new Point(x,y);
+	}
+
+	/**
 	 * A method to assist in pathfinding to object with special criteria.
 	 * 
 	 * @param criteria The specified criteria to be checked.
