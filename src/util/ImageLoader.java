@@ -17,6 +17,8 @@ public class ImageLoader {
 	public ImageLoader(){
 		// Tiles
 		imageLib.put("grass", loadImage("image", "grass.png"));
+		imageLib.put("redFlowerGrass", loadImage("image", "redFlowerGrass.png"));
+		imageLib.put("purpleFlowerGrass", loadImage("image", "purpleFlowerGrass.png"));
 		imageLib.put("water", loadImage("image", "water.png"));
 		
 		// World Entities
