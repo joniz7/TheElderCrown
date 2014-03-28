@@ -1,6 +1,6 @@
 package view.entity.bot;
 
-import util.RandomClass;
+import util.UtilClass;
 import view.entity.EntityView;
 
 /**
@@ -20,7 +20,7 @@ public class GrassTileView extends EntityView {
 	}
 	
 	private static String tileType(){
-		int rnd = RandomClass.getRandomInt(200, 0);
+		int rnd = UtilClass.getRandomInt(200, 0);
 		if(rnd==20){
 			return "redFlowerGrass";
 		}else if(rnd==40){
