@@ -30,9 +30,8 @@ public class IdleAction extends Action {
 	@Override
 	public void tick(VillagersWorldPerception world){
 		if(firstTick) {
-			System.out.println("Idling");
 			villager.updateStatus("idling");
-			firstTick = false;
+			this.firstTick = false;
 		}
 		villager.satisfyLazy(0.5f);
 		if(villager.getLaziness() >= Constants.MAX_LAZINESS){
