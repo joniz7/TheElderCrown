@@ -4,7 +4,6 @@ import model.item.food.Food;
 import model.item.food.FoodSource;
 import model.path.FindObject;
 import model.path.criteria.HasFood;
-import model.villager.AgentWorld;
 import model.villager.Villager;
 import util.Constants;
 
@@ -19,7 +18,7 @@ public class EatAction extends Action{
 	}
 
 	@Override
-	public void tick(AgentWorld world){
+	public void tick(ImpactableByAction world){
 		villager.updateStatus("eating");
 		if(villager.getActiveItem() instanceof Food){
 			Food f = (Food) villager.getActiveItem();

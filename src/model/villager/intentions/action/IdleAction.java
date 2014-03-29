@@ -28,7 +28,7 @@ public class IdleAction extends Action {
 	}
 
 	@Override
-	public void tick(AgentWorld world){
+	public void tick(ImpactableByAction world){
 		if(firstTick) {
 			villager.updateStatus("idling");
 			this.firstTick = false;

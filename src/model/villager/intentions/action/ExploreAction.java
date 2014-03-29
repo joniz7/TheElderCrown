@@ -1,7 +1,6 @@
 package model.villager.intentions.action;
 
 import model.villager.Villager;
-import model.villager.AgentWorld;
 
 public class ExploreAction extends Action {
 
@@ -13,7 +12,7 @@ public class ExploreAction extends Action {
 
 
 	@Override
-	public void tick(AgentWorld world){
+	public void tick(ImpactableByAction world){
 		//TODO: Use instead of only MoveAction
 		}
 

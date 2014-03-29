@@ -34,7 +34,7 @@ public class Villager extends MidEntity implements Agent {
 	private IntentionHandler ih;
 
 	private AgentWorld world;
-	private boolean dead = false, isElder = false;;
+	private boolean dead = false, isElder = false;
 	private String currentAction, currentPlan;
 	private String name;
 	private Plan activePlan;

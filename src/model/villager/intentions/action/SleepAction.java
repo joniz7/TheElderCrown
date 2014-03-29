@@ -3,7 +3,6 @@ package model.villager.intentions.action;
 import model.entity.bottom.Bed;
 import model.entity.bottom.HouseFloor;
 import model.path.FindObject;
-import model.villager.AgentWorld;
 import model.villager.Villager;
 import util.Constants;
 import util.EntityType;
@@ -36,7 +35,7 @@ public class SleepAction extends Action {
 
 
 	@Override
-	public void tick(AgentWorld world){
+	public void tick(ImpactableByAction world){
 //		if(FindObject.findTile2((TestWorld) world, EntityType.HOUSE_FLOOR, villager.getX(), villager.getY()) != null) {
 //		System.out.println("SLEEP!!!");
 		

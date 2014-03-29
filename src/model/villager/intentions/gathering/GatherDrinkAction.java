@@ -3,8 +3,8 @@ package model.villager.intentions.gathering;
 import model.item.liquid.WaterBowl;
 import model.path.FindObject;
 import model.villager.Villager;
-import model.villager.AgentWorld;
 import model.villager.intentions.action.Action;
+import model.villager.intentions.action.ImpactableByAction;
 import util.EntityType;
 
 public class GatherDrinkAction extends Action{
@@ -18,7 +18,7 @@ public class GatherDrinkAction extends Action{
 	}
 
 	@Override
-	public void tick(AgentWorld world){
+	public void tick(ImpactableByAction world){
 		if(FindObject.isAdjacentTile(world, EntityType.WATER_TILE, villager.getX(),
 				villager.getY())) {
 

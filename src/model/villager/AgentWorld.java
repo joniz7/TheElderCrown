@@ -8,13 +8,14 @@ import java.util.Set;
 
 import model.entity.Entity;
 import model.entity.bottom.NullTile;
+import model.villager.intentions.action.ImpactableByAction;
 
 import org.newdawn.slick.util.pathfinding.PathFindingContext;
 import org.newdawn.slick.util.pathfinding.TileBasedMap;
 
 import util.Constants;
 
-public class AgentWorld implements TileBasedMap {
+public class AgentWorld implements TileBasedMap, ImpactableByAction {
 	
 	private HashMap<Point, Entity> botEntities;
 	private HashMap<Point, Entity> midEntities;
@@ -49,6 +50,11 @@ public class AgentWorld implements TileBasedMap {
 			return true;
 		}
 		return false;
+	}
+	
+	@Override
+	public boolean blocked(PathFindingContext arg0, Point p){
+		return blocked(arg0, p.x, p.y);
 	}
 
 	@Override
@@ -109,5 +115,4 @@ public class AgentWorld implements TileBasedMap {
 			topEntities.put(ent.getKey(), ent.getValue());
 		}
 	}
-
 }

@@ -7,6 +7,7 @@ import java.util.HashMap;
 import model.entity.Entity;
 import model.path.criteria.Criteria;
 import model.villager.AgentWorld;
+import model.villager.intentions.action.ImpactableByAction;
 
 import org.newdawn.slick.util.pathfinding.Path;
 
@@ -95,7 +96,7 @@ public class FindObject {
 	 * @param startY - the villager y coordinate
 	 * @return The point representing the coordinates of the found tile
 	 */
-public static Point findTile2(AgentWorld world, EntityType id, int startX, int startY){
+public static Point findTile2(ImpactableByAction world, EntityType id, int startX, int startY){
 		/*
 		 * Understanding what these lists and hash-maps are used for is crucial in
 		 * order to understand the find-object-algorithm
@@ -202,7 +203,7 @@ public static Point findTile2(AgentWorld world, EntityType id, int startX, int s
 		return null;
 	}
 	
-	public static boolean standingOnTile(AgentWorld world, EntityType id, int startX, int startY){
+	public static boolean standingOnTile(ImpactableByAction world, EntityType id, int startX, int startY){
 		HashMap<Point, Entity> tiles = world.getBotEntities();
 		
 		if(tiles.get(new Point(startX, startY)) != null && tiles.get(new Point(startX, startY)).getType() == id)
@@ -231,7 +232,7 @@ public static Point findTile2(AgentWorld world, EntityType id, int startX, int s
 	 * @param startY - the villager y position
 	 * @return - The Point to walk to in order to interact with object
 	 */
-	public static Point findTileNeighbour(AgentWorld world, EntityType id, int startX, int startY){
+	public static Point findTileNeighbour(ImpactableByAction world, EntityType id, int startX, int startY){
 		long startTime = System.currentTimeMillis();
 		
 		if(isStuck(world, startX, startY)){
@@ -294,7 +295,7 @@ public static Point findTile2(AgentWorld world, EntityType id, int startX, int s
 		return null;
 	}
 	
-	public static boolean isAdjacentTile(AgentWorld world, EntityType id, int startX, int startY){
+	public static boolean isAdjacentTile(ImpactableByAction world, EntityType id, int startX, int startY){
 		HashMap<Point, Entity> tiles = world.getBotEntities();
 		
 		try{
@@ -418,7 +419,7 @@ public static Point findTile2(AgentWorld world, EntityType id, int startX, int s
 	 * @param startY - the villager y coordinate
 	 * @return The point representing the coordinates of the found tile
 	 */
-	public static Point findObject2(AgentWorld world, Criteria crit, EntityType id, int startX, int startY){
+	public static Point findObject2(ImpactableByAction world, Criteria crit, EntityType id, int startX, int startY){
 		/*
 		 * These lists and hash-maps are essentially the same as the ones in the
 		 * findTile2 method. The algorithm works in the same way, except that it
@@ -532,7 +533,7 @@ public static Point findTile2(AgentWorld world, EntityType id, int startX, int s
 	 * @param startY - the villager y position
 	 * @return - The Point to walk to in order to interact with object
 	 */
-	public static Point findObjectNeighbour(AgentWorld world, Criteria crit, EntityType id, int startX, int startY){
+	public static Point findObjectNeighbour(ImpactableByAction world, Criteria crit, EntityType id, int startX, int startY){
 //		long startTime = System.currentTimeMillis();
 		
 		if(isStuck(world, startX, startY)){
@@ -601,7 +602,7 @@ public static Point findTile2(AgentWorld world, EntityType id, int startX, int s
 	}
 	
 
-	public static Entity getAdjacentObject(AgentWorld world, Criteria crit, EntityType id, int startX, int startY){
+	public static Entity getAdjacentObject(ImpactableByAction world, Criteria crit, EntityType id, int startX, int startY){
 		HashMap<Point, Entity> mids = world.getMidEntities();
 		HashMap<Point, Entity> tops = world.getTopEntities();
 		
@@ -664,7 +665,7 @@ public static Point findTile2(AgentWorld world, EntityType id, int startX, int s
 //		return false;
 //	}
 	
-	public static boolean isStuck(AgentWorld world, int startX, int startY){
+	public static boolean isStuck(ImpactableByAction world, int startX, int startY){
 		if(world.blocked(null, startX + 1, startY))
 			if(world.blocked(null, startX - 1, startY))
 				if(world.blocked(null, startX, startY + 1))

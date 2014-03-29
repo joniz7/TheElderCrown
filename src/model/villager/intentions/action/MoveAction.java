@@ -6,7 +6,6 @@ import model.path.FindObject;
 import model.path.PathFinder;
 import model.path.criteria.Criteria;
 import model.villager.Villager;
-import model.villager.AgentWorld;
 
 import org.newdawn.slick.util.pathfinding.Path;
 
@@ -35,7 +34,7 @@ public class MoveAction extends Action{
 	}
 
 	@Override
-	public void tick(AgentWorld world) {
+	public void tick(ImpactableByAction world) {
 		if(path == null && crit != null){
 			Point p = FindObject.findObjectNeighbour(world, 
 					crit, type, villager.getX(), villager.getY());
@@ -64,13 +63,21 @@ public class MoveAction extends Action{
 	    	waitTime = 0;
 			progress += villager.getSpeed();
 			
+			//check if the villager has the next step of the path next to it.
+			if(!(Math.abs(villager.getX()-path.getStep(stepCount).getX())==1 ||
+					Math.abs(villager.getY()-path.getStep(stepCount).getY())==1)){
+				actionFailed();
+			}
+			
+			
 			// Should move one step
 		    if(progress > speedCap && stepCount < path.getLength()){
 		    	progress = 0;
 			
-		        		System.out.println("Step to: " + path.getStep(stepCount).getX()
-		        				+ ":" + path.getStep(stepCount).getY() + " from: "
-		        				+ villager.getX() + ":" + villager.getY());
+//		        		System.out.println("Step to: " + path.getStep(stepCount).getX()
+//		        				+ ":" + path.getStep(stepCount).getY() + " from: "
+//		        				+ villager.getX() + ":" + villager.getY());
+		        		
 				Point newPos = new Point(path.getStep(stepCount).getX(),
 						path.getStep(stepCount).getY());
 				villager.attemptMove(newPos);

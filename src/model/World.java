@@ -25,6 +25,7 @@ import model.path.PathFinder;
 import model.villager.Perception;
 import model.villager.Villager;
 import model.villager.intentions.action.Action;
+import model.villager.intentions.action.ImpactableByAction;
 import model.villager.order.Order;
 
 import org.newdawn.slick.util.OperationNotSupportedException;
@@ -36,10 +37,10 @@ import util.Copyable;
 import util.EntityType;
 import util.NoPositionFoundException;
 import util.NoSuchEntityException;
-import util.UtilClass;
 import util.Tickable;
+import util.UtilClass;
 
-public abstract class World implements Tickable, TileBasedMap, PropertyChangeListener {
+public abstract class World implements Tickable, TileBasedMap, PropertyChangeListener, ImpactableByAction {
 	private static final long serialVersionUID = 1L;
 
 	// Tickable objects (e.g. trees)
@@ -217,7 +218,7 @@ public abstract class World implements Tickable, TileBasedMap, PropertyChangeLis
 			agent.update(perception, time);
 			Action activeAction = agent.getAction();
 			if(activeAction != null && !activeAction.isFailed() && !activeAction.isFinished())
-				activeAction.tick(agent.getAgentWorld());
+				activeAction.tick(this);
 			else
 				agent.actionDone();
 
