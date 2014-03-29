@@ -24,22 +24,22 @@ import model.entity.top.house.FoodStorage;
 import model.path.PathFinder;
 import model.villager.Perception;
 import model.villager.Villager;
+import model.villager.VillagersWorldPerception;
 import model.villager.intentions.action.Action;
 import model.villager.order.Order;
 
 import org.newdawn.slick.util.OperationNotSupportedException;
 import org.newdawn.slick.util.pathfinding.PathFindingContext;
-import org.newdawn.slick.util.pathfinding.TileBasedMap;
 
 import util.Constants;
 import util.Copyable;
 import util.EntityType;
 import util.NoPositionFoundException;
 import util.NoSuchEntityException;
-import util.UtilClass;
+import util.RandomClass;
 import util.Tickable;
 
-public abstract class World implements Tickable, TileBasedMap, PropertyChangeListener {
+public abstract class World implements Tickable, VillagersWorldPerception, PropertyChangeListener {
 	private static final long serialVersionUID = 1L;
 
 	// Tickable objects (e.g. trees)
@@ -47,7 +47,7 @@ public abstract class World implements Tickable, TileBasedMap, PropertyChangeLis
 	
 	// Agents (e.g. villagers)
 	protected HashMap<Point, Agent> agents;
-
+	
 	// Cursor position
 	protected Point cPos;
 	
@@ -64,8 +64,11 @@ public abstract class World implements Tickable, TileBasedMap, PropertyChangeLis
 	
 	// World configuration
 	private final int VIEW_DISTANCE = 10;
-
+<<<<<<< HEAD
+	public final int VILLAGER_SPAWN_POS = 40, VILLAGER_COUNT = 8;
+=======
 	public final int VILLAGER_SPAWN_POS = 40, VILLAGER_COUNT = 2;
+>>>>>>> dev
 	
 	// Keep track of when to spawn babies
 	private boolean spawnBabies = false;
@@ -135,6 +138,7 @@ public abstract class World implements Tickable, TileBasedMap, PropertyChangeLis
 	 */
 	@SuppressWarnings("unchecked")
 	private void updateAgents() {
+
 		// Update all villagers
 		HashMap<Point, Agent> temp = (HashMap<Point, Agent>)agents.clone();
 		Iterator<Map.Entry<Point, Agent>> it = temp.entrySet().iterator();
@@ -217,7 +221,7 @@ public abstract class World implements Tickable, TileBasedMap, PropertyChangeLis
 			agent.update(perception, time);
 			Action activeAction = agent.getAction();
 			if(activeAction != null && !activeAction.isFailed() && !activeAction.isFinished())
-				activeAction.tick(agent.getAgentWorld());
+				activeAction.tick(this);
 			else
 				agent.actionDone();
 
@@ -239,29 +243,6 @@ public abstract class World implements Tickable, TileBasedMap, PropertyChangeLis
 			addEntity(p, v);
 			addVillagerUI(p, v);
 			v.getPCS().addPropertyChangeListener(this);
-			testSubject = v;
-		}
-		else {
-			System.out.println("Can't spawn baby: Too many people, too many problems");
-		}
-	}
-	
-	/**
-	 * Create a new Elder in the world at the specified point.
-	 * Also creates UI and registers view bindings.
-	 * 
-	 *  @param p - the point to place the villager at.
-	 *  		   If occupied in middle layer, this method does nothing
-	 */
-	private void newElder(Point p, int age) {
-		// Spawn only if position is empty
-		if (midEntities.get(p) == null) {
-			System.out.println("A baby is born!");
-			Villager v = new Villager(p,age);
-			addEntity(p, v);
-			addVillagerUI(p, v);
-			v.getPCS().addPropertyChangeListener(this);
-			v.makeElder();
 			testSubject = v;
 		}
 		else {
@@ -344,6 +325,7 @@ public abstract class World implements Tickable, TileBasedMap, PropertyChangeLis
 	 */
 	public void initialize() {
 		new PathFinder(this);
+		
 		// Send camera position update to view
 		Point pos = new Point(VILLAGER_SPAWN_POS, VILLAGER_SPAWN_POS);
 		pcs.firePropertyChange("camera", null, pos);
@@ -359,14 +341,8 @@ public abstract class World implements Tickable, TileBasedMap, PropertyChangeLis
 	protected final void initializeVillagers() {
 		
 		for(int i = 0; i < VILLAGER_COUNT; i++) {
-			if(i == 0){
-				Point pos = new Point(VILLAGER_SPAWN_POS + 5, VILLAGER_SPAWN_POS+i);
-				newElder(pos, UtilClass.getRandomInt(10, 15));
-			}else{
-				Point pos = new Point(VILLAGER_SPAWN_POS + 5, VILLAGER_SPAWN_POS+i);
-				newVillager(pos, UtilClass.getRandomInt(10, 15));
-			}
-			
+			Point pos = new Point(VILLAGER_SPAWN_POS + 5, VILLAGER_SPAWN_POS+i);
+			newVillager(pos, RandomClass.getRandomInt(10, 15));
 		}
 	}
 	
@@ -436,10 +412,6 @@ public abstract class World implements Tickable, TileBasedMap, PropertyChangeLis
 	public void addEntity(Point point, TopEntity entity) {
 		topEntities.put(point, entity);
 		pcs.firePropertyChange("addTopEntity", null, entity);
-	}
-	
-	public void addHelper(Point point){
-		pcs.firePropertyChange("helper", point, null);
 	}
 	
 	/**
@@ -691,7 +663,7 @@ public abstract class World implements Tickable, TileBasedMap, PropertyChangeLis
 			} catch (NoPositionFoundException e) {
 				e.printStackTrace();
 			}
-			if(!midBlocked(pos) && agents.get(pos) == null) {
+			if(!midBlocked(pos)) {
 				agents.put(pos, villager);
 				midEntities.put(pos, villager);
 				agents.remove(p);

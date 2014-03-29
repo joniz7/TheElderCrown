@@ -17,6 +17,8 @@ public class ImageLoader {
 	public ImageLoader(){
 		// Tiles
 		imageLib.put("grass", loadImage("image", "grass.png"));
+		imageLib.put("redFlowerGrass", loadImage("image", "redFlowerGrass.png"));
+		imageLib.put("purpleFlowerGrass", loadImage("image", "purpleFlowerGrass.png"));
 		imageLib.put("water", loadImage("image", "water.png"));
 		
 		// World Entities
@@ -45,10 +47,11 @@ public class ImageLoader {
 		imageLib.put("villagerExploring", loadImage("image", "villagerExploring.png"));
 		
 		//Debugging
-		imageLib.put("helper", loadImage("image", "miss.png"));
+		imageLib.put("helper", loadImage("image", "checker.png"));
 		imageLib.put("helper2", loadImage("image", "hit.png"));
 		imageLib.put("helper3", loadImage("image", "checker.png"));
 		
+
 		//items
 		imageLib.put("itemEmpty", loadImage("image", "itemEmpty.png"));
 		imageLib.put("itemApple", loadImage("image", "itemApple.png"));
@@ -58,6 +61,7 @@ public class ImageLoader {
 		imageLib.put("light", loadImage("image", "light.png"));
 		imageLib.put("clock", loadImage("image", "clock.png"));
 		imageLib.put("clockBorder", loadImage("image", "clockBorder.png"));
+
 	}
 	
 	public static Image getImage(String name){

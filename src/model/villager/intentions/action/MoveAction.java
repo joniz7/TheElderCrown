@@ -68,8 +68,9 @@ public class MoveAction extends Action{
 		    if(progress > speedCap && stepCount < path.getLength()){
 		    	progress = 0;
 			
-		//        		System.out.println("Step to: " + path.getStep(stepCount).getX()
-		//        				+ ":" + path.getStep(stepCount).getY());
+		        		System.out.println("Step to: " + path.getStep(stepCount).getX()
+		        				+ ":" + path.getStep(stepCount).getY() + " from: "
+		        				+ villager.getX() + ":" + villager.getY());
 				Point newPos = new Point(path.getStep(stepCount).getX(),
 						path.getStep(stepCount).getY());
 				villager.attemptMove(newPos);

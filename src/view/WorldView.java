@@ -21,6 +21,7 @@ import org.newdawn.slick.Color;
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.Image;
 
+import debugging.Helper3;
 import util.EntityType;
 import util.ImageLoader;
 import view.entity.EntityView;
@@ -28,6 +29,7 @@ import view.entity.bot.GrassTileView;
 import view.entity.bot.WaterTileView;
 import view.entity.mid.BedView;
 import view.entity.mid.VillagerView;
+import view.entity.top.Helper3View;
 import view.entity.top.TreeView;
 import view.entity.top.house.DrinkStorageView;
 import view.entity.top.house.FoodStorageView;
@@ -263,6 +265,7 @@ public class WorldView implements PropertyChangeListener {
 			pcs.addPropertyChangeListener(view);
 			botGraphics.add(view);
 		}else if (name.equals("addVillagerUI")) {
+			
 			Villager entity = (Villager) event.getNewValue();
 			EntityView view = new VillagerUI(entity);
 			PropertyChangeSupport pcs = entity.getPCS();
@@ -332,6 +335,9 @@ public class WorldView implements PropertyChangeListener {
 				cX = 0;
 				cY = 0;
 			}
+		}else if(name.equals("helper")){
+			Point p = (Point) event.getOldValue();
+			topGraphics.add(new Helper3View(p.x, p.y));
 		}
 	}
 	

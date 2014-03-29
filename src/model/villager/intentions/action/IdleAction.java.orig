@@ -1,13 +1,16 @@
 package model.villager.intentions.action;
 
+<<<<<<< HEAD
 import util.Constants;
 import util.EntityType;
 import model.World;
 import model.entity.top.Tree;
 import model.path.FindObject;
 import model.path.criteria.HasFood;
+=======
+>>>>>>> dev
 import model.villager.Villager;
-import model.villager.AgentWorld;
+import model.villager.VillagersWorldPerception;
 
 /**
  * Class for handling the actual "action" to perform when idle.
@@ -28,10 +31,11 @@ public class IdleAction extends Action {
 	}
 
 	@Override
-	public void tick(AgentWorld world){
+	public void tick(VillagersWorldPerception world){
 		if(firstTick) {
+			System.out.println("Idling");
 			villager.updateStatus("idling");
-			this.firstTick = false;
+			firstTick = false;
 		}
 		villager.satisfyLazy(0.5f);
 		if(villager.getLaziness() >= Constants.MAX_LAZINESS){

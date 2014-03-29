@@ -1,5 +1,6 @@
 package model.villager.intentions;
 
+import util.Constants;
 import model.villager.Villager;
 import model.villager.intentions.plan.Plan;
 import model.villager.intentions.plan.SleepPlan;
@@ -25,10 +26,10 @@ public class SleepIntent extends PrimitiveIntent {
 	@Override
 	public void calculateDesire() {
 		int time = villager.getTime();
-		int hours = time / 750;
+		int hours = time / Constants.TICKS_HOUR;
 		
-		if(hours >= 22 || hours < 8)
-			setDesire(-villager.getSleepiness() + 50);
+		if(hours >= Constants.NIGHT_HOUR || hours < Constants.DAY_HOUR)
+			setDesire(-villager.getSleepiness());
 		else
 			setDesire(-villager.getSleepiness() - 75);
 	}

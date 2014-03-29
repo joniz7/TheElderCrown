@@ -17,7 +17,7 @@ public class DrinkIntent extends PrimitiveIntent {
 
 	@Override
 	public void calculateDesire() {
-		setDesire(-villager.getThirst() * 5);
+		setDesire(-villager.getThirst());
 	}
 	
 }
