@@ -5,7 +5,7 @@ import model.item.food.FoodSource;
 import model.path.FindObject;
 import model.path.criteria.HasFood;
 import model.villager.Villager;
-import model.villager.VillagersWorldPerception;
+import model.villager.AgentWorld;
 
 public class EatAction extends Action{
 
@@ -18,7 +18,7 @@ public class EatAction extends Action{
 	}
 
 	@Override
-	public void tick(VillagersWorldPerception world){
+	public void tick(AgentWorld world){
 		if(villager.getActiveItem() instanceof Food){
 			Food f = (Food) villager.getActiveItem();
 			if(!f.consumed()){

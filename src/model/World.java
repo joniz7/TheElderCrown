@@ -24,12 +24,12 @@ import model.entity.top.house.FoodStorage;
 import model.path.PathFinder;
 import model.villager.Perception;
 import model.villager.Villager;
-import model.villager.VillagersWorldPerception;
 import model.villager.intentions.action.Action;
 import model.villager.order.Order;
 
 import org.newdawn.slick.util.OperationNotSupportedException;
 import org.newdawn.slick.util.pathfinding.PathFindingContext;
+import org.newdawn.slick.util.pathfinding.TileBasedMap;
 
 import util.Constants;
 import util.Copyable;
@@ -39,7 +39,7 @@ import util.NoSuchEntityException;
 import util.RandomClass;
 import util.Tickable;
 
-public abstract class World implements Tickable, VillagersWorldPerception, PropertyChangeListener {
+public abstract class World implements Tickable, TileBasedMap, PropertyChangeListener {
 	private static final long serialVersionUID = 1L;
 
 	// Tickable objects (e.g. trees)
@@ -217,7 +217,7 @@ public abstract class World implements Tickable, VillagersWorldPerception, Prope
 			agent.update(perception, time);
 			Action activeAction = agent.getAction();
 			if(activeAction != null && !activeAction.isFailed() && !activeAction.isFinished())
-				activeAction.tick(this);
+				activeAction.tick(agent.getAgentWorld());
 			else
 				agent.actionDone();
 

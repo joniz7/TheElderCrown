@@ -1,7 +1,7 @@
 package model.villager.intentions.action;
 
 import model.villager.Villager;
-import model.villager.VillagersWorldPerception;
+import model.villager.AgentWorld;
 
 public class DieAction extends Action{
 
@@ -11,7 +11,7 @@ public class DieAction extends Action{
 	}
 
 	@Override
-	public void tick(VillagersWorldPerception world) {
+	public void tick(AgentWorld world) {
 		villager.updateStatus("dead");
 	}
 

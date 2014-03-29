@@ -1,7 +1,7 @@
 package model.villager.intentions.action;
 
 import model.villager.Villager;
-import model.villager.VillagersWorldPerception;
+import model.villager.AgentWorld;
 
 public abstract class Action {
 
@@ -13,7 +13,7 @@ public abstract class Action {
 		this.villager = villager;
 	}
 	
-	public abstract void tick(VillagersWorldPerception world);
+	public abstract void tick(AgentWorld world);
 	
 	public abstract float getCost();
 	

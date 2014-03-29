@@ -1,11 +1,11 @@
 package model.villager.intentions.action;
 
-import util.EntityType;
 import model.entity.bottom.Bed;
 import model.entity.bottom.HouseFloor;
 import model.path.FindObject;
 import model.villager.Villager;
-import model.villager.VillagersWorldPerception;
+import model.villager.AgentWorld;
+import util.EntityType;
 
 /**
  * The sleeping action. Villager checks if on a Bed, house floor or grass tile.
@@ -38,7 +38,7 @@ public class SleepAction extends Action {
 
 
 	@Override
-	public void tick(VillagersWorldPerception world){
+	public void tick(AgentWorld world){
 //		if(FindObject.findTile2((TestWorld) world, EntityType.HOUSE_FLOOR, villager.getX(), villager.getY()) != null) {
 		System.out.println("SLEEP!!!");
 		

@@ -2,11 +2,8 @@ package model.villager;
 
 import java.awt.Point;
 import java.util.HashMap;
-import java.util.Iterator;
-import java.util.Map.Entry;
 
 import model.entity.Agent;
-import model.entity.Entity;
 import model.entity.mid.MidEntity;
 import model.item.Item;
 import model.villager.intentions.Intent;
@@ -35,7 +32,7 @@ public class Villager extends MidEntity implements Agent {
 	private IntentionHandler ih;
 
 	private float hunger = 10f, thirst = 10f, speed = 30, sleepiness = 40f, laziness = 20f, obedience = 0 ;
-	private VillagerWorld world;
+	private AgentWorld world;
 	private boolean dead = false;
 	private String currentAction, currentPlan;
 	private Plan activePlan;
@@ -65,7 +62,7 @@ public class Villager extends MidEntity implements Agent {
 
 	public Villager(Point p, int age) {
 		super(p.x, p.y, EntityType.VILLAGER);
-		world = new VillagerWorld();
+		world = new AgentWorld();
 		length = 140 + RandomClass.getRandomInt(50, 0);
 		weight = length / 4 + RandomClass.getRandomInt(length/4, 0);
 		
@@ -90,7 +87,7 @@ public class Villager extends MidEntity implements Agent {
 		System.out.println("New villager created: " + name+ " " +length+"  "+weight+ " " +sex);
 	}
 	
-	public VillagersWorldPerception getWorld() {
+	public AgentWorld getWorld() {
 		return world;
 	}
 
@@ -452,5 +449,10 @@ public class Villager extends MidEntity implements Agent {
 	
 	public HashMap<Point, Agent> getNearbyAgents(){
 		return nearbyAgents;
+	}
+
+	@Override
+	public AgentWorld getAgentWorld() {
+		return world;
 	}
 }

@@ -6,7 +6,7 @@ import model.item.food.Food;
 import model.path.FindObject;
 import model.path.criteria.IsFoodStorage;
 import model.villager.Villager;
-import model.villager.VillagersWorldPerception;
+import model.villager.AgentWorld;
 import model.villager.intentions.action.Action;
 import util.EntityType;
 
@@ -21,7 +21,7 @@ public class StoreFoodAction extends Action{
 	}
 
 	@Override
-	public void tick(VillagersWorldPerception world){
+	public void tick(AgentWorld world){
 		if(FindObject.getAdjacentObject(world, new IsFoodStorage(), EntityType.FOOD_STORAGE, villager.getX(),
 				villager.getY()) != null) {
 			FoodStorage fs = (FoodStorage) FindObject.getAdjacentObject(world, new IsFoodStorage(), 

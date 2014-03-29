@@ -6,7 +6,7 @@ import model.path.FindObject;
 import model.path.PathFinder;
 import model.path.criteria.Criteria;
 import model.villager.Villager;
-import model.villager.VillagersWorldPerception;
+import model.villager.AgentWorld;
 
 import org.newdawn.slick.util.pathfinding.Path;
 
@@ -35,7 +35,7 @@ public class MoveAction extends Action{
 	}
 
 	@Override
-	public void tick(VillagersWorldPerception world) {
+	public void tick(AgentWorld world) {
 		if(path == null && crit != null){
 			Point p = FindObject.findObjectNeighbour(world, 
 					crit, type, villager.getX(), villager.getY());

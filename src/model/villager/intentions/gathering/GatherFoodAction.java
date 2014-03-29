@@ -4,7 +4,7 @@ import model.entity.top.Tree;
 import model.path.FindObject;
 import model.path.criteria.HasFood;
 import model.villager.Villager;
-import model.villager.VillagersWorldPerception;
+import model.villager.AgentWorld;
 import model.villager.intentions.action.Action;
 import util.EntityType;
 
@@ -19,7 +19,7 @@ public class GatherFoodAction extends Action{
 	}
 
 	@Override
-	public void tick(VillagersWorldPerception world){
+	public void tick(AgentWorld world){
 		if(FindObject.getAdjacentObject(world, new HasFood(), EntityType.TREE, villager.getX(),
 				villager.getY()) != null) {
 			Tree tree = (Tree) FindObject.getAdjacentObject(world, new HasFood(), EntityType.TREE, villager.getX(),

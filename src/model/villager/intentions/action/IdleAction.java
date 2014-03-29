@@ -1,7 +1,7 @@
 package model.villager.intentions.action;
 
 import model.villager.Villager;
-import model.villager.VillagersWorldPerception;
+import model.villager.AgentWorld;
 
 /**
  * Class for handling the actual "action" to perform when idle.
@@ -22,7 +22,7 @@ public class IdleAction extends Action {
 	}
 
 	@Override
-	public void tick(VillagersWorldPerception world){
+	public void tick(AgentWorld world){
 		if(firstTick) {
 			System.out.println("Idling");
 			villager.updateStatus("idling");
