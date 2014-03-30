@@ -6,7 +6,6 @@ import model.item.liquid.WaterBowl;
 import model.path.FindObject;
 import model.path.criteria.HasDrink;
 import model.villager.Villager;
-import model.villager.VillagersWorldPerception;
 import util.Constants;
 import util.EntityType;
 
@@ -19,9 +18,9 @@ public class DrinkAction extends Action{
 	}
 
 	@Override
-	public void tick(VillagersWorldPerception world){
+	public void tick(ImpactableByAction world){
 		villager.updateStatus("drinking");
-		System.out.println("SLEEP!!!");
+//		System.out.println("SLEEP!!!");
 		if(villager.getActiveItem() instanceof Drink){
 			System.out.println("HAS DRINK!");
 			Drink d = (Drink) villager.getActiveItem();
