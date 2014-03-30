@@ -21,16 +21,12 @@ public class DrinkAction extends Action{
 	@Override
 	public void tick(VillagersWorldPerception world){
 		villager.updateStatus("drinking");
-		System.out.println("SLEEP!!!");
 		if(villager.getActiveItem() instanceof Drink){
-			System.out.println("HAS DRINK!");
 			Drink d = (Drink) villager.getActiveItem();
 			if(!d.consumed()){
-				System.out.println("DRANK");
 				villager.satisfyThirst(d.drunk());
 				
 				if(villager.getThirst() >= Constants.MAX_THIRST){
-					System.out.println("NOT THIRSTY");
 					villager.updateStatus("statusEnd");
 					actionFinished();
 				}else if(d.consumed()){

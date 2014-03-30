@@ -30,7 +30,6 @@ public class IdleAction extends Action {
 	@Override
 	public void tick(VillagersWorldPerception world){
 		if(firstTick) {
-			System.out.println("Idling");
 			villager.updateStatus("idling");
 			firstTick = false;
 		}
