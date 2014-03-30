@@ -1,10 +1,16 @@
 package view;
 
+
+import java.awt.Font;
 import java.awt.Point;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.beans.PropertyChangeSupport;
 import java.util.ArrayList;
+
+import javax.swing.Timer;
 
 import model.entity.bottom.BottomEntity;
 import model.entity.mid.MidEntity;
@@ -20,6 +26,9 @@ import model.villager.Villager;
 import org.newdawn.slick.Color;
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.Image;
+import org.newdawn.slick.TrueTypeFont;
+import org.newdawn.slick.UnicodeFont;
+import org.newdawn.slick.font.effects.ColorEffect;
 
 import debugging.Helper3;
 import util.EntityType;
@@ -69,12 +78,42 @@ public class WorldView implements PropertyChangeListener {
 	
 	// The size ofeach tile in pixels (?)
 	public static final int TILE_OFFSET = 20;
+	
+	//The relative speed of the simulation, eg 1.5x
+	private double simSpeed;
+	
+	//Color of the fading simulation speed text
+	private Color fadeText;
+	//private Font font;
+	//private UnicodeFont uFont;
+	
+	//Used for fading of text
+	private ActionListener action;
+	private Timer timer;
+	private int textAlpha;
 
 	public WorldView(int width, int height) {
 		WorldView.width = width;
 		WorldView.height = height;
 		overlay = new Color(Color.black);
 		overlay.a = 0;
+		simSpeed=1.0;
+		textAlpha=0;
+		//font = new Font("Verdana", Font.BOLD, 20);
+		//uFont = new UnicodeFont(font, font.getSize(), font.isBold(), font.isItalic());
+		fadeText = new org.newdawn.slick.Color(0, 0, 0, textAlpha);
+        action = new ActionListener(){   
+            @Override
+            public void actionPerformed(ActionEvent event) {
+            	textAlpha -=10;
+            	fadeText = new org.newdawn.slick.Color(0, 0, 0, textAlpha);
+               if(fadeText.a <=0){
+            	   timer.stop();
+               }
+            }
+        };
+        timer=new Timer(100, action);
+        timer.setInitialDelay(0);
 	}
 
 	public void addTopGraphic(EntityView d){
@@ -169,7 +208,15 @@ public class WorldView implements PropertyChangeListener {
 		g.rotate((width / 2), -110, rot);
 		g.drawImage(clock, (width / 2) - 170, -280);
 		g.rotate((width / 2), -110, -rot);
-		g.drawImage(clockBorder, (width / 2) - 150, 0);
+		g.drawImage(clockBorder, (width / 2) - 150, 0); 
+		g.setColor(fadeText);
+	    /*uFont.getEffects().add(new ColorEffect(fadeText));
+		uFont.addNeheGlyphs();
+		uFont.loadGlyphs();
+		g.setFont(uFont);*/
+		g.drawString(simSpeed +"x", 650, 550);
+		
+		//g.drawString(simSpeed +"x", 650, 500);
 	}
 
 	/**
@@ -188,6 +235,13 @@ public class WorldView implements PropertyChangeListener {
 		if (name.equals("camera")) {
 			Point p = (Point)event.getNewValue();
 			centerCamera(p);
+		}
+		else if(name.equals("simSpeed")){
+			simSpeed=(double) event.getNewValue();
+			textAlpha=255;
+			fadeText = new org.newdawn.slick.Color(0, 0, 0, textAlpha);
+			System.out.println(fadeText.a);
+			timer.start();
 		}
 		else if(name.equals("worldsize")){
 			Point size = (Point) event.getNewValue();
