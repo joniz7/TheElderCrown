@@ -66,7 +66,7 @@ public abstract class World implements Tickable, TileBasedMap, PropertyChangeLis
 	// World configuration
 	private final int VIEW_DISTANCE = 10;
 
-	public final int VILLAGER_SPAWN_POS = 40, VILLAGER_COUNT = 2;
+	public final int VILLAGER_SPAWN_POS = 40, VILLAGER_COUNT = 8;
 	
 	// Keep track of when to spawn babies
 	private boolean spawnBabies = false;
@@ -232,7 +232,7 @@ public abstract class World implements Tickable, TileBasedMap, PropertyChangeLis
 	 *  @param p - the point to place the villager at.
 	 *  		   If occupied in middle layer, this method does nothing
 	 */
-	private void newVillager(Point p, int age) {
+	public void newVillager(Point p, int age) {
 		// Spawn only if position is empty
 		if (midEntities.get(p) == null) {
 			System.out.println("A baby is born!");
@@ -314,7 +314,7 @@ public abstract class World implements Tickable, TileBasedMap, PropertyChangeLis
 		Entity e = botEntities.get(p);
 		return e != null && e.isBlocking();
 	}
-	
+
 	/*
 	 * Deprecated?
 	public boolean blocked(PathFindingContext pfc, int x, int y){

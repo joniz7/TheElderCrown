@@ -44,9 +44,18 @@ public class SleepAction extends Action {
 				//System.out.println("Sleeping on bed!");
 				villager.setBlocking(false);
 				thisBed.setUsed();
-				villager.updateStatus("sleeping");
+				System.out.println("Bed used by: "+thisBed.UsedBy());
 				firstTick = false;
 			}
+			if(thisBed.UsedBy() > 1){
+				villager.updateStatus("cuddling");
+				System.out.println("Bed used by: "+thisBed.UsedBy());
+				name = "Cuddling";
+				villager.setPregnant(true);
+			}else{
+				villager.updateStatus("sleeping");
+			}
+			System.out.println("Bed used by: "+thisBed.UsedBy());
 			villager.satisfySleep(thisBed.getSleepValue());
 			if(villager.getSleepiness() >= Constants.MAX_SLEEP){
 				if(villager.getMostNeed() > villager.getSleepiness() + 50){

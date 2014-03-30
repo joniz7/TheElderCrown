@@ -10,6 +10,7 @@ import model.villager.intentions.Intent;
 import model.villager.intentions.IntentionHandler;
 import model.villager.intentions.action.Action;
 import model.villager.intentions.action.DieAction;
+import model.villager.intentions.plan.BirthPlan;
 import model.villager.intentions.plan.DrinkPlan;
 import model.villager.intentions.plan.EatPlan;
 import model.villager.intentions.plan.ExplorePlan;
@@ -53,6 +54,8 @@ public class Villager extends MidEntity implements Agent {
 	private float currentHunger, currentThirst, currentSleepiness, currentLaziness;
 	private HashMap<Point, Villager> nearbyVillagers;
 	private HashMap<Point, Agent> nearbyAgents;
+	private boolean isPregnant;
+	private int pregnantTime;
 	
 
 	public Villager(Point p, int age){
@@ -121,6 +124,11 @@ public class Villager extends MidEntity implements Agent {
 		ageprog++;
 		seeIfBirthday();
 		adjustNeeds();
+		
+		//Advance pregnancy timer if pregnant
+		if(isPregnant){
+			pregnantTime++;
+		}
 		
 		// If we see any other villagers, we may initiate an interaction
 		if (p.hasVillagers()) {
@@ -245,10 +253,13 @@ public class Villager extends MidEntity implements Agent {
 	private void plan() {
 		ih.update();
 		if(activePlan == null) {
-			if(!mustExplore){
+			if(!mustExplore && !mustBirth()){
 				activePlan = ih.getFirstPlan();
 //				System.out.println(activePlan);
-			}else{
+			}else if(mustBirth()){
+				System.out.println("BIRTHPLAN");
+				activePlan=new BirthPlan(this);
+			}else if(mustExplore){
 //				System.out.println("Creating ExplorePlan");
 				activePlan=new ExplorePlan(this);
 				mustExplore = false;
@@ -496,6 +507,24 @@ public class Villager extends MidEntity implements Agent {
 	@Override
 	public AgentWorld getAgentWorld() {
 		return world;
+	}
+	
+	public boolean setPregnant(boolean value){
+		if(isFemale() && age>=15 && isPregnant == false){
+			isPregnant = value;
+			this.pregnantTime = 0;
+			System.out.println("Villager: "+name+" got pregnant! Hooray!");
+			return true;
+		}else{
+			return false;
+		}
+	}
+	
+	private boolean mustBirth(){
+		if(pregnantTime >= Constants.TICKS_HOUR)
+			return true;
+		else
+			return false;
 	}
 	
 	public void makeElder(){

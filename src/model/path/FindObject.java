@@ -673,4 +673,24 @@ public static Point findTile2(ImpactableByAction world, EntityType id, int start
 						return true;
 		return false;
 	}
+	
+	/**
+	 * Returns the closest unblocked tile next to the starting position.
+	 * @param world
+	 * @param startX
+	 * @param startY
+	 * @return
+	 */
+	public static Point FreeTile(ImpactableByAction world, int startX, int startY){
+		if(!world.blocked(null, startX + 1, startY))
+			return new Point(startX+1,startY);
+		else if(!world.blocked(null, startX - 1, startY))
+			return new Point(startX+1,startY);
+		else if(!world.blocked(null, startX, startY + 1))
+			return new Point(startX+1,startY);
+		else if(!world.blocked(null, startX, startY - 1))
+			return new Point(startX+1,startY);
+		else
+			return null;
+	}
 }

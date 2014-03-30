@@ -93,11 +93,11 @@ public class Bed extends BottomEntity {
 	}
 
 	public void setUsed() {
-		UsedBy++;
+		UsedBy+=1;
 	}
 	
 	public void removeUsed() {
-		UsedBy--;
+		UsedBy-=1;
 	}
 
 	public boolean isFree() {
