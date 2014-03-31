@@ -8,12 +8,14 @@ import java.util.Set;
 
 import model.entity.Entity;
 import model.entity.bottom.NullTile;
+import model.villager.intentions.action.ImpactableByAction;
 
 import org.newdawn.slick.util.pathfinding.PathFindingContext;
+import org.newdawn.slick.util.pathfinding.TileBasedMap;
 
 import util.Constants;
 
-public class VillagerWorld implements VillagersWorldPerception {
+public class AgentWorld implements TileBasedMap, ImpactableByAction {
 	
 	private HashMap<Point, Entity> botEntities;
 	private HashMap<Point, Entity> midEntities;
@@ -22,7 +24,7 @@ public class VillagerWorld implements VillagersWorldPerception {
 	/**
 	 * Constructor
 	 */
-	public VillagerWorld(){
+	public AgentWorld(){
 		botEntities = new HashMap<Point, Entity>();
 		midEntities = new HashMap<Point, Entity>();
 		topEntities = new HashMap<Point, Entity>();
@@ -49,6 +51,11 @@ public class VillagerWorld implements VillagersWorldPerception {
 		}
 		return false;
 	}
+	
+	@Override
+	public boolean blocked(PathFindingContext arg0, Point p){
+		return blocked(arg0, p.x, p.y);
+	}
 
 	@Override
 	public float getCost(PathFindingContext arg0, int arg1, int arg2) {
@@ -72,22 +79,14 @@ public class VillagerWorld implements VillagersWorldPerception {
 		return Constants.WORLD_HEIGHT;
 	}
 
-	@Override
-	public void setPaused(boolean b) {
-		// TODO Auto-generated method stub
-	}
-
-	@Override
 	public HashMap<Point, Entity> getBotEntities() {
 		return botEntities;
 	}
 
-	@Override
 	public HashMap<Point, Entity> getMidEntities() {
 		return midEntities;
 	}
 
-	@Override
 	public HashMap<Point, Entity> getTopEntities() {
 		return topEntities;
 	}
@@ -116,5 +115,4 @@ public class VillagerWorld implements VillagersWorldPerception {
 			topEntities.put(ent.getKey(), ent.getValue());
 		}
 	}
-
 }

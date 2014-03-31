@@ -29,9 +29,6 @@ public class RandomWorld extends World{
 
 	private static final long serialVersionUID = 1L;
 
-	// Size of world
-	private final int WIDTH = 200, HEIGHT = 200;
-
 	// Villagers
 	private final int VILLAGER_SPAWN_POS = 40;
 
@@ -40,9 +37,6 @@ public class RandomWorld extends World{
 	// Trees
 	private final int TREE_SPARSITY = 280;
 
-	/** @deprecated tickable is enough **/
-	private ArrayList<Tree> trees = new ArrayList<Tree>();
-	
 	private Random rnd = new Random();
 	
 	/**
@@ -66,7 +60,7 @@ public class RandomWorld extends World{
 		generateTrees();
 		generateGrass();
 		
-		new FindObject(this);
+		new FindObject();
 		
 //		for(int i = 112; i < 128; i++) {
 //			for(int j = 112; j < 128; j++) {

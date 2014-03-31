@@ -2,13 +2,9 @@ package model.villager;
 
 import java.awt.Point;
 import java.util.HashMap;
-import java.util.Iterator;
-import java.util.Map.Entry;
 
 import model.entity.Agent;
-import model.entity.Entity;
 import model.entity.mid.MidEntity;
-import model.entity.top.house.HouseWall;
 import model.item.Item;
 import model.villager.intentions.Intent;
 import model.villager.intentions.IntentionHandler;
@@ -22,7 +18,6 @@ import model.villager.intentions.plan.Plan;
 import model.villager.intentions.plan.SleepPlan;
 import model.villager.intentions.reminder.ProfessionLine;
 import model.villager.intentions.reminder.ProfessionLine.WorkLevel;
-import model.villager.intentions.reminder.profession.FoodGatherer;
 import model.villager.intentions.reminder.profession.WaterGatherer;
 import model.villager.order.Order;
 import model.villager.util.NameGen;
@@ -38,8 +33,8 @@ public class Villager extends MidEntity implements Agent {
 
 	private IntentionHandler ih;
 
-	private VillagerWorld world;
-	private boolean dead = false, isElder = false;;
+	private AgentWorld world;
+	private boolean dead = false, isElder = false;
 	private String currentAction, currentPlan;
 	private String name;
 	private Plan activePlan;
@@ -62,7 +57,7 @@ public class Villager extends MidEntity implements Agent {
 
 	public Villager(Point p, int age){
 		super(p.x, p.y, EntityType.VILLAGER);
-		world = new VillagerWorld();
+		world = new AgentWorld();
 		length = 140 + UtilClass.getRandomInt(50, 0);
 		weight = length / 4 + UtilClass.getRandomInt(length/4, 0);
 		
@@ -100,7 +95,7 @@ public class Villager extends MidEntity implements Agent {
 		System.out.println("New villager created: " + name+ " " +length+"  "+weight+ " " +sex);
 	}
 	
-	public VillagersWorldPerception getWorld() {
+	public AgentWorld getWorld() {
 		return world;
 	}
 
@@ -496,6 +491,11 @@ public class Villager extends MidEntity implements Agent {
 	
 	public HashMap<Point, Agent> getNearbyAgents(){
 		return nearbyAgents;
+	}
+
+	@Override
+	public AgentWorld getAgentWorld() {
+		return world;
 	}
 	
 	public void makeElder(){

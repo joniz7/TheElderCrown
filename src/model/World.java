@@ -24,22 +24,23 @@ import model.entity.top.house.FoodStorage;
 import model.path.PathFinder;
 import model.villager.Perception;
 import model.villager.Villager;
-import model.villager.VillagersWorldPerception;
 import model.villager.intentions.action.Action;
+import model.villager.intentions.action.ImpactableByAction;
 import model.villager.order.Order;
 
 import org.newdawn.slick.util.OperationNotSupportedException;
 import org.newdawn.slick.util.pathfinding.PathFindingContext;
+import org.newdawn.slick.util.pathfinding.TileBasedMap;
 
 import util.Constants;
 import util.Copyable;
 import util.EntityType;
 import util.NoPositionFoundException;
 import util.NoSuchEntityException;
-import util.UtilClass;
 import util.Tickable;
+import util.UtilClass;
 
-public abstract class World implements Tickable, VillagersWorldPerception, PropertyChangeListener {
+public abstract class World implements Tickable, TileBasedMap, PropertyChangeListener, ImpactableByAction {
 	private static final long serialVersionUID = 1L;
 
 	// Tickable objects (e.g. trees)
@@ -65,7 +66,7 @@ public abstract class World implements Tickable, VillagersWorldPerception, Prope
 	// World configuration
 	private final int VIEW_DISTANCE = 10;
 
-	public final int VILLAGER_SPAWN_POS = 40, VILLAGER_COUNT = 8;
+	public final int VILLAGER_SPAWN_POS = 40, VILLAGER_COUNT = 2;
 	
 	// Keep track of when to spawn babies
 	private boolean spawnBabies = false;

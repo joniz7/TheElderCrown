@@ -665,10 +665,22 @@ public class WorldController implements GameState {
 		}else if(simSpeed ==12){
 			tickDelay=20;
 			rate=4.5;
-		}else if(simSpeed >=13){
+		}else if(simSpeed ==13){
 			tickDelay=18;
-			simSpeed=13;
-			rate=5;
+			rate=5.0;
+		}else if(simSpeed ==12){
+			tickDelay=16;
+			rate=5.5;
+		}else if(simSpeed ==13){
+			tickDelay=15;
+			rate=6.0;
+		}else if(simSpeed ==14){
+			tickDelay=13;
+			rate=6.5;
+		}else if(simSpeed >=15){
+			tickDelay=12;
+			simSpeed=15;
+			rate=7.0;
 		}
 		pcs.firePropertyChange("simSpeed", null, rate);
 		timer.stop();

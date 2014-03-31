@@ -7,7 +7,7 @@ import model.entity.top.Tree;
 import model.path.FindObject;
 import model.path.criteria.HasFood;
 import model.villager.Villager;
-import model.villager.VillagersWorldPerception;
+import model.villager.AgentWorld;
 
 /**
  * Class for handling the actual "action" to perform when idle.
@@ -28,10 +28,10 @@ public class IdleAction extends Action {
 	}
 
 	@Override
-	public void tick(VillagersWorldPerception world){
+	public void tick(ImpactableByAction world){
 		if(firstTick) {
 			villager.updateStatus("idling");
-			firstTick = false;
+			this.firstTick = false;
 		}
 		villager.satisfyLazy(0.5f);
 		if(villager.getLaziness() >= Constants.MAX_LAZINESS){
