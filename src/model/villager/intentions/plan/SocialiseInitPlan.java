@@ -4,6 +4,7 @@ import java.awt.Point;
 
 import model.villager.Villager;
 import model.villager.intentions.action.IssueOrderAction;
+import model.villager.intentions.action.WaitForAction;
 import model.villager.order.Order;
 
 /**
@@ -30,6 +31,7 @@ public class SocialiseInitPlan extends Plan{
 		actionQueue.addLast(new IssueOrderAction(villager, otherOrder));
 		
 		// WaitForAction
+		actionQueue.addLast(new WaitForAction(villager, otherPos, otherId));
 		
 		// TalkAction
 		

@@ -102,7 +102,7 @@ public class Villager extends MidEntity implements Agent {
 		this.currentThirst = 50-modifier*thirst;
 		this.currentSleepiness = 40-modifier*sleepiness;
 		this.currentLaziness = 50-modifier*laziness;
-		this.currentSocial = 20f;
+		this.currentSocial = 0f;
 		
 		currentAction = "Doing Nothing";
 		currentPlan = "Doing Nothing";
@@ -176,7 +176,8 @@ public class Villager extends MidEntity implements Agent {
 	 */
 	private void maybeSocialise(HashMap<Point, Villager> villagers) {
 
-		if (currentSocial < socialLimit) {			
+		if (currentSocial < socialLimit) {		
+			System.out.println("socialise");
 			// TODO check if not already socialising etc
 			
 			// Initialise a social interaction
@@ -194,7 +195,8 @@ public class Villager extends MidEntity implements Agent {
 			Order socialiseOrder = new Order(this.getId(), otherVillager.getId(), othersIntent);
 			
 			// Create SocialiseInitIntent for myself
-			
+			// TODO is weighted properly?
+			// TODO
 		}
 		
 	}

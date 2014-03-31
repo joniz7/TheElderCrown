@@ -7,7 +7,6 @@ import model.villager.intentions.action.Action;
 
 public class Plan {
 
-	// TODO do we need this reference later?
 	protected Villager villager;
 	protected boolean isFinished;
 	protected String name;
