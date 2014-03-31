@@ -6,8 +6,8 @@ import model.item.liquid.Drink;
 import model.path.FindObject;
 import model.path.criteria.IsDrinkStorage;
 import model.villager.Villager;
-import model.villager.VillagersWorldPerception;
 import model.villager.intentions.action.Action;
+import model.villager.intentions.action.ImpactableByAction;
 import util.EntityType;
 
 public class StoreDrinkAction extends Action{
@@ -21,7 +21,7 @@ public class StoreDrinkAction extends Action{
 	}
 
 	@Override
-	public void tick(VillagersWorldPerception world){
+	public void tick(ImpactableByAction world){
 		if(FindObject.getAdjacentObject(world, new IsDrinkStorage(), EntityType.DRINK_STORAGE, villager.getX(),
 				villager.getY()) != null) {
 			DrinkStorage fs = (DrinkStorage) FindObject.getAdjacentObject(world, new IsDrinkStorage(), 

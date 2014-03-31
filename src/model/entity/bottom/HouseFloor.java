@@ -21,4 +21,9 @@ public class HouseFloor extends Tile {
 		return new HouseFloor(x, y);
 	}
 	
+	@Override
+	public float getSleepValue(){
+		return 0.02f;
+	}
+	
 }

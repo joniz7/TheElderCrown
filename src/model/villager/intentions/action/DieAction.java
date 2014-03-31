@@ -1,7 +1,6 @@
 package model.villager.intentions.action;
 
 import model.villager.Villager;
-import model.villager.VillagersWorldPerception;
 
 public class DieAction extends Action{
 
@@ -11,7 +10,7 @@ public class DieAction extends Action{
 	}
 
 	@Override
-	public void tick(VillagersWorldPerception world) {
+	public void tick(ImpactableByAction world) {
 		villager.updateStatus("dead");
 	}
 

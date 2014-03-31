@@ -3,6 +3,9 @@ package controller;
 import java.awt.Point;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.beans.PropertyChangeEvent;
+import java.beans.PropertyChangeListener;
+import java.beans.PropertyChangeSupport;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
@@ -50,6 +53,8 @@ public class WorldController implements GameState {
 	// How strong the desire to move on mouse click should be
 	public static final int MOVE_ORDER_DESIRE = 900;
 	
+	protected PropertyChangeSupport pcs;
+	
 	private World world;
 	private WorldView view;
 	private boolean isExit;
@@ -59,6 +64,7 @@ public class WorldController implements GameState {
 	ActionListener action;
 	//Delay in ms between ticks
 	private int tickDelay;
+	private int simSpeed;
 	
 	// The currently selected entity. Is changed by mouse clicking
 	private Villager selectedVillager;
@@ -300,11 +306,11 @@ public class WorldController implements GameState {
 		if(e == 'd' || e == 'D')
 			isDDown = true;
 		if(e == '+' ){
-			tickDelay=tickDelay-5;
+			simSpeed++;
 			time();
 		}
 		if(e=='-'){
-			tickDelay=tickDelay+5;
+			simSpeed--;
 			time();
 		}			
 			
@@ -430,8 +436,10 @@ public class WorldController implements GameState {
 			throws SlickException {
 		this.game = (Game)game;
 		this.appgc = appgc;
+		pcs = new PropertyChangeSupport(this);
 		new ImageLoader();
-		tickDelay=100;
+		tickDelay=90;
+		simSpeed=5;
 		
 		//Actionlistener that listens to timer with tickDelay
         action = new ActionListener(){   
@@ -452,6 +460,7 @@ public class WorldController implements GameState {
 		world = new RandomWorld();
 		timer.start();
 		view = new WorldView(appgc.getWidth(), appgc.getHeight());
+		addPropertyChangeListener(view);
 		// Set up View listening to World
 		world.addPropertyChangeListener(view);
 		// Initialize with no map
@@ -614,11 +623,73 @@ public class WorldController implements GameState {
 	}
 	
 	public void time(){
+		double rate=1;
+		if(simSpeed <=1){
+			tickDelay=900;
+			simSpeed =1;
+			rate=0.1;
+		}else if(simSpeed ==2){
+			tickDelay=360;
+			rate=0.25;
+		}else if(simSpeed ==3){
+			tickDelay=180;
+			rate=0.5;
+		}else if(simSpeed ==4){
+			tickDelay=120;
+			rate=0.75;
+		}else if(simSpeed ==5){
+			tickDelay=90;
+			rate=1.0;
+		}else if(simSpeed ==6){
+			tickDelay=60;
+			rate=1.5;
+		}else if(simSpeed ==7){
+			tickDelay=45;
+			rate=2.0;
+		}else if(simSpeed ==8){
+			tickDelay=36;
+			rate=2.5;
+		}else if(simSpeed ==9){
+			tickDelay=30;
+			rate=3.0;
+		}else if(simSpeed ==10){
+			tickDelay=25;
+			rate=3.5;
+		}else if(simSpeed ==11){
+			tickDelay=21;
+			rate=4.0;
+		}else if(simSpeed ==12){
+			tickDelay=20;
+			rate=4.5;
+		}else if(simSpeed ==13){
+			tickDelay=18;
+			rate=5.0;
+		}else if(simSpeed ==12){
+			tickDelay=16;
+			rate=5.5;
+		}else if(simSpeed ==13){
+			tickDelay=15;
+			rate=6.0;
+		}else if(simSpeed ==14){
+			tickDelay=13;
+			rate=6.5;
+		}else if(simSpeed >=15){
+			tickDelay=12;
+			simSpeed=15;
+			rate=7.0;
+		}
+		pcs.firePropertyChange("simSpeed", null, rate);
 		timer.stop();
 		timer=new Timer(tickDelay, action);
 		timer.setInitialDelay(0);
 		timer.start();
 		
 	}
-	
+    public void addPropertyChangeListener(PropertyChangeListener listener) {
+        this.pcs.addPropertyChangeListener(listener);
+    }
+    public void removePropertyChangeListener(PropertyChangeListener listener) {
+        this.pcs.removePropertyChangeListener(listener);
+    }
+
 }

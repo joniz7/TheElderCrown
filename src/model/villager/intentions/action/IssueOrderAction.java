@@ -14,8 +14,9 @@ public class IssueOrderAction extends Action {
 	}
 
 	@Override
-	public void tick(VillagersWorldPerception world) {
-		world.addOrder(o);
+	public void tick(ImpactableByAction world) {
+		// TODO issue order to REAL world
+		// world.addOrder(o);
 		actionFinished();
 	}
 

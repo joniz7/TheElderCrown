@@ -4,10 +4,10 @@ import java.awt.Point;
 import java.util.ArrayList;
 import java.util.HashMap;
 
-import model.World;
 import model.entity.Entity;
 import model.path.criteria.Criteria;
-import model.villager.VillagersWorldPerception;
+import model.villager.AgentWorld;
+import model.villager.intentions.action.ImpactableByAction;
 
 import org.newdawn.slick.util.pathfinding.Path;
 
@@ -23,24 +23,17 @@ import view.entity.top.Helper3View;
  *
  */
 public class FindObject {
-	
-	/*
-	 * Funderar p� om man ska sm�lla ihop alla tre lager
-	 * i en enda algoritm. Har undvikit detta hittills eftersom
-	 * att just bottenlagret �r ganska speciellt, d� det enbart best�r av tiles.
-	 */
-	
-	private static World worldStatic;
-	
-	public FindObject(World world){
-		worldStatic = world;
+		
+	public FindObject(){
+		
 	}
 	
 	/**
 	 * This did the job that findTile2 does now, saves this code, just in case
+	 * 
 	 * @deprecated
 	 */
-	public static Point findTile(VillagersWorldPerception world, EntityType id, int startX, int startY){
+	public static Point findTile(AgentWorld world, EntityType id, int startX, int startY){
 		HashMap<Point, Entity> tiles = world.getBotEntities();
 		
 		Point upperLeft = new Point(startX - 1, startY - 1);
@@ -103,7 +96,7 @@ public class FindObject {
 	 * @param startY - the villager y coordinate
 	 * @return The point representing the coordinates of the found tile
 	 */
-public static Point findTile2(VillagersWorldPerception world, EntityType id, int startX, int startY){
+public static Point findTile2(ImpactableByAction world, EntityType id, int startX, int startY){
 		/*
 		 * Understanding what these lists and hash-maps are used for is crucial in
 		 * order to understand the find-object-algorithm
@@ -210,7 +203,7 @@ public static Point findTile2(VillagersWorldPerception world, EntityType id, int
 		return null;
 	}
 	
-	public static boolean standingOnTile(VillagersWorldPerception world, EntityType id, int startX, int startY){
+	public static boolean standingOnTile(ImpactableByAction world, EntityType id, int startX, int startY){
 		HashMap<Point, Entity> tiles = world.getBotEntities();
 		
 		if(tiles.get(new Point(startX, startY)) != null && tiles.get(new Point(startX, startY)).getType() == id)
@@ -219,7 +212,7 @@ public static Point findTile2(VillagersWorldPerception world, EntityType id, int
 		return false;
 	}
 	
-	public static boolean standingOnObject(VillagersWorldPerception world, EntityType id, int startX, int startY){
+	public static boolean standingOnObject(AgentWorld world, EntityType id, int startX, int startY){
 		HashMap<Point, Entity> objects = world.getMidEntities();
 
 		if(objects.get(new Point(startX, startY)) != null && objects.get(new Point(startX, startY)).getType() == id)
@@ -228,55 +221,32 @@ public static Point findTile2(VillagersWorldPerception world, EntityType id, int
 		return false;
 	}
 
-	
-	
 	/**
 	 * In order to create a correct path, the villager wants to move to a unblocked tile adjacent
-	 * to the object.
-	 * 
-	 * This method searches for the specified object,
-	 * then checks all 4 neighbors of the object and returns
-	 * the point with the shortest path.
+	 * to the object. This method checks all 4 neighbors of
+	 * the object and returns the point with the shortest path.
 	 * 
 	 * @param world - the game world
-	 * @param type - the type of the object to search for
+	 * @param id - the id of the object
 	 * @param startX - the villager x position
 	 * @param startY - the villager y position
 	 * @return - The Point to walk to in order to interact with object
 	 */
-	public static Point findObjectNeighbour(VillagersWorldPerception world, EntityType type, int startX, int startY){
+	public static Point findTileNeighbour(ImpactableByAction world, EntityType id, int startX, int startY){
 		long startTime = System.currentTimeMillis();
 		
 		if(isStuck(world, startX, startY)){
 //			System.out.println("STUCK");
 			return null;
 		}
-		// Search for the object
-		Point p = findTile2(world, type, startX, startY);
+		
+		Point p = findTile2(world, id, startX, startY);
 		if(p==null){
 			return null;
 		}
-		// Find the closest neighbouring tile
-		Point closestPoint = findTileNeighbour(world, p, startX, startY);
 		
 		long endTime = System.currentTimeMillis();
-		//?
 		System.out.println("FindObject, find water tile: " + (endTime - startTime));
-		
-		return closestPoint;
-	}
-	
-	/**
-	 * Finds the closest neighbouring tile to p.
-	 * 
-	 * @param world - the world representation to search
-	 * @param p - the point we want to stand next to
-	 * @param startX - where we are right now (needed for choosing shortest path)
-	 * @param startY - where we are right now (needed for choosing shortest path)
-	 * 
-	 * @return the neighbouring Point closest to p
-	 */
-	public static Point findTileNeighbour(VillagersWorldPerception world, Point p, int startX, int startY) {
 		
 		HashMap<Point, Entity> tiles = world.getBotEntities();
 		
@@ -318,7 +288,6 @@ public static Point findTile2(VillagersWorldPerception world, EntityType id, int
 			return new Point(finalX, finalY);
 		}catch(NullPointerException e){
 			new Helper3View(startX, startY);
-			world.setPaused(true);
 			
 			e.printStackTrace();
 		}
@@ -326,7 +295,7 @@ public static Point findTile2(VillagersWorldPerception world, EntityType id, int
 		return null;
 	}
 	
-	public static boolean isAdjacentTile(VillagersWorldPerception world, EntityType id, int startX, int startY){
+	public static boolean isAdjacentTile(ImpactableByAction world, EntityType id, int startX, int startY){
 		HashMap<Point, Entity> tiles = world.getBotEntities();
 		
 		try{
@@ -348,9 +317,10 @@ public static Point findTile2(VillagersWorldPerception world, EntityType id, int
 	
 	/**
 	 * This did the job that findObject2 does now, saves this code, just in case
+	 * 
 	 * @deprecated
 	 */
-	public static Point findObject(VillagersWorldPerception world, Criteria crit, EntityType id, int startX, int startY){
+	public static Point findObject(AgentWorld world, Criteria crit, EntityType id, int startX, int startY){
 		HashMap<Point, Entity> mids = world.getMidEntities();
 		HashMap<Point, Entity> tops = world.getTopEntities();
 
@@ -449,7 +419,7 @@ public static Point findTile2(VillagersWorldPerception world, EntityType id, int
 	 * @param startY - the villager y coordinate
 	 * @return The point representing the coordinates of the found tile
 	 */
-	public static Point findObject2(VillagersWorldPerception world, Criteria crit, EntityType id, int startX, int startY){
+	public static Point findObject2(ImpactableByAction world, Criteria crit, EntityType id, int startX, int startY){
 		/*
 		 * These lists and hash-maps are essentially the same as the ones in the
 		 * findTile2 method. The algorithm works in the same way, except that it
@@ -558,12 +528,12 @@ public static Point findTile2(VillagersWorldPerception world, EntityType id, int
 	 * 
 	 * @param world - the game world
 	 * @param crit - a criteria to be matched by the object
-	 * @param type - the type of the object
+	 * @param id - the id of the object
 	 * @param startX - the villager x position
 	 * @param startY - the villager y position
 	 * @return - The Point to walk to in order to interact with object
 	 */
-	public static Point findObjectNeighbour(VillagersWorldPerception world, Criteria crit, EntityType type, int startX, int startY){
+	public static Point findObjectNeighbour(ImpactableByAction world, Criteria crit, EntityType id, int startX, int startY){
 //		long startTime = System.currentTimeMillis();
 		
 		if(isStuck(world, startX, startY)){
@@ -571,7 +541,7 @@ public static Point findTile2(VillagersWorldPerception world, EntityType id, int
 			return null;
 		}
 		
-		Point p = findObject2(world, crit, type, startX, startY);
+		Point p = findObject2(world, crit, id, startX, startY);
 		if(p == null){
 			System.out.println("CANT FIND");
 			return null;
@@ -632,7 +602,7 @@ public static Point findTile2(VillagersWorldPerception world, EntityType id, int
 	}
 	
 
-	public static Entity getAdjacentObject(VillagersWorldPerception world, Criteria crit, EntityType id, int startX, int startY){
+	public static Entity getAdjacentObject(ImpactableByAction world, Criteria crit, EntityType id, int startX, int startY){
 		HashMap<Point, Entity> mids = world.getMidEntities();
 		HashMap<Point, Entity> tops = world.getTopEntities();
 		
@@ -695,11 +665,11 @@ public static Point findTile2(VillagersWorldPerception world, EntityType id, int
 //		return false;
 //	}
 	
-	public static boolean isStuck(VillagersWorldPerception world, int startX, int startY){
-		if(worldStatic.blocked(null, startX + 1, startY))
-			if(worldStatic.blocked(null, startX - 1, startY))
-				if(worldStatic.blocked(null, startX, startY + 1))
-					if(worldStatic.blocked(null, startX, startY - 1))
+	public static boolean isStuck(ImpactableByAction world, int startX, int startY){
+		if(world.blocked(null, startX + 1, startY))
+			if(world.blocked(null, startX - 1, startY))
+				if(world.blocked(null, startX, startY + 1))
+					if(world.blocked(null, startX, startY - 1))
 						return true;
 		return false;
 	}

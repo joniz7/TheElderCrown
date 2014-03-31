@@ -5,11 +5,15 @@ import model.item.food.FoodSource;
 import model.path.FindObject;
 import model.path.criteria.HasFood;
 import model.villager.Villager;
+import model.villager.VillagersWorldPerception;
+<<<<<<< HEAD
 import util.Constants;
+import util.EntityType;
+=======
+>>>>>>> dev
 
 public class EatAction extends Action{
 
-	private int stacks, stacksToEat;
 	
 	public EatAction(Villager villager) {
 		super(villager);
@@ -18,8 +22,7 @@ public class EatAction extends Action{
 	}
 
 	@Override
-	public void tick(ImpactableByAction world){
-		villager.updateStatus("eating");
+	public void tick(VillagersWorldPerception world){
 		if(villager.getActiveItem() instanceof Food){
 			Food f = (Food) villager.getActiveItem();
 			if(!f.consumed()){
@@ -32,14 +35,12 @@ public class EatAction extends Action{
 					villager.setActiveItem(null);
 					villager.updateStatus("statusEnd");
 				}
-			}else{
-				villager.setActiveItem(null);
-				villager.updateStatus("statusEnd");
 			}
 		}else if(FindObject.getAdjacentObject(world, new HasFood(), null, villager.getX(),
 				villager.getY()) != null) {
 			FoodSource fs = (FoodSource) FindObject.getAdjacentObject(world, new HasFood(), null, villager.getX(),
 					villager.getY());
+			villager.updateStatus("eating");
 			villager.setActiveItem(fs.getFood());
 		}else{
 			villager.updateStatus("statusEnd");

@@ -15,7 +15,8 @@ public class HasDrink implements Criteria{
 				return true;
 			}else
 				return false;	
-		}else if(ge instanceof WaterTile){
+		}
+		if(ge instanceof WaterTile){
 			return true;
 		}
 		return false;

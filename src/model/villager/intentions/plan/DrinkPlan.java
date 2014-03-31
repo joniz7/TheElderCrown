@@ -22,7 +22,16 @@ public class DrinkPlan extends Plan{
 		actionQueue = new LinkedList<Action>();
 		name = "Wants to drink";
 		
-		Point p = FindObject.findObjectNeighbour(villager.getWorld(), EntityType.WATER_TILE, 
+		if(FindObject.isAdjacentTile(villager.getWorld(), EntityType.WATER_TILE, 
+			villager.getX(), villager.getY())){
+			
+			actionQueue.addLast(new DrinkAction(villager));
+			System.out.println("ALREADY ADJACENT WATER");
+			return;
+		}
+		
+		Point p = FindObject.findTileNeighbour(villager.getWorld(), EntityType.WATER_TILE, 
+
 				villager.getX(), villager.getY());
 		Point p2 = FindObject.findObjectNeighbour(villager.getWorld(), new HasDrink(), null,
 				villager.getX(), villager.getY());

@@ -24,7 +24,7 @@ public class VillagerUI extends UI {
 	private Color c;
 	private String currentAction, currentPlan;
 	private String name;
-	private boolean show;
+	private boolean show, isElder;
 	private Image meter, meterArrow, inventory, emptyIcon;
 	private ItemIcon[] icons = new ItemIcon[6];
 	
@@ -57,7 +57,10 @@ public class VillagerUI extends UI {
 			g.drawImage(image, xOff, yOff);
 				
 			g.setColor(new Color(255, 255, 255));
-			g.drawString(name, xOff + 30, yOff + 175);
+			if(isElder)
+				g.drawString("Elder " + name, xOff + 30, yOff + 175);
+			else
+				g.drawString(name, xOff + 30, yOff + 175);
 			g.drawString("Height: " + length + " cm", xOff + 30, yOff + 215);
 			g.drawString("Weight: " + weight + " kg", xOff + 30, yOff + 235);
 			
@@ -153,6 +156,8 @@ public class VillagerUI extends UI {
 						icons[i].setImage(ImageLoader.getImage("item" + items[i].getName()));
 					else
 						icons[i].setImage(emptyIcon);
+			}else if(status.compareTo("elder") == 0){
+				isElder = true;
 			}
 		}else{
 			super.propertyChange(event);
