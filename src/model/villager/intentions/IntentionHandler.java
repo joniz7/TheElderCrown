@@ -29,9 +29,9 @@ public class IntentionHandler {
 	
 		// Add primitive intents
 		pq.add(new EatIntent(villager));
-		pq.add(new DrinkIntent(villager));
+		//pq.add(new DrinkIntent(villager));
 		pq.add(new SleepIntent(villager));
-		pq.add(new IdleIntent(villager));
+		//pq.add(new IdleIntent(villager));
 		
 		//pq.add(new ExploreIntent(villager));
 	}
@@ -75,7 +75,7 @@ public class IntentionHandler {
 	/**
 	 * Removes the topmost Intent if it's not a PrimitiveIntent
 	 * 
-	 * @author Jonathan Orrö
+	 * @author Jonathan Orrï¿½
 	 */
 	public void intentDone(){
 		if(!(pq.peek() instanceof PrimitiveIntent)) {

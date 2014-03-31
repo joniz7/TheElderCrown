@@ -236,7 +236,7 @@ public class Villager extends MidEntity implements Agent {
 	
 	private void seeIfDead() {
 		if(hunger < -Constants.MAX_HUNGER || thirst < -Constants.MAX_THIRST || UtilClass.getRandomInt(1000000, deathrisk) >= 1000000) {
-			dead = true;
+			dead = false;
 		}
 	}
 	

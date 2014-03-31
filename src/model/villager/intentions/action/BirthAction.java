@@ -35,7 +35,7 @@ public class BirthAction extends Action {
 			w = (World) world;
 		}
 		stacks++;
-		if(stacks >= time*Constants.TICKS_HOUR){
+		//if(stacks >= time*Constants.TICKS_HOUR){
 			Point p = FindObject.FreeTile(world, villager.getX(), villager.getY());
 			if(p != null){
 				villager.setBlocking(true);
@@ -45,7 +45,7 @@ public class BirthAction extends Action {
 				actionFinished();
 			}else
 				actionFailed();
-		}
+		//}
 
 	}
 

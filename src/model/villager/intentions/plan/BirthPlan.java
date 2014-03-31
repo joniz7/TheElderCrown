@@ -8,6 +8,7 @@ import org.newdawn.slick.util.pathfinding.Path;
 import model.path.PathFinder;
 import model.villager.Villager;
 import model.villager.intentions.action.Action;
+import model.villager.intentions.action.BirthAction;
 import model.villager.intentions.action.MoveAction;
 
 public class BirthPlan extends Plan {
@@ -25,6 +26,7 @@ public class BirthPlan extends Plan {
 	
 	Path movePath = PathFinder.getPath(villager.getX(), villager.getY(), bedPos.x, bedPos.y);
 	actionQueue.add(new MoveAction(villager, movePath));
+	actionQueue.add(new BirthAction(villager));
 	
 	}
 	

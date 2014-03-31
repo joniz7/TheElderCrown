@@ -73,7 +73,7 @@ public class DrinkStorage extends HousePart implements DrinkSource{
 
 	@Override
 	public boolean hasDrink() {
-		System.out.println("Well has water");
+		//System.out.println("Well has water");
 		return drink.size() > 0;
 	}
 	

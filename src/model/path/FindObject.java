@@ -246,7 +246,7 @@ public static Point findTile2(ImpactableByAction world, EntityType id, int start
 		}
 		
 		long endTime = System.currentTimeMillis();
-		System.out.println("FindObject, find water tile: " + (endTime - startTime));
+		//System.out.println("FindObject, find water tile: " + (endTime - startTime));
 		
 		HashMap<Point, Entity> tiles = world.getBotEntities();
 		
@@ -511,9 +511,9 @@ public static Point findTile2(ImpactableByAction world, EntityType id, int start
 			}
 			
 			if(stacks > 100 || visited.size() == 0){
-				System.out.println("FindObject: " + visited.size());
-				System.out.println("FindObject: " + crit);
-				System.out.println("FindObject: " + id);
+				//System.err.println("FindObject: " + visited.size());
+				//System.err.println("FindObject: " + crit);
+				//System.err.println("FindObject: " + id);
 				Exception e = new Exception();
 				e.printStackTrace();
 				return null;
@@ -537,13 +537,13 @@ public static Point findTile2(ImpactableByAction world, EntityType id, int start
 //		long startTime = System.currentTimeMillis();
 		
 		if(isStuck(world, startX, startY)){
-			System.out.println("STUCK");
+			//System.out.println("STUCK");
 			return null;
 		}
 		
 		Point p = findObject2(world, crit, id, startX, startY);
 		if(p == null){
-			System.out.println("CANT FIND");
+			//System.out.println("CANT FIND");
 			return null;
 		}
 

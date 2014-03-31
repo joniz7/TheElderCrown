@@ -20,17 +20,20 @@ public class SleepAction extends Action {
 	private HouseFloor floor;
 	private Bed thisBed;
 	private boolean usedAtStart = false;
-	private boolean firstTick = true;
+	private boolean firstTick;
 	
 	public SleepAction(Villager villager) {
 		super(villager);
 		name = "Sleeping";
+		this.firstTick = true;
 	}
 	
 	public SleepAction(Villager villager, Bed thisBed) {
 		super(villager);
 		name = "Sleeping";
 		this.thisBed = thisBed;
+		this.firstTick = true;
+		villager.setBlocking(false);
 	}
 
 
@@ -42,28 +45,27 @@ public class SleepAction extends Action {
 		if(FindObject.standingOnTile(world, EntityType.BED, villager.getX(), villager.getY())){
 			if(this.firstTick){
 				//System.out.println("Sleeping on bed!");
-				villager.setBlocking(false);
+				//villager.setBlocking(false);
 				thisBed.setUsed();
 				System.out.println("Bed used by: "+thisBed.UsedBy());
 				firstTick = false;
 			}
 			if(thisBed.UsedBy() > 1){
 				villager.updateStatus("cuddling");
-				System.out.println("Bed used by: "+thisBed.UsedBy());
+				//System.out.println("Bed used by: "+thisBed.UsedBy());
 				name = "Cuddling";
 				villager.setPregnant(true);
 			}else{
 				villager.updateStatus("sleeping");
 			}
-			System.out.println("Bed used by: "+thisBed.UsedBy());
 			villager.satisfySleep(thisBed.getSleepValue());
 			if(villager.getSleepiness() >= Constants.MAX_SLEEP){
-				if(villager.getMostNeed() > villager.getSleepiness() + 50){
+				//if(villager.getMostNeed() > villager.getSleepiness() + 50){
 					villager.setBlocking(true);
 					villager.updateStatus("statusEnd");
 					thisBed.removeUsed();
 					actionFinished();
-				}
+				//}
 			}
 			
 		}else if(FindObject.standingOnTile(world, EntityType.GRASS_TILE, villager.getX(), villager.getY())){

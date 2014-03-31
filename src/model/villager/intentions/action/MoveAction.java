@@ -18,12 +18,15 @@ public class MoveAction extends Action{
 	private int waitTime = 0;
 	private EntityType type;
 	private Criteria crit;
+	private Point des;
 	
 	
 	public MoveAction(Villager villager, Path path) {
 		super(villager);
 		this.path = path;
 		name = "Moving";
+		if(path!=null)
+			this.des = new Point(path.getX(path.getLength()-1),path.getY(path.getLength()-1));
 	}
 	
 	public MoveAction(Villager villager, EntityType type, Criteria crit) {
@@ -38,17 +41,25 @@ public class MoveAction extends Action{
 		if(path == null && crit != null){
 			Point p = FindObject.findObjectNeighbour(world, 
 					crit, type, villager.getX(), villager.getY());
+			
 
 			if(p == null){
-				System.out.println("WATER ABANDONDED ");
+				//System.out.println("WATER ABANDONDED ");
 				villager.actionDone();
 				villager.disposePlan();
 				villager.clearInventory();
 //				villager.setExplore();
-			}else
+			}else{
 				path = PathFinder.getPathToAdjacent(villager.getX(), villager.getY(), 
 						p.x, p.y);
 			type = null;
+			des = (Point) p.clone();
+			}
+		}
+		
+		if(path==null && des != null){
+			path = PathFinder.getPathToAdjacent(villager.getX(), villager.getY(), 
+					des.x, des.y);
 		}
 		
 		if(path == null){
@@ -96,8 +107,9 @@ public class MoveAction extends Action{
 		} else {
 			waitTime++;
 			if(waitTime > 40){
-				actionFailed();
-//				System.out.println("WAIT!");
+				path = null;
+				//actionFailed();
+				System.out.println("Path set to NULL");
 			}
 		}
 	}
