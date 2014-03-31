@@ -27,64 +27,9 @@ public class FindObject {
 	public FindObject(){
 		
 	}
-	
-	/**
-	 * This did the job that findTile2 does now, saves this code, just in case
-	 * 
-	 * @deprecated
-	 */
-	public static Point findTile(AgentWorld world, EntityType id, int startX, int startY){
-		HashMap<Point, Entity> tiles = world.getBotEntities();
-		
-		Point upperLeft = new Point(startX - 1, startY - 1);
-		Point lowerRight  = new Point(startX + 1, startY + 1);
-		
-		if(upperLeft.x < 0)
-			upperLeft.x = 0;
-		if(lowerRight.x > world.getWidthInTiles() - 1)
-			lowerRight.x = world.getWidthInTiles() - 1;
-		if(upperLeft.y < 0)
-			upperLeft.y = 0;
-		if(lowerRight.y > world.getHeightInTiles() - 1)
-			lowerRight.y = world.getHeightInTiles() - 1;
-		
-		boolean found = false;
-		while(!found){
-			for(int i = (int) upperLeft.getX(); i <= lowerRight.getX(); i++)
-				if(tiles.get(new Point(i, (int) upperLeft.getY())).getType() == id)
-					if(PathFinder.getPathToAdjacent(i, (int) upperLeft.getY(), startX, startY) != null)
-						return new Point(i, (int) upperLeft.getY());
-			
-			for(int i = (int) upperLeft.getX(); i <= lowerRight.getX(); i++)
-				if(tiles.get(new Point(i, (int) lowerRight.getY())).getType() == id)
-					if(PathFinder.getPathToAdjacent(i, (int) lowerRight.getY(), startX, startY) != null)
-						return new Point(i, (int) lowerRight.getY());
-			
-			for(int i = (int) upperLeft.getY(); i <= lowerRight.getY(); i++)
-				if(tiles.get(new Point((int) upperLeft.getX(), i)).getType() == id)
-					if(PathFinder.getPathToAdjacent((int) upperLeft.getX(), i, startX, startY) != null)
-						return new Point((int) upperLeft.getX(), i);
-			
-			for(int i = (int) upperLeft.getY(); i <= lowerRight.getY(); i++)
-				if(tiles.get(new Point((int) lowerRight.getX(), i)).getType() == id)
-					if(PathFinder.getPathToAdjacent((int) lowerRight.getX(), i, startX, startY) != null)
-						return new Point((int) lowerRight.getX(), i);
-						
-			if(upperLeft.getX() > 0)
-				upperLeft.translate(-1, 0);
-			if(upperLeft.getY() > 0)
-				upperLeft.translate(0, -1);
-			if(lowerRight.getX() < world.getWidthInTiles() - 1)
-				lowerRight.translate(1, 0);
-			if(lowerRight.getY() < world.getHeightInTiles() - 1)
-				lowerRight.translate(0, 1);
-		}
 
-		return null;
-	}
-	
 	/**
-	 * FindTile 2 finds the nearest tile in the bottom layer of the specified type that also
+	 * FindTile finds the nearest tile in the bottom layer of the specified type that also
 	 * has a possible path to it.
 	 * 
 	 * Note that this method does NOT find a path, it simply finds the object. The
@@ -96,7 +41,7 @@ public class FindObject {
 	 * @param startY - the villager y coordinate
 	 * @return The point representing the coordinates of the found tile
 	 */
-public static Point findTile2(ImpactableByAction world, EntityType id, int startX, int startY){
+	public static Point findTile(ImpactableByAction world, EntityType id, int startX, int startY){
 		/*
 		 * Understanding what these lists and hash-maps are used for is crucial in
 		 * order to understand the find-object-algorithm
@@ -240,7 +185,7 @@ public static Point findTile2(ImpactableByAction world, EntityType id, int start
 			return null;
 		}
 		
-		Point p = findTile2(world, id, startX, startY);
+		Point p = findTile(world, id, startX, startY);
 		if(p==null){
 			return null;
 		}
@@ -314,97 +259,9 @@ public static Point findTile2(ImpactableByAction world, EntityType id, int start
 		return false;
 	}
 	
-	
-	/**
-	 * This did the job that findObject2 does now, saves this code, just in case
-	 * 
-	 * @deprecated
-	 */
-	public static Point findObject(AgentWorld world, Criteria crit, EntityType id, int startX, int startY){
-		HashMap<Point, Entity> mids = world.getMidEntities();
-		HashMap<Point, Entity> tops = world.getTopEntities();
 
-		Point upperLeft = new Point(startX - 1, startY - 1);
-		Point lowerRight = new Point(startX + 1, startY + 1);
-				
-		if(upperLeft.x < 0)
-			upperLeft.x = 0;
-		if(lowerRight.x > world.getWidthInTiles() - 1)
-			lowerRight.x = world.getWidthInTiles() - 1;
-		if(upperLeft.y < 0)
-			upperLeft.y = 0;
-		if(lowerRight.y > world.getHeightInTiles() - 1)
-			lowerRight.y = world.getHeightInTiles() - 1;
-		
-		boolean found = false;
-		while(!found){
-			for(int i = (int) upperLeft.getX(); i <= lowerRight.getX(); i++){
-				if(mids.get(new Point(i, (int) upperLeft.getY())) != null)
-					if(mids.get(new Point(i, (int) upperLeft.getY())).getType() == id && 
-							mids.get(new Point(i, (int) upperLeft.getY())).meetCriteria(crit))
-						if(PathFinder.getPathToAdjacent(i, (int) upperLeft.getY(), startX, startY) != null)
-							return new Point(i, (int) upperLeft.getY());
-				if(tops.get(new Point(i, (int) upperLeft.getY())) != null)
-					if(tops.get(new Point(i, (int) upperLeft.getY())).getType() == id &&
-							tops.get(new Point(i, (int) upperLeft.getY())).meetCriteria(crit))
-						if(PathFinder.getPathToAdjacent(i, (int) upperLeft.getY(), startX, startY) != null)
-							return new Point(i, (int) upperLeft.getY());
-			}
-			
-			for(int i = (int) upperLeft.getX(); i <= lowerRight.getX(); i++){
-				if(mids.get(new Point(i, (int) lowerRight.getY())) != null)
-					if(mids.get(new Point(i, (int) lowerRight.getY())).getType() == id &&
-							mids.get(new Point(i, (int) lowerRight.getY())).meetCriteria(crit))
-						if(PathFinder.getPathToAdjacent(i, (int) lowerRight.getY(), startX, startY) != null)
-							return new Point(i, (int) lowerRight.getY());
-				if(tops.get(new Point(i, (int) lowerRight.getY())) != null)
-					if(tops.get(new Point(i, (int) lowerRight.getY())).getType() == id &&
-							tops.get(new Point(i, (int) lowerRight.getY())).meetCriteria(crit))
-						if(PathFinder.getPathToAdjacent(i, (int) lowerRight.getY(), startX, startY) != null)
-							return new Point(i, (int) lowerRight.getY());
-			}
-			
-			for(int i = (int) upperLeft.getY(); i <= lowerRight.getY(); i++){
-				if(mids.get(new Point((int) upperLeft.getX(), i)) != null)
-					if(mids.get(new Point((int) upperLeft.getX(), i)).getType() == id &&
-							mids.get(new Point((int) upperLeft.getX(), i)).meetCriteria(crit))
-						if(PathFinder.getPathToAdjacent((int) upperLeft.getX(), i, startX, startY) != null)
-							return new Point((int) upperLeft.getX(), i);
-				if(tops.get(new Point((int) upperLeft.getX(), i)) != null)
-					if(tops.get(new Point((int) upperLeft.getX(), i)).getType() == id &&
-							tops.get(new Point((int) upperLeft.getX(), i)).meetCriteria(crit))
-						if(PathFinder.getPathToAdjacent((int) upperLeft.getX(), i, startX, startY) != null)
-							return new Point((int) upperLeft.getX(), i);
-			}
-			
-			for(int i = (int) upperLeft.getY(); i <= lowerRight.getY(); i++){
-				if(mids.get(new Point((int) lowerRight.getX(), i)) != null)
-					if(mids.get(new Point((int) lowerRight.getX(), i)).getType() == id &&
-							mids.get(new Point((int) lowerRight.getX(), i)).meetCriteria(crit))
-						if(PathFinder.getPathToAdjacent((int) lowerRight.getX(), i, startX, startY) != null)
-							return new Point((int) lowerRight.getX(), i);
-				if(tops.get(new Point((int) lowerRight.getX(), i)) != null)
-					if(tops.get(new Point((int) lowerRight.getX(), i)).getType() == id &&
-							tops.get(new Point((int) lowerRight.getX(), i)).meetCriteria(crit))
-						if(PathFinder.getPathToAdjacent((int) lowerRight.getX(), i, startX, startY) != null)
-							return new Point((int) lowerRight.getX(), i);
-			}
-			
-			
-			if(upperLeft.getX() > 0)
-				upperLeft.translate(-1, 0);
-			if(upperLeft.getY() > 0)
-				upperLeft.translate(0, -1);
-			if(lowerRight.getX() < world.getWidthInTiles() - 1)
-				lowerRight.translate(1, 0);
-			if(lowerRight.getY() < world.getHeightInTiles() - 1)
-				lowerRight.translate(0, 1);
-		}
-		return null;
-	}
-	
 	/**
-	 * FindObject2 finds the nearest mid/top layer object of the specified type that also
+	 * FindObject finds the nearest mid/top layer object of the specified type that also
 	 * has a possible path to it. A criteria can also be applied to the search.
 	 * 
 	 * Note that this method does NOT find a path, it simply finds the object. The
@@ -419,7 +276,7 @@ public static Point findTile2(ImpactableByAction world, EntityType id, int start
 	 * @param startY - the villager y coordinate
 	 * @return The point representing the coordinates of the found tile
 	 */
-	public static Point findObject2(ImpactableByAction world, Criteria crit, EntityType id, int startX, int startY){
+	public static Point findObject(ImpactableByAction world, Criteria crit, EntityType id, int startX, int startY){
 		/*
 		 * These lists and hash-maps are essentially the same as the ones in the
 		 * findTile2 method. The algorithm works in the same way, except that it
@@ -541,7 +398,7 @@ public static Point findTile2(ImpactableByAction world, EntityType id, int start
 			return null;
 		}
 		
-		Point p = findObject2(world, crit, id, startX, startY);
+		Point p = findObject(world, crit, id, startX, startY);
 		if(p == null){
 			System.out.println("CANT FIND");
 			return null;
