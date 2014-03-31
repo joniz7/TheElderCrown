@@ -184,9 +184,7 @@ public class Villager extends MidEntity implements Agent {
 			Point otherPos = other.getKey();
 			
 			// Find out where we should meet
-//			Point nearbyPos = FindObject.findTileNeighbour(otherVillager.getWorld(), this.getPosition(), otherVillager.getX(), otherVillager.getY());
-			// TODO refactor findobject
-			Point nearbyPos = null;
+			Point nearbyPos = FindEntity.findTileNeighbour(otherVillager.getWorld(), this.getPosition(), otherVillager.getPosition());
 			
 			// Create SocialiseIntent and order for other villager
 			Intent othersIntent = new SocialiseIntent(otherVillager, nearbyPos, this.getId());

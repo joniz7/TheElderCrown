@@ -185,13 +185,47 @@ public class FindEntity {
 			return null;
 		}
 		
+		Point startPos = new Point(startX, startY);
 		Point p = findBotEntity(world, type, startX, startY);
-		if(p==null){
+		
+		return findTileNeighbour(world, p, startPos);
+	}
+	
+	public static boolean isAdjacentTile(ImpactableByAction world, EntityType type, int startX, int startY){
+		HashMap<Point, Entity> tiles = world.getBotEntities();
+		
+		try{
+			if(tiles.get(new Point((int) startX - 1, (int) startY)).getType() == type)
+				return true;
+			if(tiles.get(new Point((int) startX + 1, (int) startY)).getType() == type)
+				return true;
+			if(tiles.get(new Point((int) startX, (int) startY - 1)).getType() == type)
+				return true;
+			if(tiles.get(new Point((int) startX, (int) startY + 1)).getType() == type)
+				return true;
+		}catch(NullPointerException e){
+			
+		}
+		
+		return false;
+	}
+	
+	/**
+	 * Finds the closest neighbouring tile to p.
+	 * 
+	 * @param world - the world representation to search
+	 * @param endPos - the point we want to stand next to
+	 * @param startPos - where we are right now (needed for choosing shortest path)
+	 * 
+	 * @return the neighbouring Point closest to p
+	 */
+	public static Point findTileNeighbour(ImpactableByAction world, Point endPos, Point startPos) {
+		if(endPos==null){
 			return null;
 		}
 		
-		long endTime = System.currentTimeMillis();
-		System.out.println("FindObject, find water tile: " + (endTime - startTime));
+		int startX = startPos.x;
+		int startY = startPos.y;
 		
 		HashMap<Point, Entity> tiles = world.getBotEntities();
 		
@@ -200,14 +234,14 @@ public class FindEntity {
 		Path p3 = null;
 		Path p4 = null;
 		
-		if(tiles.get(new Point((int) p.getX() - 1, (int) p.getY())).getType() == EntityType.GRASS_TILE)
-			p1 = PathFinder.getPath(startX, startY, (int) p.getX() - 1, (int) p.getY());
-		if(tiles.get(new Point((int) p.getX() + 1, (int) p.getY())).getType() == EntityType.GRASS_TILE)
-			p2 = PathFinder.getPath(startX, startY, (int) p.getX() + 1, (int) p.getY());
-		if(tiles.get(new Point((int) p.getX(), (int) p.getY() - 1)).getType() == EntityType.GRASS_TILE)
-			p3 = PathFinder.getPath(startX, startY, (int) p.getX(), (int) p.getY() - 1);
-		if(tiles.get(new Point((int) p.getX(), (int) p.getY() + 1)).getType() == EntityType.GRASS_TILE)
-			p4 = PathFinder.getPath(startX, startY, (int) p.getX(), (int) p.getY() + 1);
+		if(tiles.get(new Point((int) endPos.getX() - 1, (int) endPos.getY())).getType() == EntityType.GRASS_TILE)
+			p1 = PathFinder.getPath(startX, startY, (int) endPos.getX() - 1, (int) endPos.getY());
+		if(tiles.get(new Point((int) endPos.getX() + 1, (int) endPos.getY())).getType() == EntityType.GRASS_TILE)
+			p2 = PathFinder.getPath(startX, startY, (int) endPos.getX() + 1, (int) endPos.getY());
+		if(tiles.get(new Point((int) endPos.getX(), (int) endPos.getY() - 1)).getType() == EntityType.GRASS_TILE)
+			p3 = PathFinder.getPath(startX, startY, (int) endPos.getX(), (int) endPos.getY() - 1);
+		if(tiles.get(new Point((int) endPos.getX(), (int) endPos.getY() + 1)).getType() == EntityType.GRASS_TILE)
+			p4 = PathFinder.getPath(startX, startY, (int) endPos.getX(), (int) endPos.getY() + 1);
 		
 		Path bestPath = null;
 		
@@ -240,26 +274,7 @@ public class FindEntity {
 		return null;
 	}
 	
-	public static boolean isAdjacentTile(ImpactableByAction world, EntityType type, int startX, int startY){
-		HashMap<Point, Entity> tiles = world.getBotEntities();
-		
-		try{
-			if(tiles.get(new Point((int) startX - 1, (int) startY)).getType() == type)
-				return true;
-			if(tiles.get(new Point((int) startX + 1, (int) startY)).getType() == type)
-				return true;
-			if(tiles.get(new Point((int) startX, (int) startY - 1)).getType() == type)
-				return true;
-			if(tiles.get(new Point((int) startX, (int) startY + 1)).getType() == type)
-				return true;
-		}catch(NullPointerException e){
-			
-		}
-		
-		return false;
-	}
 	
-
 	/**
 	 * FindObject finds the nearest mid/top layer object of the specified type that also
 	 * has a possible path to it. A criteria can also be applied to the search.
@@ -398,7 +413,16 @@ public class FindEntity {
 			return null;
 		}
 		
+		Point startPos = new Point(startX, startY);
 		Point p = findTopMidEntity(world, crit, type, startX, startY);
+		
+		return findTileNeighbour(world, p, startPos);
+
+		/*
+		 * TODO remove this, we use findTileNeighbour instead?
+		 * Should boundary checks (p.getX() > 0 and so on)
+		 * be included in findTileNeighbour?
+		 * 
 		if(p == null){
 			System.out.println("CANT FIND");
 			return null;
@@ -456,6 +480,7 @@ public class FindEntity {
 		int finalY = bestPath.getStep(bestPath.getLength() - 1).getY();
 		
 		return new Point(finalX, finalY);
+		*/
 	}
 	
 
