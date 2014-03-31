@@ -3,7 +3,7 @@ package model.villager.intentions.gathering;
 import model.entity.top.house.DrinkStorage;
 import model.item.Item;
 import model.item.liquid.Drink;
-import model.path.FindObject;
+import model.path.FindEntity;
 import model.path.criteria.IsDrinkStorage;
 import model.villager.Villager;
 import model.villager.intentions.action.Action;
@@ -22,9 +22,9 @@ public class StoreDrinkAction extends Action{
 
 	@Override
 	public void tick(ImpactableByAction world){
-		if(FindObject.getAdjacentObject(world, new IsDrinkStorage(), EntityType.DRINK_STORAGE, villager.getX(),
+		if(FindEntity.getAdjacentObject(world, new IsDrinkStorage(), EntityType.DRINK_STORAGE, villager.getX(),
 				villager.getY()) != null) {
-			DrinkStorage fs = (DrinkStorage) FindObject.getAdjacentObject(world, new IsDrinkStorage(), 
+			DrinkStorage fs = (DrinkStorage) FindEntity.getAdjacentObject(world, new IsDrinkStorage(), 
 					EntityType.DRINK_STORAGE, villager.getX(), villager.getY());
 			
 			stacks++;

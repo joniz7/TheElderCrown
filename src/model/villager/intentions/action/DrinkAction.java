@@ -3,7 +3,7 @@ package model.villager.intentions.action;
 import model.item.liquid.Drink;
 import model.item.liquid.DrinkSource;
 import model.item.liquid.WaterBowl;
-import model.path.FindObject;
+import model.path.FindEntity;
 import model.path.criteria.HasDrink;
 import model.villager.Villager;
 import util.Constants;
@@ -40,16 +40,16 @@ public class DrinkAction extends Action{
 				villager.setActiveItem(null);
 				villager.updateStatus("statusEnd");
 			}
-		}else if(FindObject.isAdjacentTile(world, EntityType.WATER_TILE, villager.getX(),
+		}else if(FindEntity.isAdjacentTile(world, EntityType.WATER_TILE, villager.getX(),
 				villager.getY())) {
 			System.out.println("FOUND ADJACAENT WATER");
 			villager.updateStatus("drinking");
 			villager.setActiveItem(new WaterBowl());
-		}else if(FindObject.getAdjacentObject(world, new HasDrink(), null, villager.getX(),
+		}else if(FindEntity.getAdjacentObject(world, new HasDrink(), null, villager.getX(),
 				villager.getY()) != null) {
 			System.out.println("FOUND ADJACAENT WATER SOURCE");
 			villager.updateStatus("drinking");
-			DrinkSource ds = (DrinkSource) FindObject.getAdjacentObject(world, new HasDrink(), null, 
+			DrinkSource ds = (DrinkSource) FindEntity.getAdjacentObject(world, new HasDrink(), null, 
 					villager.getX(), villager.getY());
 			if(ds.hasDrink())
 				villager.setActiveItem(ds.getDrink());

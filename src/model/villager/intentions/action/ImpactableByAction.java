@@ -6,6 +6,7 @@ import java.util.HashMap;
 import org.newdawn.slick.util.pathfinding.PathFindingContext;
 
 import model.entity.Entity;
+import model.villager.order.Order;
 
 /**
  * An interface to be implemented by 'real world' to enable the
@@ -29,5 +30,7 @@ public interface ImpactableByAction {
 	HashMap<Point, Entity> getMidEntities();
 
 	HashMap<Point, Entity> getTopEntities();
+
+	// void addOrder(Order o);
 
 }

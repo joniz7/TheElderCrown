@@ -1,7 +1,7 @@
 package model.villager.intentions.gathering;
 
 import model.entity.top.Tree;
-import model.path.FindObject;
+import model.path.FindEntity;
 import model.path.criteria.HasFood;
 import model.villager.Villager;
 import model.villager.intentions.action.Action;
@@ -20,9 +20,9 @@ public class GatherFoodAction extends Action{
 
 	@Override
 	public void tick(ImpactableByAction world){
-		if(FindObject.getAdjacentObject(world, new HasFood(), EntityType.TREE, villager.getX(),
+		if(FindEntity.getAdjacentObject(world, new HasFood(), EntityType.TREE, villager.getX(),
 				villager.getY()) != null) {
-			Tree tree = (Tree) FindObject.getAdjacentObject(world, new HasFood(), EntityType.TREE, villager.getX(),
+			Tree tree = (Tree) FindEntity.getAdjacentObject(world, new HasFood(), EntityType.TREE, villager.getX(),
 					villager.getY());
 			stacks++;
 			if(stacks >= stacksToStore){

@@ -2,7 +2,7 @@ package model.villager.intentions.action;
 
 import model.entity.bottom.Bed;
 import model.entity.bottom.HouseFloor;
-import model.path.FindObject;
+import model.path.FindEntity;
 import model.villager.Villager;
 import util.Constants;
 import util.EntityType;
@@ -42,7 +42,7 @@ public class SleepAction extends Action {
 //		if(FindObject.findTile2((TestWorld) world, EntityType.HOUSE_FLOOR, villager.getX(), villager.getY()) != null) {
 //		System.out.println("SLEEP!!!");
 		
-		if(FindObject.standingOnTile(world, EntityType.BED, villager.getX(), villager.getY())){
+		if(FindEntity.standingOnTile(world, EntityType.BED, villager.getX(), villager.getY())){
 			if(this.firstTick){
 				//System.out.println("Sleeping on bed!");
 				//villager.setBlocking(false);
@@ -68,7 +68,7 @@ public class SleepAction extends Action {
 				//}
 			}
 			
-		}else if(FindObject.standingOnTile(world, EntityType.GRASS_TILE, villager.getX(), villager.getY())){
+		}else if(FindEntity.standingOnTile(world, EntityType.GRASS_TILE, villager.getX(), villager.getY())){
 			if(this.firstTick){
 				//System.out.println("Sleeping on grass!");
 				villager.setBlocking(false);
@@ -81,7 +81,7 @@ public class SleepAction extends Action {
 				villager.setBlocking(true);
 				actionFinished();
 			}
-		}else if(FindObject.standingOnTile(world, EntityType.HOUSE_FLOOR, villager.getX(), villager.getY())){
+		}else if(FindEntity.standingOnTile(world, EntityType.HOUSE_FLOOR, villager.getX(), villager.getY())){
 			if(this.firstTick){
 				//System.out.println("Sleeping on floor!");
 				villager.setBlocking(false);

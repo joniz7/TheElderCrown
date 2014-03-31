@@ -3,7 +3,7 @@ package model.villager.intentions.plan;
 import java.util.LinkedList;
 
 import model.item.food.FoodSource;
-import model.path.FindObject;
+import model.path.FindEntity;
 import model.path.criteria.HasFood;
 import model.villager.Villager;
 import model.villager.intentions.action.Action;
@@ -17,7 +17,7 @@ public class EatPlan extends Plan{
 		actionQueue = new LinkedList<Action>();
 		name = "Wants to eat";
 		
-		FoodSource fs = (FoodSource) FindObject.getAdjacentObject(villager.getWorld(), new HasFood(), 
+		FoodSource fs = (FoodSource) FindEntity.getAdjacentObject(villager.getWorld(), new HasFood(), 
 				null, villager.getX(), villager.getY());
 
 		// We're next to a tree. Eat!
