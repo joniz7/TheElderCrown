@@ -3,7 +3,7 @@ package model.villager.intentions.plan;
 
 import java.util.LinkedList;
 
-import model.path.FindObject;
+import model.path.FindEntity;
 import model.path.criteria.DontBlock;
 import model.villager.Villager;
 import model.villager.intentions.action.Action;

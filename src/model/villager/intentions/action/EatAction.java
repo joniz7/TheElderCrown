@@ -2,7 +2,7 @@ package model.villager.intentions.action;
 
 import model.item.food.Food;
 import model.item.food.FoodSource;
-import model.path.FindObject;
+import model.path.FindEntity;
 import model.path.criteria.HasFood;
 import model.villager.Villager;
 import util.Constants;
@@ -36,9 +36,9 @@ public class EatAction extends Action{
 				villager.setActiveItem(null);
 				villager.updateStatus("statusEnd");
 			}
-		}else if(FindObject.getAdjacentObject(world, new HasFood(), null, villager.getX(),
+		}else if(FindEntity.getAdjacentObject(world, new HasFood(), null, villager.getX(),
 				villager.getY()) != null) {
-			FoodSource fs = (FoodSource) FindObject.getAdjacentObject(world, new HasFood(), null, villager.getX(),
+			FoodSource fs = (FoodSource) FindEntity.getAdjacentObject(world, new HasFood(), null, villager.getX(),
 					villager.getY());
 			villager.setActiveItem(fs.getFood());
 		}else{

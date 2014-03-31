@@ -3,7 +3,7 @@ package model.villager.intentions.gathering;
 import model.entity.top.house.FoodStorage;
 import model.item.Item;
 import model.item.food.Food;
-import model.path.FindObject;
+import model.path.FindEntity;
 import model.path.criteria.IsFoodStorage;
 import model.villager.Villager;
 import model.villager.intentions.action.Action;
@@ -22,9 +22,9 @@ public class StoreFoodAction extends Action{
 
 	@Override
 	public void tick(ImpactableByAction world){
-		if(FindObject.getAdjacentObject(world, new IsFoodStorage(), EntityType.FOOD_STORAGE, villager.getX(),
+		if(FindEntity.getAdjacentObject(world, new IsFoodStorage(), EntityType.FOOD_STORAGE, villager.getX(),
 				villager.getY()) != null) {
-			FoodStorage fs = (FoodStorage) FindObject.getAdjacentObject(world, new IsFoodStorage(), 
+			FoodStorage fs = (FoodStorage) FindEntity.getAdjacentObject(world, new IsFoodStorage(), 
 					EntityType.FOOD_STORAGE, villager.getX(), villager.getY());
 			
 			stacks++;

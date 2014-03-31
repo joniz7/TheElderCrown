@@ -2,7 +2,7 @@ package model.villager.intentions.action;
 
 import java.awt.Point;
 
-import model.path.FindObject;
+import model.path.FindEntity;
 import model.path.PathFinder;
 import model.path.criteria.Criteria;
 import model.villager.Villager;
@@ -36,7 +36,7 @@ public class MoveAction extends Action{
 	@Override
 	public void tick(ImpactableByAction world) {
 		if(path == null && crit != null){
-			Point p = FindObject.findObjectNeighbour(world, 
+			Point p = FindEntity.findTopMidEntityNeighbour(world, 
 					crit, type, villager.getX(), villager.getY());
 
 			if(p == null){

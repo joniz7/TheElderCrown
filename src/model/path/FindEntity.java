@@ -15,16 +15,16 @@ import util.EntityType;
 import view.entity.top.Helper3View;
 
 /**
- * FindObject is part of the entity path finding. FindObject uses
+ * FindEntity is part of the entity path finding. FindEntity uses
  * a world representation and start points in order to find the closest objects
  * possible to that location.
  * 
  * @author Simon Eliasson
  *
  */
-public class FindObject {
+public class FindEntity {
 		
-	public FindObject(){
+	public FindEntity(){
 		
 	}
 
@@ -41,7 +41,7 @@ public class FindObject {
 	 * @param startY - the villager y coordinate
 	 * @return The point representing the coordinates of the found tile
 	 */
-	public static Point findTile(ImpactableByAction world, EntityType type, int startX, int startY){
+	public static Point findBotEntity(ImpactableByAction world, EntityType type, int startX, int startY){
 		/*
 		 * Understanding what these lists and hash-maps are used for is crucial in
 		 * order to understand the find-object-algorithm
@@ -177,7 +177,7 @@ public class FindObject {
 	 * @param startY - the villager y position
 	 * @return - The Point to walk to in order to interact with object
 	 */
-	public static Point findTileNeighbour(ImpactableByAction world, EntityType type, int startX, int startY){
+	public static Point findBotEntityNeighbour(ImpactableByAction world, EntityType type, int startX, int startY){
 		long startTime = System.currentTimeMillis();
 		
 		if(isStuck(world, startX, startY)){
@@ -185,7 +185,7 @@ public class FindObject {
 			return null;
 		}
 		
-		Point p = findTile(world, type, startX, startY);
+		Point p = findBotEntity(world, type, startX, startY);
 		if(p==null){
 			return null;
 		}
@@ -276,7 +276,7 @@ public class FindObject {
 	 * @param startY - the villager y coordinate
 	 * @return The point representing the coordinates of the found tile
 	 */
-	public static Point findObject(ImpactableByAction world, Criteria crit, EntityType type, int startX, int startY){
+	public static Point findTopMidEntity(ImpactableByAction world, Criteria crit, EntityType type, int startX, int startY){
 		/*
 		 * These lists and hash-maps are essentially the same as the ones in the
 		 * findTile2 method. The algorithm works in the same way, except that it
@@ -390,7 +390,7 @@ public class FindObject {
 	 * @param startY - the villager y position
 	 * @return - The Point to walk to in order to interact with object
 	 */
-	public static Point findObjectNeighbour(ImpactableByAction world, Criteria crit, EntityType type, int startX, int startY){
+	public static Point findTopMidEntityNeighbour(ImpactableByAction world, Criteria crit, EntityType type, int startX, int startY){
 //		long startTime = System.currentTimeMillis();
 		
 		if(isStuck(world, startX, startY)){
@@ -398,7 +398,7 @@ public class FindObject {
 			return null;
 		}
 		
-		Point p = findObject(world, crit, type, startX, startY);
+		Point p = findTopMidEntity(world, crit, type, startX, startY);
 		if(p == null){
 			System.out.println("CANT FIND");
 			return null;

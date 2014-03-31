@@ -4,7 +4,7 @@ import java.awt.Point;
 import java.util.LinkedList;
 
 import model.entity.top.Tree;
-import model.path.FindObject;
+import model.path.FindEntity;
 import model.path.PathFinder;
 import model.path.criteria.HasFood;
 import model.path.criteria.IsFoodStorage;
@@ -27,7 +27,7 @@ public class GatherFoodPlan extends Plan{
 		System.out.println("Villager: " + villager);
 		villager.clearInventory();
 		
-		Tree tree = (Tree) FindObject.getAdjacentObject(villager.getWorld(), new HasFood(), 
+		Tree tree = (Tree) FindEntity.getAdjacentObject(villager.getWorld(), new HasFood(), 
 				EntityType.TREE, villager.getX(), villager.getY());
 
 		// We're next to a tree. fill Inventory!
@@ -38,7 +38,7 @@ public class GatherFoodPlan extends Plan{
 		}
 		// We need to move, and then fill Inventory
 		else{
-			Point p = FindObject.findObjectNeighbour(villager.getWorld(), new HasFood(), EntityType.TREE, 
+			Point p = FindEntity.findTopMidEntityNeighbour(villager.getWorld(), new HasFood(), EntityType.TREE, 
 					villager.getX(), villager.getY());
 			Path movePath = null;
 			if(p != null){

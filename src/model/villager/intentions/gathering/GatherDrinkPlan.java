@@ -3,7 +3,7 @@ package model.villager.intentions.gathering;
 import java.awt.Point;
 import java.util.LinkedList;
 
-import model.path.FindObject;
+import model.path.FindEntity;
 import model.path.PathFinder;
 import model.path.criteria.IsDrinkStorage;
 import model.villager.Villager;
@@ -24,7 +24,7 @@ public class GatherDrinkPlan extends Plan{
 		
 		villager.clearInventory();
 		
-		boolean water = FindObject.isAdjacentTile(villager.getWorld() ,
+		boolean water = FindEntity.isAdjacentTile(villager.getWorld() ,
 				EntityType.WATER_TILE, villager.getX(), villager.getY());
 
 		// We're next to a tree. fill Inventory!
@@ -35,7 +35,7 @@ public class GatherDrinkPlan extends Plan{
 		}
 		// We need to move, and then fill Inventory
 		else{
-			Point p = FindObject.findTileNeighbour(villager.getWorld(), EntityType.WATER_TILE, 
+			Point p = FindEntity.findBotEntityNeighbour(villager.getWorld(), EntityType.WATER_TILE, 
 					villager.getX(), villager.getY());
 			Path movePath = null;
 			if(p != null){

@@ -8,7 +8,7 @@ import java.util.Map.Entry;
 import model.entity.Agent;
 import model.entity.mid.MidEntity;
 import model.item.Item;
-import model.path.FindObject;
+import model.path.FindEntity;
 import model.villager.intentions.Intent;
 import model.villager.intentions.IntentionHandler;
 import model.villager.intentions.SocialiseIntent;

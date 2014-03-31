@@ -2,7 +2,7 @@ package model.villager.intentions.plan;
 
 import java.awt.Point;
 
-import model.path.FindObject;
+import model.path.FindEntity;
 import model.villager.Villager;
 import model.villager.VillagersWorldPerception;
 

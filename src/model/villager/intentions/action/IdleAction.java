@@ -4,7 +4,7 @@ import util.Constants;
 import util.EntityType;
 import model.World;
 import model.entity.top.Tree;
-import model.path.FindObject;
+import model.path.FindEntity;
 import model.path.criteria.HasFood;
 import model.villager.Villager;
 import model.villager.AgentWorld;

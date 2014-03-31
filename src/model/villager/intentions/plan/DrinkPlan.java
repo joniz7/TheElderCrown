@@ -3,7 +3,7 @@ package model.villager.intentions.plan;
 import java.awt.Point;
 import java.util.LinkedList;
 
-import model.path.FindObject;
+import model.path.FindEntity;
 import model.path.PathFinder;
 import model.path.criteria.HasDrink;
 import model.villager.Villager;
@@ -22,7 +22,7 @@ public class DrinkPlan extends Plan{
 		actionQueue = new LinkedList<Action>();
 		name = "Wants to drink";
 		
-		if(FindObject.isAdjacentTile(villager.getWorld(), EntityType.WATER_TILE, 
+		if(FindEntity.isAdjacentTile(villager.getWorld(), EntityType.WATER_TILE, 
 			villager.getX(), villager.getY())){
 			
 			actionQueue.addLast(new DrinkAction(villager));
@@ -30,10 +30,10 @@ public class DrinkPlan extends Plan{
 			return;
 		}
 		
-		Point p = FindObject.findTileNeighbour(villager.getWorld(), EntityType.WATER_TILE, 
+		Point p = FindEntity.findBotEntityNeighbour(villager.getWorld(), EntityType.WATER_TILE, 
 
 				villager.getX(), villager.getY());
-		Point p2 = FindObject.findObjectNeighbour(villager.getWorld(), new HasDrink(), null,
+		Point p2 = FindEntity.findTopMidEntityNeighbour(villager.getWorld(), new HasDrink(), null,
 				villager.getX(), villager.getY());
 		
 		if(p!=null){
