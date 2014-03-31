@@ -66,7 +66,7 @@ public class Villager extends MidEntity implements Agent {
 	private float currentHunger, currentThirst, currentSleepiness, currentLaziness, currentSocial;
 
 	// Limits, i.e. when we should trigger actions) (modified by modifiers)
-	private float socialLimit = 3; // TODO update
+	private float socialLimit = 10; // TODO update
 
 	public Villager(Point p, int age){
 		super(p.x, p.y, EntityType.VILLAGER);
@@ -96,12 +96,13 @@ public class Villager extends MidEntity implements Agent {
 		this.laziness = UtilClass.getRandomInt(20, 1);
 		this.obedience = UtilClass.getRandomInt(20, 1);
 		this.modifier = UtilClass.getRandomInt(5, 1);
+		this.social = 40;
 		
 		this.currentHunger = 50-modifier*hunger;
 		this.currentThirst = 50-modifier*thirst;
 		this.currentSleepiness = 40-modifier*sleepiness;
 		this.currentLaziness = 50-modifier*laziness;
-		this.currentSocial = 10f;
+		this.currentSocial = 20f;
 		
 		currentAction = "Doing Nothing";
 		currentPlan = "Doing Nothing";
@@ -175,8 +176,8 @@ public class Villager extends MidEntity implements Agent {
 	 */
 	private void maybeSocialise(HashMap<Point, Villager> villagers) {
 
-		if (currentSocial < social*socialLimit) {
-			// TODO if not already socialising etc
+		if (currentSocial < socialLimit) {			
+			// TODO check if not already socialising etc
 			
 			// Initialise a social interaction
 			Entry<Point, Villager> other = getBestFriend(villagers);
@@ -184,7 +185,9 @@ public class Villager extends MidEntity implements Agent {
 			Point otherPos = other.getKey();
 			
 			// Find out where we should meet
-			Point nearbyPos = FindEntity.findTileNeighbour(otherVillager.getWorld(), this.getPosition(), otherVillager.getPosition());
+			Point nearbyPos = FindEntity.findTileNeighbour(otherVillager.getWorld(), this.getPosition(), otherPos);
+			
+//			System.out.println("I am at "+this.getPosition()+", you should go to "+nearbyPos);
 			
 			// Create SocialiseIntent and order for other villager
 			Intent othersIntent = new SocialiseIntent(otherVillager, nearbyPos, this.getId());
