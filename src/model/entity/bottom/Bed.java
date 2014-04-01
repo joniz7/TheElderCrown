@@ -87,6 +87,23 @@ public class Bed extends BottomEntity {
 	public void setMale(Villager male) {
 		this.male = male;
 	}
+	
+	public void removeFemale(){
+		this.female = null;
+	}
+	
+	public void removeMale(){
+		this.male = null;
+	}
+	
+	public void removeMe(Villager vill){
+		if(female == vill){
+			this.female=null;
+		}else if(male == vill){
+			this.male = null;
+		}
+	}
+
 
 	public int UsedBy() {
 		return UsedBy;
