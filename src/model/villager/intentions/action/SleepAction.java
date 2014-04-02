@@ -51,7 +51,7 @@ public class SleepAction extends Action {
 					villager.setBlocking(true);
 					villager.updateStatus("statusEnd");
 					thisBed.removeUsed();
-					actionFinished();
+					actionSuccess();
 				}
 			}
 			
@@ -66,7 +66,7 @@ public class SleepAction extends Action {
 			if(villager.getSleepiness() >= Constants.MAX_SLEEP){
 				villager.updateStatus("statusEnd");
 				villager.setBlocking(true);
-				actionFinished();
+				actionSuccess();
 			}
 		}else if(FindEntity.standingOnTile(world, EntityType.HOUSE_FLOOR, villager.getX(), villager.getY())){
 			if(this.firstTick){
@@ -79,12 +79,12 @@ public class SleepAction extends Action {
 			if(villager.getSleepiness() >= Constants.MAX_SLEEP){
 				villager.updateStatus("statusEnd");
 				villager.setBlocking(true);
-				actionFinished();
+				actionSuccess();
 			}
 		}else{
 			villager.updateStatus("statusEnd");
 			villager.setBlocking(true);
-			actionFailed();
+			actionFail();
 		}
 
 	}

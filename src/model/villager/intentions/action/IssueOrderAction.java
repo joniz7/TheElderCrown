@@ -28,7 +28,7 @@ public class IssueOrderAction extends Action {
 	public void tick(ImpactableByAction world) {
 		// TODO issue order to REAL world, not to any imaginary perception or whatever
 		// world.addOrder(o);
-		actionFinished();
+		actionSuccess();
 	}
 
 	@Override

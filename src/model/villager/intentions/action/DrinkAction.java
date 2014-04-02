@@ -28,7 +28,7 @@ public class DrinkAction extends Action{
 				
 				if(villager.getThirst() >= Constants.MAX_THIRST){
 					villager.updateStatus("statusEnd");
-					actionFinished();
+					actionSuccess();
 				}else if(d.consumed()){
 					System.out.println("BOWL EMPTY");
 					villager.setActiveItem(null);
@@ -55,7 +55,7 @@ public class DrinkAction extends Action{
 		}else{
 			System.out.println("FAILED");
 			villager.updateStatus("statusEnd");
-			actionFailed();
+			actionFail();
 		}
 			
 

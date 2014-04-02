@@ -261,17 +261,18 @@ public class FindEntity {
 		if(p4 != null && bestPath.getLength() > p4.getLength())
 			bestPath = p4;
 		
-		try{
+		// Did not find any neighbouring tile 
+		if (bestPath == null) {
+//			System.out.println("FindEntity#findTileNeighbour() error: no path found! (startPos: "+startPos+", endPos:"+endPos+")");
+//			new Helper3View(startX, startY);
+			return null;
+		}
+		else { // Found a neighbouring tile
 			int finalX = bestPath.getStep(bestPath.getLength() - 1).getX();
 			int finalY = bestPath.getStep(bestPath.getLength() - 1).getY();
 			return new Point(finalX, finalY);
-		}catch(NullPointerException e){
-			new Helper3View(startX, startY);
-			
-			e.printStackTrace();
 		}
 		
-		return null;
 	}
 	
 	
@@ -386,8 +387,8 @@ public class FindEntity {
 				System.out.println("FindObject: " + visited.size());
 				System.out.println("FindObject: " + crit);
 				System.out.println("FindObject: " + type);
-				Exception e = new Exception();
-				e.printStackTrace();
+//				Exception e = new Exception();
+//				e.printStackTrace();
 				return null;
 			}
 		}

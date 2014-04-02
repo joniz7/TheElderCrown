@@ -33,7 +33,7 @@ public class TalkAction extends Action {
 		// TODO look if other villager has left - if so, become sad and abort
 		
 		if (--ticksToTalk < 0) {
-			actionFinished();
+			actionSuccess();
 		} else {
 			System.out.println("talking to "+otherId+", social: "+villager.getSocial());
 			villager.satisfySocial(satisfyAmount);

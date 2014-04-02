@@ -50,12 +50,12 @@ public class MoveAction extends Action{
 		}
 		
 		if(path == null){
-			actionFailed();
+			actionFail();
 			return;
 		}
 		if(stepCount >= path.getLength()) {
 			//        	System.out.println("Move FINISHED!!!");
-	    	actionFinished();
+	    	actionSuccess();
 	    }else if(!world.blocked(null, path.getStep(stepCount).getX(), 
     			path.getStep(stepCount).getY())){
 	    	waitTime = 0;
@@ -64,7 +64,7 @@ public class MoveAction extends Action{
 			//check if the villager has the next step of the path next to it.
 			if(!(Math.abs(villager.getX()-path.getStep(stepCount).getX())==1 ||
 					Math.abs(villager.getY()-path.getStep(stepCount).getY())==1)){
-				actionFailed();
+				actionFail();
 			}
 			
 			
@@ -94,22 +94,22 @@ public class MoveAction extends Action{
 		} else {
 			waitTime++;
 			if(waitTime > 40){
-				actionFailed();
+				actionFail();
 //				System.out.println("WAIT!");
 			}
 		}
 	}
 	
 	@Override
-	protected void actionFailed() {
+	protected void actionFail() {
 		villager.updateStatus("statusEnd");
 		isFailed = true;
 	}
 
 	@Override
-	protected void actionFinished() {
+	protected void actionSuccess() {
 		villager.updateStatus("statusEnd");
-		isFinished = true;
+		isSuccess = true;
 	}
 
 	@Override

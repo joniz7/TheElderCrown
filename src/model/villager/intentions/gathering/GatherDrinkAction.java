@@ -26,14 +26,14 @@ public class GatherDrinkAction extends Action{
 				if(!villager.addToInventory(new WaterBowl())){
 					System.out.println("WATER FINISHED " + count);
 					villager.updateStatus("statusEnd");
-					actionFinished();
+					actionSuccess();
 				}
 				count++;
 				stacks = 0;
 			}
 		}else{
 			villager.updateStatus("statusEnd");
-			actionFailed();
+			actionFail();
 		}
 	}
 
