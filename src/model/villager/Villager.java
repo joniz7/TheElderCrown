@@ -282,6 +282,18 @@ public class Villager extends MidEntity implements Agent {
 			}
 		}
 	}
+
+	public void satisfySocial(float f){
+		this.currentSocial += f;
+		if(currentSocial > Constants.MAX_SOCIAL){
+			currentSocial = Constants.MAX_SOCIAL;
+			// TODO needed?
+//			if(activePlan instanceof IdlePlan){
+//				disposePlan();
+//				plan();
+//			}
+		}
+	}
 	
 	public void setExplore(){
 		mustExplore=true;

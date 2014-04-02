@@ -21,7 +21,7 @@ public class DrinkAction extends Action{
 		villager.updateStatus("drinking");
 
 //		System.out.println("SLEEP!!!");
-		if(villager.getActiveItem() instanceof Drink){
+		if (villager.getActiveItem() instanceof Drink) {
 			Drink d = (Drink) villager.getActiveItem();
 			if(!d.consumed()){
 				villager.satisfyThirst(d.drunk());

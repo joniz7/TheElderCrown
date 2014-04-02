@@ -4,6 +4,7 @@ import java.awt.Point;
 
 import model.villager.Villager;
 import model.villager.intentions.action.IssueOrderAction;
+import model.villager.intentions.action.TalkAction;
 import model.villager.intentions.action.WaitForAction;
 import model.villager.order.Order;
 
@@ -34,6 +35,7 @@ public class SocialiseInitPlan extends Plan{
 		actionQueue.addLast(new WaitForAction(villager, otherPos, otherId));
 		
 		// TalkAction
+		actionQueue.addLast(new TalkAction(villager, otherPos, otherId));
 		
 		System.out.println("Starting to find another villager \n");
 		
