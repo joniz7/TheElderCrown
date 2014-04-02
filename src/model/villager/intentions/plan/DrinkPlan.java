@@ -18,9 +18,8 @@ import util.EntityType;
 public class DrinkPlan extends Plan{
 
 	public DrinkPlan(Villager villager){
-		super(villager);
+		super(villager, "Wants to drink");
 		actionQueue = new LinkedList<Action>();
-		name = "Wants to drink";
 		
 		if(FindEntity.isAdjacentTile(villager.getWorld(), EntityType.WATER_TILE, 
 			villager.getX(), villager.getY())){
@@ -33,8 +32,11 @@ public class DrinkPlan extends Plan{
 		Point p = FindEntity.findBotEntityNeighbour(villager.getWorld(), EntityType.WATER_TILE, 
 
 				villager.getX(), villager.getY());
-		Point p2 = FindEntity.findTopMidEntityNeighbour(villager.getWorld(), new HasDrink(), null,
-				villager.getX(), villager.getY());
+		Point p2 = null;
+		if(p == null) {
+			p2 = FindEntity.findTopMidEntityNeighbour(villager.getWorld(), new HasDrink(), null,
+					villager.getX(), villager.getY());
+		}
 		
 		if(p!=null){
 			Path movePath = PathFinder.getPathToAdjacent(villager.getX(), villager.getY(), p.x, p.y);

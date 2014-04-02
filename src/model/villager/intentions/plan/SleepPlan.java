@@ -35,10 +35,9 @@ public class SleepPlan extends Plan {
 	private Villager villager;
 	
 	public SleepPlan(Villager villager){
-		super(villager);
+		super(villager, "Wants to sleep");
 		Bed thisBed;
 		actionQueue = new LinkedList<Action>();
-		name = "Wants to sleep";
 		this.villager = villager;
 		
 		

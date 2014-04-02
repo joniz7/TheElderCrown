@@ -6,10 +6,11 @@ public abstract class Action {
 
 	protected Villager villager;
 	protected boolean isFinished, isFailed;
-	protected String name;
+	private String name;
 	
-	public Action(Villager villager){
+	public Action(Villager villager, String name){
 		this.villager = villager;
+		this.name = name;
 	}
 	
 	public abstract void tick(ImpactableByAction world);

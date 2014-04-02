@@ -23,13 +23,11 @@ public class SleepAction extends Action {
 	private boolean firstTick = true;
 	
 	public SleepAction(Villager villager) {
-		super(villager);
-		name = "Sleeping";
+		super(villager, "Sleeping");
 	}
 	
 	public SleepAction(Villager villager, Bed thisBed) {
-		super(villager);
-		name = "Sleeping";
+		super(villager, "Sleeping");
 		this.thisBed = thisBed;
 	}
 

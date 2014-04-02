@@ -11,8 +11,7 @@ import org.newdawn.slick.util.pathfinding.Path;
 public class MovePlan extends Plan {
 
 	public MovePlan(Villager villager, Point pos) {
-		super(villager);
-		name = "Needs to move";
+		super(villager, "Needs to move");
 		
 		Path movePath = PathFinder.getPath(villager.getX(), villager.getY(), pos.x, pos.y);
 				

@@ -17,9 +17,8 @@ import model.villager.intentions.action.IdleAction;
 public class IdlePlan extends Plan {
 	
 	public IdlePlan(Villager villager){
-		super(villager);
+		super(villager, "Just chillin");
 		actionQueue = new LinkedList<Action>();
 		actionQueue.addLast(new IdleAction(villager));
-		name = "Just chillin";
 	}
 }

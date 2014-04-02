@@ -11,6 +11,7 @@ import model.item.Item;
 import model.path.FindEntity;
 import model.villager.intentions.Intent;
 import model.villager.intentions.IntentionHandler;
+import model.villager.intentions.SocialiseInitIntent;
 import model.villager.intentions.SocialiseIntent;
 import model.villager.intentions.action.Action;
 import model.villager.intentions.action.DieAction;
@@ -20,6 +21,8 @@ import model.villager.intentions.plan.ExplorePlan;
 import model.villager.intentions.plan.IdlePlan;
 import model.villager.intentions.plan.Plan;
 import model.villager.intentions.plan.SleepPlan;
+import model.villager.intentions.plan.SocialiseInitPlan;
+import model.villager.intentions.plan.SocialisePlan;
 import model.villager.intentions.reminder.ProfessionLine;
 import model.villager.intentions.reminder.ProfessionLine.WorkLevel;
 import model.villager.intentions.reminder.profession.WaterGatherer;
@@ -64,7 +67,7 @@ public class Villager extends MidEntity implements Agent {
 	private float currentHunger, currentThirst, currentSleepiness, currentLaziness, currentSocial;
 
 	// Limits, i.e. when we should trigger actions) (modified by modifiers)
-	private float socialLimit = 3; // TODO update
+	private float socialLimit = 10; // TODO update
 
 	public Villager(Point p, int age, int village){
 		super(p.x, p.y, EntityType.VILLAGER);
@@ -94,12 +97,13 @@ public class Villager extends MidEntity implements Agent {
 		this.laziness = UtilClass.getRandomInt(20, 1);
 		this.obedience = UtilClass.getRandomInt(20, 1);
 		this.modifier = UtilClass.getRandomInt(5, 1);
+		this.social = 40;
 		
 		this.currentHunger = 50-modifier*hunger;
 		this.currentThirst = 50-modifier*thirst;
 		this.currentSleepiness = 40-modifier*sleepiness;
 		this.currentLaziness = 50-modifier*laziness;
-		this.currentSocial = 10f;
+		this.currentSocial = 0f;
 		
 		currentAction = "Doing Nothing";
 		currentPlan = "Doing Nothing";
@@ -176,8 +180,11 @@ public class Villager extends MidEntity implements Agent {
 	 */
 	private void maybeSocialise(HashMap<Point, Villager> villagers) {
 
-		if (currentSocial < social*socialLimit) {
-			// TODO if not already socialising etc
+		if (currentSocial < socialLimit) {		
+			// Abort if already socialising (TODO should be smarter?)
+			if (activePlan instanceof SocialiseInitPlan || activePlan instanceof SocialisePlan) {
+				return;
+			}
 			
 			// Initialise a social interaction
 			Entry<Point, Villager> other = getBestFriend(villagers);
@@ -185,14 +192,18 @@ public class Villager extends MidEntity implements Agent {
 			Point otherPos = other.getKey();
 			
 			// Find out where we should meet
-			Point nearbyPos = FindEntity.findTileNeighbour(otherVillager.getWorld(), this.getPosition(), otherVillager.getPosition());
+			Point nearbyPos = FindEntity.findTileNeighbour(otherVillager.getWorld(), this.getPosition(), otherPos);
+			
+//			System.out.println("I am at "+this.getPosition()+", you should go to "+nearbyPos);
 			
 			// Create SocialiseIntent and order for other villager
 			Intent othersIntent = new SocialiseIntent(otherVillager, nearbyPos, this.getId());
 			Order socialiseOrder = new Order(this.getId(), otherVillager.getId(), othersIntent);
 			
 			// Create SocialiseInitIntent for myself
-			
+			SocialiseInitIntent initIntent = new SocialiseInitIntent(this, socialiseOrder, nearbyPos, otherVillager.getId());
+			// TODO is weighted properly?
+//			ih.addIntent(initIntent);
 		}
 		
 	}
