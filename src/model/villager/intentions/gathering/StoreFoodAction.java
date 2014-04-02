@@ -40,7 +40,7 @@ public class StoreFoodAction extends Action{
 				
 				if(food == null){
 					villager.updateStatus("statusEnd");
-					actionFinished();
+					actionSuccess();
 				}else{
 					fs.addFood(food);
 				}
@@ -49,7 +49,7 @@ public class StoreFoodAction extends Action{
 		}else{
 			villager.updateStatus("statusEnd");
 			System.out.println("FAIL");
-			actionFailed();
+			actionFail();
 		}
 	}
 

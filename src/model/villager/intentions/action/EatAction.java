@@ -26,7 +26,7 @@ public class EatAction extends Action{
 
 				if(villager.getHunger() >= Constants.MAX_HUNGER){
 					villager.updateStatus("statusEnd");
-					actionFinished();
+					actionSuccess();
 				}else if(f.consumed()){
 					villager.setActiveItem(null);
 					villager.updateStatus("statusEnd");
@@ -42,7 +42,7 @@ public class EatAction extends Action{
 			villager.setActiveItem(fs.getFood());
 		}else{
 			villager.updateStatus("statusEnd");
-			actionFailed();
+			actionFail();
 		}
 			
 

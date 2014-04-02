@@ -194,7 +194,8 @@ public class Villager extends MidEntity implements Agent {
 			// Find out where we should meet
 			Point nearbyPos = FindEntity.findTileNeighbour(otherVillager.getWorld(), this.getPosition(), otherPos);
 			
-//			System.out.println("I am at "+this.getPosition()+", you should go to "+nearbyPos);
+			// If no nearby tile available, abort TODO wait or something?
+			if (nearbyPos == null) return;
 			
 			// Create SocialiseIntent and order for other villager
 			Intent othersIntent = new SocialiseIntent(otherVillager, nearbyPos, this.getId());
@@ -281,6 +282,18 @@ public class Villager extends MidEntity implements Agent {
 				disposePlan();
 				plan();
 			}
+		}
+	}
+
+	public void satisfySocial(float f){
+		this.currentSocial += f;
+		if(currentSocial > Constants.MAX_SOCIAL){
+			currentSocial = Constants.MAX_SOCIAL;
+			// TODO needed?
+//			if(activePlan instanceof IdlePlan){
+//				disposePlan();
+//				plan();
+//			}
 		}
 	}
 	
