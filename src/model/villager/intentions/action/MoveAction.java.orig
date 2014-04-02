@@ -24,8 +24,12 @@ public class MoveAction extends Action{
 	public MoveAction(Villager villager, Path path) {
 		super(villager, "Moving");
 		this.path = path;
+<<<<<<< HEAD
+		name = "Moving";
 		if(path!=null)
 			this.des = new Point(path.getX(path.getLength()-1),path.getY(path.getLength()-1));
+=======
+>>>>>>> dev
 	}
 	
 	public MoveAction(Villager villager, EntityType type, Criteria crit) {
@@ -39,6 +43,7 @@ public class MoveAction extends Action{
 		if(path == null && crit != null){
 			Point p = FindEntity.findTopMidEntityNeighbour(world, 
 					crit, type, villager.getX(), villager.getY());
+			
 
 			if(p == null){
 				//System.out.println("WATER ABANDONDED ");
@@ -106,7 +111,6 @@ public class MoveAction extends Action{
 			if(waitTime > 40){
 				path = null;
 				actionFailed();
-//				System.out.println("WAIT!");
 			}
 		}
 	}

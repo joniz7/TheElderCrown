@@ -23,8 +23,13 @@ public class SleepAction extends Action {
 	private boolean firstTick;
 	
 	public SleepAction(Villager villager) {
-		super(villager, "Sleeping");
+<<<<<<< HEAD
+		super(villager);
+		name = "Sleeping";
 		this.firstTick = true;
+=======
+		super(villager, "Sleeping");
+>>>>>>> dev
 	}
 	
 	public SleepAction(Villager villager, Bed thisBed) {
@@ -37,8 +42,6 @@ public class SleepAction extends Action {
 
 	@Override
 	public void tick(ImpactableByAction world){
-//		if(FindObject.findTile2((TestWorld) world, EntityType.HOUSE_FLOOR, villager.getX(), villager.getY()) != null) {
-//		System.out.println("SLEEP!!!");
 		
 		if(FindEntity.standingOnTile(world, EntityType.BED, villager.getX(), villager.getY())){
 			if(this.firstTick){
@@ -50,7 +53,7 @@ public class SleepAction extends Action {
 			if(thisBed.UsedBy() > 1){
 				villager.updateStatus("cuddling");
 				//System.out.println("Bed used by >1!");
-				//TODO: Change name of action.
+				name = "Cuddling";
 				villager.setPregnant(true);
 			}else{
 				villager.updateStatus("sleeping");

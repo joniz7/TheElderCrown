@@ -12,6 +12,7 @@ import model.item.Item;
 import model.path.FindEntity;
 import model.villager.intentions.Intent;
 import model.villager.intentions.IntentionHandler;
+import model.villager.intentions.SocialiseInitIntent;
 import model.villager.intentions.SocialiseIntent;
 import model.villager.intentions.action.Action;
 import model.villager.intentions.action.DieAction;
@@ -22,6 +23,8 @@ import model.villager.intentions.plan.ExplorePlan;
 import model.villager.intentions.plan.IdlePlan;
 import model.villager.intentions.plan.Plan;
 import model.villager.intentions.plan.SleepPlan;
+import model.villager.intentions.plan.SocialiseInitPlan;
+import model.villager.intentions.plan.SocialisePlan;
 import model.villager.intentions.reminder.ProfessionLine;
 import model.villager.intentions.reminder.ProfessionLine.WorkLevel;
 import model.villager.intentions.reminder.profession.WaterGatherer;
@@ -52,8 +55,8 @@ public class Villager extends MidEntity implements Agent {
 	private int sex; // 0 -female, 1 - male
 	private int deathrisk; //The deathrisk based on age.
 	private int modifier;
-	private Point myBedPos = null;
-	private int time;
+	private Point myBedPos = null, northwestVillageCorner = new Point(1,1), southeastVillageCorner = new Point(2,2);
+	private int time, home;
 	private Item activeItem;
 	private Item[] inventory = new Item[6];
 	private Bed myBed;
@@ -71,14 +74,14 @@ public class Villager extends MidEntity implements Agent {
 	private float currentHunger, currentThirst, currentSleepiness, currentLaziness, currentSocial;
 
 	// Limits, i.e. when we should trigger actions) (modified by modifiers)
-	private float socialLimit = 3; // TODO update
+	private float socialLimit = 10; // TODO update
 
-	public Villager(Point p, int age){
+	public Villager(Point p, int age, int village){
 		super(p.x, p.y, EntityType.VILLAGER);
 		world = new AgentWorld();
 		length = 140 + UtilClass.getRandomInt(50, 0);
 		weight = length / 4 + UtilClass.getRandomInt(length/4, 0);
-		
+		this.home = village;
 		profession = new WaterGatherer(this, WorkLevel.MEDIUM);
 		
 		this.age=age;
@@ -101,12 +104,13 @@ public class Villager extends MidEntity implements Agent {
 		this.laziness = UtilClass.getRandomInt(20, 1);
 		this.obedience = UtilClass.getRandomInt(20, 1);
 		this.modifier = UtilClass.getRandomInt(5, 1);
+		this.social = 40;
 		
 		this.currentHunger = 50-modifier*hunger;
 		this.currentThirst = 50-modifier*thirst;
 		this.currentSleepiness = 40-modifier*sleepiness;
 		this.currentLaziness = 50-modifier*laziness;
-		this.currentSocial = 10f;
+		this.currentSocial = 0f;
 		
 		currentAction = "Doing Nothing";
 		currentPlan = "Doing Nothing";
@@ -136,6 +140,9 @@ public class Villager extends MidEntity implements Agent {
 		
 		nearbyVillagers = p.villagers;
 		nearbyAgents = p.agents;		
+
+		northwestVillageCorner = p.northwestVillageCorner;
+		southeastVillageCorner = p.southeastVillageCorner;
 		
 		ageprog++;
 		seeIfBirthday();
@@ -148,7 +155,7 @@ public class Villager extends MidEntity implements Agent {
 		
 		// If we see any other villagers, we may initiate an interaction
 		if (p.hasVillagers()) {
-			maybeSocialise(p.villagers);
+			//maybeSocialise(p.villagers);
 		}
 		
 		// If order was received, take it into consideration when planning
@@ -185,8 +192,11 @@ public class Villager extends MidEntity implements Agent {
 	 */
 	private void maybeSocialise(HashMap<Point, Villager> villagers) {
 
-		if (currentSocial < social*socialLimit) {
-			// TODO if not already socialising etc
+		if (currentSocial < socialLimit) {		
+			// Abort if already socialising (TODO should be smarter?)
+			if (activePlan instanceof SocialiseInitPlan || activePlan instanceof SocialisePlan) {
+				return;
+			}
 			
 			// Initialise a social interaction
 			Entry<Point, Villager> other = getBestFriend(villagers);
@@ -194,14 +204,18 @@ public class Villager extends MidEntity implements Agent {
 			Point otherPos = other.getKey();
 			
 			// Find out where we should meet
-			Point nearbyPos = FindEntity.findTileNeighbour(otherVillager.getWorld(), this.getPosition(), otherVillager.getPosition());
+			Point nearbyPos = FindEntity.findTileNeighbour(otherVillager.getWorld(), this.getPosition(), otherPos);
+			
+//			System.out.println("I am at "+this.getPosition()+", you should go to "+nearbyPos);
 			
 			// Create SocialiseIntent and order for other villager
 			Intent othersIntent = new SocialiseIntent(otherVillager, nearbyPos, this.getId());
 			Order socialiseOrder = new Order(this.getId(), otherVillager.getId(), othersIntent);
 			
 			// Create SocialiseInitIntent for myself
-			
+			SocialiseInitIntent initIntent = new SocialiseInitIntent(this, socialiseOrder, nearbyPos, otherVillager.getId());
+			// TODO is weighted properly?
+//			ih.addIntent(initIntent);
 		}
 		
 	}
@@ -305,7 +319,7 @@ public class Villager extends MidEntity implements Agent {
 	
 	private void seeIfDead() {
 		if(hunger < -Constants.MAX_HUNGER || thirst < -Constants.MAX_THIRST || UtilClass.getRandomInt(1000000, deathrisk) >= 1000000) {
-			dead = false;
+			dead = true;
 		}
 	}
 	
@@ -516,7 +530,7 @@ public class Villager extends MidEntity implements Agent {
 	 */
 	public Villager copy() {
 
-		Villager copy = new Villager(new Point(x,y),age);
+		Villager copy = new Villager(new Point(x,y),age, home);
 		return copy;
 //		throw new org.newdawn.slick.util.OperationNotSupportedException("what is a human mind?");
 		
@@ -604,5 +618,20 @@ public class Villager extends MidEntity implements Agent {
 	public void makeElder(){
 		isElder = true;
 		pcs.firePropertyChange("status", true, "elder");
+	}
+
+	/**
+	 * A method to check whether or not a point is inside the villagers village.
+	 * 
+	 * @param pos the point to be checked.
+	 * @return true if inside, false otherwise.
+	 */
+	public boolean isInsideVillage(Point pos){		
+		return pos.x>=northwestVillageCorner.x && pos.x<=southeastVillageCorner.x
+				&& pos.y>=northwestVillageCorner.y && pos.y<=southeastVillageCorner.y;
+	}
+	
+	public int getHome(){
+		return home;
 	}
 }

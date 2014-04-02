@@ -13,8 +13,7 @@ public class GatherFoodAction extends Action{
 	private int stacks = 0, stacksToStore;
 	
 	public GatherFoodAction(Villager villager) {
-		super(villager);
-		name = "Gathering Food";
+		super(villager, "Gathering food");
 		stacksToStore = 100;
 	}
 

@@ -18,9 +18,8 @@ import util.EntityType;
 public class DrinkPlan extends Plan{
 
 	public DrinkPlan(Villager villager){
-		super(villager);
+		super(villager, "Wants to drink");
 		actionQueue = new LinkedList<Action>();
-		name = "Wants to drink";
 		
 		if(FindEntity.isAdjacentTile(villager.getWorld(), EntityType.WATER_TILE, 
 			villager.getX(), villager.getY())){

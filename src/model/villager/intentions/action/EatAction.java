@@ -12,8 +12,7 @@ public class EatAction extends Action{
 	private int stacks, stacksToEat;
 	
 	public EatAction(Villager villager) {
-		super(villager);
-		name = "Eating";
+		super(villager, "Eating");
 
 	}
 
@@ -25,7 +24,7 @@ public class EatAction extends Action{
 			if(!f.consumed()){
 				villager.satisfyHunger(f.eaten());
 
-				if(villager.getHunger() >= Constants.MAX_HUNGER){
+				if(villager.getHunger() >= Constants.MAX_HUNGER-2){
 					villager.updateStatus("statusEnd");
 					actionFinished();
 				}else if(f.consumed()){

@@ -16,10 +16,9 @@ public class BirthPlan extends Plan {
 	private Point bedPos;
 
 	public BirthPlan(Villager villager) {
-		super(villager);
+		super(villager,"Needs to give birth");
 		actionQueue = new LinkedList<Action>();
 		villager.updateStatus("pregnant");
-		name = "Needs to give birth";
 		this.bedPos = villager.getBedPos();
 	
 

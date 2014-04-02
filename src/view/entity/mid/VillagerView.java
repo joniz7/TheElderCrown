@@ -89,6 +89,8 @@ public class VillagerView extends EntityView {
 						setImage("villagerDead");
 					}else if(currentStatus.equals("exploring")){
 						setImage("villagerExploring");
+					} else if ("waiting".equals(currentStatus)) {
+						// TODO set waiting image
 					}
 					g.drawImage(image, transposedX, transposedY);
 				}

@@ -17,8 +17,7 @@ public class BirthAction extends Action {
 	private World w;
 	
 	public BirthAction(Villager villager) {
-		super(villager);
-		name = "Giving birth";
+		super(villager, "Giving Birth");
 		this.firstTick=true;
 		this.time = UtilClass.getRandomInt(5, 1);
 		this.stacks = 0;
@@ -39,7 +38,7 @@ public class BirthAction extends Action {
 			Point p = FindEntity.FreeTile(world, villager.getX(), villager.getY());
 			if(p != null){
 				villager.setBlocking(true);
-				w.newVillager(p, 0);
+				w.newVillager(p, 0,villager.getHome());
 				villager.setPregnant(false);
 				villager.updateStatus("statusEnd");
 				actionFinished();

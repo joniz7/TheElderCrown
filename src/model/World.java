@@ -66,7 +66,8 @@ public abstract class World implements Tickable, TileBasedMap, PropertyChangeLis
 	// World configuration
 	private final int VIEW_DISTANCE = 10;
 
-	public final int VILLAGER_SPAWN_POS = 40, VILLAGER_COUNT = 15;
+	public final int VILLAGER_COUNT_PER_VILLAGE = 10, VILLAGE_COUNT = 1, VILLAGE_DISTANCE = 40, VILLAGE_SIZE = 20;
+	protected ArrayList<Point> villages;
 	
 	// Keep track of when to spawn babies
 	private boolean spawnBabies = false;
@@ -96,6 +97,23 @@ public abstract class World implements Tickable, TileBasedMap, PropertyChangeLis
 		tickables  = new ArrayList<Tickable>();
 		agents = new HashMap<Point, Agent>();
 		orders = new LinkedList<Order>();
+		villages = new ArrayList<Point>(VILLAGE_COUNT);
+		for(int i=0;i<VILLAGE_COUNT;i++){
+			Point p = new Point(UtilClass.getRandomInt(Constants.WORLD_WIDTH-VILLAGE_SIZE*2, VILLAGE_SIZE),
+					UtilClass.getRandomInt(Constants.WORLD_HEIGHT-VILLAGE_SIZE*2, VILLAGE_SIZE));
+			boolean villageLocationOK = true;
+			for(int j=0;j<villages.size();j++){
+				if(Math.sqrt(Math.pow(p.x-villages.get(j).x, 2)+
+						Math.pow(p.y-villages.get(j).y, 2))<VILLAGE_DISTANCE){
+					villageLocationOK = false;
+				}
+			}
+			if(villageLocationOK){
+				villages.add(p);
+			}else{
+				i--;
+			}
+		}
 		
 		shouldExit = false;
 	}
@@ -114,8 +132,8 @@ public abstract class World implements Tickable, TileBasedMap, PropertyChangeLis
 			// Possibly create babies
 			if (spawnBabies && babyTimer++ >= spawnBabiesAfter) {
 				babyTimer = 0;
-				Point p = new Point(VILLAGER_SPAWN_POS, VILLAGER_SPAWN_POS);
-				newVillager(p,0);		
+				Point p = villages.get(0);
+				newVillager(p,0, UtilClass.getRandomInt(VILLAGE_COUNT, 0));		
 			}
 			
 			// Update all tickables
@@ -156,6 +174,11 @@ public abstract class World implements Tickable, TileBasedMap, PropertyChangeLis
 			if(e.getValue().isDead()){
 				//TODO MAybe remove from list of agents... Handle the dead?
 			}
+			perception.northwestVillageCorner = new Point(villages.get(e.getValue().getHome()).x-VILLAGE_SIZE/2,
+					villages.get(e.getValue().getHome()).y-VILLAGE_SIZE/2);
+			perception.southeastVillageCorner = new Point(villages.get(e.getValue().getHome()).x+VILLAGE_SIZE/2,
+					villages.get(e.getValue().getHome()).y+VILLAGE_SIZE/2);
+			
 			perception.position = e.getKey();
 			Agent agent = e.getValue();
 			Entity entity = (Entity)agent;
@@ -232,11 +255,11 @@ public abstract class World implements Tickable, TileBasedMap, PropertyChangeLis
 	 *  @param p - the point to place the villager at.
 	 *  		   If occupied in middle layer, this method does nothing
 	 */
-	public void newVillager(Point p, int age) {
+	public void newVillager(Point p, int age, int village) {
 		// Spawn only if position is empty
 		if (midEntities.get(p) == null) {
 			System.out.println("A baby is born!");
-			Villager v = new Villager(p,age);
+			Villager v = new Villager(p,age, village);
 			addEntity(p, v);
 			addVillagerUI(p, v);
 			v.getPCS().addPropertyChangeListener(this);
@@ -254,11 +277,11 @@ public abstract class World implements Tickable, TileBasedMap, PropertyChangeLis
 	 *  @param p - the point to place the villager at.
 	 *  		   If occupied in middle layer, this method does nothing
 	 */
-	private void newElder(Point p, int age) {
+	private void newElder(Point p, int age, int village) {
 		// Spawn only if position is empty
 		if (midEntities.get(p) == null) {
 			System.out.println("A baby is born!");
-			Villager v = new Villager(p,age);
+			Villager v = new Villager(p,age, village);
 			addEntity(p, v);
 			addVillagerUI(p, v);
 			v.getPCS().addPropertyChangeListener(this);
@@ -360,11 +383,9 @@ public abstract class World implements Tickable, TileBasedMap, PropertyChangeLis
 	public void initialize() {
 		new PathFinder(this);
 		// Send camera position update to view
-		Point pos = new Point(VILLAGER_SPAWN_POS, VILLAGER_SPAWN_POS);
+		Point pos = villages.get(0);
 		pcs.firePropertyChange("camera", null, pos);
 		// Tell view of our world's size
-		Point size = new Point(Constants.WORLD_WIDTH,Constants.WORLD_HEIGHT);
-		pcs.firePropertyChange("worldsize",null,size);
 	}
 	
 	/**
@@ -372,16 +393,17 @@ public abstract class World implements Tickable, TileBasedMap, PropertyChangeLis
 	 * Note: Be sure to initialize world properly before calling this method
 	 */
 	protected final void initializeVillagers() {
-		
-		for(int i = 0; i < VILLAGER_COUNT; i++) {
-			if(i == 0){
-				Point pos = new Point(VILLAGER_SPAWN_POS + 5, VILLAGER_SPAWN_POS+i);
-				newElder(pos, UtilClass.getRandomInt(10, 15));
+		int village = 0;
+		for(int i = 0; i < VILLAGER_COUNT_PER_VILLAGE*VILLAGE_COUNT; i++) {
+			if(i < VILLAGE_COUNT){
+				Point pos = villages.get(village);
+				newElder(pos, UtilClass.getRandomInt(10, 15), village);
 			}else{
-				Point pos = new Point(VILLAGER_SPAWN_POS + 5, VILLAGER_SPAWN_POS+i);
-				newVillager(pos, UtilClass.getRandomInt(10, 15));
+				Point pos = new Point(villages.get(village).x+((i/VILLAGE_COUNT)/5), villages.get(village).y+((i/VILLAGE_COUNT)%5));
+				newVillager(pos, UtilClass.getRandomInt(10, 15), village);
 			}
-			
+			village++;
+			village = village%VILLAGE_COUNT;
 		}
 	}
 	

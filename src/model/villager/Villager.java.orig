@@ -6,86 +6,93 @@ import java.util.Iterator;
 import java.util.Map.Entry;
 
 import model.entity.Agent;
-import model.entity.Entity;
+import model.entity.bottom.Bed;
 import model.entity.mid.MidEntity;
 import model.item.Item;
+import model.path.FindEntity;
 import model.villager.intentions.Intent;
 import model.villager.intentions.IntentionHandler;
+import model.villager.intentions.SocialiseInitIntent;
+import model.villager.intentions.SocialiseIntent;
 import model.villager.intentions.action.Action;
 import model.villager.intentions.action.DieAction;
+import model.villager.intentions.plan.BirthPlan;
 import model.villager.intentions.plan.DrinkPlan;
 import model.villager.intentions.plan.EatPlan;
 import model.villager.intentions.plan.ExplorePlan;
 import model.villager.intentions.plan.IdlePlan;
 import model.villager.intentions.plan.Plan;
 import model.villager.intentions.plan.SleepPlan;
+import model.villager.intentions.plan.SocialiseInitPlan;
+import model.villager.intentions.plan.SocialisePlan;
 import model.villager.intentions.reminder.ProfessionLine;
 import model.villager.intentions.reminder.ProfessionLine.WorkLevel;
-import model.villager.intentions.reminder.profession.FoodGatherer;
+import model.villager.intentions.reminder.profession.WaterGatherer;
 import model.villager.order.Order;
 import model.villager.util.NameGen;
 import util.Constants;
 import util.EntityType;
-import util.RandomClass;
-import view.entity.EntityView;
-import view.entity.mid.VillagerView;
+import util.UtilClass;
 
 public class Villager extends MidEntity implements Agent {
 
 	private static final long serialVersionUID = 1L;
 
 	private IntentionHandler ih;
+		
+	private AgentWorld world;
+	private boolean dead = false, isElder = false;
 
-	private VillagerWorld world;
-	private boolean dead = false;
-	private boolean mustExplore, isShowUI = false;
-	
 	private String currentAction, currentPlan;
 	private String name;
 	private Plan activePlan;
-<<<<<<< HEAD
-=======
-
 	private ProfessionLine profession;
-	
 	private boolean mustExplore, isShowUI = false;
->>>>>>> dev
 	private int length, weight;
 	private int age,ageprog;
 	private int sex; // 0 -female, 1 - male
-	private int time;
 	private int deathrisk; //The deathrisk based on age.
 	private int modifier;
-	private Point myBed = null;
+<<<<<<< HEAD
+	private Point myBedPos = null;
+	private int time;
+=======
+	private Point myBed = null, northwestVillageCorner = new Point(1,1), southeastVillageCorner = new Point(2,2);
+	private int time, home;
+>>>>>>> dev
 	private Item activeItem;
 	private Item[] inventory = new Item[6];
+	private Bed myBed;
 
 	private HashMap<Point, Villager> nearbyVillagers;
 	private HashMap<Point, Agent> nearbyAgents;
+	private boolean isPregnant;
+	private int pregnantTime;
 	
+	// Characteristics (act as modifiers)
 	private float hunger, thirst, speed, sleepiness, laziness, obedience;
-	private float currentHunger, currentThirst, currentSleepiness, currentLaziness;
-	
-	
+	private float social = 0.5f; // Need of other people; [0,1] where 0 is a loner  
 
-	public Villager(Point p, int age) {
+	// Current needs (are adjusted all the time)
+	private float currentHunger, currentThirst, currentSleepiness, currentLaziness, currentSocial;
+
+	// Limits, i.e. when we should trigger actions) (modified by modifiers)
+	private float socialLimit = 10; // TODO update
+
+	public Villager(Point p, int age, int village){
 		super(p.x, p.y, EntityType.VILLAGER);
-		world = new VillagerWorld();
-		length = 140 + RandomClass.getRandomInt(50, 0);
-		weight = length / 4 + RandomClass.getRandomInt(length/4, 0);
+		world = new AgentWorld();
+		length = 140 + UtilClass.getRandomInt(50, 0);
+		weight = length / 4 + UtilClass.getRandomInt(length/4, 0);
+		this.home = village;
+		profession = new WaterGatherer(this, WorkLevel.MEDIUM);
 		
-<<<<<<< HEAD
-=======
-		profession = new FoodGatherer(this, WorkLevel.MEDIUM);
-		
-		this.name = NameGen.newName(true);
->>>>>>> dev
 		this.age=age;
 		ageprog=0;
 		deathrisk=1;
 		ih = new IntentionHandler(this);
 		
-		this.sex = RandomClass.getRandomInt(2, 0);
+		this.sex = UtilClass.getRandomInt(2, 0);
 		if(sex == 0){
 			this.name = NameGen.newName(true);
 		}else{
@@ -93,20 +100,20 @@ public class Villager extends MidEntity implements Agent {
 		}
 		
 		//Randomize starting values for needs, wants and stats.
-		this.hunger = RandomClass.getRandomInt(10, 1);
-		this.thirst = RandomClass.getRandomInt(10, 1);
-		this.sleepiness = RandomClass.getRandomInt(10, 1);
-		this.speed = RandomClass.getRandomInt(10, 25);
-		this.laziness = RandomClass.getRandomInt(10, 1);
-		this.obedience = RandomClass.getRandomInt(10, 1);
-		this.modifier = RandomClass.getRandomInt(3, 1);
+		this.hunger = UtilClass.getRandomInt(20, 1);
+		this.thirst = UtilClass.getRandomInt(20, 1);
+		this.sleepiness = UtilClass.getRandomInt(20, 1);
+		this.speed = UtilClass.getRandomInt(10, 25);
+		this.laziness = UtilClass.getRandomInt(20, 1);
+		this.obedience = UtilClass.getRandomInt(20, 1);
+		this.modifier = UtilClass.getRandomInt(5, 1);
+		this.social = 40;
 		
 		this.currentHunger = 50-modifier*hunger;
 		this.currentThirst = 50-modifier*thirst;
 		this.currentSleepiness = 40-modifier*sleepiness;
 		this.currentLaziness = 50-modifier*laziness;
-		
-		
+		this.currentSocial = 0f;
 		
 		currentAction = "Doing Nothing";
 		currentPlan = "Doing Nothing";
@@ -114,7 +121,7 @@ public class Villager extends MidEntity implements Agent {
 		System.out.println("New villager created: " + name+ " " +length+"  "+weight+ " " +sex);
 	}
 	
-	public VillagersWorldPerception getWorld() {
+	public AgentWorld getWorld() {
 		return world;
 	}
 
@@ -136,10 +143,18 @@ public class Villager extends MidEntity implements Agent {
 		
 		nearbyVillagers = p.villagers;
 		nearbyAgents = p.agents;		
+
+		northwestVillageCorner = p.northwestVillageCorner;
+		southeastVillageCorner = p.southeastVillageCorner;
 		
 		ageprog++;
 		seeIfBirthday();
 		adjustNeeds();
+		
+		//Advance pregnancy timer if pregnant
+		if(isPregnant){
+			pregnantTime++;
+		}
 		
 		// If we see any other villagers, we may initiate an interaction
 		if (p.hasVillagers()) {
@@ -151,11 +166,11 @@ public class Villager extends MidEntity implements Agent {
 			addOrder(p.order);
 		}
 		
-		seeIfDead();
+		//seeIfDead();
 		plan();
 		
-//		if(profession != null)
-//			profession.update(time);
+		if(profession != null)
+			profession.update(time);
 		
 		if(activePlan.getActiveAction() == null){
 			disposePlan();
@@ -179,7 +194,65 @@ public class Villager extends MidEntity implements Agent {
 	 * if our social need/relation is high enough.
 	 */
 	private void maybeSocialise(HashMap<Point, Villager> villagers) {
-		System.out.println("Maybe socialise!");
+
+		if (currentSocial < socialLimit) {		
+			// Abort if already socialising (TODO should be smarter?)
+			if (activePlan instanceof SocialiseInitPlan || activePlan instanceof SocialisePlan) {
+				return;
+			}
+			
+			// Initialise a social interaction
+			Entry<Point, Villager> other = getBestFriend(villagers);
+			Villager otherVillager = other.getValue();
+			Point otherPos = other.getKey();
+			
+			// Find out where we should meet
+			Point nearbyPos = FindEntity.findTileNeighbour(otherVillager.getWorld(), this.getPosition(), otherPos);
+			
+//			System.out.println("I am at "+this.getPosition()+", you should go to "+nearbyPos);
+			
+			// Create SocialiseIntent and order for other villager
+			Intent othersIntent = new SocialiseIntent(otherVillager, nearbyPos, this.getId());
+			Order socialiseOrder = new Order(this.getId(), otherVillager.getId(), othersIntent);
+			
+			// Create SocialiseInitIntent for myself
+			SocialiseInitIntent initIntent = new SocialiseInitIntent(this, socialiseOrder, nearbyPos, otherVillager.getId());
+			// TODO is weighted properly?
+//			ih.addIntent(initIntent);
+		}
+		
+	}
+	
+	/**
+	 * Looks through a hashmap of villager, and finds the one I like the most.
+	 * Is based on my relationship with other villagers
+	 * (Atm no relationships, so is hardcoded)
+	 * 
+	 * @param villagers - A hashmap of villagers I should choose from 
+	 * @return my best friend (of those available)
+	 */
+	private Entry<Point, Villager> getBestFriend(HashMap<Point, Villager> villagers) {
+		
+		// The best match (currently, selects the villager with the lowest ID)
+		Entry<Point, Villager> bestFriend = null;
+		int bestFriendsId = -1;
+		
+		// Loop through the hashmap
+		Iterator<Entry<Point,Villager>> it = villagers.entrySet().iterator();
+		while (it.hasNext()) {
+			Entry<Point, Villager> entry = it.next();
+			Villager v = (Villager)entry.getValue();
+			// Replace best friend if this one is a better match. Harsh
+			if (bestFriendsId == -1 || v.getId()<bestFriendsId) {
+				bestFriend = entry;
+				bestFriendsId = v.getId();
+			}
+		}
+		
+		if (bestFriend == null) {
+			System.err.println("Warning: No best friend found!");
+		}
+		return bestFriend;
 	}
 
 	public void satisfyHunger(float f) {
@@ -236,22 +309,25 @@ public class Villager extends MidEntity implements Agent {
 		if(hours >= Constants.NIGHT_HOUR || hours < Constants.DAY_HOUR){
 			currentHunger = currentHunger - (hunger*0.0005f);
 			currentThirst = currentThirst - (thirst*0.0005f);
+			currentSocial -= social*0.0005f;
 		}else{
 			currentHunger = currentHunger - (hunger*0.001f);
 			currentThirst = currentThirst - (thirst*0.001f);
+			currentSocial -= social*0.001f;
 		}
 		
 		currentSleepiness = currentSleepiness - (sleepiness*0.001f);
+		currentLaziness = currentLaziness - (laziness*0.001f);
 	}
 	
 	private void seeIfDead() {
-		if(hunger < -Constants.MAX_HUNGER || thirst < -Constants.MAX_THIRST || RandomClass.getRandomInt(1000000, deathrisk) >= 1000000) {
-			dead = true;
+		if(hunger < -Constants.MAX_HUNGER || thirst < -Constants.MAX_THIRST || UtilClass.getRandomInt(1000000, deathrisk) >= 1000000) {
+			dead = false;
 		}
 	}
 	
 	private void seeIfBirthday(){
-		if(ageprog>100){
+		if(ageprog>12*Constants.TICKS_HOUR){
 			age++;
 			ageprog=0;
 			if(age>30){				
@@ -263,10 +339,13 @@ public class Villager extends MidEntity implements Agent {
 	private void plan() {
 		ih.update();
 		if(activePlan == null) {
-			if(!mustExplore){
+			if(!mustExplore && !mustBirth()){
 				activePlan = ih.getFirstPlan();
 //				System.out.println(activePlan);
-			}else{
+			}else if(mustBirth()){
+				System.out.println("BIRTHPLAN");
+				activePlan=new BirthPlan(this);
+			}else if(mustExplore){
 //				System.out.println("Creating ExplorePlan");
 				activePlan=new ExplorePlan(this);
 				mustExplore = false;
@@ -276,6 +355,11 @@ public class Villager extends MidEntity implements Agent {
 				currentAction = activePlan.getActiveAction().getName();
 			currentPlan = activePlan.getName();
 		}
+	}
+	
+	public void workReminder(Plan plan){
+		this.disposePlan();
+		activePlan = plan;
 	}
 
 	public Action getAction() {
@@ -296,11 +380,6 @@ public class Villager extends MidEntity implements Agent {
 			activePlan = null;
 			ih.intentDone();
 		}
-	}
-	
-	public void workReminder(Plan plan){
-		this.disposePlan();
-		activePlan = plan;
 	}
 
 	public float getSpeed() {
@@ -339,6 +418,10 @@ public class Villager extends MidEntity implements Agent {
 		return currentLaziness;
 	}
 	
+	public float getSocial() {
+		return currentSocial;
+	}
+	
 	public int getLength() {
 		return length;
 	}
@@ -366,11 +449,25 @@ public class Villager extends MidEntity implements Agent {
 	}
 	
 	public void setBed(Point p){
-		this.myBed = p;
+		this.myBedPos = p;
 	}
 	
 	public Point getBedPos(){
+		return myBedPos;
+	}
+	
+	public void setBed(Bed b){
+		this.myBed = b;
+	}
+	
+	public Bed getBed(){
 		return myBed;
+	}
+	
+	
+	//Naming? Should return the lowest value, but its the mostly needed one since needs are negative
+	public float getMostNeed(){
+		return UtilClass.findMin(currentHunger, currentThirst, currentSleepiness, currentLaziness);
 	}
 	
 	
@@ -405,20 +502,11 @@ public class Villager extends MidEntity implements Agent {
 			pcs.firePropertyChange("status", currentHunger, "hunger");
 			pcs.firePropertyChange("status", currentThirst, "thirst");
 			pcs.firePropertyChange("status", currentSleepiness, "sleepiness");
-			
+			pcs.firePropertyChange("status", currentSocial, "social");
+
 			pcs.firePropertyChange("status", currentAction, "action");
 			pcs.firePropertyChange("status", currentPlan, "plan");
 		}
-	}
-	
-	/**
-	 * Creates and returns a new VillagerView.
-	 * Registers the view as our listener.
-	 */
-	public EntityView createView() {
-		EntityView view = new VillagerView(x, y, length, weight);
-		pcs.addPropertyChangeListener(view);
-		return view;
 	}
 
 	public void attemptMove(Point newPos) {
@@ -445,7 +533,7 @@ public class Villager extends MidEntity implements Agent {
 	 */
 	public Villager copy() {
 
-		Villager copy = new Villager(new Point(x,y),age);
+		Villager copy = new Villager(new Point(x,y),age, home);
 		return copy;
 //		throw new org.newdawn.slick.util.OperationNotSupportedException("what is a human mind?");
 		
@@ -504,5 +592,49 @@ public class Villager extends MidEntity implements Agent {
 	
 	public HashMap<Point, Agent> getNearbyAgents(){
 		return nearbyAgents;
+	}
+
+	@Override
+	public AgentWorld getAgentWorld() {
+		return world;
+	}
+	
+	public boolean setPregnant(boolean value){
+		if(isFemale() && age>=15 && isPregnant == false){
+			isPregnant = value;
+			this.pregnantTime = 0;
+			System.out.println("Villager: "+name+" got pregnant! Hooray!");
+			return true;
+		}else{
+			//System.out.println("Villager " +name+ " " +isFemale() +" " +age+ " " +isPregnant);
+			return false;
+		}
+	}
+	
+	private boolean mustBirth(){
+		if(pregnantTime >= Constants.TICKS_HOUR)
+			return true;
+		else
+			return false;
+	}
+	
+	public void makeElder(){
+		isElder = true;
+		pcs.firePropertyChange("status", true, "elder");
+	}
+	
+	/**
+	 * A method to check whether or not a point is inside the villagers village.
+	 * 
+	 * @param pos the point to be checked.
+	 * @return true if inside, false otherwise.
+	 */
+	public boolean isInsideVillage(Point pos){		
+		return pos.x>=northwestVillageCorner.x && pos.x<=southeastVillageCorner.x
+				&& pos.y>=northwestVillageCorner.y && pos.y<=southeastVillageCorner.y;
+	}
+	
+	public int getHome(){
+		return home;
 	}
 }

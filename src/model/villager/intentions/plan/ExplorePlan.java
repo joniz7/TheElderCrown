@@ -19,10 +19,9 @@ public class ExplorePlan extends Plan {
 	private int stacks;
 	
 	public ExplorePlan(Villager villager){
-		super(villager);
+		super(villager, "Needs to explore");
 		actionQueue = new LinkedList<Action>();
 		villager.updateStatus("exploring");
-		name = "Needs to explore";
 		
 		stacks = 0;
 		while(path == null){
