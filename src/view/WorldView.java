@@ -1,7 +1,6 @@
 package view;
 
 
-import java.awt.Font;
 import java.awt.Point;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -26,11 +25,8 @@ import model.villager.Villager;
 import org.newdawn.slick.Color;
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.Image;
-import org.newdawn.slick.TrueTypeFont;
-import org.newdawn.slick.UnicodeFont;
-import org.newdawn.slick.font.effects.ColorEffect;
 
-import debugging.Helper3;
+import util.Constants;
 import util.EntityType;
 import util.ImageLoader;
 import view.entity.EntityView;
@@ -69,14 +65,13 @@ public class WorldView implements PropertyChangeListener {
 	private static final int SCROLL_SPEED = 8;
 	private static int width, height;
 	private static int cameraX, cameraY;
-	private static int worldXSize, worldYSize;
 	
 	//Day-Night-stuff
 	private Image lightMap = ImageLoader.getImage("light");
 	private Image clock = ImageLoader.getImage("clock");
 	private Image clockBorder = ImageLoader.getImage("clockBorder");
 	
-	// The size ofeach tile in pixels (?)
+	// The size of each tile in pixels (?)
 	public static final int TILE_OFFSET = 20;
 	
 	//The relative speed of the simulation, eg 1.5x
@@ -149,13 +144,12 @@ public class WorldView implements PropertyChangeListener {
 	}
 
 	public void incX(){
-		// TODO remove magic constant
-		if(cameraX<modelToViewCoordinate(150))
+		if(cameraX<(modelToViewCoordinate(Constants.WORLD_WIDTH)-width))
 			cameraX += SCROLL_SPEED;
 	}
 
 	public void incY(){
-		if(cameraY<modelToViewCoordinate(150))
+		if(cameraY<(modelToViewCoordinate(Constants.WORLD_HEIGHT)-height))
 			cameraY += SCROLL_SPEED;
 	}
 
@@ -242,19 +236,13 @@ public class WorldView implements PropertyChangeListener {
 			fadeText = new org.newdawn.slick.Color(0, 0, 0, textAlpha);
 			System.out.println(fadeText.a);
 			timer.start();
-		}
-		else if(name.equals("worldsize")){
-			Point size = (Point) event.getNewValue();
-			worldXSize = modelToViewCoordinate((int) size.getX());
-			worldYSize = modelToViewCoordinate((int) size.getY());
-		}
-		else if (name.equals("addTopEntity")) {
+		}else if (name.equals("addTopEntity")) {
 			TopEntity entity = (TopEntity) event.getNewValue();
 			EntityType type = entity.getType();
 			EntityView view = null;
 			switch(type){
 			case TREE:
-				view = new TreeView(entity.getX(), entity.getY());
+				view = new TreeView(entity.getX()-1, entity.getY()-1);
 				break;
 			case HOUSE_DOOR:
 				HouseDoor door = (HouseDoor) entity;

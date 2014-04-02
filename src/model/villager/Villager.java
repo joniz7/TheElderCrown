@@ -28,8 +28,6 @@ import model.villager.util.NameGen;
 import util.Constants;
 import util.EntityType;
 import util.UtilClass;
-import view.entity.EntityView;
-import view.entity.mid.VillagerView;
 
 public class Villager extends MidEntity implements Agent {
 
@@ -50,8 +48,8 @@ public class Villager extends MidEntity implements Agent {
 	private int sex; // 0 -female, 1 - male
 	private int deathrisk; //The deathrisk based on age.
 	private int modifier;
-	private Point myBed = null;
-	private int time;
+	private Point myBed = null, northwestVillageCorner = new Point(1,1), southeastVillageCorner = new Point(2,2);
+	private int time, home;
 	private Item activeItem;
 	private Item[] inventory = new Item[6];
 
@@ -68,12 +66,12 @@ public class Villager extends MidEntity implements Agent {
 	// Limits, i.e. when we should trigger actions) (modified by modifiers)
 	private float socialLimit = 3; // TODO update
 
-	public Villager(Point p, int age){
+	public Villager(Point p, int age, int village){
 		super(p.x, p.y, EntityType.VILLAGER);
 		world = new AgentWorld();
 		length = 140 + UtilClass.getRandomInt(50, 0);
 		weight = length / 4 + UtilClass.getRandomInt(length/4, 0);
-		
+		this.home = village;
 		profession = new WaterGatherer(this, WorkLevel.MEDIUM);
 		
 		this.age=age;
@@ -131,6 +129,9 @@ public class Villager extends MidEntity implements Agent {
 		
 		nearbyVillagers = p.villagers;
 		nearbyAgents = p.agents;		
+
+		northwestVillageCorner = p.northwestVillageCorner;
+		southeastVillageCorner = p.southeastVillageCorner;
 		
 		ageprog++;
 		seeIfBirthday();
@@ -494,7 +495,7 @@ public class Villager extends MidEntity implements Agent {
 	 */
 	public Villager copy() {
 
-		Villager copy = new Villager(new Point(x,y),age);
+		Villager copy = new Villager(new Point(x,y),age, home);
 		return copy;
 //		throw new org.newdawn.slick.util.OperationNotSupportedException("what is a human mind?");
 		
@@ -563,5 +564,20 @@ public class Villager extends MidEntity implements Agent {
 	public void makeElder(){
 		isElder = true;
 		pcs.firePropertyChange("status", true, "elder");
+	}
+	
+	/**
+	 * A method to check whether or not a point is inside the villagers village.
+	 * 
+	 * @param pos the point to be checked.
+	 * @return true if inside, false otherwise.
+	 */
+	public boolean isInsideVillage(Point pos){		
+		return pos.x>=northwestVillageCorner.x && pos.x<=southeastVillageCorner.x
+				&& pos.y>=northwestVillageCorner.y && pos.y<=southeastVillageCorner.y;
+	}
+	
+	public int getHome(){
+		return home;
 	}
 }

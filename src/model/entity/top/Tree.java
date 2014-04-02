@@ -27,8 +27,7 @@ public class Tree extends TopEntity implements Tickable, FoodSource{
 	public Tree(int x, int y) {
 		super(x, y, EntityType.TREE);
 		// this makes the TreeView show in the right position
-		// TODO make this prettier (note: is hardcoded in World#addEntities as well)
-		updatePos(x-1, y-1);
+		updatePos(x, y);
 	}
 
 	@Override
