@@ -315,6 +315,7 @@ public class WorldController implements GameState {
 		}			
 			
 		if(key == Input.KEY_ESCAPE){
+			timer.stop();
 			getGame().enterState(1, new FadeOutTransition(Color.black), new FadeInTransition(Color.black));
 		}
 		if (key == Input.KEY_SPACE) {
@@ -458,7 +459,7 @@ public class WorldController implements GameState {
 	 */
 	public void initRandomWorld() {
 		world = new RandomWorld();
-		timer.start();
+		//timer.start();
 		view = new WorldView(appgc.getWidth(), appgc.getHeight());
 		addPropertyChangeListener(view);
 		// Set up View listening to World
@@ -523,6 +524,9 @@ public class WorldController implements GameState {
 		moveCamera();
 		if(isExit){
 			getGame().exit();
+		}
+		if(!timer.isRunning()){
+			timer.start();
 		}
 
 	}

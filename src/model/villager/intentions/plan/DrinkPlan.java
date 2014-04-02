@@ -32,8 +32,11 @@ public class DrinkPlan extends Plan{
 		Point p = FindEntity.findBotEntityNeighbour(villager.getWorld(), EntityType.WATER_TILE, 
 
 				villager.getX(), villager.getY());
-		Point p2 = FindEntity.findTopMidEntityNeighbour(villager.getWorld(), new HasDrink(), null,
-				villager.getX(), villager.getY());
+		Point p2 = null;
+		if(p == null) {
+			p2 = FindEntity.findTopMidEntityNeighbour(villager.getWorld(), new HasDrink(), null,
+					villager.getX(), villager.getY());
+		}
 		
 		if(p!=null){
 			Path movePath = PathFinder.getPathToAdjacent(villager.getX(), villager.getY(), p.x, p.y);

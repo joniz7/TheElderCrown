@@ -66,7 +66,7 @@ public abstract class World implements Tickable, TileBasedMap, PropertyChangeLis
 	// World configuration
 	private final int VIEW_DISTANCE = 10;
 
-	public final int VILLAGER_SPAWN_POS = 40, VILLAGER_COUNT = 2;
+	public final int VILLAGER_SPAWN_POS = 40, VILLAGER_COUNT = 10;
 	
 	// Keep track of when to spawn babies
 	private boolean spawnBabies = false;
@@ -287,6 +287,7 @@ public abstract class World implements Tickable, TileBasedMap, PropertyChangeLis
 	public boolean blocked(PathFindingContext pfc, Point p){
 		if (botBlocked(p)) return true;
 		else if(midBlocked(p)) return true;
+		else if(agentBlocked(p)) return true;
 		else if(topBlocked(p)) return true;
 		else return false;
 	}
@@ -305,6 +306,19 @@ public abstract class World implements Tickable, TileBasedMap, PropertyChangeLis
 	public boolean midBlocked(Point p) {
 		Entity e = midEntities.get(p);
 		return e != null && e.isBlocking();
+	}
+	
+	/**
+	 * Checks whether there is a blocking agent at the specified point
+	 */
+	public boolean agentBlocked(Point p){
+		Agent a = agents.get(p);
+		if(a != null && a instanceof Villager){
+			Villager v = (Villager) a;
+			if(v.isBlocking())
+				return true;
+		}
+		return false;
 	}
 	/**
 	 * Checks whether the specified position is blocked in the bottom layer.
