@@ -9,12 +9,13 @@ public class Plan {
 
 	protected Villager villager;
 	protected boolean isFinished;
-	protected String name;
+	private String name;
 	
 	protected LinkedList<Action> actionQueue;
 	
-	public Plan(Villager villager) {
+	public Plan(Villager villager, String name) {
 		this.villager = villager;
+		this.name = name;
 		actionQueue = new LinkedList<Action>();
 	}
 	

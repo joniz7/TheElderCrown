@@ -13,9 +13,8 @@ import model.villager.intentions.action.MoveAction;
 public class EatPlan extends Plan{
 
 	public EatPlan(Villager villager){
-		super(villager);
+		super(villager, "Wants to eat");
 		actionQueue = new LinkedList<Action>();
-		name = "Wants to eat";
 		
 		FoodSource fs = (FoodSource) FindEntity.getAdjacentObject(villager.getWorld(), new HasFood(), 
 				null, villager.getX(), villager.getY());

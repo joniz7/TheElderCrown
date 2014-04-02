@@ -27,9 +27,8 @@ public class WaitForAction extends Action {
 	 * @param otherId - the ID of the entity we're waiting for
 	 */
 	public WaitForAction(Villager villager, Point otherPos, int otherId) {
-		super(villager);
+		super(villager, "Waiting");
 		villager.updateStatus("waiting");
-		name = "Waiting";
 		
 		this.otherPos = otherPos;
 		this.otherId = otherId;

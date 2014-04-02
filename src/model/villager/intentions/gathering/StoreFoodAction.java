@@ -15,8 +15,7 @@ public class StoreFoodAction extends Action{
 	private int stacks = 0, stacksToStore;
 	
 	public StoreFoodAction(Villager villager) {
-		super(villager);
-		name = "Storing Food";
+		super(villager, "Storing food");
 		stacksToStore = 20;
 	}
 

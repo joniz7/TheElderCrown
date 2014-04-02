@@ -21,16 +21,14 @@ public class MoveAction extends Action{
 	
 	
 	public MoveAction(Villager villager, Path path) {
-		super(villager);
+		super(villager, "Moving");
 		this.path = path;
-		name = "Moving";
 	}
 	
 	public MoveAction(Villager villager, EntityType type, Criteria crit) {
-		super(villager);
+		super(villager, "Moving");
 		this.type = type;
 		this.crit = crit;
-		name = "Moving";
 	}
 
 	@Override

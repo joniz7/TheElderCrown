@@ -25,7 +25,7 @@ public class SocialiseInitPlan extends Plan{
 	 * @param otherId - the id of the sender
 	 */
 	public SocialiseInitPlan(Villager villager, Order otherOrder, Point otherPos, int otherId) {
-		super(villager);
+		super(villager, "Starting social interaction");
 		
 		// IssueOrderAction
 		actionQueue.addLast(new IssueOrderAction(villager, otherOrder));

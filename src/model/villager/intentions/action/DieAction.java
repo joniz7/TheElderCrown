@@ -5,8 +5,7 @@ import model.villager.Villager;
 public class DieAction extends Action{
 
 	public DieAction(Villager villager) {
-		super(villager);
-		name = "Dying";
+		super(villager, "Dying");
 	}
 
 	@Override

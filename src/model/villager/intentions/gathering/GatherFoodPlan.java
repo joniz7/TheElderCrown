@@ -20,9 +20,8 @@ import util.EntityType;
 public class GatherFoodPlan extends Plan{
 
 	public GatherFoodPlan(Villager villager){
-		super(villager);
+		super(villager, "Gathers food");
 		actionQueue = new LinkedList<Action>();
-		name = "Gathers food";
 		
 		System.out.println("Villager: " + villager);
 		villager.clearInventory();

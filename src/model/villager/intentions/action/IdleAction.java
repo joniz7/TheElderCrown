@@ -22,8 +22,7 @@ public class IdleAction extends Action {
 	private boolean firstTick = true;
 	
 	public IdleAction(Villager villager) {
-		super(villager);
-		name = "Idling";
+		super(villager, "Idling");
 		idleTime = 300;
 	}
 

@@ -5,9 +5,8 @@ import model.villager.Villager;
 public class ExploreAction extends Action {
 
 	public ExploreAction(Villager villager) {
-		super(villager);
+		super(villager, "Exploring");
 		villager.updateStatus("exploring");
-		name = "Exploring";
 	}
 
 

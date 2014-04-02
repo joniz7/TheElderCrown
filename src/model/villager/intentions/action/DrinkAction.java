@@ -13,8 +13,7 @@ public class DrinkAction extends Action{
 
 	
 	public DrinkAction(Villager villager) {
-		super(villager);
-		name = "Drinking";
+		super(villager, "Drinking");
 	}
 
 	@Override

@@ -12,8 +12,7 @@ public class EatAction extends Action{
 	private int stacks, stacksToEat;
 	
 	public EatAction(Villager villager) {
-		super(villager);
-		name = "Eating";
+		super(villager, "Eating");
 
 	}
 

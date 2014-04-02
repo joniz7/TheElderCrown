@@ -14,6 +14,14 @@ public class SocialiseInitIntent extends Intent{
 	private Order otherOrder;
 	private int otherId;
 	
+	/**
+	 * Create a new intent to initialise a social interaction.
+	 * 
+	 * @param villager - the villager which should initiate the interaction
+	 * @param otherOrder - an order which contains a SocialiseIntent (will be issued to other villager)
+	 * @param otherPos - the position we should check continually
+	 * @param otherId - the id of the other villager (who should walk to otherPos)
+	 */
 	public SocialiseInitIntent(Villager villager, Order otherOrder, Point otherPos, int otherId) {
 		super(villager);
 		this.otherId = otherId;

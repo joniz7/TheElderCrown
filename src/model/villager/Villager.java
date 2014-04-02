@@ -11,6 +11,7 @@ import model.item.Item;
 import model.path.FindEntity;
 import model.villager.intentions.Intent;
 import model.villager.intentions.IntentionHandler;
+import model.villager.intentions.SocialiseInitIntent;
 import model.villager.intentions.SocialiseIntent;
 import model.villager.intentions.action.Action;
 import model.villager.intentions.action.DieAction;
@@ -20,6 +21,8 @@ import model.villager.intentions.plan.ExplorePlan;
 import model.villager.intentions.plan.IdlePlan;
 import model.villager.intentions.plan.Plan;
 import model.villager.intentions.plan.SleepPlan;
+import model.villager.intentions.plan.SocialiseInitPlan;
+import model.villager.intentions.plan.SocialisePlan;
 import model.villager.intentions.reminder.ProfessionLine;
 import model.villager.intentions.reminder.ProfessionLine.WorkLevel;
 import model.villager.intentions.reminder.profession.WaterGatherer;
@@ -177,8 +180,10 @@ public class Villager extends MidEntity implements Agent {
 	private void maybeSocialise(HashMap<Point, Villager> villagers) {
 
 		if (currentSocial < socialLimit) {		
-			System.out.println("socialise");
-			// TODO check if not already socialising etc
+			// Abort if already socialising (TODO should be smarter?)
+			if (activePlan instanceof SocialiseInitPlan || activePlan instanceof SocialisePlan) {
+				return;
+			}
 			
 			// Initialise a social interaction
 			Entry<Point, Villager> other = getBestFriend(villagers);
@@ -195,8 +200,9 @@ public class Villager extends MidEntity implements Agent {
 			Order socialiseOrder = new Order(this.getId(), otherVillager.getId(), othersIntent);
 			
 			// Create SocialiseInitIntent for myself
+			SocialiseInitIntent initIntent = new SocialiseInitIntent(this, socialiseOrder, nearbyPos, otherVillager.getId());
 			// TODO is weighted properly?
-			// TODO
+//			ih.addIntent(initIntent);
 		}
 		
 	}

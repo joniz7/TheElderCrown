@@ -20,7 +20,7 @@ public class IssueOrderAction extends Action {
 	 * @param o - The order to be issued. Will be given to receiving entity the next tick
 	 */
 	public IssueOrderAction(Villager villager, Order o) {
-		super(villager);
+		super(villager, "Issuing order");
 		this.o = o;		
 	}
 

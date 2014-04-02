@@ -18,9 +18,8 @@ import util.EntityType;
 public class GatherDrinkPlan extends Plan{
 
 	public GatherDrinkPlan(Villager villager){
-		super(villager);
+		super(villager, "Gathers drink");
 		actionQueue = new LinkedList<Action>();
-		name = "Gathers drink";
 		
 		villager.clearInventory();
 		

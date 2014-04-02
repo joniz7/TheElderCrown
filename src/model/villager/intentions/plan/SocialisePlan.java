@@ -24,7 +24,7 @@ public class SocialisePlan extends Plan{
 	 * @param otherId - the id of the sender
 	 */
 	public SocialisePlan(Villager villager, Point otherPos, int otherId) {
-		super(villager);
+		super(villager, "Joining social interaction");
 		
 		// TODO roughly this:
 		// MoveAction
