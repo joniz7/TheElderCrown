@@ -108,8 +108,7 @@ public class MoveAction extends Action{
 			waitTime++;
 			if(waitTime > 40){
 				path = null;
-				//actionFailed();
-				System.out.println("Path set to NULL");
+				actionFailed();
 			}
 		}
 	}

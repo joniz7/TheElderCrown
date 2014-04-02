@@ -319,7 +319,7 @@ public class RandomWorld extends World{
 					floor = new HouseFloor(p.x, p.y);
 					addEntity(new Point(p.x, p.y), floor);
 					if(p.x != doorPoint.x && p.y != doorPoint.y){
-						bed = new Bed(p.x,p.y);
+						bed = new Bed(p.x,p.y,this);
 						addEntity(new Point(p.x, p.y), bed);
 					}
 					p.translate(0, 1);

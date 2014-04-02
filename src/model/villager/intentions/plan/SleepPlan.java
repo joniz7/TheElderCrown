@@ -43,7 +43,7 @@ public class SleepPlan extends Plan {
 		
 		
 		//If villager has no assigned bed, find the closest unclaimed and claim it.
-		if(this.villager.getBedPos()==null){
+		if(this.villager.getBed()==null){
 			IsUnclaimed bedcriteria = new IsUnclaimed(villager);
 			bedPos = FindEntity.findTopMidEntity(villager.getWorld(), bedcriteria, EntityType.BED, villager.getX(), villager.getY());
 			if(bedPos == null){
@@ -51,6 +51,7 @@ public class SleepPlan extends Plan {
 			}
 			villager.setBed(bedPos);
 			thisBed = (Bed) villager.getWorld().getBotEntities().get(bedPos);
+			villager.setBed(thisBed);
 			if(thisBed != null){
 				if(villager.isMale()){
 					thisBed.setClaimedByMale(true);
@@ -63,7 +64,7 @@ public class SleepPlan extends Plan {
 		//Else use already assigned bed
 		}else{
 			bedPos = villager.getBedPos();
-			thisBed = (Bed) villager.getWorld().getBotEntities().get(bedPos);
+			thisBed = villager.getBed();
 		}
 		
 		

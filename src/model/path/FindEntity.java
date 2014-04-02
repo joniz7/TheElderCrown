@@ -440,11 +440,11 @@ public class FindEntity {
 			}
 			
 			if(stacks > 100 || visited.size() == 0){
-				System.out.println("FindObject: " + visited.size());
-				System.out.println("FindObject: " + crit);
-				System.out.println("FindObject: " + type);
-				Exception e = new Exception();
-				e.printStackTrace();
+				//System.out.println("FindObject: " + visited.size());
+				//System.out.println("FindObject: " + crit);
+				//System.out.println("FindObject: " + type);
+				//Exception e = new Exception();
+				//e.printStackTrace();
 				return null;
 			}
 		}

@@ -1,34 +1,47 @@
 package model.entity.bottom;
 
+import java.awt.Point;
+
+import model.RandomWorld;
+import model.World;
 import model.villager.Villager;
 import util.Copyable;
 import util.EntityType;
+import util.Tickable;
 
-public class Bed extends BottomEntity {
+public class Bed extends BottomEntity implements Tickable {
 	
 	private static final long serialVersionUID = 1L;
 	private boolean isClaimedByMale;
 	private boolean isClaimedByFemale;
 	private Villager female;
 	private Villager male;
-	private int UsedBy = 0;
+	private int UsedBy;
 	private float sleepValue = 0.2f;
+	private Villager savedVillager;
+	private World w;
+	private int x,y;
 
-	public Bed(int x, int y) {
+	public Bed(int x, int y, World w) {
 		super(x, y, EntityType.BED, false);
 		this.male = null;
 		this.female = null;
 		this.isClaimedByFemale = false;
 		this.isClaimedByMale = false;
+		this.w = w;
+		this.x = x;
+		this.y = y;
+		this.UsedBy=0;
 	}
 
 	public Copyable copy() {
-		Bed copy = new Bed(x,y);
+		Bed copy = new Bed(x,y,w);
 		copy.isClaimedByFemale = isClaimedByFemale;
 		copy.isClaimedByMale = isClaimedByMale;
 		copy.female = female;
 		copy.male = male;
 		copy.UsedBy = UsedBy;
+		copy.savedVillager = savedVillager;
 		return copy;
 	}
 	
@@ -110,15 +123,57 @@ public class Bed extends BottomEntity {
 	}
 
 	public void setUsed() {
-		UsedBy+=1;
+		UsedBy = UsedBy+1;
 	}
 	
 	public void removeUsed() {
-		UsedBy-=1;
+		UsedBy = UsedBy-1;
 	}
 
 	public boolean isFree() {
 		return (isClaimedByMale == false && isClaimedByFemale == false);
+		
+	}
+	
+	public void setSaved(Villager v){
+		this.savedVillager = v;
+	}
+	
+	public Villager getSaved(){
+		return savedVillager;
+	}
+	
+	public void use(Villager v){
+		v.setBlocking(false);
+		if(v.isMale() && !isClaimedByMale){
+			setMale(v);
+			setClaimedByMale(true);
+		}else if(v.isFemale() && !isClaimedByFemale){
+			setFemale(v);
+			setClaimedByFemale(true);
+		}
+		setUsed();
+		if(savedVillager == null)
+			savedVillager = v;
+	}
+	
+	public void stopUsing(Villager v){
+		removeUsed();
+		v.setBlocking(true);
+		//System.out.println("Bed: Used by: "+UsedBy());
+		if(savedVillager == v && UsedBy() > 0){
+			savedVillager=getOther(v);
+			w.addEntity(new Point(x,y),savedVillager);
+		}else if(savedVillager == v){
+			savedVillager = null;
+		}else if(savedVillager != v){
+			w.addEntity(new Point(x,y),savedVillager);
+		}
+	}
+
+	@Override
+	public void tick() {
+		// TODO Auto-generated method stub
 		
 	}
 

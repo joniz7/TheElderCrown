@@ -33,26 +33,23 @@ public class SleepAction extends Action {
 		name = "Sleeping";
 		this.thisBed = thisBed;
 		this.firstTick = true;
-		villager.setBlocking(false);
+		//villager.setBlocking(false);
 	}
 
 
 	@Override
 	public void tick(ImpactableByAction world){
-//		if(FindObject.findTile2((TestWorld) world, EntityType.HOUSE_FLOOR, villager.getX(), villager.getY()) != null) {
-//		System.out.println("SLEEP!!!");
 		
 		if(FindEntity.standingOnTile(world, EntityType.BED, villager.getX(), villager.getY())){
 			if(this.firstTick){
 				//System.out.println("Sleeping on bed!");
-				//villager.setBlocking(false);
-				thisBed.setUsed();
-				System.out.println("Bed used by: "+thisBed.UsedBy());
+				thisBed.use(villager);
+				//System.out.println("Bed used by: "+thisBed.UsedBy());
 				firstTick = false;
 			}
 			if(thisBed.UsedBy() > 1){
 				villager.updateStatus("cuddling");
-				//System.out.println("Bed used by: "+thisBed.UsedBy());
+				//System.out.println("Bed used by >1!");
 				name = "Cuddling";
 				villager.setPregnant(true);
 			}else{
@@ -61,9 +58,8 @@ public class SleepAction extends Action {
 			villager.satisfySleep(thisBed.getSleepValue());
 			if(villager.getSleepiness() >= Constants.MAX_SLEEP){
 				//if(villager.getMostNeed() > villager.getSleepiness() + 50){
-					villager.setBlocking(true);
 					villager.updateStatus("statusEnd");
-					thisBed.removeUsed();
+					thisBed.stopUsing(villager);
 					actionFinished();
 				//}
 			}
@@ -71,7 +67,7 @@ public class SleepAction extends Action {
 		}else if(FindEntity.standingOnTile(world, EntityType.GRASS_TILE, villager.getX(), villager.getY())){
 			if(this.firstTick){
 				//System.out.println("Sleeping on grass!");
-				villager.setBlocking(false);
+				//villager.setBlocking(false);
 				villager.updateStatus("sleeping");
 				firstTick = false;
 			}
@@ -84,7 +80,7 @@ public class SleepAction extends Action {
 		}else if(FindEntity.standingOnTile(world, EntityType.HOUSE_FLOOR, villager.getX(), villager.getY())){
 			if(this.firstTick){
 				//System.out.println("Sleeping on floor!");
-				villager.setBlocking(false);
+				//villager.setBlocking(false);
 				villager.updateStatus("sleeping");
 				firstTick = false;
 			}

@@ -6,6 +6,7 @@ import java.util.Iterator;
 import java.util.Map.Entry;
 
 import model.entity.Agent;
+import model.entity.bottom.Bed;
 import model.entity.mid.MidEntity;
 import model.item.Item;
 import model.path.FindEntity;
@@ -51,10 +52,11 @@ public class Villager extends MidEntity implements Agent {
 	private int sex; // 0 -female, 1 - male
 	private int deathrisk; //The deathrisk based on age.
 	private int modifier;
-	private Point myBed = null;
+	private Point myBedPos = null;
 	private int time;
 	private Item activeItem;
 	private Item[] inventory = new Item[6];
+	private Bed myBed;
 
 	private HashMap<Point, Villager> nearbyVillagers;
 	private HashMap<Point, Agent> nearbyAgents;
@@ -308,7 +310,7 @@ public class Villager extends MidEntity implements Agent {
 	}
 	
 	private void seeIfBirthday(){
-		if(ageprog>100){
+		if(ageprog>12*Constants.TICKS_HOUR){
 			age++;
 			ageprog=0;
 			if(age>30){				
@@ -430,12 +432,21 @@ public class Villager extends MidEntity implements Agent {
 	}
 	
 	public void setBed(Point p){
-		this.myBed = p;
+		this.myBedPos = p;
 	}
 	
 	public Point getBedPos(){
+		return myBedPos;
+	}
+	
+	public void setBed(Bed b){
+		this.myBed = b;
+	}
+	
+	public Bed getBed(){
 		return myBed;
 	}
+	
 	
 	//Naming? Should return the lowest value, but its the mostly needed one since needs are negative
 	public float getMostNeed(){
@@ -578,6 +589,7 @@ public class Villager extends MidEntity implements Agent {
 			System.out.println("Villager: "+name+" got pregnant! Hooray!");
 			return true;
 		}else{
+			//System.out.println("Villager " +name+ " " +isFemale() +" " +age+ " " +isPregnant);
 			return false;
 		}
 	}
