@@ -143,7 +143,7 @@ public class Villager extends MidEntity implements Agent {
 		
 		// If we see any other villagers, we may initiate an interaction
 		if (p.hasVillagers()) {
-			maybeSocialise(p.villagers);
+//			maybeSocialise(p.villagers);
 		}
 		
 		// If order was received, take it into consideration when planning
