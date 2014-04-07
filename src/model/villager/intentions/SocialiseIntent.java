@@ -24,8 +24,8 @@ public class SocialiseIntent extends Intent{
 
 	@Override
 	public void calculateDesire() {
+		// TODO weight with relation
 		setDesire(-villager.getSocial() * 4);
-//		System.out.println("EatIntent: " + desire);
 	}
 	
 	@Override

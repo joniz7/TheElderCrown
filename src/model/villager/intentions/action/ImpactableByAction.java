@@ -13,7 +13,7 @@ import model.villager.order.Order;
  * actions to affect it without dependency issues.
  * 
  * @author Karl-Agnes
- *
+ * TODO remove
  */
 public interface ImpactableByAction {
 
@@ -31,6 +31,6 @@ public interface ImpactableByAction {
 
 	HashMap<Point, Entity> getTopEntities();
 
-	// void addOrder(Order o);
+	void addOrder(Order o);
 
 }

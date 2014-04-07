@@ -39,10 +39,7 @@ public class SocialiseInitPlan extends Plan{
 		actionQueue.addLast(new WaitForAction(villager, otherPos, otherId));
 		
 		// TalkAction
-		actionQueue.addLast(new TalkAction(villager, otherPos, otherId));
-		
-		System.out.println("Starting to find another villager \n");
-		
+		actionQueue.addLast(new TalkAction(villager, otherPos, otherId));		
 		
 		/*
 		Villager otherVillager = (Villager) FindObject.getAdjacentObject(villager.getWorld(), new isSocial(),

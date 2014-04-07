@@ -16,6 +16,9 @@ public class UtilClass {
 		return rnd.nextInt(dice) + base;
 	}
 	
+	public static boolean askMagicEightBall(){
+		return rnd.nextBoolean();
+	}
 	
 	public static int findMax (int... args) { 
 		int max = -80; 

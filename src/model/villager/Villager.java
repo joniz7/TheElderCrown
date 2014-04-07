@@ -69,7 +69,9 @@ public class Villager extends MidEntity implements Agent {
 	private float currentHunger, currentThirst, currentSleepiness, currentLaziness, currentSocial;
 
 	// Limits, i.e. when we should trigger actions) (modified by modifiers)
-	private float socialLimit = 10; // TODO update
+	// TODO update
+	private float socialLimit = 10; // Limit for sending invitations
+	private float socialLimitAccept = 5; // Limit for accepting invitatios 
 
 	public Villager(Point p, int age){
 		super(p.x, p.y, EntityType.VILLAGER);
@@ -147,7 +149,8 @@ public class Villager extends MidEntity implements Agent {
 		
 		// If order was received, take it into consideration when planning
 		// (Note: SocialiseOrder not processed here atm)
-		else if (p.order != null) {
+		if (p.order != null &&
+				!(p.order.getIntent() instanceof SocialiseIntent)) {
 			addOrder(p.order);
 		}
 		
@@ -182,7 +185,7 @@ public class Villager extends MidEntity implements Agent {
 	private void maybeSocialise(Perception p) {
 
 		HashMap<Point, Villager> villagers = p.villagers;
-		boolean socialise = true;
+		boolean initSocialise = true;
 		
 		// Did we get social invitation?
 		if (p.order != null && p.order.getIntent() instanceof SocialiseIntent) {
@@ -199,24 +202,41 @@ public class Villager extends MidEntity implements Agent {
 					// Rule: the lowest ID gets to be the initiator
 					if (this.getId() > plan.getOtherId()) {
 						// TODO scrap our plan
-						socialise = false;
 						ih.addIntent(receivedIntent);
 					} else if (this.getId() == plan.getOtherId()) {
 						System.err.println("Warning: got a SocialiseOrder from ourselves!");
 					} else {
 						// Proceed with sending invitation below
 					}
+				}
+				// We got invitation from someone else, but we're planning to initate.
+				// Whom do we choose?
+				else {
+					// TODO check relations
+					if (UtilClass.askMagicEightBall()) {
+						// Should accept invitation
+						// TODO scrap our plan
+						ih.addIntent(receivedIntent);
+					} else {
+						// Should send invitation below
+					}
 					
 				}
+			}
+			// Not already initiating interaction. Do I wanna interact with sender?
+			// TODO relation
+			else if (currentSocial < socialLimitAccept) {
+				initSocialise = false;
+				ih.addIntent(receivedIntent);
 			}
 		} // end order
 		
 		// Abort if already socialising (TODO should be smarter?)
 		if (activePlan instanceof SocialiseInitPlan || activePlan instanceof SocialisePlan) {
-			socialise = false;
+			initSocialise = false;
 		}
 		
-		if (socialise && currentSocial < socialLimit) {
+		if (initSocialise && currentSocial < socialLimit) {
 			
 			// Initialise a social interaction
 			Entry<Point, Villager> other = getBestFriend(villagers);

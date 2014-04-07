@@ -176,5 +176,10 @@ public abstract class Entity implements Copyable, Serializable {
 		}
 		return false;
 	}
+
+	@Override
+	public String toString() {
+		return "Entity [type=" + type + ", id=" + id + "]";
+	}
 	
 }

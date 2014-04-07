@@ -35,7 +35,7 @@ public class TalkAction extends Action {
 		if (--ticksToTalk < 0) {
 			actionSuccess();
 		} else {
-			System.out.println("talking to "+otherId+", social: "+villager.getSocial());
+//			System.out.println("talking to "+otherId+", social: "+villager.getSocial());
 			villager.satisfySocial(satisfyAmount);
 		}
 	}

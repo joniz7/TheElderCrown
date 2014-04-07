@@ -9,6 +9,7 @@ import java.util.Set;
 import model.entity.Entity;
 import model.entity.bottom.NullTile;
 import model.villager.intentions.action.ImpactableByAction;
+import model.villager.order.Order;
 
 import org.newdawn.slick.util.pathfinding.PathFindingContext;
 import org.newdawn.slick.util.pathfinding.TileBasedMap;
@@ -114,5 +115,13 @@ public class AgentWorld implements TileBasedMap, ImpactableByAction {
 			ent = it.next();
 			topEntities.put(ent.getKey(), ent.getValue());
 		}
+	}
+	
+	/**
+	 * Do not use!
+	 */
+	public void addOrder(Order o) {
+		// hihi
+		throw new StackOverflowError();
 	}
 }
