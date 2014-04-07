@@ -38,8 +38,7 @@ public class IntentionHandler {
 	
 	public void update(){
 		
-		
-		// Calculate all intent's desires
+		// Calculate all intents' desires
 		for (Intent p : pq) {
 			p.calculateDesire();
 		}

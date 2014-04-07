@@ -21,7 +21,7 @@ public class TalkAction extends Action {
 		
 		ticksToTalk = 300;
 		// TODO base this on how much we like the other villager
-		satisfyAmount = 0.0015f;
+		satisfyAmount = 0.15f;
 		this.otherId = otherId;
 		this.otherPos = otherPos;
 		

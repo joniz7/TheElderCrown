@@ -27,4 +27,9 @@ public class SocialiseIntent extends Intent{
 		setDesire(-villager.getSocial() * 4);
 //		System.out.println("EatIntent: " + desire);
 	}
+	
+	@Override
+	public String toString() {
+		return super.toString()+", otherPos: "+otherPos+", otherId:"+otherId;
+	}
 }

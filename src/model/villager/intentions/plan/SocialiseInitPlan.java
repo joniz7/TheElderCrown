@@ -18,6 +18,8 @@ import model.villager.order.Order;
  */
 public class SocialiseInitPlan extends Plan{
 
+	private int otherId;
+	
 	/**
 	 * Create a new SocialisePlan.
 	 * 
@@ -27,6 +29,8 @@ public class SocialiseInitPlan extends Plan{
 	 */
 	public SocialiseInitPlan(Villager villager, Order otherOrder, Point otherPos, int otherId) {
 		super(villager, "Starting social interaction");
+		
+		this.otherId = otherId;
 		
 		// IssueOrderAction
 		actionQueue.addLast(new IssueOrderAction(villager, otherOrder));
@@ -61,6 +65,13 @@ public class SocialiseInitPlan extends Plan{
 		actionQueue.addLast(new SocialAction(villager));
 		*/
 		
+	}
+	
+	/**
+	 * Returns the villager we're initiating a social action with
+	 */
+	public int getOtherId() {
+		return otherId;
 	}
 
 }

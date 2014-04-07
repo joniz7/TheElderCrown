@@ -142,11 +142,12 @@ public class Villager extends MidEntity implements Agent {
 		
 		// If we see any other villagers, we may initiate an interaction
 		if (p.hasVillagers()) {
-			maybeSocialise(p.villagers);
+			maybeSocialise(p);
 		}
 		
 		// If order was received, take it into consideration when planning
-		if (p.order != null) {
+		// (Note: SocialiseOrder not processed here atm)
+		else if (p.order != null) {
 			addOrder(p.order);
 		}
 		
@@ -176,14 +177,46 @@ public class Villager extends MidEntity implements Agent {
 	/**
 	 * Maybe initialise an interaction with another villager,
 	 * if our social need/relation is high enough.
+	 * Also processes possible SocialiseOrders.
 	 */
-	private void maybeSocialise(HashMap<Point, Villager> villagers) {
+	private void maybeSocialise(Perception p) {
 
-		if (currentSocial < socialLimit) {		
-			// Abort if already socialising (TODO should be smarter?)
-			if (activePlan instanceof SocialiseInitPlan || activePlan instanceof SocialisePlan) {
-				return;
+		HashMap<Point, Villager> villagers = p.villagers;
+		boolean socialise = true;
+		
+		// Did we get social invitation?
+		if (p.order != null && p.order.getIntent() instanceof SocialiseIntent) {
+			SocialiseIntent receivedIntent = (SocialiseIntent) p.order.getIntent();
+			
+			System.out.println("Received social invitation! "+receivedIntent);
+			
+			// Are we already initiating a social interaction?
+			if (activePlan instanceof SocialiseInitPlan) {
+				SocialiseInitPlan plan = (SocialiseInitPlan)activePlan;
+				// We got an invitation from the one we want to invite
+				if (plan.getOtherId() == p.order.getFromId()) {
+					
+					// Rule: the lowest ID gets to be the initiator
+					if (this.getId() > plan.getOtherId()) {
+						// TODO scrap our plan
+						socialise = false;
+						ih.addIntent(receivedIntent);
+					} else if (this.getId() == plan.getOtherId()) {
+						System.err.println("Warning: got a SocialiseOrder from ourselves!");
+					} else {
+						// Proceed with sending invitation below
+					}
+					
+				}
 			}
+		} // end order
+		
+		// Abort if already socialising (TODO should be smarter?)
+		if (activePlan instanceof SocialiseInitPlan || activePlan instanceof SocialisePlan) {
+			socialise = false;
+		}
+		
+		if (socialise && currentSocial < socialLimit) {
 			
 			// Initialise a social interaction
 			Entry<Point, Villager> other = getBestFriend(villagers);
@@ -203,7 +236,7 @@ public class Villager extends MidEntity implements Agent {
 			// Create SocialiseInitIntent for myself
 			SocialiseInitIntent initIntent = new SocialiseInitIntent(this, socialiseOrder, nearbyPos, otherVillager.getId());
 			// TODO is weighted properly?
-//			ih.addIntent(initIntent);
+			ih.addIntent(initIntent);
 		}
 		
 	}

@@ -27,5 +27,9 @@ public abstract class Intent{
 		this.desire = desire;
 	}
 	
+	@Override
+	public String toString() {
+		return "villager: "+villager+", desire:"+desire; 
+	}
 	
 }
