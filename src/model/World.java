@@ -47,7 +47,7 @@ public abstract class World implements Tickable, TileBasedMap, PropertyChangeLis
 	protected List<Tickable> tickables;
 	
 	// Agents (e.g. villagers)
-	protected HashMap<Point, Agent> agents;
+	protected HashMap<Point, Agent> agents, sleepingAgents;
 
 	// Cursor position
 	protected Point cPos;
@@ -96,6 +96,7 @@ public abstract class World implements Tickable, TileBasedMap, PropertyChangeLis
 		
 		tickables  = new ArrayList<Tickable>();
 		agents = new HashMap<Point, Agent>();
+		sleepingAgents = new HashMap<Point, Agent>();
 		orders = new LinkedList<Order>();
 		villages = new ArrayList<Point>(VILLAGE_COUNT);
 		for(int i=0;i<VILLAGE_COUNT;i++){
@@ -117,6 +118,14 @@ public abstract class World implements Tickable, TileBasedMap, PropertyChangeLis
 		
 		shouldExit = false;
 	}
+    
+    public void addSleeping(Villager vill, Point p){
+    	sleepingAgents.put(p, vill);
+    }
+    
+    public void removeSleeping(Point p){
+    	sleepingAgents.remove(p);
+    }
 	
 	@Override
 	public void tick(){
@@ -157,95 +166,105 @@ public abstract class World implements Tickable, TileBasedMap, PropertyChangeLis
 		// Update all villagers
 		HashMap<Point, Agent> temp = (HashMap<Point, Agent>)agents.clone();
 		Iterator<Map.Entry<Point, Agent>> it = temp.entrySet().iterator();
+		
+		HashMap<Point, Agent> sleeping = (HashMap<Point, Agent>)sleepingAgents.clone();
+		Iterator<Map.Entry<Point, Agent>> it2 = sleeping.entrySet().iterator();
 
+
+		//build perception
+		while(it.hasNext()) {
+			CreatePerception(it);
+		}
+		while(it2.hasNext()){
+			CreatePerception(it2);
+		}
+	}
+	
+	private void CreatePerception(Iterator<Map.Entry<Point, Agent>> it){
 		HashMap<Point, Entity> tempBotEnt;
 		HashMap<Point, Entity> tempMidEnt;
 		HashMap<Point, Entity> tempTopEnt;
 		Perception perception;
+		
+		tempBotEnt = new HashMap<Point, Entity>();
+		tempMidEnt = new HashMap<Point, Entity>();
+		tempTopEnt = new HashMap<Point, Entity>();
+		perception = new Perception();
 
-		//build perception
-		while(it.hasNext()) {
-			tempBotEnt = new HashMap<Point, Entity>();
-			tempMidEnt = new HashMap<Point, Entity>();
-			tempTopEnt = new HashMap<Point, Entity>();
-			perception = new Perception();
-
-			Map.Entry<Point, Agent> e = (Map.Entry<Point, Agent>) it.next();
-			if(e.getValue().isDead()){
-				//TODO MAybe remove from list of agents... Handle the dead?
-			}
-			perception.northwestVillageCorner = new Point(villages.get(e.getValue().getHome()).x-VILLAGE_SIZE/2,
-					villages.get(e.getValue().getHome()).y-VILLAGE_SIZE/2);
-			perception.southeastVillageCorner = new Point(villages.get(e.getValue().getHome()).x+VILLAGE_SIZE/2,
-					villages.get(e.getValue().getHome()).y+VILLAGE_SIZE/2);
-			
-			perception.position = e.getKey();
-			Agent agent = e.getValue();
-			Entity entity = (Entity)agent;
-
-			for(int i=(-VIEW_DISTANCE); i<VIEW_DISTANCE*2; i++){
-				for(int j=(-VIEW_DISTANCE); j<VIEW_DISTANCE*2; j++){
-					Point p = new Point(perception.position.x+i,perception.position.y+j);
-					if(botEntities.get(p) != null){
-						tempBotEnt.put(p, botEntities.get(p));
-					}
-
-					Entity midEntity = midEntities.get(p); 
-					if(midEntity != null){
-						
-						// If we see another agent which is not us,
-						if ((midEntity instanceof Agent) 
-								&& !midEntity.equals(entity)) {
-							// Create agent hashmap if not exists
-							if (perception.agents == null) {
-								perception.agents = new HashMap<Point, Agent>();
-							}
-							// Add to the observed agents
-							perception.agents.put(p, (Agent)midEntity);
-							
-							// Is he/she is a villager?
-							if (midEntity.getType() == EntityType.VILLAGER) {
-								// Create villager hashmap if not exists
-								if (perception.villagers == null) {
-									perception.villagers = new HashMap<Point, Villager>();
-								}
-								// Add to the observed villagers
-								perception.villagers.put(p, (Villager)midEntity);
-							}	
-						}
-						// Entity is regular midEntity
-						else {
-							tempMidEnt.put(p, midEntity);
-						}
-					}
-					
-					
-					if(topEntities.get(p) != null){
-						tempTopEnt.put(p, topEntities.get(p));
-					}
-				}
-			}
-			perception.botEntities = tempBotEnt;
-			perception.midEntities = tempMidEnt;
-			perception.topEntities = tempTopEnt;
-
-			// Has this agent been given an order?
-			for(Order o : orders) {
-				if (o.getToId() == entity.getId()) {
-					// Send order information in update 
-					perception.order = o;
-					orders.remove(o);		
-				}
-			}
-
-			agent.update(perception, time);
-			Action activeAction = agent.getAction();
-			if(activeAction != null && !activeAction.isFailed() && !activeAction.isFinished())
-				activeAction.tick(this);
-			else
-				agent.actionDone();
-
+		Map.Entry<Point, Agent> e = (Map.Entry<Point, Agent>) it.next();
+		if(e.getValue().isDead()){
+			//TODO MAybe remove from list of agents... Handle the dead?
 		}
+		perception.northwestVillageCorner = new Point(villages.get(e.getValue().getHome()).x-VILLAGE_SIZE/2,
+				villages.get(e.getValue().getHome()).y-VILLAGE_SIZE/2);
+		perception.southeastVillageCorner = new Point(villages.get(e.getValue().getHome()).x+VILLAGE_SIZE/2,
+				villages.get(e.getValue().getHome()).y+VILLAGE_SIZE/2);
+		
+		perception.position = e.getKey();
+		Agent agent = e.getValue();
+		Entity entity = (Entity)agent;
+
+		for(int i=(-VIEW_DISTANCE); i<VIEW_DISTANCE*2; i++){
+			for(int j=(-VIEW_DISTANCE); j<VIEW_DISTANCE*2; j++){
+				Point p = new Point(perception.position.x+i,perception.position.y+j);
+				if(botEntities.get(p) != null){
+					tempBotEnt.put(p, botEntities.get(p));
+				}
+
+				Entity midEntity = midEntities.get(p); 
+				if(midEntity != null){
+					
+					// If we see another agent which is not us,
+					if ((midEntity instanceof Agent) 
+							&& !midEntity.equals(entity)) {
+						// Create agent hashmap if not exists
+						if (perception.agents == null) {
+							perception.agents = new HashMap<Point, Agent>();
+						}
+						// Add to the observed agents
+						perception.agents.put(p, (Agent)midEntity);
+						
+						// Is he/she is a villager?
+						if (midEntity.getType() == EntityType.VILLAGER) {
+							// Create villager hashmap if not exists
+							if (perception.villagers == null) {
+								perception.villagers = new HashMap<Point, Villager>();
+							}
+							// Add to the observed villagers
+							perception.villagers.put(p, (Villager)midEntity);
+						}	
+					}
+					// Entity is regular midEntity
+					else {
+						tempMidEnt.put(p, midEntity);
+					}
+				}
+				
+				
+				if(topEntities.get(p) != null){
+					tempTopEnt.put(p, topEntities.get(p));
+				}
+			}
+		}
+		perception.botEntities = tempBotEnt;
+		perception.midEntities = tempMidEnt;
+		perception.topEntities = tempTopEnt;
+
+		// Has this agent been given an order?
+		for(Order o : orders) {
+			if (o.getToId() == entity.getId()) {
+				// Send order information in update 
+				perception.order = o;
+				orders.remove(o);		
+			}
+		}
+
+		agent.update(perception, time);
+		Action activeAction = agent.getAction();
+		if(activeAction != null && !activeAction.isFailed() && !activeAction.isFinished())
+			activeAction.tick(this);
+		else
+			agent.actionDone();
 	}
 
 	/**

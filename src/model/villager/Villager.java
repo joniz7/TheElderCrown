@@ -340,7 +340,7 @@ public class Villager extends MidEntity implements Agent {
 				activePlan = ih.getFirstPlan();
 //				System.out.println(activePlan);
 			}else if(mustBirth()){
-				System.out.println("BIRTHPLAN");
+				System.out.println("BIRTHPLAN: " +name);
 				activePlan=new BirthPlan(this);
 			}else if(mustExplore){
 //				System.out.println("Creating ExplorePlan");
@@ -597,6 +597,11 @@ public class Villager extends MidEntity implements Agent {
 	}
 	
 	public boolean setPregnant(boolean value){
+		
+		if(value==false){
+			isPregnant=false;
+		}
+		
 		if(isFemale() && age>=15 && isPregnant == false){
 			isPregnant = value;
 			this.pregnantTime = 0;
@@ -609,7 +614,7 @@ public class Villager extends MidEntity implements Agent {
 	}
 	
 	private boolean mustBirth(){
-		if(pregnantTime >= Constants.TICKS_HOUR)
+		if(pregnantTime >= Constants.TICKS_HOUR && isPregnant)
 			return true;
 		else
 			return false;
