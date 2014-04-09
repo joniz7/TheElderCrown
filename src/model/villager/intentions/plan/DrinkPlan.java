@@ -24,7 +24,8 @@ public class DrinkPlan extends Plan{
 		if(FindEntity.isAdjacentTile(villager.getWorld(), EntityType.WATER_TILE, 
 			villager.getX(), villager.getY())){
 			
-			actionQueue.addLast(new DrinkAction(villager));
+			addAction(new DrinkAction(villager));
+
 			System.out.println("ALREADY ADJACENT WATER");
 			return;
 		}
@@ -44,21 +45,30 @@ public class DrinkPlan extends Plan{
 			if(p2 != null){
 				movePath2 = PathFinder.getPathToAdjacent(villager.getX(), villager.getY(), p2.x, p2.y);
 				if(movePath2.getLength() >= movePath.getLength()){
-					actionQueue.add(new MoveAction(villager, movePath));
+					addAction(new MoveAction(villager, movePath));
 				}else if(movePath.getLength() > movePath2.getLength()){
-					actionQueue.add(new MoveAction(villager, movePath2));
+					addAction(new MoveAction(villager, movePath2));
 				}
-				actionQueue.addLast(new DrinkAction(villager));
+				addAction(new DrinkAction(villager));
 				return;
 			}
 		}else if(p2 != null){
 			Path movePath = PathFinder.getPathToAdjacent(villager.getX(), villager.getY(), p2.x, p2.y);
-			actionQueue.add(new MoveAction(villager, movePath));
-			actionQueue.addLast(new DrinkAction(villager));
+			
+			addAction(new MoveAction(villager, movePath));
+			
+			
+			addAction(new DrinkAction(villager));
 		}
 		else{
 			villager.setExplore();
 			isFinished=true;
 		}
+	}
+	
+	@Override
+	public void retryAction() {
+		// TODO Auto-generated method stub
+		
 	}
 }

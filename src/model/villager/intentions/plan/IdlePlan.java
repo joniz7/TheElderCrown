@@ -19,6 +19,12 @@ public class IdlePlan extends Plan {
 	public IdlePlan(Villager villager){
 		super(villager, "Just chillin");
 		actionQueue = new LinkedList<Action>();
-		actionQueue.addLast(new IdleAction(villager));
+		addAction(new IdleAction(villager));
+	}
+
+	@Override
+	public void retryAction() {
+		// TODO Auto-generated method stub
+		
 	}
 }
