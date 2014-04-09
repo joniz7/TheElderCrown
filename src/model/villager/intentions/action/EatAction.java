@@ -13,7 +13,6 @@ public class EatAction extends Action{
 	
 	public EatAction(Villager villager) {
 		super(villager, "Eating");
-
 	}
 
 	@Override
@@ -27,7 +26,6 @@ public class EatAction extends Action{
 				villager.satisfyHunger(f.eaten());
 				// We're done eating
 				if(villager.getHunger() >= Constants.MAX_HUNGER){
-					villager.updateStatus("statusEnd");
 					// EatPlan succeeded
 					success();
 				}else if(f.consumed()){
@@ -47,8 +45,7 @@ public class EatAction extends Action{
 			villager.setActiveItem(fs.getFood());
 		}
 		// No food could be found
-		else{
-			villager.updateStatus("statusEnd");
+		else {
 			// Fail EatPlan
 			fail();
 		}

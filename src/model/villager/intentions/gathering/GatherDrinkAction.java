@@ -18,22 +18,23 @@ public class GatherDrinkAction extends Action{
 
 	@Override
 	public void tick(ImpactableByAction world){
+		
+		// Are we standing next to water?
 		if(FindEntity.isAdjacentTile(villager.getWorld(), EntityType.WATER_TILE, villager.getX(),
 				villager.getY())) {
-
 			stacks++;
 			if(stacks >= stacksToStore){
 				if(!villager.addToInventory(new WaterBowl())){
 					System.out.println("WATER FINISHED " + count);
-					villager.updateStatus("statusEnd");
-					actionSuccess();
+					success();
 				}
 				count++;
 				stacks = 0;
 			}
-		}else{
-			villager.updateStatus("statusEnd");
-			actionFail();
+		}
+		// Not standing next to water
+		else{
+			fail();
 		}
 	}
 

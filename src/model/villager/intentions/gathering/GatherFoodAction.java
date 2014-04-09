@@ -19,23 +19,24 @@ public class GatherFoodAction extends Action{
 
 	@Override
 	public void tick(ImpactableByAction world){
+		
+		// Standing next to food?
 		if(FindEntity.getAdjacentObject(villager.getWorld(), new HasFood(), EntityType.TREE, villager.getX(),
 				villager.getY()) != null) {
 			Tree tree = (Tree) FindEntity.getAdjacentObject(villager.getWorld(), new HasFood(), EntityType.TREE, villager.getX(),
 					villager.getY());
 			stacks++;
+			// Done picking food
 			if(stacks >= stacksToStore){
 				if(!villager.addToInventory(tree.getFood())){
-					villager.updateStatus("statusEnd");
-					System.out.println("GATHERFOOD FINISHED");
-					actionSuccess();
+					success();
 				}
 				stacks = 0;
 			}
-		}else{
-			villager.updateStatus("statusEnd");
-			System.out.println("GATHERFOOD FAILED");
-			actionFail();
+		}
+		// Not standing next to food
+		else{
+			fail();
 		}
 	}
 

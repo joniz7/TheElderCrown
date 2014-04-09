@@ -75,6 +75,7 @@ public abstract class Action {
 	 * This moves forward in the plan. 
 	 */
 	protected final void success() {
+		villager.updateStatus("statusEnd"); // update image
 		pcs.firePropertyChange("status", null, "success");
 	}
 	
@@ -83,6 +84,7 @@ public abstract class Action {
 	 * This makes the plan create a new instance of this Action  
 	 */
 	protected final void retry() {
+		villager.updateStatus("statusEnd"); // update image
 		pcs.firePropertyChange("status", null, "retry");
 	}
 	
@@ -91,6 +93,7 @@ public abstract class Action {
 	 * This fails the entire plan - use with caution
 	 */
 	protected final void fail() {
+		villager.updateStatus("statusEnd"); // update image
 		pcs.firePropertyChange("status", null, "fail");
 	}
 	

@@ -21,6 +21,8 @@ public class StoreFoodAction extends Action{
 
 	@Override
 	public void tick(ImpactableByAction world){
+		
+		// Standing next to food storage?
 		if(FindEntity.getAdjacentObject(villager.getWorld(), new IsFoodStorage(), EntityType.FOOD_STORAGE, villager.getX(),
 				villager.getY()) != null) {
 			FoodStorage fs = (FoodStorage) FindEntity.getAdjacentObject(villager.getWorld(), new IsFoodStorage(), 
@@ -29,27 +31,28 @@ public class StoreFoodAction extends Action{
 			stacks++;
 			if(stacks >= stacksToStore){
 				Item[] items = villager.getInventory();
-				Food food = null;
+				Food currentFood = null;
 				for(int i = 0; i < items.length; i++)
 					if(items[i] instanceof Food){
-						food = (Food) items[i];
+						currentFood = (Food) items[i];
 						villager.removeFromInventory(i);
 						items[i] = null;
 						break;
 					}
-				
-				if(food == null){
-					villager.updateStatus("statusEnd");
-					actionSuccess();
-				}else{
-					fs.addFood(food);
+				// No more food to store
+				if(currentFood == null){
+					success();
+				}
+				// Store food
+				else{
+					fs.addFood(currentFood);
 				}
 				stacks = 0;
 			}
-		}else{
-			villager.updateStatus("statusEnd");
-			System.out.println("FAIL");
-			actionFail();
+		}
+		// Not standing next to food storage
+		else{
+			fail();
 		}
 	}
 

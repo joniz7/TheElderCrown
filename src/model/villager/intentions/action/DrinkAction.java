@@ -27,7 +27,6 @@ public class DrinkAction extends Action{
 				villager.satisfyThirst(d.drunk());
 				// Finished drinking
 				if(villager.getThirst() >= Constants.MAX_THIRST){
-					villager.updateStatus("statusEnd");
 					// Finish Plan
 					success();
 				}
@@ -61,8 +60,6 @@ public class DrinkAction extends Action{
 		}
 		// No water available anywhere.
 		else {
-			System.out.println("FAILED");
-			villager.updateStatus("statusEnd");
 			// Fail DrinkPlan
 			fail();
 		}
