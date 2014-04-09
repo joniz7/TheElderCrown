@@ -21,9 +21,9 @@ public class StoreFoodAction extends Action{
 
 	@Override
 	public void tick(ImpactableByAction world){
-		if(FindEntity.getAdjacentObject(world, new IsFoodStorage(), EntityType.FOOD_STORAGE, villager.getX(),
+		if(FindEntity.getAdjacentObject(villager.getWorld(), new IsFoodStorage(), EntityType.FOOD_STORAGE, villager.getX(),
 				villager.getY()) != null) {
-			FoodStorage fs = (FoodStorage) FindEntity.getAdjacentObject(world, new IsFoodStorage(), 
+			FoodStorage fs = (FoodStorage) FindEntity.getAdjacentObject(villager.getWorld(), new IsFoodStorage(), 
 					EntityType.FOOD_STORAGE, villager.getX(), villager.getY());
 			
 			stacks++;

@@ -1,7 +1,6 @@
 package model.villager.intentions.action;
 
 import model.villager.Villager;
-import model.villager.VillagersWorldPerception;
 import model.villager.order.Order;
 
 /**

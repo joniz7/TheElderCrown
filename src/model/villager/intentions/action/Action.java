@@ -17,7 +17,7 @@ public abstract class Action {
 	
 	public abstract float getCost();
 	
-	public boolean isFinished() {
+	public boolean isSuccessful() {
 		return isSuccess;
 	}
 

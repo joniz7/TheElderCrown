@@ -39,16 +39,16 @@ public class DrinkAction extends Action{
 				villager.setActiveItem(null);
 				villager.updateStatus("statusEnd");
 			}
-		}else if(FindEntity.isAdjacentTile(world, EntityType.WATER_TILE, villager.getX(),
+		}else if(FindEntity.isAdjacentTile(villager.getWorld(), EntityType.WATER_TILE, villager.getX(),
 				villager.getY())) {
 			System.out.println("FOUND ADJACAENT WATER");
 			villager.updateStatus("drinking");
 			villager.setActiveItem(new WaterBowl());
-		}else if(FindEntity.getAdjacentObject(world, new HasDrink(), null, villager.getX(),
+		}else if(FindEntity.getAdjacentObject(villager.getWorld(), new HasDrink(), null, villager.getX(),
 				villager.getY()) != null) {
 			System.out.println("FOUND ADJACAENT WATER SOURCE");
 			villager.updateStatus("drinking");
-			DrinkSource ds = (DrinkSource) FindEntity.getAdjacentObject(world, new HasDrink(), null, 
+			DrinkSource ds = (DrinkSource) FindEntity.getAdjacentObject(villager.getWorld(), new HasDrink(), null, 
 					villager.getX(), villager.getY());
 			if(ds.hasDrink())
 				villager.setActiveItem(ds.getDrink());

@@ -19,9 +19,9 @@ public class GatherFoodAction extends Action{
 
 	@Override
 	public void tick(ImpactableByAction world){
-		if(FindEntity.getAdjacentObject(world, new HasFood(), EntityType.TREE, villager.getX(),
+		if(FindEntity.getAdjacentObject(villager.getWorld(), new HasFood(), EntityType.TREE, villager.getX(),
 				villager.getY()) != null) {
-			Tree tree = (Tree) FindEntity.getAdjacentObject(world, new HasFood(), EntityType.TREE, villager.getX(),
+			Tree tree = (Tree) FindEntity.getAdjacentObject(villager.getWorld(), new HasFood(), EntityType.TREE, villager.getX(),
 					villager.getY());
 			stacks++;
 			if(stacks >= stacksToStore){

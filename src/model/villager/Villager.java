@@ -111,6 +111,7 @@ public class Villager extends MidEntity implements Agent {
 		System.out.println("New villager created: " + name+ " " +length+"  "+weight+ " " +sex);
 	}
 	
+	@Override
 	public AgentWorld getWorld() {
 		return world;
 	}
@@ -578,11 +579,6 @@ public class Villager extends MidEntity implements Agent {
 	
 	public HashMap<Point, Agent> getNearbyAgents(){
 		return nearbyAgents;
-	}
-
-	@Override
-	public AgentWorld getAgentWorld() {
-		return world;
 	}
 	
 	public void makeElder(){

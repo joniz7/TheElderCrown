@@ -18,7 +18,7 @@ public class GatherDrinkAction extends Action{
 
 	@Override
 	public void tick(ImpactableByAction world){
-		if(FindEntity.isAdjacentTile(world, EntityType.WATER_TILE, villager.getX(),
+		if(FindEntity.isAdjacentTile(villager.getWorld(), EntityType.WATER_TILE, villager.getX(),
 				villager.getY())) {
 
 			stacks++;

@@ -66,7 +66,7 @@ public abstract class World implements Tickable, TileBasedMap, PropertyChangeLis
 	// World configuration
 	private final int VIEW_DISTANCE = 10;
 
-	public final int VILLAGER_COUNT_PER_VILLAGE = 10, VILLAGE_COUNT = 5, VILLAGE_DISTANCE = 40, VILLAGE_SIZE = 20;
+	public final int VILLAGER_COUNT_PER_VILLAGE = 7, VILLAGE_COUNT = 3, VILLAGE_DISTANCE = 40, VILLAGE_SIZE = 20;
 	protected ArrayList<Point> villages;
 	
 	// Keep track of when to spawn babies
@@ -240,7 +240,7 @@ public abstract class World implements Tickable, TileBasedMap, PropertyChangeLis
 
 			agent.update(perception, time);
 			Action activeAction = agent.getAction();
-			if(activeAction != null && !activeAction.isFailed() && !activeAction.isFinished())
+			if(activeAction != null && !activeAction.isFailed() && !activeAction.isSuccessful())
 				activeAction.tick(this);
 			else
 				agent.actionDone();
