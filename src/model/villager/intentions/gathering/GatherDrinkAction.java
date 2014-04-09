@@ -18,7 +18,7 @@ public class GatherDrinkAction extends Action{
 
 	@Override
 	public void tick(ImpactableByAction world){
-		if(FindEntity.isAdjacentTile(world, EntityType.WATER_TILE, villager.getX(),
+		if(FindEntity.isAdjacentTile(villager.getWorld(), EntityType.WATER_TILE, villager.getX(),
 				villager.getY())) {
 
 			stacks++;
@@ -26,14 +26,14 @@ public class GatherDrinkAction extends Action{
 				if(!villager.addToInventory(new WaterBowl())){
 					System.out.println("WATER FINISHED " + count);
 					villager.updateStatus("statusEnd");
-					actionFinished();
+					actionSuccess();
 				}
 				count++;
 				stacks = 0;
 			}
 		}else{
 			villager.updateStatus("statusEnd");
-			actionFailed();
+			actionFail();
 		}
 	}
 

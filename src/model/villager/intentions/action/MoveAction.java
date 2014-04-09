@@ -18,14 +18,11 @@ public class MoveAction extends Action{
 	private int waitTime = 0;
 	private EntityType type;
 	private Criteria crit;
-	private Point des;
 	
 	
 	public MoveAction(Villager villager, Path path) {
 		super(villager, "Moving");
 		this.path = path;
-		if(path!=null)
-			this.des = new Point(path.getX(path.getLength()-1),path.getY(path.getLength()-1));
 	}
 	
 	public MoveAction(Villager villager, EntityType type, Criteria crit) {
@@ -37,35 +34,28 @@ public class MoveAction extends Action{
 	@Override
 	public void tick(ImpactableByAction world) {
 		if(path == null && crit != null){
-			Point p = FindEntity.findTopMidEntityNeighbour(world, 
+			Point p = FindEntity.findTopMidEntityNeighbour(villager.getWorld(), 
 					crit, type, villager.getX(), villager.getY());
 
 			if(p == null){
-				//System.out.println("WATER ABANDONDED ");
+				System.out.println("Didn't find what Villager was looking for");
 				villager.actionDone();
 				villager.disposePlan();
 				villager.clearInventory();
-//				villager.setExplore();
-			}else{
+				villager.setExplore();
+			}else
 				path = PathFinder.getPathToAdjacent(villager.getX(), villager.getY(), 
 						p.x, p.y);
 			type = null;
-			des = (Point) p.clone();
-			}
-		}
-		
-		if(path==null && des != null){
-			path = PathFinder.getPathToAdjacent(villager.getX(), villager.getY(), 
-					des.x, des.y);
 		}
 		
 		if(path == null){
-			actionFailed();
+			actionFail();
 			return;
 		}
 		if(stepCount >= path.getLength()) {
 			//        	System.out.println("Move FINISHED!!!");
-	    	actionFinished();
+	    	actionSuccess();
 	    }else if(!world.blocked(null, path.getStep(stepCount).getX(), 
     			path.getStep(stepCount).getY())){
 	    	waitTime = 0;
@@ -74,7 +64,7 @@ public class MoveAction extends Action{
 			//check if the villager has the next step of the path next to it.
 			if(!(Math.abs(villager.getX()-path.getStep(stepCount).getX())==1 ||
 					Math.abs(villager.getY()-path.getStep(stepCount).getY())==1)){
-				actionFailed();
+				actionFail();
 			}
 			
 			
@@ -104,23 +94,22 @@ public class MoveAction extends Action{
 		} else {
 			waitTime++;
 			if(waitTime > 40){
-				path = null;
-				actionFailed();
+				actionFail();
 //				System.out.println("WAIT!");
 			}
 		}
 	}
 	
 	@Override
-	protected void actionFailed() {
+	protected void actionFail() {
 		villager.updateStatus("statusEnd");
 		isFailed = true;
 	}
 
 	@Override
-	protected void actionFinished() {
+	protected void actionSuccess() {
 		villager.updateStatus("statusEnd");
-		isFinished = true;
+		isSuccess = true;
 	}
 
 	@Override

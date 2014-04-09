@@ -6,6 +6,9 @@ public class IntentComparator implements Comparator<Intent>{
 
 	@Override
 	public int compare(Intent i1, Intent i2) {
+		
+		// TODO take cost into account
+		
 		float i1Total = i1.getDesire();
 		float i2Total = i2.getDesire();
 		

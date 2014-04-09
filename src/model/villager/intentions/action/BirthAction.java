@@ -35,15 +35,15 @@ public class BirthAction extends Action {
 		}
 		stacks++;
 		//if(stacks >= time*Constants.TICKS_HOUR){
-			Point p = FindEntity.FreeTile(world, villager.getX(), villager.getY());
+			Point p = FindEntity.FreeTile(villager.getWorld(), villager.getX(), villager.getY());
 			if(p != null){
 				villager.setBlocking(true);
 				w.newVillager(p, 0,villager.getHome());
 				villager.setPregnant(false);
 				villager.updateStatus("statusEnd");
-				actionFinished();
+				actionSuccess();
 			}else
-				actionFailed();
+				actionFail();
 		//}
 
 	}

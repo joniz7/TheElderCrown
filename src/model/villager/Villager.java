@@ -33,8 +33,6 @@ import model.villager.util.NameGen;
 import util.Constants;
 import util.EntityType;
 import util.UtilClass;
-import view.entity.EntityView;
-import view.entity.mid.VillagerView;
 
 public class Villager extends MidEntity implements Agent {
 
@@ -118,6 +116,7 @@ public class Villager extends MidEntity implements Agent {
 		System.out.println("New villager created: " + name+ " " +length+"  "+weight+ " " +sex);
 	}
 	
+	@Override
 	public AgentWorld getWorld() {
 		return world;
 	}
@@ -148,14 +147,9 @@ public class Villager extends MidEntity implements Agent {
 		seeIfBirthday();
 		adjustNeeds();
 		
-		//Advance pregnancy timer if pregnant
-		if(isPregnant){
-			pregnantTime++;
-		}
-		
 		// If we see any other villagers, we may initiate an interaction
 		if (p.hasVillagers()) {
-			//maybeSocialise(p.villagers);
+//			maybeSocialise(p.villagers);
 		}
 		
 		// If order was received, take it into consideration when planning
@@ -206,7 +200,8 @@ public class Villager extends MidEntity implements Agent {
 			// Find out where we should meet
 			Point nearbyPos = FindEntity.findTileNeighbour(otherVillager.getWorld(), this.getPosition(), otherPos);
 			
-//			System.out.println("I am at "+this.getPosition()+", you should go to "+nearbyPos);
+			// If no nearby tile available, abort TODO wait or something?
+			if (nearbyPos == null) return;
 			
 			// Create SocialiseIntent and order for other villager
 			Intent othersIntent = new SocialiseIntent(otherVillager, nearbyPos, this.getId());
@@ -295,6 +290,18 @@ public class Villager extends MidEntity implements Agent {
 			}
 		}
 	}
+
+	public void satisfySocial(float f){
+		this.currentSocial += f;
+		if(currentSocial > Constants.MAX_SOCIAL){
+			currentSocial = Constants.MAX_SOCIAL;
+			// TODO needed?
+//			if(activePlan instanceof IdlePlan){
+//				disposePlan();
+//				plan();
+//			}
+		}
+	}
 	
 	public void setExplore(){
 		mustExplore=true;
@@ -340,7 +347,7 @@ public class Villager extends MidEntity implements Agent {
 				activePlan = ih.getFirstPlan();
 //				System.out.println(activePlan);
 			}else if(mustBirth()){
-				System.out.println("BIRTHPLAN");
+				System.out.println("BIRTHPLAN: " +name);
 				activePlan=new BirthPlan(this);
 			}else if(mustExplore){
 //				System.out.println("Creating ExplorePlan");
@@ -591,12 +598,17 @@ public class Villager extends MidEntity implements Agent {
 		return nearbyAgents;
 	}
 
-	@Override
+	
 	public AgentWorld getAgentWorld() {
 		return world;
 	}
 	
 	public boolean setPregnant(boolean value){
+		
+		if(value==false){
+			isPregnant=false;
+		}
+		
 		if(isFemale() && age>=15 && isPregnant == false){
 			isPregnant = value;
 			this.pregnantTime = 0;
@@ -609,7 +621,7 @@ public class Villager extends MidEntity implements Agent {
 	}
 	
 	private boolean mustBirth(){
-		if(pregnantTime >= Constants.TICKS_HOUR)
+		if(pregnantTime >= Constants.TICKS_HOUR && isPregnant)
 			return true;
 		else
 			return false;
@@ -619,7 +631,7 @@ public class Villager extends MidEntity implements Agent {
 		isElder = true;
 		pcs.firePropertyChange("status", true, "elder");
 	}
-
+	
 	/**
 	 * A method to check whether or not a point is inside the villagers village.
 	 * 
