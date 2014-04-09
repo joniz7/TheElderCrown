@@ -19,14 +19,17 @@ public class EatAction extends Action{
 	@Override
 	public void tick(ImpactableByAction world){
 		villager.updateStatus("eating");
+		
+		// Are we holding food?
 		if(villager.getActiveItem() instanceof Food){
 			Food f = (Food) villager.getActiveItem();
 			if(!f.consumed()){
 				villager.satisfyHunger(f.eaten());
-
+				// We're done eating
 				if(villager.getHunger() >= Constants.MAX_HUNGER){
 					villager.updateStatus("statusEnd");
-					actionSuccess();
+					// EatPlan succeeded
+					success();
 				}else if(f.consumed()){
 					villager.setActiveItem(null);
 					villager.updateStatus("statusEnd");
@@ -35,14 +38,19 @@ public class EatAction extends Action{
 				villager.setActiveItem(null);
 				villager.updateStatus("statusEnd");
 			}
-		}else if(FindEntity.getAdjacentObject(villager.getWorld(), new HasFood(), null, villager.getX(),
+		}
+		// Are we standing next to a food source?
+		else if(FindEntity.getAdjacentObject(villager.getWorld(), new HasFood(), null, villager.getX(),
 				villager.getY()) != null) {
 			FoodSource fs = (FoodSource) FindEntity.getAdjacentObject(villager.getWorld(), new HasFood(), null, villager.getX(),
 					villager.getY());
 			villager.setActiveItem(fs.getFood());
-		}else{
+		}
+		// No food could be found
+		else{
 			villager.updateStatus("statusEnd");
-			actionFail();
+			// Fail EatPlan
+			fail();
 		}
 			
 
