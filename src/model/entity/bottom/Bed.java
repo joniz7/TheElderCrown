@@ -2,23 +2,22 @@ package model.entity.bottom;
 
 import java.awt.Point;
 
-import model.RandomWorld;
 import model.World;
 import model.villager.Villager;
 import util.Copyable;
+import util.EntityId;
 import util.EntityType;
 import util.Tickable;
 
 public class Bed extends BottomEntity implements Tickable {
 	
 	private static final long serialVersionUID = 1L;
-	private boolean isClaimedByMale;
-	private boolean isClaimedByFemale;
-	private Villager female;
-	private Villager male;
-	private int UsedBy;
+	public static final int UNOCCUPIED_ID = EntityId.nextId();
+	//Claimants are identities saved permanently
+	private int maleClaimantID, femaleClaimantID;
+	//female/male is the villager currently in bed
+	private Villager female, male;
 	private float sleepValue = 0.2f;
-	private Villager savedVillager;
 	private World w;
 	private int x,y;
 
@@ -26,22 +25,19 @@ public class Bed extends BottomEntity implements Tickable {
 		super(x, y, EntityType.BED, false);
 		this.male = null;
 		this.female = null;
-		this.isClaimedByFemale = false;
-		this.isClaimedByMale = false;
+		this.maleClaimantID = UNOCCUPIED_ID;
+		this.femaleClaimantID = UNOCCUPIED_ID;
 		this.w = w;
 		this.x = x;
 		this.y = y;
-		this.UsedBy=0;
 	}
 
 	public Copyable copy() {
 		Bed copy = new Bed(x,y,w);
-		copy.isClaimedByFemale = isClaimedByFemale;
-		copy.isClaimedByMale = isClaimedByMale;
+		copy.maleClaimantID = maleClaimantID;
+		copy.femaleClaimantID = femaleClaimantID;
 		copy.female = female;
 		copy.male = male;
-		copy.UsedBy = UsedBy;
-		copy.savedVillager = savedVillager;
 		return copy;
 	}
 	
@@ -51,25 +47,29 @@ public class Bed extends BottomEntity implements Tickable {
 	}
 
 	public boolean isClaimedByMale() {
-		return isClaimedByMale;
-	}
-
-	public void setClaimedByMale(boolean isClaimedByMale) {
-		this.isClaimedByMale = isClaimedByMale;
+		return !(maleClaimantID == UNOCCUPIED_ID);
 	}
 
 	public boolean isClaimedByFemale() {
-		return isClaimedByFemale;
-	}
-
-	public void setClaimedByFemale(boolean isClaimedByFemale) {
-		this.isClaimedByFemale = isClaimedByFemale;
-	}
-
-	public Villager getFemale() {
-		return female;
+		return !(femaleClaimantID == UNOCCUPIED_ID);
 	}
 	
+	/**
+	 * A method to see whether the male claimant is currently in bed.
+	 * @return true if the male spot is occupied, false otherwise.
+	 */
+	public boolean isMaleInBed(){
+		return male != null;
+	}
+	
+	/**
+	 * A method to see whether the female claimant is currently in bed.
+	 * @return true if the female spot is occupied, false otherwise.
+	 */
+	public boolean isFemaleInBed(){
+		return female != null;
+	}
+
 	/*public Villager getOther(){
 		if(female != null){
 			return female;
@@ -79,6 +79,11 @@ public class Bed extends BottomEntity implements Tickable {
 		return null;
 	}*/
 	
+	/**
+	 * Retrieves the partner of a specific Villager if that Villager is in bed right now.
+	 * @param first The Villager that you want to find the partner of.
+	 * @return the partner of the specified Villager, IF it is in bed right now.
+	 */
 	public Villager getOther(Villager first){
 		if(female != null && !female.equals(first)){
 			return female;
@@ -89,86 +94,83 @@ public class Bed extends BottomEntity implements Tickable {
 		}
 	}
 
-	public void setFemale(Villager female) {
-		this.female = female;
+	public void setFemaleClaimant(Villager female) {
+		this.femaleClaimantID = female.getId();
 	}
 
-	public Villager getMale() {
-		return male;
+	public void setMaleClaimant(Villager male) {
+		this.maleClaimantID = male.getId();
 	}
 
-	public void setMale(Villager male) {
-		this.male = male;
+	public void removeFemaleClaimant(){
+		femaleClaimantID = 0;
 	}
 	
-	public void removeFemale(){
-		this.female = null;
-	}
-	
-	public void removeMale(){
-		this.male = null;
+	public void removeMaleClaimant(){
+		maleClaimantID = 0;
 	}
 	
 	public void removeMe(Villager vill){
-		if(female == vill){
-			this.female=null;
-		}else if(male == vill){
+		if(female.equals(vill)){
+			this.female = null;
+			this.femaleClaimantID = UNOCCUPIED_ID;
+		}else if(male.equals(vill)){
 			this.male = null;
+			this.maleClaimantID = UNOCCUPIED_ID;
 		}
 	}
-
-
-	public int UsedBy() {
-		return UsedBy;
-	}
-
-	public void setUsed() {
-		UsedBy = UsedBy+1;
-	}
 	
-	public void removeUsed() {
-		UsedBy = UsedBy-1;
-	}
-
+	/**
+	 * A method to check whether or not the bed is totally free;
+	 * @return
+	 */
 	public boolean isFree() {
-		return (isClaimedByMale == false && isClaimedByFemale == false);
+		return (maleClaimantID == UNOCCUPIED_ID && femaleClaimantID == UNOCCUPIED_ID);
 		
 	}
 	
-	public void setSaved(Villager v){
-		this.savedVillager = v;
-	}
-	
-	public Villager getSaved(){
-		return savedVillager;
-	}
-	
-	public void use(Villager v){
-		v.setBlocking(false);
-		if(v.isMale() && !isClaimedByMale){
-			setMale(v);
-			setClaimedByMale(true);
-		}else if(v.isFemale() && !isClaimedByFemale){
-			setFemale(v);
-			setClaimedByFemale(true);
+	/**
+	 * Gets a villager into this bed and claims it if it wasn't claimed by anyone else.
+	 * @param v the Villager to get into bed.
+	 * @return True if the Villager got into bed, false otherwise.
+	 */
+	public boolean use(Villager v){
+		if(v.isMale() && (maleClaimantID == UNOCCUPIED_ID || maleClaimantID == v.getId())){
+			maleClaimantID = v.getId();
+			v.setBlocking(false);
+			male = v;
+			return true;
+		}else if(v.isFemale() && (femaleClaimantID == UNOCCUPIED_ID || femaleClaimantID == v.getId())){
+			femaleClaimantID = v.getId();
+			v.setBlocking(false);
+			female = v;
+			return true;
 		}
-		setUsed();
-		if(savedVillager == null)
-			savedVillager = v;
+		return false;
 	}
 	
-	public void stopUsing(Villager v){
-		removeUsed();
-		v.setBlocking(true);
-		//System.out.println("Bed: Used by: "+UsedBy());
-		if(savedVillager == v && UsedBy() > 0){
-			savedVillager=getOther(v);
-			w.addEntity(new Point(x,y),savedVillager);
-		}else if(savedVillager == v){
-			savedVillager = null;
-		}else if(savedVillager != v){
-			w.addEntity(new Point(x,y),savedVillager);
+	/**
+	 * Makes the Villager get out of bed and into the world.
+	 * 
+	 * @param v the Villager to get out of bed.
+	 * @return true if the Villager could get out of this bed, and was in it. False otherwise.
+	 */
+	public boolean stopUsing(Villager v){
+		if(!w.blocked(null, x, y)){
+			v.setBlocking(true);
+			//System.out.println("Bed: Used by: "+UsedBy());
+			if(v.equals(male)){
+				male = null;
+				w.addEntity(new Point(x,y),v);
+			}else if(v.equals(female)){
+				female = null;
+				w.addEntity(new Point(x,y),v);
+			}else{
+				
+			}
+			return true;
 		}
+		return false;
 	}
 
 	@Override

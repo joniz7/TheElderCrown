@@ -47,7 +47,7 @@ public class SleepAction extends Action {
 				//System.out.println("Bed used by: "+thisBed.UsedBy());
 				firstTick = false;
 			}
-			if(thisBed.UsedBy() > 1){
+			if(thisBed.isFemaleInBed() && thisBed.isMaleInBed()){
 				villager.updateStatus("cuddling");
 				//System.out.println("Bed used by >1!");
 				//TODO: Change name of action.

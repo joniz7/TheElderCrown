@@ -53,11 +53,9 @@ public class SleepPlan extends Plan {
 			villager.setBed(thisBed);
 			if(thisBed != null){
 				if(villager.isMale()){
-					thisBed.setClaimedByMale(true);
-					thisBed.setMale(villager);
+					thisBed.setMaleClaimant(villager);
 				}else if(villager.isFemale()){
-					thisBed.setClaimedByFemale(true);
-					thisBed.setFemale(villager);
+					thisBed.setFemaleClaimant(villager);
 				}
 			}
 		//Else use already assigned bed
