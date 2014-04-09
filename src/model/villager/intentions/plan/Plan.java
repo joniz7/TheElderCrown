@@ -1,11 +1,13 @@
 package model.villager.intentions.plan;
 
+import java.beans.PropertyChangeEvent;
+import java.beans.PropertyChangeListener;
 import java.util.LinkedList;
 
 import model.villager.Villager;
 import model.villager.intentions.action.Action;
 
-public class Plan {
+public abstract class Plan implements PropertyChangeListener{
 
 	protected Villager villager;
 	protected boolean isFinished;
@@ -32,7 +34,10 @@ public class Plan {
 		if(actionQueue.size() <= 0)
 			isFinished = true;
 	}
-
+	
+	/**
+	 * @deprecated
+	 */
 	public boolean isFinished() {
 		return isFinished;
 	}
@@ -46,7 +51,27 @@ public class Plan {
 		return cost;
 	}
 
+	/**
+	 * Recreates the current action and places it first in the queue.
+	 * Needs to be specifik for each plan.
+	 */
+	public abstract void retryAction();
+	
+	/**
+	 * Adds an action to the action queue
+	 */
+	protected final void addAction(Action a) {
+		a.addListener(this);
+		actionQueue.add(a);
+	}
+	
 	public String getName() {
 		return name;
+	}
+
+	@Override
+	public void propertyChange(PropertyChangeEvent arg0) {
+		// TODO Auto-generated method stub
+		
 	}
 }
