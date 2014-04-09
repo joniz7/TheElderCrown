@@ -21,9 +21,9 @@ public class StoreDrinkAction extends Action{
 
 	@Override
 	public void tick(ImpactableByAction world){
-		if(FindEntity.getAdjacentObject(world, new IsDrinkStorage(), EntityType.DRINK_STORAGE, villager.getX(),
+		if(FindEntity.getAdjacentObject(villager.getWorld(), new IsDrinkStorage(), EntityType.DRINK_STORAGE, villager.getX(),
 				villager.getY()) != null) {
-			DrinkStorage fs = (DrinkStorage) FindEntity.getAdjacentObject(world, new IsDrinkStorage(), 
+			DrinkStorage fs = (DrinkStorage) FindEntity.getAdjacentObject(villager.getWorld(), new IsDrinkStorage(), 
 					EntityType.DRINK_STORAGE, villager.getX(), villager.getY());
 			
 			stacks++;
@@ -40,7 +40,7 @@ public class StoreDrinkAction extends Action{
 				
 				if(drink == null){
 					villager.updateStatus("statusEnd");
-					actionFinished();
+					actionSuccess();
 				}else{
 					fs.addDrink(drink);
 				}
@@ -49,7 +49,7 @@ public class StoreDrinkAction extends Action{
 		}else{
 			villager.updateStatus("statusEnd");
 			System.out.println("FAIL");
-			actionFailed();
+			actionFail();
 		}
 	}
 

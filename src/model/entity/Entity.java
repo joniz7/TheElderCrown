@@ -46,6 +46,9 @@ public abstract class Entity implements Copyable, Serializable {
 		this.type = type;
 		this.id = EntityId.nextId();
 		this.isBlocking = blocking;
+		if(type == null){
+			System.out.println("No Type To Entity!!!!");
+		}
 	}
 
 	/**

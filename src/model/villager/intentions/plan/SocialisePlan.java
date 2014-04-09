@@ -2,9 +2,7 @@ package model.villager.intentions.plan;
 
 import java.awt.Point;
 
-import model.path.FindEntity;
 import model.villager.Villager;
-import model.villager.VillagersWorldPerception;
 
 /**
  * A plan to socialise with another villager, whom have called out to us.

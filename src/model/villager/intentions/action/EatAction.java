@@ -26,7 +26,7 @@ public class EatAction extends Action{
 
 				if(villager.getHunger() >= Constants.MAX_HUNGER-2){
 					villager.updateStatus("statusEnd");
-					actionFinished();
+					actionSuccess();
 				}else if(f.consumed()){
 					villager.setActiveItem(null);
 					villager.updateStatus("statusEnd");
@@ -35,14 +35,14 @@ public class EatAction extends Action{
 				villager.setActiveItem(null);
 				villager.updateStatus("statusEnd");
 			}
-		}else if(FindEntity.getAdjacentObject(world, new HasFood(), null, villager.getX(),
+		}else if(FindEntity.getAdjacentObject(villager.getWorld(), new HasFood(), null, villager.getX(),
 				villager.getY()) != null) {
-			FoodSource fs = (FoodSource) FindEntity.getAdjacentObject(world, new HasFood(), null, villager.getX(),
+			FoodSource fs = (FoodSource) FindEntity.getAdjacentObject(villager.getWorld(), new HasFood(), null, villager.getX(),
 					villager.getY());
 			villager.setActiveItem(fs.getFood());
 		}else{
 			villager.updateStatus("statusEnd");
-			actionFailed();
+			actionFail();
 		}
 			
 

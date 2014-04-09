@@ -35,7 +35,7 @@ public class IdleAction extends Action {
 		villager.satisfyLazy(0.5f);
 		if(villager.getLaziness() >= Constants.MAX_LAZINESS){
 			villager.updateStatus("statusEnd");
-			actionFinished();
+			actionSuccess();
 		}
 	}
 

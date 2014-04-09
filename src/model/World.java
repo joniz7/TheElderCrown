@@ -78,7 +78,7 @@ public abstract class World implements Tickable, TileBasedMap, PropertyChangeLis
 	
 	private int time = 14000;
 	
-	private Villager testSubject;
+//	private Villager testSubject;
 	
     public void addPropertyChangeListener(PropertyChangeListener listener) {
         this.pcs.addPropertyChangeListener(listener);
@@ -259,12 +259,14 @@ public abstract class World implements Tickable, TileBasedMap, PropertyChangeLis
 			}
 		}
 
-		agent.update(perception, time);
-		Action activeAction = agent.getAction();
-		if(activeAction != null && !activeAction.isFailed() && !activeAction.isFinished())
-			activeAction.tick(this);
-		else
-			agent.actionDone();
+			agent.update(perception, time);
+			Action activeAction = agent.getAction();
+			if(activeAction != null && !activeAction.isFailed() && !activeAction.isSuccessful())
+				activeAction.tick(this);
+			else
+				agent.actionDone();
+
+		
 	}
 
 	/**
@@ -282,12 +284,14 @@ public abstract class World implements Tickable, TileBasedMap, PropertyChangeLis
 			addEntity(p, v);
 			addVillagerUI(p, v);
 			v.getPCS().addPropertyChangeListener(this);
-			testSubject = v;
+//			testSubject = v;
 		}
 		else {
 			System.out.println("Can't spawn baby: Too many people, too many problems");
 		}
 	}
+	
+	
 	
 	/**
 	 * Create a new Elder in the world at the specified point.
@@ -305,7 +309,7 @@ public abstract class World implements Tickable, TileBasedMap, PropertyChangeLis
 			addVillagerUI(p, v);
 			v.getPCS().addPropertyChangeListener(this);
 			v.makeElder();
-			testSubject = v;
+//			testSubject = v;
 		}
 		else {
 			System.out.println("Can't spawn baby: Too many people, too many problems");
@@ -480,6 +484,8 @@ public abstract class World implements Tickable, TileBasedMap, PropertyChangeLis
 			addAgent(point, (Agent) entity);
 		}
 	}
+	
+	
 
 	/**
 	 * Adds an Entity to the top layer.
@@ -493,6 +499,18 @@ public abstract class World implements Tickable, TileBasedMap, PropertyChangeLis
 		topEntities.put(point, entity);
 		pcs.firePropertyChange("addTopEntity", null, entity);
 	}
+	
+	/**
+	 * Adds entity to middle layer without creating a new view.
+	 * @param point - Position where agent is.
+	 * @param entity - the entity to reconnect.
+	 */
+	public void reconnectVillager(Point point, MidEntity entity){
+		midEntities.put(point, entity);
+		if(entity instanceof Agent){
+			addAgent(point, (Agent) entity);
+		}
+}
 	
 	public void addHelper(Point point){
 		pcs.firePropertyChange("helper", point, null);

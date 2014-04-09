@@ -234,7 +234,6 @@ public class WorldView implements PropertyChangeListener {
 			simSpeed=(double) event.getNewValue();
 			textAlpha=255;
 			fadeText = new org.newdawn.slick.Color(0, 0, 0, textAlpha);
-			System.out.println(fadeText.a);
 			timer.start();
 		}else if (name.equals("addTopEntity")) {
 			TopEntity entity = (TopEntity) event.getNewValue();

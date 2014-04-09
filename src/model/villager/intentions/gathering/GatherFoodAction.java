@@ -19,23 +19,23 @@ public class GatherFoodAction extends Action{
 
 	@Override
 	public void tick(ImpactableByAction world){
-		if(FindEntity.getAdjacentObject(world, new HasFood(), EntityType.TREE, villager.getX(),
+		if(FindEntity.getAdjacentObject(villager.getWorld(), new HasFood(), EntityType.TREE, villager.getX(),
 				villager.getY()) != null) {
-			Tree tree = (Tree) FindEntity.getAdjacentObject(world, new HasFood(), EntityType.TREE, villager.getX(),
+			Tree tree = (Tree) FindEntity.getAdjacentObject(villager.getWorld(), new HasFood(), EntityType.TREE, villager.getX(),
 					villager.getY());
 			stacks++;
 			if(stacks >= stacksToStore){
 				if(!villager.addToInventory(tree.getFood())){
 					villager.updateStatus("statusEnd");
 					System.out.println("GATHERFOOD FINISHED");
-					actionFinished();
+					actionSuccess();
 				}
 				stacks = 0;
 			}
 		}else{
 			villager.updateStatus("statusEnd");
 			System.out.println("GATHERFOOD FAILED");
-			actionFailed();
+			actionFail();
 		}
 	}
 

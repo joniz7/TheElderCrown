@@ -12,6 +12,6 @@ public interface Agent extends Copyable, Serializable {
 	public void actionDone();
 	void update(Perception p, int time);
 	public boolean isDead();
-	public AgentWorld getAgentWorld();
+	public AgentWorld getWorld();
 	public int getHome();
 }

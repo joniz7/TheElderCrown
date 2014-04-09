@@ -155,6 +155,7 @@ public class Bed extends BottomEntity implements Tickable {
 		setUsed();
 		if(UsedBy() > 1){
 			w.addSleeping(getOther(v),new Point(x,y));
+			System.out.println(getOther(v));
 			savedVillager = getOther(v);
 		}
 		if(savedVillager == null)
@@ -167,13 +168,15 @@ public class Bed extends BottomEntity implements Tickable {
 		//System.out.println("Bed: Used by: "+UsedBy());
 		if(savedVillager == v && UsedBy() > 0){
 			savedVillager=getOther(v);
-			w.removeSleeping(new Point(x,y));
-			w.addEntity(new Point(x,y),savedVillager);
+			if(savedVillager != null){
+				w.removeSleeping(new Point(x,y));
+				w.reconnectVillager(new Point(x,y),savedVillager);
+			}
 		}else if(savedVillager == v){
 			savedVillager = null;
-		}else if(savedVillager != v){
+		}else if(savedVillager != v && savedVillager != null){
 			w.removeSleeping(new Point(x,y));
-			w.addEntity(new Point(x,y),savedVillager);
+			w.reconnectVillager(new Point(x,y),savedVillager);
 		}
 	}
 
