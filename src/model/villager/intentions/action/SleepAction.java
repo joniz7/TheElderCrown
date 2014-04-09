@@ -44,7 +44,7 @@ public class SleepAction extends Action {
 			if(this.firstTick){
 				//System.out.println("Sleeping on bed!");
 				villager.setBlocking(false);
-				thisBed.setUsed();
+				thisBed.use(villager);
 				villager.updateStatus("sleeping");
 				firstTick = false;
 			}

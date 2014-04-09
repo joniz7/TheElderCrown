@@ -120,6 +120,7 @@ public abstract class World implements Tickable, TileBasedMap, PropertyChangeLis
 	}
     
     public void addSleeping(Villager vill, Point p){
+    	System.out.println("-----------Added sleeping villager--------");
     	sleepingAgents.put(p, vill);
     }
     
@@ -177,6 +178,7 @@ public abstract class World implements Tickable, TileBasedMap, PropertyChangeLis
 		}
 		while(it2.hasNext()){
 			CreatePerception(it2);
+			System.out.println("----------Updated sleeping villager--------");
 		}
 	}
 	

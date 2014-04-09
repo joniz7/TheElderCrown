@@ -57,7 +57,7 @@ public abstract class Entity implements Copyable, Serializable {
 	 * @param x The new x-value of the entity.
 	 * @param y The new y-value of the entity.
 	 */
-	protected void updatePos(int x, int y){
+	public void updatePos(int x, int y){
 		
 		Point oldPos = new Point(this.x, this.y);
 		// Tell entity of its new position
