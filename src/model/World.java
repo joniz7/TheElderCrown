@@ -78,7 +78,7 @@ public abstract class World implements Tickable, TileBasedMap, PropertyChangeLis
 	
 	private int time = 14000;
 	
-	private Villager testSubject;
+//	private Villager testSubject;
 	
     public void addPropertyChangeListener(PropertyChangeListener listener) {
         this.pcs.addPropertyChangeListener(listener);
@@ -263,7 +263,7 @@ public abstract class World implements Tickable, TileBasedMap, PropertyChangeLis
 			addEntity(p, v);
 			addVillagerUI(p, v);
 			v.getPCS().addPropertyChangeListener(this);
-			testSubject = v;
+//			testSubject = v;
 		}
 		else {
 			System.out.println("Can't spawn baby: Too many people, too many problems");
@@ -286,7 +286,7 @@ public abstract class World implements Tickable, TileBasedMap, PropertyChangeLis
 			addVillagerUI(p, v);
 			v.getPCS().addPropertyChangeListener(this);
 			v.makeElder();
-			testSubject = v;
+//			testSubject = v;
 		}
 		else {
 			System.out.println("Can't spawn baby: Too many people, too many problems");
