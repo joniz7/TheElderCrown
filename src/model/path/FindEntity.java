@@ -7,12 +7,10 @@ import java.util.HashMap;
 import model.entity.Entity;
 import model.path.criteria.Criteria;
 import model.villager.AgentWorld;
-import model.villager.intentions.action.ImpactableByAction;
 
 import org.newdawn.slick.util.pathfinding.Path;
 
 import util.EntityType;
-import view.entity.top.Helper3View;
 
 /**
  * FindEntity is part of the entity path finding. FindEntity uses
@@ -383,9 +381,9 @@ public class FindEntity {
 			}
 			
 			if(stacks > 100 || visited.size() == 0){
-				System.out.println("FindObject: " + visited.size());
-				System.out.println("FindObject: " + crit);
-				System.out.println("FindObject: " + type);
+				//System.out.println("FindObject: " + visited.size());
+				//System.out.println("FindObject: " + crit);
+				//System.out.println("FindObject: " + type);
 //				Exception e = new Exception();
 //				e.printStackTrace();
 				return null;
@@ -483,6 +481,26 @@ public class FindEntity {
 		*/
 	}
 	
+	
+	public static Entity getObjectOnTile(AgentWorld world, EntityType type, int startX, int startY){
+		HashMap<Point, Entity> mids = world.getMidEntities();
+		HashMap<Point, Entity> tops = world.getTopEntities();
+		HashMap<Point, Entity> bots = world.getBotEntities();
+		Point pos = new Point(startX, startY);
+		
+		try{
+			if(bots.get(pos) != null && (bots.get(pos).getType() == type || type == null)){
+				return bots.get(pos);
+			}else if(mids.get(pos) != null && (mids.get(pos).getType() == type || type == null)){
+				return mids.get(pos);
+			}else if(tops.get(pos) != null && (tops.get(pos).getType() == type || type == null)){
+				return tops.get(pos);
+			}
+		}catch (ArrayIndexOutOfBoundsException e) {
+			
+		}
+		return null;
+	}
 
 	public static Entity getAdjacentObject(AgentWorld world, Criteria crit, EntityType type, int startX, int startY){
 		HashMap<Point, Entity> mids = world.getMidEntities();

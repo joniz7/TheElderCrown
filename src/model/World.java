@@ -128,6 +128,10 @@ public abstract class World implements Tickable, TileBasedMap, PropertyChangeLis
     	sleepingAgents.remove(p);
     }
 	
+    public HashMap<Point, Agent> getSleeping(){
+    	return sleepingAgents;
+    }
+    
 	@Override
 	public void tick(){
 		if(!paused) {
@@ -178,7 +182,7 @@ public abstract class World implements Tickable, TileBasedMap, PropertyChangeLis
 		}
 		while(it2.hasNext()){
 			CreatePerception(it2);
-			System.out.println("----------Updated sleeping villager--------");
+			//System.out.println("----------Updated sleeping villager--------");
 		}
 	}
 	

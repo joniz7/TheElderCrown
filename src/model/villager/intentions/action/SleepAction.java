@@ -41,14 +41,16 @@ public class SleepAction extends Action {
 //		System.out.println("SLEEP!!!");
 		
 		if(FindEntity.standingOnTile(villager.getWorld(), EntityType.BED, villager.getX(), villager.getY())){
+			if(thisBed == null){
+				thisBed = (Bed) FindEntity.getObjectOnTile(villager.getAgentWorld(), EntityType.BED, villager.getX(), villager.getY());
+			}
 			if(this.firstTick){
 				//System.out.println("Sleeping on bed!");
-				villager.setBlocking(false);
 				thisBed.use(villager);
 				villager.updateStatus("sleeping");
 				firstTick = false;
 			}
-			if(thisBed.UsedBy() > 1){
+			if(thisBed.isFemaleInBed() && thisBed.isMaleInBed()){
 				villager.updateStatus("cuddling");
 				//System.out.println("Bed used by >1!");
 				//TODO: Change name of action.
@@ -59,9 +61,10 @@ public class SleepAction extends Action {
 			villager.satisfySleep(thisBed.getSleepValue());
 			if(villager.getSleepiness() >= Constants.MAX_SLEEP){
 				//if(villager.getMostNeed() > villager.getSleepiness() + 50){
-					villager.setBlocking(true);
 					villager.updateStatus("statusEnd");
-					thisBed.stopUsing(villager);
+					while(!thisBed.stopUsing(villager)){
+						
+					}
 					actionSuccess();
 				//}
 			}

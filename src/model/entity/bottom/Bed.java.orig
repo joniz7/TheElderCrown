@@ -2,7 +2,6 @@ package model.entity.bottom;
 
 import java.awt.Point;
 
-import model.RandomWorld;
 import model.World;
 import model.villager.Villager;
 import util.Copyable;
@@ -19,7 +18,6 @@ public class Bed extends BottomEntity implements Tickable {
 	//female/male is the villager currently in bed
 	private Villager female, male;
 	private float sleepValue = 0.2f;
-	private Villager savedVillager;
 	private World w;
 	private int x,y;
 
@@ -32,7 +30,6 @@ public class Bed extends BottomEntity implements Tickable {
 		this.w = w;
 		this.x = x;
 		this.y = y;
-		//this.UsedBy=0;
 	}
 
 	public Copyable copy() {
@@ -41,8 +38,6 @@ public class Bed extends BottomEntity implements Tickable {
 		copy.femaleClaimantID = femaleClaimantID;
 		copy.female = female;
 		copy.male = male;
-		//copy.UsedBy = UsedBy;
-		copy.savedVillager = savedVillager;
 		return copy;
 	}
 	
@@ -75,14 +70,6 @@ public class Bed extends BottomEntity implements Tickable {
 		return female != null;
 	}
 
-	public Villager getFemale() {
-		return female;
-	}
-	
-	public Villager getMale() {
-		return male;
-	}
-	
 	/*public Villager getOther(){
 		if(female != null){
 			return female;
@@ -132,17 +119,6 @@ public class Bed extends BottomEntity implements Tickable {
 			this.maleClaimantID = UNOCCUPIED_ID;
 		}
 	}
-
-
-	/*public int UsedBy() {
-		return UsedBy;
-	}
-
-	public void setUsed() {
-		UsedBy = UsedBy+1;
-	}
-	*/
-	
 	
 	/**
 	 * A method to check whether or not the bed is totally free;
@@ -153,6 +129,31 @@ public class Bed extends BottomEntity implements Tickable {
 		
 	}
 	
+<<<<<<< HEAD
+	public void setSaved(Villager v){
+		this.savedVillager = v;
+	}
+	
+	public Villager getSaved(){
+		return savedVillager;
+	}
+	
+	public void use(Villager v){
+		v.setBlocking(false);
+		if(v.isMale() && !isClaimedByMale){
+			setMale(v);
+			setClaimedByMale(true);
+		}else if(v.isFemale() && !isClaimedByFemale){
+			setFemale(v);
+			setClaimedByFemale(true);
+		}
+		setUsed();
+		System.out.println("----------"+UsedBy+"-----------");
+		if(UsedBy() > 1){
+			w.addSleeping(getOther(v),new Point(x,y));
+			System.out.println(getOther(v));
+			savedVillager = getOther(v);
+=======
 	/**
 	 * Gets a villager into this bed and claims it if it wasn't claimed by anyone else.
 	 * @param v the Villager to get into bed.
@@ -163,22 +164,37 @@ public class Bed extends BottomEntity implements Tickable {
 			maleClaimantID = v.getId();
 			v.setBlocking(false);
 			male = v;
-			if(isFemaleInBed()){
-				w.addSleeping(female, new Point(x,y));
-			}
 			return true;
 		}else if(v.isFemale() && (femaleClaimantID == UNOCCUPIED_ID || femaleClaimantID == v.getId())){
 			femaleClaimantID = v.getId();
 			v.setBlocking(false);
 			female = v;
-			if(isMaleInBed()){
-				w.addSleeping(male, new Point(x,y));
-			}
 			return true;
+>>>>>>> 2ca7ad3482a4604270c9b64b1a23f591ac9f065b
 		}
 		return false;
 	}
 	
+<<<<<<< HEAD
+	public void stopUsing(Villager v){
+		removeUsed();
+		v.setBlocking(true);
+		//System.out.println("Bed: Used by: "+UsedBy());
+		if(savedVillager == v && UsedBy() > 0){
+			savedVillager=getOther(v);
+			if(savedVillager != null){
+				w.removeSleeping(new Point(x,y));
+				w.reconnectVillager(new Point(x,y),savedVillager);
+				savedVillager.updatePos(x,y);
+				
+			}
+		}else if(savedVillager == v){
+			savedVillager = null;
+		}else if(savedVillager != v && savedVillager != null){
+			w.removeSleeping(new Point(x,y));
+			w.reconnectVillager(new Point(x,y),savedVillager);
+			savedVillager.updatePos(x,y);
+=======
 	/**
 	 * Makes the Villager get out of bed and into the world.
 	 * 
@@ -186,30 +202,20 @@ public class Bed extends BottomEntity implements Tickable {
 	 * @return true if the Villager could get out of this bed, and was in it. False otherwise.
 	 */
 	public boolean stopUsing(Villager v){
-		Point p = new Point(x,y);
 		if(!w.blocked(null, x, y)){
 			v.setBlocking(true);
 			//System.out.println("Bed: Used by: "+UsedBy());
 			if(v.equals(male)){
 				male = null;
-				w.addEntity(p,v);
-				//v.updatePos(x, y);
-				if(!isFemaleInBed() && w.getSleeping().containsKey(p)){
-					w.removeSleeping(p);
-					System.out.println("------------Removed male: "+v.getName() );
-				}
+				w.addEntity(new Point(x,y),v);
 			}else if(v.equals(female)){
 				female = null;
-				w.addEntity(p,v);
-				//v.updatePos(x, y);
-				if(!isMaleInBed() && w.getSleeping().containsKey(p)){
-					w.removeSleeping(p);
-					System.out.println("----------Removed female: "+v.getName() );
-				}
+				w.addEntity(new Point(x,y),v);
 			}else{
 				
 			}
 			return true;
+>>>>>>> 2ca7ad3482a4604270c9b64b1a23f591ac9f065b
 		}
 		return false;
 	}
