@@ -62,9 +62,7 @@ public class SleepAction extends Action {
 			if(villager.getSleepiness() >= Constants.MAX_SLEEP){
 				//if(villager.getMostNeed() > villager.getSleepiness() + 50){
 					villager.updateStatus("statusEnd");
-					while(!thisBed.stopUsing(villager)){
-						
-					}
+					thisBed.stopUsing(villager);
 					actionSuccess();
 				//}
 			}

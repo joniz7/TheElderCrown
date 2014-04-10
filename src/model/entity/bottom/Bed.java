@@ -4,6 +4,7 @@ import java.awt.Point;
 
 import model.RandomWorld;
 import model.World;
+import model.path.FindEntity;
 import model.villager.Villager;
 import util.Copyable;
 import util.EntityId;
@@ -187,25 +188,34 @@ public class Bed extends BottomEntity implements Tickable {
 	 */
 	public boolean stopUsing(Villager v){
 		Point p = new Point(x,y);
+		Point t = FindEntity.FreeTile(v.getWorld(), x, y);
 		if(!w.blocked(null, x, y)){
 			v.setBlocking(true);
 			//System.out.println("Bed: Used by: "+UsedBy());
 			if(v.equals(male)){
 				male = null;
-				w.addEntity(p,v);
-				//v.updatePos(x, y);
+				//w.addEntity(p, v);
+				//v.updatePos(v.getX(), v.getY());
 				if(!isFemaleInBed() && w.getSleeping().containsKey(p)){
+					//w.addEntity(t, v);
+					//v.updatePos(v.getX(), v.getY());
 					w.removeSleeping(p);
+					w.addEntity(p,female);
 					System.out.println("------------Removed male: "+v.getName() );
 				}
+				v.setExplore();
 			}else if(v.equals(female)){
 				female = null;
-				w.addEntity(p,v);
-				//v.updatePos(x, y);
+				//w.addEntity(p, v);
+				//v.updatePos(v.getX(), v.getY());
 				if(!isMaleInBed() && w.getSleeping().containsKey(p)){
+					//w.addEntity(t, v);
+					//v.updatePos(v.getX(), v.getY());
 					w.removeSleeping(p);
+					w.addEntity(p,female);
 					System.out.println("----------Removed female: "+v.getName() );
 				}
+				v.setExplore();
 			}else{
 				
 			}
