@@ -2,7 +2,6 @@ package model.entity.bottom;
 
 import java.awt.Point;
 
-import model.RandomWorld;
 import model.World;
 import model.path.FindEntity;
 import model.villager.Villager;
@@ -200,9 +199,11 @@ public class Bed extends BottomEntity implements Tickable {
 					//w.addEntity(t, v);
 					//v.updatePos(v.getX(), v.getY());
 					w.removeSleeping(p);
-					w.addEntity(p,female);
-					System.out.println("------------Removed male: "+v.getName() );
+				}else if(isFemaleInBed()){
+					w.addSleeping(female, p);
 				}
+				w.reconnectVillager(p, v);
+				System.out.println("------------Removed male: "+v.getName() );
 				v.setExplore();
 			}else if(v.equals(female)){
 				female = null;
@@ -212,13 +213,15 @@ public class Bed extends BottomEntity implements Tickable {
 					//w.addEntity(t, v);
 					//v.updatePos(v.getX(), v.getY());
 					w.removeSleeping(p);
-					w.addEntity(p,female);
-					System.out.println("----------Removed female: "+v.getName() );
+				}else if(isMaleInBed()){
+					w.addSleeping(male, p);
 				}
+				w.reconnectVillager(p, v);
+				System.out.println("----------Removed female: "+v.getName() );
 				v.setExplore();
-			}else{
+			}/*else{
 				
-			}
+			}*/
 			return true;
 		}
 		return false;
