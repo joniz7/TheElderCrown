@@ -9,6 +9,7 @@ import model.villager.intentions.action.TalkAction;
 import model.villager.intentions.action.WaitForAction;
 
 import org.newdawn.slick.util.pathfinding.Path;
+import model.villager.Villager;
 
 /**
  * A plan to socialise with another villager, whom have called out to us.
@@ -47,27 +48,12 @@ public class SocialisePlan extends Plan{
 		// TalkAction
 		actionQueue.addLast(new TalkAction(villager, otherPos, otherId));
 	
-		
-		/*
-		Villager otherVillager = (Villager) FindObject.getAdjacentObject(villager.getWorld(), new isSocial(),
-		EntityType.VILLAGER, villager.getX(), villager.getY());
-		
-		
-		
-		
-		if(otherVillager != null){
-		actionQueue.addLast(new SocialAction(villager));
-		otherVillager.setAction(new SocialPlan(otherVillager));
-		}else{
-		Point p = FindObject.findObjectNeighbour(villager.getWorld(), new isSocial(), EntityType.VILLAGER,
-		villager.getX(), villager.getY());
-		Path movePath = null;
-		if(p != null)
-		movePath = PathFinder.getPathToAdjacent(villager.getX(), villager.getY(), p.x, p.y);
-		
-		actionQueue.add(new MoveAction(villager, movePath));
-		actionQueue.addLast(new SocialAction(villager));
-		*/
+		System.out.println("Starting to find another villager \n");
+	}
+
+	@Override
+	public void retryAction() {
+		// TODO Auto-generated method stub
 		
 	}
 

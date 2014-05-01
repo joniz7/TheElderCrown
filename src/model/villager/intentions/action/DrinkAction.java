@@ -20,16 +20,17 @@ public class DrinkAction extends Action{
 	public void tick(ImpactableByAction world){
 		villager.updateStatus("drinking");
 
-//		System.out.println("SLEEP!!!");
+		// We're holding something drinkable. Drink it!
 		if (villager.getActiveItem() instanceof Drink) {
 			Drink d = (Drink) villager.getActiveItem();
 			if(!d.consumed()){
 				villager.satisfyThirst(d.drunk());
-				
+				// Finished drinking
 				if(villager.getThirst() >= Constants.MAX_THIRST){
-					villager.updateStatus("statusEnd");
-					actionSuccess();
-				}else if(d.consumed()){
+					// Finish Plan
+					success();
+				}
+				else if(d.consumed()){
 					System.out.println("BOWL EMPTY");
 					villager.setActiveItem(null);
 					villager.updateStatus("statusEnd");
@@ -39,25 +40,29 @@ public class DrinkAction extends Action{
 				villager.setActiveItem(null);
 				villager.updateStatus("statusEnd");
 			}
-		}else if(FindEntity.isAdjacentTile(world, EntityType.WATER_TILE, villager.getX(),
+		}
+		// Are we standing next to water? (?)
+		else if(FindEntity.isAdjacentTile(villager.getWorld(), EntityType.WATER_TILE, villager.getX(),
 				villager.getY())) {
 			System.out.println("FOUND ADJACAENT WATER");
 			villager.updateStatus("drinking");
 			villager.setActiveItem(new WaterBowl());
-		}else if(FindEntity.getAdjacentObject(world, new HasDrink(), null, villager.getX(),
+		}
+		// Are we standing next to something drinkable? (?)
+		else if(FindEntity.getAdjacentObject(villager.getWorld(), new HasDrink(), null, villager.getX(),
 				villager.getY()) != null) {
 			System.out.println("FOUND ADJACAENT WATER SOURCE");
 			villager.updateStatus("drinking");
-			DrinkSource ds = (DrinkSource) FindEntity.getAdjacentObject(world, new HasDrink(), null, 
+			DrinkSource ds = (DrinkSource) FindEntity.getAdjacentObject(villager.getWorld(), new HasDrink(), null, 
 					villager.getX(), villager.getY());
 			if(ds.hasDrink())
 				villager.setActiveItem(ds.getDrink());
-		}else{
-			System.out.println("FAILED");
-			villager.updateStatus("statusEnd");
-			actionFail();
 		}
-			
+		// No water available anywhere.
+		else {
+			// Fail DrinkPlan
+			fail();
+		}
 
 	}
 

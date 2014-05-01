@@ -21,7 +21,7 @@ public class EatPlan extends Plan{
 
 		// We're next to a tree. Eat!
 		if(fs != null){
-			actionQueue.addLast(new EatAction(villager));
+			addAction(new EatAction(villager));
 		}
 		
 		// We need to move, and then eat
@@ -35,9 +35,15 @@ public class EatPlan extends Plan{
 //				villager.setExplore();
 //				isFinished=true;
 //			}
-			actionQueue.add(new MoveAction(villager, null, new HasFood()));
-			actionQueue.addLast(new EatAction(villager));
+			addAction(new MoveAction(villager, null, new HasFood()));
+			addAction(new EatAction(villager));
 		}
+		
+	}
+
+	@Override
+	public void retryAction() {
+		// TODO Auto-generated method stub
 		
 	}
 }

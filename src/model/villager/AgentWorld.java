@@ -16,7 +16,7 @@ import org.newdawn.slick.util.pathfinding.TileBasedMap;
 
 import util.Constants;
 
-public class AgentWorld implements TileBasedMap, ImpactableByAction {
+public class AgentWorld implements TileBasedMap {
 	
 	private HashMap<Point, Entity> botEntities;
 	private HashMap<Point, Entity> midEntities;
@@ -53,10 +53,6 @@ public class AgentWorld implements TileBasedMap, ImpactableByAction {
 		return false;
 	}
 	
-	@Override
-	public boolean blocked(PathFindingContext arg0, Point p){
-		return blocked(arg0, p.x, p.y);
-	}
 
 	@Override
 	public float getCost(PathFindingContext arg0, int arg1, int arg2) {

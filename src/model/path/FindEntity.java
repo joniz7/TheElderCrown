@@ -7,12 +7,10 @@ import java.util.HashMap;
 import model.entity.Entity;
 import model.path.criteria.Criteria;
 import model.villager.AgentWorld;
-import model.villager.intentions.action.ImpactableByAction;
 
 import org.newdawn.slick.util.pathfinding.Path;
 
 import util.EntityType;
-import view.entity.top.Helper3View;
 
 /**
  * FindEntity is part of the entity path finding. FindEntity uses
@@ -41,7 +39,7 @@ public class FindEntity {
 	 * @param startY - the villager y coordinate
 	 * @return The point representing the coordinates of the found tile
 	 */
-	public static Point findBotEntity(ImpactableByAction world, EntityType type, int startX, int startY){
+	public static Point findBotEntity(AgentWorld world, EntityType type, int startX, int startY){
 		/*
 		 * Understanding what these lists and hash-maps are used for is crucial in
 		 * order to understand the find-object-algorithm
@@ -86,7 +84,6 @@ public class FindEntity {
 		boolean found = false;
 		while(!found){
 			stacks++;
-//			System.out.println("findtile2 loop");
 			toVisit = new ArrayList<Point>();
 			toCheck = new ArrayList<Point>();
 			for(Point p : visited){
@@ -148,7 +145,7 @@ public class FindEntity {
 		return null;
 	}
 	
-	public static boolean standingOnTile(ImpactableByAction world, EntityType type, int startX, int startY){
+	public static boolean standingOnTile(AgentWorld world, EntityType type, int startX, int startY){
 		HashMap<Point, Entity> tiles = world.getBotEntities();
 		
 		if(tiles.get(new Point(startX, startY)) != null && tiles.get(new Point(startX, startY)).getType() == type)
@@ -177,7 +174,7 @@ public class FindEntity {
 	 * @param startY - the villager y position
 	 * @return - The Point to walk to in order to interact with object
 	 */
-	public static Point findBotEntityNeighbour(ImpactableByAction world, EntityType type, int startX, int startY){
+	public static Point findBotEntityNeighbour(AgentWorld world, EntityType type, int startX, int startY){
 		long startTime = System.currentTimeMillis();
 		
 		if(isStuck(world, startX, startY)){
@@ -191,7 +188,7 @@ public class FindEntity {
 		return findTileNeighbour(world, p, startPos);
 	}
 	
-	public static boolean isAdjacentTile(ImpactableByAction world, EntityType type, int startX, int startY){
+	public static boolean isAdjacentTile(AgentWorld world, EntityType type, int startX, int startY){
 		HashMap<Point, Entity> tiles = world.getBotEntities();
 		
 		try{
@@ -219,7 +216,7 @@ public class FindEntity {
 	 * 
 	 * @return the neighbouring Point closest to p
 	 */
-	public static Point findTileNeighbour(ImpactableByAction world, Point endPos, Point startPos) {
+	public static Point findTileNeighbour(AgentWorld world, Point endPos, Point startPos) {
 		if(endPos==null){
 			return null;
 		}
@@ -292,10 +289,10 @@ public class FindEntity {
 	 * @param startY - the villager y coordinate
 	 * @return The point representing the coordinates of the found tile
 	 */
-	public static Point findTopMidEntity(ImpactableByAction world, Criteria crit, EntityType type, int startX, int startY){
+	public static Point findTopMidEntity(AgentWorld world, Criteria crit, EntityType type, int startX, int startY){
 		/*
 		 * These lists and hash-maps are essentially the same as the ones in the
-		 * findTile2 method. The algorithm works in the same way, except that it
+		 * findTile method. The algorithm works in the same way, except that it
 		 * also takes the criteria into account
 		 */
 		HashMap<Point, Boolean> visitedHash = new HashMap<Point, Boolean>();
@@ -406,7 +403,7 @@ public class FindEntity {
 	 * @param startY - the villager y position
 	 * @return - The Point to walk to in order to interact with object
 	 */
-	public static Point findTopMidEntityNeighbour(ImpactableByAction world, Criteria crit, EntityType type, int startX, int startY){
+	public static Point findTopMidEntityNeighbour(AgentWorld world, Criteria crit, EntityType type, int startX, int startY){
 //		long startTime = System.currentTimeMillis();
 		
 		if(isStuck(world, startX, startY)){
@@ -485,7 +482,7 @@ public class FindEntity {
 	}
 	
 
-	public static Entity getAdjacentObject(ImpactableByAction world, Criteria crit, EntityType type, int startX, int startY){
+	public static Entity getAdjacentObject(AgentWorld world, Criteria crit, EntityType type, int startX, int startY){
 		HashMap<Point, Entity> mids = world.getMidEntities();
 		HashMap<Point, Entity> tops = world.getTopEntities();
 		
@@ -548,11 +545,11 @@ public class FindEntity {
 //		return false;
 //	}
 	
-	public static boolean isStuck(ImpactableByAction world, int startX, int startY){
-		if(world.blocked(null, startX + 1, startY))
-			if(world.blocked(null, startX - 1, startY))
-				if(world.blocked(null, startX, startY + 1))
-					if(world.blocked(null, startX, startY - 1))
+	public static boolean isStuck(AgentWorld world, int x, int y){
+		if(world.blocked(null, x + 1, y))
+			if(world.blocked(null, x - 1, y))
+				if(world.blocked(null, x, y + 1))
+					if(world.blocked(null, x, y - 1))
 						return true;
 		return false;
 	}

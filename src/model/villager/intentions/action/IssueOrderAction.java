@@ -1,7 +1,6 @@
 package model.villager.intentions.action;
 
 import model.villager.Villager;
-import model.villager.VillagersWorldPerception;
 import model.villager.order.Order;
 
 /**
@@ -28,7 +27,9 @@ public class IssueOrderAction extends Action {
 	public void tick(ImpactableByAction world) {
 		// issue order to REAL world
 		world.addOrder(o);
-		actionSuccess();
+		// TODO issue order to REAL world, not to any imaginary perception or whatever
+		// world.addOrder(o);
+		success();
 	}
 
 	@Override

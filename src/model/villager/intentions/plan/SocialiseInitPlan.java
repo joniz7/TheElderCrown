@@ -33,35 +33,20 @@ public class SocialiseInitPlan extends Plan{
 		this.otherId = otherId;
 		
 		// IssueOrderAction
-		actionQueue.addLast(new IssueOrderAction(villager, otherOrder));
+		addAction(new IssueOrderAction(villager, otherOrder));
 		
 		// WaitForAction
-		actionQueue.addLast(new WaitForAction(villager, otherPos, otherId));
+		addAction(new WaitForAction(villager, otherPos, otherId));
 		
 		// TalkAction
-		actionQueue.addLast(new TalkAction(villager, otherPos, otherId));		
+		addAction(new TalkAction(villager, otherPos, otherId));
 		
-		/*
-		Villager otherVillager = (Villager) FindObject.getAdjacentObject(villager.getWorld(), new isSocial(),
-		EntityType.VILLAGER, villager.getX(), villager.getY());
-		
-		
-		
-		
-		if(otherVillager != null){
-		actionQueue.addLast(new SocialAction(villager));
-		otherVillager.setAction(new SocialPlan(otherVillager));
-		}else{
-		Point p = FindObject.findObjectNeighbour(villager.getWorld(), new isSocial(), EntityType.VILLAGER,
-		villager.getX(), villager.getY());
-		Path movePath = null;
-		if(p != null)
-		movePath = PathFinder.getPathToAdjacent(villager.getX(), villager.getY(), p.x, p.y);
-		
-		actionQueue.add(new MoveAction(villager, movePath));
-		actionQueue.addLast(new SocialAction(villager));
-		*/
-		
+		System.out.println("Starting to find another villager \n");		
+	}
+
+	@Override
+	public void retryAction() {
+		// TODO Auto-generated method stub
 	}
 	
 	/**

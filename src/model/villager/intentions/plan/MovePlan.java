@@ -15,7 +15,13 @@ public class MovePlan extends Plan {
 		
 		Path movePath = PathFinder.getPath(villager.getX(), villager.getY(), pos.x, pos.y);
 				
-		actionQueue.add(new MoveAction(villager, movePath));
+		addAction(new MoveAction(villager, movePath));
+	}
+
+	@Override
+	public void retryAction() {
+		// TODO Auto-generated method stub
+		
 	}
 
 }

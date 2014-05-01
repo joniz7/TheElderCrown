@@ -37,7 +37,7 @@ public class SleepAction extends Action {
 //		if(FindObject.findTile2((TestWorld) world, EntityType.HOUSE_FLOOR, villager.getX(), villager.getY()) != null) {
 //		System.out.println("SLEEP!!!");
 		
-		if(FindEntity.standingOnTile(world, EntityType.BED, villager.getX(), villager.getY())){
+		if(FindEntity.standingOnTile(villager.getWorld(), EntityType.BED, villager.getX(), villager.getY())){
 			if(this.firstTick){
 				//System.out.println("Sleeping on bed!");
 				villager.setBlocking(false);
@@ -55,7 +55,7 @@ public class SleepAction extends Action {
 				}
 			}
 			
-		}else if(FindEntity.standingOnTile(world, EntityType.GRASS_TILE, villager.getX(), villager.getY())){
+		}else if(FindEntity.standingOnTile(villager.getWorld(), EntityType.GRASS_TILE, villager.getX(), villager.getY())){
 			if(this.firstTick){
 				//System.out.println("Sleeping on grass!");
 				villager.setBlocking(false);
@@ -68,7 +68,7 @@ public class SleepAction extends Action {
 				villager.setBlocking(true);
 				actionSuccess();
 			}
-		}else if(FindEntity.standingOnTile(world, EntityType.HOUSE_FLOOR, villager.getX(), villager.getY())){
+		}else if(FindEntity.standingOnTile(villager.getWorld(), EntityType.HOUSE_FLOOR, villager.getX(), villager.getY())){
 			if(this.firstTick){
 				//System.out.println("Sleeping on floor!");
 				villager.setBlocking(false);

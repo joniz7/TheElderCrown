@@ -34,15 +34,15 @@ public class MoveAction extends Action{
 	@Override
 	public void tick(ImpactableByAction world) {
 		if(path == null && crit != null){
-			Point p = FindEntity.findTopMidEntityNeighbour(world, 
+			Point p = FindEntity.findTopMidEntityNeighbour(villager.getWorld(), 
 					crit, type, villager.getX(), villager.getY());
 
 			if(p == null){
-				System.out.println("WATER ABANDONDED ");
+				System.out.println("Didn't find what Villager was looking for");
 				villager.actionDone();
 				villager.disposePlan();
 				villager.clearInventory();
-//				villager.setExplore();
+				villager.setExplore();
 			}else
 				path = PathFinder.getPathToAdjacent(villager.getX(), villager.getY(), 
 						p.x, p.y);
@@ -100,18 +100,6 @@ public class MoveAction extends Action{
 		}
 	}
 	
-	@Override
-	protected void actionFail() {
-		villager.updateStatus("statusEnd");
-		isFailed = true;
-	}
-
-	@Override
-	protected void actionSuccess() {
-		villager.updateStatus("statusEnd");
-		isSuccess = true;
-	}
-
 	@Override
 	public float getCost() {
 		// TODO Auto-generated method stub

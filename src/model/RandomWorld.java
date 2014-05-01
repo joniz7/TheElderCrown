@@ -17,6 +17,7 @@ import model.entity.top.house.HouseWall;
 import model.path.FindEntity;
 import util.Constants;
 import util.EntityType;
+import util.UtilClass;
 
 /**
  * A world whose map is generated randomly on load
@@ -28,9 +29,6 @@ public class RandomWorld extends World{
 	// -- World configuration --
 
 	private static final long serialVersionUID = 1L;
-
-	// Villagers
-	private final int VILLAGER_SPAWN_POS = 40;
 
 	// Lakes 
 	private final float LAKE_COUNT = 8, LAKE_WEIGHT = 1f, LAKE_LOSS = 0.02f;
@@ -136,7 +134,7 @@ public class RandomWorld extends World{
 						addEntity(pos, new WaterTile((p.x-1), p.y));
 						newWater.add(new Point(p.x-1, p.y));
 					}
-					if(rnd.nextFloat() < weight  && p.x != 79 && !(botEntities.get(new Point(p.x + 1, p.y)) instanceof WaterTile)){
+					if(rnd.nextFloat() < weight  && p.x != Constants.WORLD_WIDTH-1 && !(botEntities.get(new Point(p.x + 1, p.y)) instanceof WaterTile)){
 						addEntity(new Point(p.x+1, p.y), new WaterTile((p.x+1), p.y));
 						newWater.add(new Point(p.x+1, p.y));
 					}	
@@ -144,7 +142,7 @@ public class RandomWorld extends World{
 						addEntity(new Point(p.x, p.y-1), new WaterTile(p.x, (p.y-1)));
 						newWater.add(new Point(p.x, p.y-1));
 					}
-					if(rnd.nextFloat() < weight  && p.y != 79 && !(botEntities.get(new Point(p.x, p.y + 1)) instanceof WaterTile)){
+					if(rnd.nextFloat() < weight  && p.y != Constants.WORLD_HEIGHT-1 && !(botEntities.get(new Point(p.x, p.y + 1)) instanceof WaterTile)){
 						addEntity(new Point(p.x, p.y+1), new WaterTile(p.x, (p.y+1)));
 						newWater.add(new Point(p.x, p.y+1));
 					}
@@ -166,16 +164,16 @@ public class RandomWorld extends World{
 		int sparsity;
 		for(int i = 0; i < Constants.WORLD_WIDTH - 1; i++) {
 			for(int j = 0; j < Constants.WORLD_HEIGHT - 1; j++) {
-				Point p = new Point(i + 1, j + 1);
+				Point p = new Point(i, j);
 				sparsity = rnd.nextInt(TREE_SPARSITY);
-				if(sparsity == 0 && botEntities.get(p) == null || 
-						sparsity == 0 && botEntities.get(p) != null && botEntities.get(p).getType() == EntityType.GRASS_TILE){
-					Tree tree = new Tree(i + 1, j + 1);
+				if(sparsity == 0 && botEntities.get(p) == null && !blocked(null, p) || 
+						sparsity == 0 && botEntities.get(p) != null && botEntities.get(p).getType()
+						== EntityType.GRASS_TILE && !blocked(null, p)){
+					Tree tree = new Tree(i, j);
 //					trees.add(tree);
 					tickables.add(tree);
-					Point pos = new Point(i + 1, j + 1);
-					addEntity(pos, tree);
-					addTreeUI(pos, tree);
+					addEntity(tree.getPosition(), tree);
+					addTreeUI(tree.getPosition(), tree);
 					tree.getPCS().addPropertyChangeListener(this);
 				}
 			}
@@ -186,27 +184,32 @@ public class RandomWorld extends World{
 	 * The method to initialise all the houses in the world.
 	 */
 	private void generateHouses() {
-		
-		for(int i=-18;i<18;i++){
-			for(int j=-10;j<10;j++){
-				GrassTile grass = new GrassTile(VILLAGER_SPAWN_POS+i, VILLAGER_SPAWN_POS+j);
-				Point pos = new Point(VILLAGER_SPAWN_POS+i, VILLAGER_SPAWN_POS+j);
-				addEntity(pos, grass);
-			}
-		}
 
-		buildHouse(VILLAGER_SPAWN_POS - 5, VILLAGER_SPAWN_POS + 4, 3, 2, Constants.UP_ENTRANCE);
-		buildHouse(VILLAGER_SPAWN_POS - 12, VILLAGER_SPAWN_POS, 3, 3, Constants.RIGHT_ENTRANCE);
-		buildHouse(VILLAGER_SPAWN_POS - 6, VILLAGER_SPAWN_POS - 3, 2, 3, Constants.DOWN_ENTRANCE);
-		buildHouse(VILLAGER_SPAWN_POS - 2, VILLAGER_SPAWN_POS, 4, 4, Constants.LEFT_ENTRANCE);
-		
-		FoodStorage storage = new FoodStorage(38, 33);
-		addEntity(new Point(38, 33), storage);
-		addFoodStorageUI(new Point(38, 33), storage);
-		
-		DrinkStorage storage2 = new DrinkStorage(41, 33);
-		addEntity(new Point(41, 33), storage2);
-		addDrinkStorageUI(new Point(41, 33), storage2);
+		for(int v=0;v<VILLAGE_COUNT;v++){
+			for(int i=-VILLAGE_SIZE/2;i<VILLAGE_SIZE/2;i++){
+				for(int j=-VILLAGE_SIZE/2;j<VILLAGE_SIZE/2;j++){
+					GrassTile grass = new GrassTile(villages.get(v).x+i, villages.get(v).y+j);
+					addEntity(grass.getPosition(), grass);
+				}
+			}
+
+			buildHouse(villages.get(v).x - UtilClass.getRandomInt(4, 3), villages.get(v).y - UtilClass.getRandomInt(4, 3),
+					UtilClass.getRandomInt(3, 2), UtilClass.getRandomInt(3, 2), Constants.DOWN_ENTRANCE);
+			buildHouse(villages.get(v).x - UtilClass.getRandomInt(4, 3), villages.get(v).y + UtilClass.getRandomInt(4, 3),
+					UtilClass.getRandomInt(3, 2), UtilClass.getRandomInt(3, 2), Constants.RIGHT_ENTRANCE);
+			buildHouse(villages.get(v).x + UtilClass.getRandomInt(4, 3), villages.get(v).y - UtilClass.getRandomInt(4, 3),
+					UtilClass.getRandomInt(3, 2), UtilClass.getRandomInt(3, 2), Constants.DOWN_ENTRANCE);
+			buildHouse(villages.get(v).x + UtilClass.getRandomInt(4, 3), villages.get(v).y + UtilClass.getRandomInt(4, 4),
+					UtilClass.getRandomInt(3, 2), UtilClass.getRandomInt(3, 2), Constants.UP_ENTRANCE);
+
+			FoodStorage storage = new FoodStorage(villages.get(v).x + 2, villages.get(v).y - 1);
+			addEntity(storage.getPosition(), storage);
+			addFoodStorageUI(storage.getPosition(), storage);
+
+			DrinkStorage storage2 = new DrinkStorage(villages.get(v).x - 2, villages.get(v).y - 1);
+			addEntity(storage2.getPosition(), storage2);
+			addDrinkStorageUI(storage2.getPosition(), storage2);
+		}
 	}
 	
 	/**

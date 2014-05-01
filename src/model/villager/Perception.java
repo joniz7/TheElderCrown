@@ -2,10 +2,6 @@ package model.villager;
 
 import java.awt.Point;
 import java.util.HashMap;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Set;
-import java.util.Map.Entry;
 
 import model.entity.Agent;
 import model.entity.Entity;
@@ -19,7 +15,7 @@ import model.villager.order.Order;
  */
 public class Perception {
 
-	public Point position;
+	public Point position, northwestVillageCorner, southeastVillageCorner;
 	public Order order;
 	public HashMap<Point, Entity> botEntities;
 	public HashMap<Point, Entity> topEntities;
