@@ -10,18 +10,28 @@ import model.villager.intentions.plan.SocialisePlan;
 
 public class SocialiseIntent extends Intent{
 
+	private Point myPos;
 	private Point otherPos;
 	private int otherId;
 	
-	public SocialiseIntent(Villager villager, Point otherPos, int otherId) {
+	/**
+	 * Create a new SocialiseIntent.
+	 * 
+	 * @param villager - the receiving villager, who should walk to the sender 
+	 * @param myPos - the position we should walk to
+	 * @param otherPos - the sender's position
+	 * @param otherId - the id of the sender
+	 */
+	public SocialiseIntent(Villager villager, Point myPos, Point otherPos, int otherId) {
 		super(villager);
+		this.myPos = myPos;
 		this.otherId = otherId;
 		this.otherPos = otherPos;		
 	}
 
 	@Override
 	public Plan getPlan(){
-		return new SocialisePlan(villager, otherPos, otherId);
+		return new SocialisePlan(villager, myPos, otherPos, otherId);
 	}
 
 	@Override
@@ -33,6 +43,6 @@ public class SocialiseIntent extends Intent{
 	
 	@Override
 	public String toString() {
-		return super.toString()+", otherPos: "+otherPos+", otherId:"+otherId;
+		return super.toString()+", myPos: "+myPos+", otherPos: "+otherPos+", otherId:"+otherId;
 	}
 }

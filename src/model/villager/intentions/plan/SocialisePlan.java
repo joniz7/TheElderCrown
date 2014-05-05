@@ -31,10 +31,11 @@ public class SocialisePlan extends Plan{
 	 * Create a new SocialisePlan.
 	 * 
 	 * @param villager - the receiving villager, who should walk to the sender 
-	 * @param otherPos - the sender's position (position we should walk to)
+	 * @param myPos - the position we should walk to
+	 * @param otherPos - the sender's position 
 	 * @param otherId - the id of the sender
 	 */
-	public SocialisePlan(Villager villager, Point otherPos, int otherId) {
+	public SocialisePlan(Villager villager, Point myPos, Point otherPos, int otherId) {
 		super(villager, "Joining social interaction");
 		
 		this.otherId = otherId;
@@ -47,7 +48,7 @@ public class SocialisePlan extends Plan{
 
 		// Move to position
 		Point startPos = villager.getPosition();
-		Path p = PathFinder.getPath(startPos.x, startPos.y, otherPos.x, otherPos.y);
+		Path p = PathFinder.getPath(startPos.x, startPos.y, myPos.x, myPos.y);
 		addAction(new MoveAction(villager, p));
 		
 		// WaitForAction

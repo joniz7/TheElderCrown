@@ -281,7 +281,7 @@ public class Villager extends MidEntity implements Agent {
 				if (nearbyPos == null) return;
 				
 				// Create SocialiseIntent and order for other villager
-				Intent othersIntent = new SocialiseIntent(otherVillager, nearbyPos, this.getId());
+				Intent othersIntent = new SocialiseIntent(otherVillager, nearbyPos, this.getPosition(), this.getId());
 				Order socialiseOrder = new Order(this.getId(), otherVillager.getId(), othersIntent);
 				
 				// Create SocialiseInitIntent for myself

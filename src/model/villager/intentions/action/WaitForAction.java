@@ -39,6 +39,7 @@ public class WaitForAction extends Action {
 	@Override
 	public void tick(ImpactableByAction world) {
 
+		System.out.println(villager.getId()+" looking at "+otherPos);
 		// Look at position
 		Entity other = world.getMidEntities().get(otherPos);
 		// We found who we're waiting for!
