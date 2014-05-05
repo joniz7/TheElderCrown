@@ -76,7 +76,8 @@ public abstract class Action {
 	 */
 	protected final void success() {
 		villager.updateStatus("statusEnd"); // update image
-		pcs.firePropertyChange("status", null, "success");
+		if(pcs != null)
+			pcs.firePropertyChange("status", null, "success");
 	}
 	
 	/**
@@ -85,7 +86,8 @@ public abstract class Action {
 	 */
 	protected final void retry() {
 		villager.updateStatus("statusEnd"); // update image
-		pcs.firePropertyChange("status", null, "retry");
+		if(pcs != null)
+			pcs.firePropertyChange("status", null, "retry");
 	}
 	
 	/**
@@ -94,7 +96,8 @@ public abstract class Action {
 	 */
 	protected final void fail() {
 		villager.updateStatus("statusEnd"); // update image
-		pcs.firePropertyChange("status", null, "fail");
+		if(pcs != null)
+			pcs.firePropertyChange("status", null, "fail");
 	}
 	
 	/**
@@ -113,6 +116,7 @@ public abstract class Action {
 		if (!(listener instanceof Plan)) {
 			System.err.println("Warning: something other than a Plan started listening to an action!");
 		}
-		pcs.addPropertyChangeListener(listener);
+		if(listener != null && pcs != null)
+			pcs.addPropertyChangeListener(listener);
 	}
 }

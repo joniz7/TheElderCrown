@@ -22,9 +22,11 @@ import model.entity.top.house.HouseDoor;
 import model.entity.top.house.HouseWall;
 import model.villager.Villager;
 
+import org.lwjgl.opengl.GL11;
 import org.newdawn.slick.Color;
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.Image;
+import org.newdawn.slick.opengl.renderer.SGL;
 
 import util.Constants;
 import util.EntityType;
@@ -179,20 +181,19 @@ public class WorldView implements PropertyChangeListener {
 		g.fillRect(0, 0, width, height);
 		
 		if(night){
-			g.setColor(Color.white);
-			// write only alpha
-			g.setDrawMode(Graphics.MODE_ALPHA_MAP);
-			
-//			g.drawImage(lightMap, cX - 2000, cY - 2000);
-			lightMap.draw(cX - 2000, cY - 2000);
-			
-			g.setDrawMode(Graphics.MODE_ALPHA_BLEND);
-			g.setColor(overlay);
-			overlay.a = alpha;
-			g.fillRect(0, 0, width, height);
-			
-			g.setDrawMode(Graphics.MODE_NORMAL);
+		    
+		    GL11.glColorMask(false, false, false, true);
+		    
+		    lightMap.draw(cX-256, cY-256);
+		     
+		    GL11.glColorMask(true,true,true,true);
+		    GL11.glBlendFunc(GL11.GL_DST_ALPHA,GL11.GL_ONE_MINUS_DST_ALPHA);
+		    
+		    g.setColor(Color.black);
+		    g.fillRect(0, 0, width, height);
 		}
+		
+		g.setDrawMode(Graphics.MODE_NORMAL);
 		
 		for(EntityView d : UI)
 			d.draw(g, cameraX, cameraY, width, height);
@@ -347,12 +348,12 @@ public class WorldView implements PropertyChangeListener {
 			Integer time = (Integer) event.getNewValue();
 			int hours = time / 750;
 			
-			if(hours >= 20 && hours <= 21){
+			if(hours >= 20 && hours < 21){
 				alphaMod = 0.00068f;
-			}else if(hours > 21 && hours <= 22){
+			}else if(hours >= 21 && hours < 22){
 				alphaMod = -0.005f;
 				night = true;
-			}else if(hours == 23){
+			}else if(hours == 22){
 				alphaMod = 0;
 			}else if(hours >= 6 && hours <= 7){
 				alphaMod = -0.00068f;
