@@ -31,8 +31,8 @@ public class SocialiseInitPlan extends Plan{
 	 * @param otherId - the id of the sender
 	 */
 	public SocialiseInitPlan(Villager villager, Order otherOrder, Point otherPos, int otherId) {
-		super(villager, "Starting social interaction");
-		System.out.println(villager.getId()+" starting social interaction");		
+		super(villager, "Initiating social interaction");
+		System.out.println(villager.getId()+" initiating social interaction");		
 
 		this.otherId = otherId;
 		

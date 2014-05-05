@@ -28,7 +28,7 @@ public class SocialiseIntent extends Intent{
 	public void calculateDesire() {
 		// TODO socialising always on top - super ugly!
 		float socialiseDesire = -villager.getSocial();// + villager.getRelation(otherId); 
-		setDesire(socialiseDesire * Constants.INIT_SOCIALISE_DESIRE);
+		setDesire(socialiseDesire * Constants.JOIN_SOCIALISE_DESIRE);
 	}
 	
 	@Override

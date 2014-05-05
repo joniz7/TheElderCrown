@@ -200,18 +200,24 @@ public class Villager extends MidEntity implements Agent {
 			
 			// Are we already initiating a social interaction?
 			if (activePlan instanceof SocialiseInitPlan) {
+				System.out.println("already socialisin");
 				SocialiseInitPlan plan = (SocialiseInitPlan)activePlan;
+				
 				// We got an invitation from the one we want to invite
 				if (plan.getOtherId() == p.order.getFromId()) {
+					System.out.println("same person!");
 					
 					// Rule: the lowest ID gets to be the initiator
 					if (this.getId() > plan.getOtherId()) {
+						System.out.println("I'll abide");
 						disposePlan(); // scrap our plan, use others instead
 						ih.addIntent(receivedIntent);
 						plan(true); // Put plan on top
+						System.out.println(ih);
 					} else if (this.getId() == plan.getOtherId()) {
 						System.err.println("Warning: got a SocialiseOrder from ourselves!");
 					} else {
+						
 						// Do nothing: proceed with sending invitation below
 					}
 				}
@@ -245,6 +251,9 @@ public class Villager extends MidEntity implements Agent {
 					plan(true); // Put plan on top
 					System.out.println(ih);
 //				}
+			}
+			else {
+				System.out.println("don't wanna");
 			}
 		} // end order
 		
