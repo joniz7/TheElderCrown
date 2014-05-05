@@ -166,9 +166,9 @@ public class RandomWorld extends World{
 			for(int j = 0; j < Constants.WORLD_HEIGHT - 1; j++) {
 				Point p = new Point(i, j);
 				sparsity = rnd.nextInt(TREE_SPARSITY);
-				if(sparsity == 0 && botEntities.get(p) == null && !blocked(null, p) || 
-						sparsity == 0 && botEntities.get(p) != null && botEntities.get(p).getType()
-						== EntityType.GRASS_TILE && !blocked(null, p)){
+				if((sparsity == 0 && botEntities.get(p) == null && !blocked(null, p)) || 
+						(sparsity == 0 && botEntities.get(p) != null && botEntities.get(p).getType()
+						== EntityType.GRASS_TILE && !blocked(null, p))){
 					Tree tree = new Tree(i, j);
 //					trees.add(tree);
 					tickables.add(tree);
@@ -324,6 +324,8 @@ public class RandomWorld extends World{
 					if(p.x != doorPoint.x && p.y != doorPoint.y){
 						bed = new Bed(p.x,p.y,this);
 						addEntity(new Point(p.x, p.y), bed);
+						bed.getPCS().addPropertyChangeListener(this);
+						pcs.firePropertyChange("addBedUI", null, bed);
 					}
 					p.translate(0, 1);
 				}else{

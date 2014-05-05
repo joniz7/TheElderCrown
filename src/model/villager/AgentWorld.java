@@ -8,7 +8,6 @@ import java.util.Set;
 
 import model.entity.Entity;
 import model.entity.bottom.NullTile;
-import model.villager.intentions.action.ImpactableByAction;
 
 import org.newdawn.slick.util.pathfinding.PathFindingContext;
 import org.newdawn.slick.util.pathfinding.TileBasedMap;

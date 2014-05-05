@@ -72,11 +72,11 @@ public class SleepAction extends Action {
 				//System.out.println("Sleeping on grass!");
 				//villager.setBlocking(false);
 				villager.updateStatus("sleeping");
-				villager.setBlocking(false);
 				firstTick = false;
 			}
 			villager.satisfySleep(0.1f);
 			if(villager.getSleepiness() >= Constants.MAX_SLEEP){
+				villager.updateStatus("wakeup");
 				villager.updateStatus("statusEnd");
 				villager.setBlocking(true);
 				actionSuccess();
@@ -86,11 +86,11 @@ public class SleepAction extends Action {
 				//System.out.println("Sleeping on floor!");
 				//villager.setBlocking(false);
 				villager.updateStatus("sleeping");
-				villager.setBlocking(false);
 				firstTick = false;
 			}
 			villager.satisfySleep(0.1f);
 			if(villager.getSleepiness() >= Constants.MAX_SLEEP){
+				villager.updateStatus("wakeup");
 				villager.updateStatus("statusEnd");
 				villager.setBlocking(true);
 				actionSuccess();

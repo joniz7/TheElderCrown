@@ -21,6 +21,7 @@ import model.entity.top.TopEntity;
 import model.entity.top.Tree;
 import model.entity.top.house.DrinkStorage;
 import model.entity.top.house.FoodStorage;
+import model.path.FindEntity;
 import model.path.PathFinder;
 import model.villager.Perception;
 import model.villager.Villager;
@@ -790,6 +791,18 @@ public abstract class World implements Tickable, TileBasedMap, PropertyChangeLis
 					}
 				}
 			}
+		}else if(name.equals("sleeping")){
+			Villager villager = (Villager) event.getSource();
+			Point p = new Point(villager.getX(), villager.getY());
+			if(!FindEntity.standingOnTile(villager.getWorld(), EntityType.BED, villager.getX(), villager.getY())){
+				removeAgent(villager);
+				addSleeping(villager, p);
+			}
+		}else if(name.equals("wakeup")){
+			Villager villager = (Villager) event.getSource();
+			Point p = new Point(villager.getX(), villager.getY());
+			removeSleeping(p);
+			reconnectVillager(p, villager);
 		}
 	}
 

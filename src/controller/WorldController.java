@@ -29,6 +29,7 @@ import model.entity.Entity;
 import model.entity.top.Tree;
 import model.entity.top.house.DrinkStorage;
 import model.entity.top.house.FoodStorage;
+import model.entity.bottom.*;
 import model.villager.Villager;
 import model.villager.intentions.MoveIntent;
 import model.villager.order.Order;
@@ -43,6 +44,7 @@ import org.newdawn.slick.state.StateBasedGame;
 import org.newdawn.slick.state.transition.FadeInTransition;
 import org.newdawn.slick.state.transition.FadeOutTransition;
 
+import util.EntityType;
 import util.ImageLoader;
 import util.NoPositionFoundException;
 import view.WorldView;
@@ -71,6 +73,7 @@ public class WorldController implements GameState {
 	private Tree selectedTree;
 	private FoodStorage selectedFoodStorage;
 	private DrinkStorage selectedDrinkStorage;
+	private Bed selectedBed;
 	
 	@Override
 	public void mouseClicked(int button, int x, int y, int clickCount) {
@@ -139,6 +142,27 @@ public class WorldController implements GameState {
 			selectedVillager.setShowUI(true);
 		} else {
 			selectedVillager = null;
+		}
+		
+		//same for beds
+		HashMap<Point, BottomEntity> temp2 = (HashMap<Point, BottomEntity>) world.getBotEntities().clone();
+		Iterator<Map.Entry<Point, BottomEntity>> iterator = temp2.entrySet().iterator();
+		
+		//hide all beds UIs
+		while(iterator.hasNext()){
+			Map.Entry<Point, BottomEntity> b = iterator.next();
+			BottomEntity bot = b.getValue();
+			if(bot.getType() == EntityType.BED){
+				selectedBed = (Bed) bot;
+				selectedBed.setShowUI(false);
+			}
+		}
+		
+		//Maybe show a UI
+		Entity tile = world.getBotEntities().get(modelPos);
+		if(tile != null && tile.getType() == EntityType.BED){
+			selectedBed = (Bed) tile;
+			selectedBed.setShowUI(true);
 		}
 	}
 	

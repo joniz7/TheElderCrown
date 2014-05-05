@@ -3,7 +3,6 @@ package model.entity.bottom;
 import java.awt.Point;
 
 import model.World;
-import model.path.FindEntity;
 import model.villager.Villager;
 import util.Copyable;
 import util.EntityId;
@@ -22,6 +21,7 @@ public class Bed extends BottomEntity implements Tickable {
 	private Villager savedVillager;
 	private World w;
 	private int x,y;
+	private String femaleClaimantName, maleClaimantName;
 
 	public Bed(int x, int y, World w) {
 		super(x, y, EntityType.BED, false);
@@ -83,6 +83,14 @@ public class Bed extends BottomEntity implements Tickable {
 		return male;
 	}
 	
+	public String getFemaleClaimantName() {
+		return femaleClaimantName;
+	}
+	
+	public String getMaleClaimantName() {
+		return maleClaimantName;
+	}
+	
 	/*public Villager getOther(){
 		if(female != null){
 			return female;
@@ -109,18 +117,20 @@ public class Bed extends BottomEntity implements Tickable {
 
 	public void setFemaleClaimant(Villager female) {
 		this.femaleClaimantID = female.getId();
+		this.femaleClaimantName = female.getName();
 	}
 
 	public void setMaleClaimant(Villager male) {
 		this.maleClaimantID = male.getId();
+		this.maleClaimantName = male.getName();
 	}
 
 	public void removeFemaleClaimant(){
-		femaleClaimantID = 0;
+		femaleClaimantID = UNOCCUPIED_ID;
 	}
 	
 	public void removeMaleClaimant(){
-		maleClaimantID = 0;
+		maleClaimantID = UNOCCUPIED_ID;
 	}
 	
 	public void removeMe(Villager vill){
@@ -187,7 +197,7 @@ public class Bed extends BottomEntity implements Tickable {
 	 */
 	public boolean stopUsing(Villager v){
 		Point p = new Point(x,y);
-		Point t = FindEntity.FreeTile(v.getWorld(), x, y);
+//		Point t = FindEntity.FreeTile(v.getWorld(), x, y);
 		if(!w.blocked(null, x, y)){
 			v.setBlocking(true);
 			//System.out.println("Bed: Used by: "+UsedBy());
@@ -231,6 +241,22 @@ public class Bed extends BottomEntity implements Tickable {
 	public void tick() {
 		// TODO Auto-generated method stub
 		
+	}
+
+	/**
+	 * A method to show or hide the beds UI.
+	 * 
+	 * @param show a boolean to determine whether to show or hide the UI, true if show.
+	 */
+	public void setShowUI(boolean show) {
+		if(show){
+			pcs.firePropertyChange("bedStatus", null, "show");
+			pcs.firePropertyChange("bedStatus", null, "highlight");
+		}else{
+			pcs.firePropertyChange("bedStatus", null, "hide");	
+			pcs.firePropertyChange("bedStatus", null, "unHighlight");
+		}
+//		isShowUI = show;
 	}
 
 	

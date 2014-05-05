@@ -11,6 +11,7 @@ import java.util.ArrayList;
 
 import javax.swing.Timer;
 
+import model.entity.bottom.Bed;
 import model.entity.bottom.BottomEntity;
 import model.entity.mid.MidEntity;
 import model.entity.top.TopEntity;
@@ -42,6 +43,7 @@ import view.entity.top.house.HouseCornerView;
 import view.entity.top.house.HouseDoorView;
 import view.entity.top.house.HouseFloorView;
 import view.entity.top.house.HouseWallView;
+import view.ui.BedUI;
 import view.ui.DrinkStorageUI;
 import view.ui.FoodStorageUI;
 import view.ui.TreeUI;
@@ -330,7 +332,12 @@ public class WorldView implements PropertyChangeListener {
 			PropertyChangeSupport pcs = entity.getPCS();
 			pcs.addPropertyChangeListener(view);
 			UI.add(view);
-			System.out.println("ADDED");
+		}else if (name.equals("addBedUI")){
+			Bed entity = (Bed) event.getNewValue();
+			EntityView view = new BedUI(entity);
+			PropertyChangeSupport pcs = entity.getPCS();
+			pcs.addPropertyChangeListener(view);
+			UI.add(view);
 		}
 		else if (name.equals("removeTopEntity")) {
 			// TODO search and remove from list
