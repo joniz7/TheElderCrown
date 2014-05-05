@@ -1,12 +1,15 @@
 package model.villager.intentions.plan;
 
 import java.awt.Point;
+import java.beans.PropertyChangeEvent;
 
 import model.villager.Villager;
+import model.villager.intentions.action.Action;
 import model.villager.intentions.action.IssueOrderAction;
 import model.villager.intentions.action.TalkAction;
 import model.villager.intentions.action.WaitForAction;
 import model.villager.order.Order;
+import util.Constants;
 
 /**
  * A plan to socialise with another villager, whom have called out to us.
@@ -29,7 +32,8 @@ public class SocialiseInitPlan extends Plan{
 	 */
 	public SocialiseInitPlan(Villager villager, Order otherOrder, Point otherPos, int otherId) {
 		super(villager, "Starting social interaction");
-		
+		System.out.println(villager.getId()+" starting social interaction");		
+
 		this.otherId = otherId;
 		
 		// IssueOrderAction
@@ -41,12 +45,11 @@ public class SocialiseInitPlan extends Plan{
 		// TalkAction
 		addAction(new TalkAction(villager, otherPos, otherId));
 		
-		System.out.println("Starting to find another villager \n");		
 	}
 
 	@Override
 	public void retryAction() {
-		// TODO Auto-generated method stub
+		throw new UnsupportedOperationException("SocialiseInitIntent should never receive retry");
 	}
 	
 	/**
@@ -55,5 +58,25 @@ public class SocialiseInitPlan extends Plan{
 	public int getOtherId() {
 		return otherId;
 	}
+	
+	@Override
+	/**
+	 * Handle events sent from any Action.
+	 */
+	public void propertyChange(PropertyChangeEvent e) {
+		Action source = (Action) e.getSource();
+		String status = (String) e.getNewValue();
+
+		if ("fail".equals(status)) {
+			if (source instanceof WaitForAction) {
+				// become angrier at other party (atm, never socialise again)
+				villager.decreaseRelation(otherId, -Constants.NEGATIVE_SOCIAL_IMPACT);
+			}
+		}
+		
+		// Let Plan do its things
+		super.propertyChange(e);
+	}
+
 
 }

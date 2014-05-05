@@ -94,6 +94,7 @@ public abstract class Action {
 	 * This fails the entire plan - use with caution
 	 */
 	protected final void fail() {
+		System.out.println("fail fail");
 		villager.updateStatus("statusEnd"); // update image
 		pcs.firePropertyChange("status", null, "fail");
 	}

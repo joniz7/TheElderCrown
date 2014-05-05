@@ -43,7 +43,6 @@ public class WaitForAction extends Action {
 		Entity other = world.getMidEntities().get(otherPos);
 		// We found who we're waiting for!
 		if (other != null && other.getId() == otherId) {
-			villager.updateStatus("statusEnd");
 			success();
 		}
 		// We did not find who we're waiting for, yet
@@ -55,9 +54,6 @@ public class WaitForAction extends Action {
 //				System.out.println("Waiting a lil bit longer... "+ticksToWait);
 			}
 		}
-		
-		
-
 		
 	}
 

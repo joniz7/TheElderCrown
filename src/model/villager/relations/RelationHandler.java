@@ -76,4 +76,21 @@ public class RelationHandler {
 	public void addNewRelation(Integer villagerID, float amount){
 		relations.put(villagerID, amount);
 	}
+	
+	/**
+	 * Returns this villager's relation to other villager.
+	 * Creates relation if not already exists (and then returns 0)
+	 * 
+	 * @param villagerId - other villager
+	 * @return - a float value [-100,100]
+	 */
+	public float getRelation(Integer villagerId) {
+		Float relation = relations.get(villagerId);
+		if (relation == null) { // Found none
+			addNewRelation(villagerId);
+			return 0;
+		} else {
+			return relation;
+		}
+	}
 }

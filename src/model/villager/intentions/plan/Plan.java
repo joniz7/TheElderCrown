@@ -25,6 +25,9 @@ public abstract class Plan implements PropertyChangeListener{
 		return actionQueue.peek();
 	}
 	
+	/**
+	 * @deprecated use doneAction instead
+	 */
 	public void actionDone() {
 		if(actionQueue.size() <= 0){
 			villager.disposePlan();
@@ -53,7 +56,7 @@ public abstract class Plan implements PropertyChangeListener{
 
 	/**
 	 * Recreates the current action and places it first in the queue.
-	 * Needs to be specifik for each plan.
+	 * Needs to be specific for each plan.
 	 */
 	public abstract void retryAction();
 	
@@ -68,10 +71,47 @@ public abstract class Plan implements PropertyChangeListener{
 	public String getName() {
 		return name;
 	}
+	
+	/**
+	 * Finishes this action, and moves to next action in plan.
+	 * If it was the last action, tell villager to dispose of plan.
+	 */
+	public void doneAction() {
+		if(actionQueue.size() <= 0){
+			villager.disposePlan();
+		} else {
+			actionQueue.pop();
+			if (actionQueue.size() <= 0) {
+				villager.disposePlan();
+			}
+		}
+	}
+	
+	/**
+	 * Fails the whole plan.
+	 * (Should call this when fail event arrives)
+	 */
+	public void fail() {
+		villager.disposePlan();
+	}
 
 	@Override
-	public void propertyChange(PropertyChangeEvent arg0) {
-		// TODO Auto-generated method stub
-		
+	/**
+	 * Handle events sent from our Actions
+	 */
+	public void propertyChange(PropertyChangeEvent e) {
+		Action source = (Action) e.getSource();
+		String status = (String) e.getNewValue();
+
+		if ("success".equals(status)) {
+			doneAction();
+		} else if ("fail".equals(status)) {
+			fail();
+		} else if ("retry".equals(status)) {
+			retryAction();
+		} else {
+			System.err.println("Warning: Unknown status sent from action to plan!");
+		}
+
 	}
 }

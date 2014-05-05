@@ -2,6 +2,8 @@ package model.villager.intentions;
 
 import java.awt.Point;
 
+import util.Constants;
+
 import model.villager.Villager;
 import model.villager.intentions.plan.Plan;
 import model.villager.intentions.plan.SocialisePlan;
@@ -24,8 +26,9 @@ public class SocialiseIntent extends Intent{
 
 	@Override
 	public void calculateDesire() {
-		// TODO weight with relation
-		setDesire(-villager.getSocial() * 4);
+		// TODO socialising always on top - super ugly!
+		float socialiseDesire = -villager.getSocial();// + villager.getRelation(otherId); 
+		setDesire(socialiseDesire * Constants.INIT_SOCIALISE_DESIRE);
 	}
 	
 	@Override

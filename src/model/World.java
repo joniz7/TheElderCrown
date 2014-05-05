@@ -232,12 +232,16 @@ public abstract class World implements Tickable, TileBasedMap, PropertyChangeLis
 			perception.topEntities = tempTopEnt;
 
 			// Has this agent been given an order?
+			List<Order> ordersToRemove = new ArrayList<Order>();
 			for(Order o : orders) {
 				if (o.getToId() == entity.getId()) {
-					// Send order information in update 
+					// Send order information in update
 					perception.order = o;
-					orders.remove(o);		
+					ordersToRemove.add(o); // schedule for deletion
 				}
+			}
+			for (Order o: ordersToRemove) { //Delete all orders
+				orders.remove(o);
 			}
 
 			agent.update(perception, time);

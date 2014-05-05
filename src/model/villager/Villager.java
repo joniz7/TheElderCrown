@@ -27,6 +27,7 @@ import model.villager.intentions.reminder.ProfessionLine;
 import model.villager.intentions.reminder.ProfessionLine.WorkLevel;
 import model.villager.intentions.reminder.profession.WaterGatherer;
 import model.villager.order.Order;
+import model.villager.relations.RelationHandler;
 import model.villager.util.NameGen;
 import util.Constants;
 import util.EntityType;
@@ -37,6 +38,7 @@ public class Villager extends MidEntity implements Agent {
 	private static final long serialVersionUID = 1L;
 
 	private IntentionHandler ih;
+	private RelationHandler rh;
 		
 	private AgentWorld world;
 	private boolean dead = false, isElder = false;
@@ -68,9 +70,9 @@ public class Villager extends MidEntity implements Agent {
 
 	// Limits, i.e. when we should trigger actions) (modified by modifiers)
 	// TODO update
-	private float socialLimit = 10; // Limit for sending invitations
-	private float socialLimitAccept = 5; // Limit for accepting invitatios 
-
+	private float socialLimit = -1; // Limit for sending invitations
+	private float socialLimitAccept = 2; // Limit for accepting invitations 
+	
 	public Villager(Point p, int age, int village){
 		super(p.x, p.y, EntityType.VILLAGER);
 		world = new AgentWorld();
@@ -83,6 +85,7 @@ public class Villager extends MidEntity implements Agent {
 		ageprog=0;
 		deathrisk=1;
 		ih = new IntentionHandler(this);
+		rh = new RelationHandler();
 		
 		this.sex = UtilClass.getRandomInt(2, 0);
 		if(sex == 0){
@@ -146,7 +149,7 @@ public class Villager extends MidEntity implements Agent {
 		
 		// If we see any other villagers, we may initiate an interaction
 		if (p.hasVillagers()) {
-//			maybeSocialise(p);
+			maybeSocialise(p);
 		}
 		
 		// If order was received, take it into consideration when planning
@@ -193,7 +196,7 @@ public class Villager extends MidEntity implements Agent {
 		if (p.order != null && p.order.getIntent() instanceof SocialiseIntent) {
 			SocialiseIntent receivedIntent = (SocialiseIntent) p.order.getIntent();
 			
-			System.out.println("Received social invitation! "+receivedIntent);
+			System.out.println(getId()+" received social invitation! "+receivedIntent);
 			
 			// Are we already initiating a social interaction?
 			if (activePlan instanceof SocialiseInitPlan) {
@@ -203,33 +206,45 @@ public class Villager extends MidEntity implements Agent {
 					
 					// Rule: the lowest ID gets to be the initiator
 					if (this.getId() > plan.getOtherId()) {
-						// TODO scrap our plan
+						disposePlan(); // scrap our plan, use others instead
 						ih.addIntent(receivedIntent);
+						plan(true); // Put plan on top
 					} else if (this.getId() == plan.getOtherId()) {
 						System.err.println("Warning: got a SocialiseOrder from ourselves!");
 					} else {
-						// Proceed with sending invitation below
+						// Do nothing: proceed with sending invitation below
 					}
 				}
-				// We got invitation from someone else, but we're planning to initate.
+				// We got invitation from someone else, but we're planning to initiate.
 				// Whom do we choose?
 				else {
 					// TODO check relations
 					if (UtilClass.askMagicEightBall()) {
 						// Should accept invitation
-						// TODO scrap our plan
-						ih.addIntent(receivedIntent);
+						int otherId = p.order.getFromId();
+//						if (getRelation(otherId) >= 0) { // Only if we like enough
+							disposePlan();
+							ih.addIntent(receivedIntent);
+							plan(true); // Put plan on top
+//						}
 					} else {
-						// Should send invitation below
+						// Do nothing: should send invitation below
 					}
 					
 				}
 			}
 			// Not already initiating interaction. Do I wanna interact with sender?
-			// TODO relation
 			else if (currentSocial < socialLimitAccept) {
-				initSocialise = false;
-				ih.addIntent(receivedIntent);
+				System.out.println("Add to intent handlah?");
+				int otherId = p.order.getFromId();
+				// Add to IH if we like the other person
+//				if (getRelation(otherId) >= 0) {
+					System.out.println("Add to intent handlah!");
+					initSocialise = false;
+					ih.addIntent(receivedIntent);
+					plan(true); // Put plan on top
+					System.out.println(ih);
+//				}
 			}
 		} // end order
 		
@@ -239,26 +254,36 @@ public class Villager extends MidEntity implements Agent {
 		}
 		
 		if (initSocialise && currentSocial < socialLimit) {
+			System.out.println("current:"+currentSocial+", limit:"+socialLimit);
 			
 			// Initialise a social interaction
 			Entry<Point, Villager> other = getBestFriend(villagers);
 			Villager otherVillager = other.getValue();
 			Point otherPos = other.getKey();
 			
-			// Find out where we should meet
-			Point nearbyPos = FindEntity.findTileNeighbour(otherVillager.getWorld(), this.getPosition(), otherPos);
+			// Do we like the other person?
+			int otherId = otherVillager.getId();
+//			if (getRelation(otherId) >= 0) {
 			
-			// If no nearby tile available, abort TODO wait or something?
-			if (nearbyPos == null) return;
-			
-			// Create SocialiseIntent and order for other villager
-			Intent othersIntent = new SocialiseIntent(otherVillager, nearbyPos, this.getId());
-			Order socialiseOrder = new Order(this.getId(), otherVillager.getId(), othersIntent);
-			
-			// Create SocialiseInitIntent for myself
-			SocialiseInitIntent initIntent = new SocialiseInitIntent(this, socialiseOrder, nearbyPos, otherVillager.getId());
-			// TODO is weighted properly?
-			ih.addIntent(initIntent);
+				// Find out where we should meet
+				Point nearbyPos = FindEntity.findTileNeighbour(otherVillager.getWorld(), this.getPosition(), otherPos);
+				
+				// If no nearby tile available, abort TODO wait or something?
+				if (nearbyPos == null) return;
+				
+				// Create SocialiseIntent and order for other villager
+				Intent othersIntent = new SocialiseIntent(otherVillager, nearbyPos, this.getId());
+				Order socialiseOrder = new Order(this.getId(), otherVillager.getId(), othersIntent);
+				
+				// Create SocialiseInitIntent for myself
+				SocialiseInitIntent initIntent = new SocialiseInitIntent(this, socialiseOrder, nearbyPos, otherVillager.getId());
+				System.out.println("Add new SociInitIntent");
+				// TODO is weighted properly?
+				ih.addIntent(initIntent);
+				disposePlan();
+				plan(true); // Put plan on top
+				
+//			}
 		}
 		
 	}
@@ -294,7 +319,23 @@ public class Villager extends MidEntity implements Agent {
 		}
 		return bestFriend;
 	}
-
+	
+	/**
+	 * Gets this villager's relation to another villager.
+	 * (Creates relation if not already exists)
+	 * 
+	 * @param otherId - the other villager's id
+	 */
+	public float getRelation(int otherId) {
+		return rh.getRelation(otherId);
+	}
+	public void decreaseRelation(int otherId, float amount) {
+		rh.decreaseRelation(otherId, amount);
+	}
+	public void increaseRelation(int otherId, float amount) {
+		rh.increaseRelation(otherId, amount);
+	}
+	
 	public void satisfyHunger(float f) {
 		this.currentHunger += f;
 		if(currentHunger > Constants.MAX_HUNGER){
@@ -388,8 +429,22 @@ public class Villager extends MidEntity implements Agent {
 		}
 	}
 	
+	/**
+	 * Performs the planning for this villager.
+	 * First updates intention handler, then changes activePlan if necessary
+	 */
 	private void plan() {
-		ih.update();
+		plan(false);
+	}
+	
+	/**
+	 * Performs the planning for this villager.
+	 * First updates intention handler, then changes activePlan if necessary
+	 *  
+	 * @param force - whether IH should be forcibly updated
+	 */
+	private void plan(boolean force) {
+		ih.update(force);
 		if(activePlan == null) {
 			if(!mustExplore){
 				activePlan = ih.getFirstPlan();

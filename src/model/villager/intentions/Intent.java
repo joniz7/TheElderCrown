@@ -29,7 +29,7 @@ public abstract class Intent{
 	
 	@Override
 	public String toString() {
-		return "villager: "+villager+", desire:"+desire; 
+		return this.getClass().getName() + "(villager: "+villager+", desire:"+desire+")"; 
 	}
 	
 }

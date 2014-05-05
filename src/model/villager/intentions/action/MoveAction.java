@@ -19,12 +19,34 @@ public class MoveAction extends Action{
 	private EntityType type;
 	private Criteria crit;
 	
+	// Whether this MoveAction should adhere to the new IPA system or not
+	private boolean newIPA = false;
 	
+	/**
+	 * Create a new MoveAction.
+	 * Atm, sends events using the old system
+	 */
 	public MoveAction(Villager villager, Path path) {
+		this(villager, path, false);
+	}
+	
+	/**
+	 * Create a new MoveAction.
+	 * @param villager - the villager that should move
+	 * @param path - the path the villager should walk
+	 * @param newIPA - whether this action should send events using the new system or not 
+	 */
+	public MoveAction(Villager villager, Path path, boolean newIPA) {
 		super(villager, "Moving");
 		this.path = path;
 	}
 	
+	/**
+	 * @deprecated - should not find things in MoveAction
+	 * @param villager
+	 * @param type
+	 * @param crit
+	 */
 	public MoveAction(Villager villager, EntityType type, Criteria crit) {
 		super(villager, "Moving");
 		this.type = type;
@@ -50,12 +72,24 @@ public class MoveAction extends Action{
 		}
 		
 		if(path == null){
-			actionFail();
-			return;
+			if (newIPA) {
+				fail();
+				return;
+			}
+			else {
+				actionFail();
+				return;
+			}
+			
 		}
 		if(stepCount >= path.getLength()) {
 			//        	System.out.println("Move FINISHED!!!");
-	    	actionSuccess();
+			if (newIPA) {
+				success();
+			}else {
+				actionSuccess();				
+			}
+	    	
 	    }else if(!world.blocked(null, path.getStep(stepCount).getX(), 
     			path.getStep(stepCount).getY())){
 	    	waitTime = 0;
@@ -64,7 +98,12 @@ public class MoveAction extends Action{
 			//check if the villager has the next step of the path next to it.
 			if(!(Math.abs(villager.getX()-path.getStep(stepCount).getX())==1 ||
 					Math.abs(villager.getY()-path.getStep(stepCount).getY())==1)){
-				actionFail();
+				if (newIPA) {
+					fail();
+				} else {
+					actionFail();
+				}
+				
 			}
 			
 			
@@ -94,7 +133,11 @@ public class MoveAction extends Action{
 		} else {
 			waitTime++;
 			if(waitTime > 40){
-				actionFail();
+				if (newIPA) {
+					fail();
+				} else {
+					actionFail();
+				}
 //				System.out.println("WAIT!");
 			}
 		}
@@ -109,8 +152,5 @@ public class MoveAction extends Action{
 			return 0;
 		}
 	}
-
-	
-	
 	
 }
