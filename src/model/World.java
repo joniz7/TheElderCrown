@@ -68,7 +68,7 @@ public abstract class World implements Tickable, TileBasedMap, PropertyChangeLis
 
 	public final int VILLAGER_SPAWN_POS = 40, VILLAGER_COUNT = 2;
 
-	public final int VILLAGER_COUNT_PER_VILLAGE = 2, VILLAGE_COUNT = 5, VILLAGE_DISTANCE = 40, VILLAGE_SIZE = 20;
+	public final int VILLAGER_COUNT_PER_VILLAGE = 2, VILLAGE_COUNT = 1, VILLAGE_DISTANCE = 40, VILLAGE_SIZE = 20;
 	protected ArrayList<Point> villages;
 	
 	// Keep track of when to spawn babies
