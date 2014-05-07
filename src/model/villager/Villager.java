@@ -146,6 +146,9 @@ public class Villager extends MidEntity implements Agent {
 		ageprog++;
 		seeIfBirthday();
 		adjustNeeds();
+		if(isPregnant){
+			pregnantTime++;
+		}
 		
 		// If we see any other villagers, we may initiate an interaction
 		if (p.hasVillagers()) {
