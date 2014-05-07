@@ -295,7 +295,7 @@ public abstract class World implements Tickable, TileBasedMap, PropertyChangeLis
 //			testSubject = v;
 		}
 		else {
-			System.out.println("Can't spawn baby: Too many people, too many problems");
+			System.out.println("Can't spawn baby: Stillborn");
 		}
 	}
 	

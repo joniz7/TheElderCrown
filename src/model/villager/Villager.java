@@ -74,6 +74,8 @@ public class Villager extends MidEntity implements Agent {
 	// Limits, i.e. when we should trigger actions) (modified by modifiers)
 	private float socialLimit = 10; // TODO update
 
+	public boolean sleptOutsideLastNight = false;
+	
 	public Villager(Point p, int age, int village){
 		super(p.x, p.y, EntityType.VILLAGER);
 		world = new AgentWorld();
@@ -148,6 +150,12 @@ public class Villager extends MidEntity implements Agent {
 		adjustNeeds();
 		if(isPregnant){
 			pregnantTime++;
+		}
+		if(sleptOutsideLastNight){
+			if(isInsideVillage(getPosition())){
+				buildHouse();
+			}
+			sleptOutsideLastNight = false;
 		}
 		
 		// If we see any other villagers, we may initiate an interaction

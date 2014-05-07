@@ -46,7 +46,6 @@ public class SleepPlan extends Plan {
 			IsUnclaimed bedcriteria = new IsUnclaimed(villager);
 			bedPos = FindEntity.findTopMidEntity(villager.getWorld(), bedcriteria, EntityType.BED, villager.getX(), villager.getY());
 			if(bedPos == null){
-				villager.buildHouse();
 				actionQueue.addLast(new SleepAction(villager));
 			}
 			villager.setBed(bedPos);
