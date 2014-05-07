@@ -485,6 +485,9 @@ public class Villager extends MidEntity implements Agent {
 	 * @author Tux
 	 */
 	public void updateStatus(String newStatus){
+		if(newStatus.equals("dead") && myBed != null){
+			myBed.removeMe(this);
+		}
 		pcs.firePropertyChange("status", null, newStatus);		
 	}
 	
@@ -648,5 +651,9 @@ public class Villager extends MidEntity implements Agent {
 	
 	public int getHome(){
 		return home;
+	}
+
+	public void buildHouse() {
+		pcs.firePropertyChange("newHouse", null, northwestVillageCorner);
 	}
 }

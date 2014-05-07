@@ -14,6 +14,7 @@ import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.nio.file.Paths;
+import java.util.ConcurrentModificationException;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
@@ -535,7 +536,13 @@ public class WorldController implements GameState {
 	 */
 	public void render(GameContainer arg0, StateBasedGame arg1, Graphics g)
 			throws SlickException {
-		view.render(g);
+		try{
+			view.render(g);
+		}catch(Exception e){
+			if(e instanceof ConcurrentModificationException){
+				System.out.println("CONCURRENT MODIFICATION ERROR!!!");
+			}
+		}
 
 	}
 

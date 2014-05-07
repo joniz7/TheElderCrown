@@ -8,6 +8,7 @@ import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.beans.PropertyChangeSupport;
 import java.util.ArrayList;
+import java.util.ConcurrentModificationException;
 
 import javax.swing.Timer;
 
@@ -167,7 +168,7 @@ public class WorldView implements PropertyChangeListener {
 			cameraY -= SCROLL_SPEED;
 	}
 
-	public void render(Graphics g){
+	public void render(Graphics g) throws ConcurrentModificationException{
 		g.clearAlphaMap();
 		g.setDrawMode(Graphics.MODE_NORMAL);
 		

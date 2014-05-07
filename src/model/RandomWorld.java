@@ -1,6 +1,7 @@
 package model;
 
 import java.awt.Point;
+import java.beans.PropertyChangeEvent;
 import java.util.ArrayList;
 import java.util.Random;
 
@@ -195,12 +196,12 @@ public class RandomWorld extends World{
 
 			buildHouse(villages.get(v).x - UtilClass.getRandomInt(4, 3), villages.get(v).y - UtilClass.getRandomInt(4, 3),
 					UtilClass.getRandomInt(3, 2), UtilClass.getRandomInt(3, 2), Constants.DOWN_ENTRANCE);
-			buildHouse(villages.get(v).x - UtilClass.getRandomInt(4, 3), villages.get(v).y + UtilClass.getRandomInt(4, 3),
-					UtilClass.getRandomInt(3, 2), UtilClass.getRandomInt(3, 2), Constants.RIGHT_ENTRANCE);
-			buildHouse(villages.get(v).x + UtilClass.getRandomInt(4, 3), villages.get(v).y - UtilClass.getRandomInt(4, 3),
-					UtilClass.getRandomInt(3, 2), UtilClass.getRandomInt(3, 2), Constants.DOWN_ENTRANCE);
-			buildHouse(villages.get(v).x + UtilClass.getRandomInt(4, 3), villages.get(v).y + UtilClass.getRandomInt(4, 4),
-					UtilClass.getRandomInt(3, 2), UtilClass.getRandomInt(3, 2), Constants.UP_ENTRANCE);
+//			buildHouse(villages.get(v).x - UtilClass.getRandomInt(4, 3), villages.get(v).y + UtilClass.getRandomInt(4, 3),
+//					UtilClass.getRandomInt(3, 2), UtilClass.getRandomInt(3, 2), Constants.RIGHT_ENTRANCE);
+//			buildHouse(villages.get(v).x + UtilClass.getRandomInt(4, 3), villages.get(v).y - UtilClass.getRandomInt(4, 3),
+//					UtilClass.getRandomInt(3, 2), UtilClass.getRandomInt(3, 2), Constants.DOWN_ENTRANCE);
+//			buildHouse(villages.get(v).x + UtilClass.getRandomInt(4, 3), villages.get(v).y + UtilClass.getRandomInt(4, 4),
+//					UtilClass.getRandomInt(3, 2), UtilClass.getRandomInt(3, 2), Constants.UP_ENTRANCE);
 
 			FoodStorage storage = new FoodStorage(villages.get(v).x + 2, villages.get(v).y - 1);
 			addEntity(storage.getPosition(), storage);
@@ -378,5 +379,56 @@ public class RandomWorld extends World{
 		System.out.println("");
 		System.out.println("");
 	}
+	
+	@Override
+	public void propertyChange(PropertyChangeEvent event) {
+		super.propertyChange(event);
+		
+		if(event.getPropertyName().equals("newHouse")){
+			Point villageCenter = (Point) event.getNewValue();
+			villageCenter.translate(VILLAGE_SIZE/2, VILLAGE_SIZE/2);
+			
+			boolean stillLookingForPlace = true;
+			int offset = 10;
+			while(stillLookingForPlace){
+				int tempX = UtilClass.getRandomInt(offset*2, -offset), 
+						tempY = UtilClass.getRandomInt(offset*2, -offset);
+				if(canBuildHouse(villageCenter.x + tempX, villageCenter.y + tempY)){
+					int orientation;
+					if(Math.abs(tempX) >= Math.abs(tempY)){
+						if(tempX>0){
+							orientation = Constants.DOWN_ENTRANCE;
+						}else{
+							orientation = Constants.UP_ENTRANCE;
+						}
+					}else{
+						if(tempY>0){
+							orientation = Constants.LEFT_ENTRANCE;
+						}else{
+							orientation = Constants.RIGHT_ENTRANCE;
+						}
+					}
+					buildHouse(villageCenter.x + tempX, villageCenter.y + tempY,
+							UtilClass.getRandomInt(3, 2), UtilClass.getRandomInt(3, 2), orientation);
+					stillLookingForPlace = false;
+				}
+				offset++;
+				if(offset>50){
+					break;
+				}
+			}
+		}
+	}
 
+	private boolean canBuildHouse(int x, int y) {
+		boolean stillCanBuild = true;
+		for(int i=-4; i<=4; i++){
+			for(int j=-4; j<=4; j++){
+				if(blocked(null, x+i, y+j)){
+					stillCanBuild = false;
+				}
+			}
+		}
+		return stillCanBuild;
+	}
 }
