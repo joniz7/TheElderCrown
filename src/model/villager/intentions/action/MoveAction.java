@@ -101,18 +101,6 @@ public class MoveAction extends Action{
 	}
 	
 	@Override
-	protected void actionFail() {
-		villager.updateStatus("statusEnd");
-		isFailed = true;
-	}
-
-	@Override
-	protected void actionSuccess() {
-		villager.updateStatus("statusEnd");
-		isSuccess = true;
-	}
-
-	@Override
 	public float getCost() {
 		// TODO Auto-generated method stub
 		if(path != null) {

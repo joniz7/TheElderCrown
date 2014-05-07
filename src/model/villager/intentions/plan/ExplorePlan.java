@@ -27,16 +27,12 @@ public class ExplorePlan extends Plan {
 		while(path == null){
 			stacks++;
 			if(stacks > 100){
-				actionQueue.add(new IdleAction(villager));
+				addAction(new IdleAction(villager));
 				isFinished = true;
 				villager.updateStatus("statusEnd");
 			}
-//			System.out.println("Finding point to explore");
-//			if(FindObject.isStuck(villager.getWorld(),villager.getX(),villager.getY())){
-//				isFinished = true;
-//			}
+
 			p = new Point(randInt((villager.getX()-5),(villager.getX()+5)),randInt((villager.getY()-5),(villager.getY()+5)));
-			//p = FindObject.findTileNeighbour(villager.getWorld(), EntityType.NULL_TILE, villager.getX(), villager.getY());
 			
 			if(p != null){
 				path = PathFinder.getPathToAdjacent(villager.getX(),villager.getY(),p.x,p.y);
@@ -44,7 +40,7 @@ public class ExplorePlan extends Plan {
 
 		}
 		
-		actionQueue.add(new MoveAction(villager, path));
+		addAction(new MoveAction(villager, path));
 	}
 	
 	public static int randInt(int min, int max) {
@@ -55,6 +51,7 @@ public class ExplorePlan extends Plan {
 	    }else if(min <=0){
 	    	min=1;
 	    }
+	    
 	    // nextInt is normally exclusive of the top value,
 	    // so add 1 to make it inclusive
 	    int randomNum = rand.nextInt((max - min) + 1) + min;
@@ -63,6 +60,12 @@ public class ExplorePlan extends Plan {
 	    }
 
 	    return randomNum;
+		
+	}
+
+	@Override
+	public void retryAction() {
+		// TODO Auto-generated method stub
 		
 	}
 }

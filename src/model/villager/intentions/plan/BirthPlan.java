@@ -28,5 +28,11 @@ public class BirthPlan extends Plan {
 	actionQueue.add(new BirthAction(villager));
 	
 	}
+
+	@Override
+	public void retryAction() {
+		// TODO Auto-generated method stub
+		
+	}
 	
 }

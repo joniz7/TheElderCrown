@@ -44,14 +44,13 @@ public class WaitForAction extends Action {
 		// We found who we're waiting for!
 		if (other != null && other.getId() == otherId) {
 			villager.updateStatus("statusEnd");
-			actionSuccess();
+			success();
 		}
 		// We did not find who we're waiting for, yet
 		else {
 			if (--ticksToWait < 0) {
 				System.out.println("I'm done waiting for you!");
-				villager.updateStatus("statusEnd");
-				actionFail();
+				fail();
 			} else {
 				System.out.println("Waiting a lil bit longer... "+ticksToWait);
 			}

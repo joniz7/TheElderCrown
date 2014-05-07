@@ -30,28 +30,11 @@ public class SocialisePlan extends Plan{
 		// TalkAction
 		
 		System.out.println("Starting to find another villager \n");
-		
-		
-		/*
-		Villager otherVillager = (Villager) FindObject.getAdjacentObject(villager.getWorld(), new isSocial(),
-		EntityType.VILLAGER, villager.getX(), villager.getY());
-		
-		
-		
-		
-		if(otherVillager != null){
-		actionQueue.addLast(new SocialAction(villager));
-		otherVillager.setAction(new SocialPlan(otherVillager));
-		}else{
-		Point p = FindObject.findObjectNeighbour(villager.getWorld(), new isSocial(), EntityType.VILLAGER,
-		villager.getX(), villager.getY());
-		Path movePath = null;
-		if(p != null)
-		movePath = PathFinder.getPathToAdjacent(villager.getX(), villager.getY(), p.x, p.y);
-		
-		actionQueue.add(new MoveAction(villager, movePath));
-		actionQueue.addLast(new SocialAction(villager));
-		*/
+	}
+
+	@Override
+	public void retryAction() {
+		// TODO Auto-generated method stub
 		
 	}
 

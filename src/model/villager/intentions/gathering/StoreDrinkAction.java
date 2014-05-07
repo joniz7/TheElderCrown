@@ -21,6 +21,8 @@ public class StoreDrinkAction extends Action{
 
 	@Override
 	public void tick(ImpactableByAction world){
+		
+		// Standing next to drink storage?
 		if(FindEntity.getAdjacentObject(villager.getWorld(), new IsDrinkStorage(), EntityType.DRINK_STORAGE, villager.getX(),
 				villager.getY()) != null) {
 			DrinkStorage fs = (DrinkStorage) FindEntity.getAdjacentObject(villager.getWorld(), new IsDrinkStorage(), 
@@ -29,27 +31,26 @@ public class StoreDrinkAction extends Action{
 			stacks++;
 			if(stacks >= stacksToStore){
 				Item[] items = villager.getInventory();
-				Drink drink = null;
+				Drink currentDrink = null;
 				for(int i = 0; i < items.length; i++)
 					if(items[i] instanceof Drink){
-						drink = (Drink) items[i];
+						currentDrink = (Drink) items[i];
 						villager.removeFromInventory(i);
 						items[i] = null;
 						break;
 					}
-				
-				if(drink == null){
-					villager.updateStatus("statusEnd");
-					actionSuccess();
+				// If no more drinks to store
+				if(currentDrink == null){
+					success();
 				}else{
-					fs.addDrink(drink);
+					fs.addDrink(currentDrink);
 				}
 				stacks = 0;
 			}
-		}else{
-			villager.updateStatus("statusEnd");
-			System.out.println("FAIL");
-			actionFail();
+		}
+		// Not standing next to drink storage
+		else{
+			fail();
 		}
 	}
 

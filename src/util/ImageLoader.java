@@ -30,7 +30,7 @@ public class ImageLoader {
 		imageLib.put("storage2", loadImage("image", "storage2.png"));
 		imageLib.put("tree", loadImage("image", "tree.png"));
 		imageLib.put("tree2", loadImage("image", "tree2.png"));
-		imageLib.put("bed", loadImage("image", "bed.png"));
+		imageLib.put("bed", loadImage("image", "bed2.png"));
 		
 		//Villager
 		imageLib.put("villager", loadImage("image", "villager.png"));
@@ -58,7 +58,7 @@ public class ImageLoader {
 		imageLib.put("itemWater", loadImage("image", "itemWater.png"));
 		
 		//misc
-		imageLib.put("light", loadImage("image", "light.png"));
+		imageLib.put("light", loadImage("image", "lightSmall.png"));
 		imageLib.put("clock", loadImage("image", "clock.png"));
 		imageLib.put("clockBorder", loadImage("image", "clockBorder.png"));
 

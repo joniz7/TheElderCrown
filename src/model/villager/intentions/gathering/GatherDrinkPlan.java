@@ -51,4 +51,9 @@ public class GatherDrinkPlan extends Plan{
 		}
 		
 	}
+
+	@Override
+	public void retryAction() {
+		throw new UnsupportedOperationException("IPA refactoring not done");
+	}
 }

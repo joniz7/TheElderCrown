@@ -66,21 +66,20 @@ public class SleepPlan extends Plan {
 		
 		
 		if(bedPos != null){
-			/*if(thisBed.isUsed()){
-				thisBed.getOther(villager).setBlocking(false);
-				villager.setBlocking(false);
-			}*/
-			
 			Path movePath = PathFinder.getPath(villager.getX(), villager.getY(), bedPos.x, bedPos.y);
-			actionQueue.add(new MoveAction(villager, movePath));
-			actionQueue.addLast(new SleepAction(villager, thisBed));
+			addAction(new MoveAction(villager, movePath));
+			addAction(new SleepAction(villager, thisBed));
 		
 		}else if(bedPos == null){
-			actionQueue.addLast(new SleepAction(villager));
+			addAction(new SleepAction(villager));
 		}else{
 			isFinished = true;
 		}
-	
+	}
+
+	@Override
+	public void retryAction() {
+		// TODO Auto-generated method stub
 		
 	}
 }
