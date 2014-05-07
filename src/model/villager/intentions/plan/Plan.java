@@ -61,7 +61,7 @@ public abstract class Plan implements PropertyChangeListener{
 	 * Adds an action to the action queue
 	 */
 	protected final void addAction(Action a) {
-		a.addListener(this);
+//		a.addListener(this);
 		actionQueue.add(a);
 	}
 	

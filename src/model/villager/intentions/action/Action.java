@@ -76,8 +76,9 @@ public abstract class Action {
 	 */
 	protected final void success() {
 		villager.updateStatus("statusEnd"); // update image
-		if(pcs != null)
-			pcs.firePropertyChange("status", null, "success");
+		actionSuccess();
+//		if(pcs != null)
+//			pcs.firePropertyChange("status", null, "success");
 	}
 	
 	/**
@@ -85,9 +86,10 @@ public abstract class Action {
 	 * This makes the plan create a new instance of this Action  
 	 */
 	protected final void retry() {
-		villager.updateStatus("statusEnd"); // update image
-		if(pcs != null)
-			pcs.firePropertyChange("status", null, "retry");
+		throw new UnsupportedOperationException("NEW IPA system is deprecated!");
+//		villager.updateStatus("statusEnd"); // update image
+//		if(pcs != null)
+//			pcs.firePropertyChange("status", null, "retry");
 	}
 	
 	/**
@@ -96,8 +98,9 @@ public abstract class Action {
 	 */
 	protected final void fail() {
 		villager.updateStatus("statusEnd"); // update image
-		if(pcs != null)
-			pcs.firePropertyChange("status", null, "fail");
+		actionFail();
+//		if(pcs != null)
+//			pcs.firePropertyChange("status", null, "fail");
 	}
 	
 	/**

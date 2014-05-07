@@ -28,7 +28,7 @@ public class DrinkAction extends Action{
 				// Finished drinking
 				if(villager.getThirst() >= Constants.MAX_THIRST){
 					// Finish Plan
-					success();
+					actionSuccess();
 				}
 				else if(d.consumed()){
 					System.out.println("BOWL EMPTY");
@@ -61,7 +61,7 @@ public class DrinkAction extends Action{
 		// No water available anywhere.
 		else {
 			// Fail DrinkPlan
-			fail();
+			actionFail();
 		}
 
 	}
