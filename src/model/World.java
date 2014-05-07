@@ -258,13 +258,17 @@ public abstract class World implements Tickable, TileBasedMap, PropertyChangeLis
 		perception.midEntities = tempMidEnt;
 		perception.topEntities = tempTopEnt;
 
-		// Has this agent been given an order?
-		for(Order o : orders) {
-			if (o.getToId() == entity.getId()) {
-				// Send order information in update 
-				perception.order = o;
-				orders.remove(o);		
+		try{
+			// Has this agent been given an order?
+			for(Order o : orders) {
+				if (o.getToId() == entity.getId()) {
+					// Send order information in update 
+					perception.order = o;
+					orders.remove(o);		
+				}
 			}
+		}catch (Exception exeption) {
+			System.out.println("Concurrent modification exeption in orders");
 		}
 
 			agent.update(perception, time);
@@ -878,6 +882,27 @@ public abstract class World implements Tickable, TileBasedMap, PropertyChangeLis
 	}
 	public void setcPos(Point cPos) {
 		this.cPos = cPos;
+	}
+	
+	public void removeTopEntity(Point pos){
+		if(topEntities.get(pos) != null){
+			pcs.firePropertyChange("removeTopEntity", null, topEntities.get(pos).getId());
+		}
+		topEntities.remove(pos);
+	}
+	
+	public void removeMidEntity(Point pos){
+		if(midEntities.get(pos) != null){
+			pcs.firePropertyChange("removeMidEntity", null, midEntities.get(pos).getId());
+		}
+		midEntities.remove(pos);
+	}
+	
+	public void removeBotEntity(Point pos){
+		if(botEntities.get(pos) != null){
+			pcs.firePropertyChange("removeBotEntity", null, botEntities.get(pos).getId());
+		}
+		botEntities.remove(pos);
 	}
 	
 }

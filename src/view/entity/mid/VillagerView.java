@@ -26,8 +26,8 @@ public class VillagerView extends EntityView {
 	 * @param x - the world's x coordinate
 	 * @param y - the world's y coordinate
 	 */
-	public VillagerView(int x, int y, int height, int weight) {
-		super("villager", x, y);
+	public VillagerView(int x, int y, int height, int weight, int id) {
+		super("villager", x, y, id);
 		this.height = height;
 		this.weight = weight;
 		c = new Color(UtilClass.getRandomInt(200, 25), UtilClass.getRandomInt(200, 50), 

@@ -19,8 +19,8 @@ public class DrinkStorageView extends EntityView {
 	 * @param x the x-coordinate for the wall.
 	 * @param y the y-coordinate for the wall.
 	 */
-	public DrinkStorageView(int x, int y) {
-		super("storage2", x, y);
+	public DrinkStorageView(int x, int y, int id) {
+		super("storage2", x, y, id);
 	}
 
 	@Override

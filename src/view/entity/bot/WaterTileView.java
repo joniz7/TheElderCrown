@@ -14,8 +14,8 @@ public class WaterTileView extends EntityView {
 	 * @param x - the world's x coordinate
 	 * @param y - the world's y coordinate
 	 */
-	public WaterTileView(int x, int y) {
-		super("water", x, y);
+	public WaterTileView(int x, int y, int id) {
+		super("water", x, y, id);
 	}
 	
 }

@@ -5,14 +5,13 @@ import java.awt.Point;
 import model.World;
 import model.villager.Villager;
 import util.Copyable;
-import util.EntityId;
 import util.EntityType;
 import util.Tickable;
 
 public class Bed extends BottomEntity implements Tickable {
 	
 	private static final long serialVersionUID = 1L;
-	public static final int UNOCCUPIED_ID = EntityId.nextId();
+	public final int UNOCCUPIED_ID;
 	//Claimants are identities saved permanently
 	private int maleClaimantID, femaleClaimantID;
 	//female/male is the villager currently in bed
@@ -27,6 +26,7 @@ public class Bed extends BottomEntity implements Tickable {
 		super(x, y, EntityType.BED, false);
 		this.male = null;
 		this.female = null;
+		UNOCCUPIED_ID = id;
 		this.maleClaimantID = UNOCCUPIED_ID;
 		this.femaleClaimantID = UNOCCUPIED_ID;
 		this.w = w;
@@ -89,6 +89,14 @@ public class Bed extends BottomEntity implements Tickable {
 	
 	public String getMaleClaimantName() {
 		return maleClaimantName;
+	}
+	
+	public int getFemaleClaimantID() {
+		return femaleClaimantID;
+	}
+	
+	public int getMaleClaimantID() {
+		return maleClaimantID;
 	}
 	
 	/*public Villager getOther(){

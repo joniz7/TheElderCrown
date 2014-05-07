@@ -14,8 +14,8 @@ public class Helper1View extends EntityView {
 	 * @param x - the world's x coordinate
 	 * @param y - the world's y coordinate
 	 */
-	public Helper1View(int x, int y) {
-		super("helper", x, y);
+	public Helper1View(int x, int y, int id) {
+		super("helper", x, y, id);
 	}
 	
 }

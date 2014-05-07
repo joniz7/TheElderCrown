@@ -20,8 +20,8 @@ public class HouseWallView extends EntityView {
 	 * @param y the y-coordinate for the wall.
 	 * @param rotation an int to give the orientation.
 	 */
-	public HouseWallView(int x, int y, int rotation) {
-		super("wall", x, y);
+	public HouseWallView(int x, int y, int rotation, int id) {
+		super("wall", x, y, id);
 		this.rotation = rotation;
 	}
 

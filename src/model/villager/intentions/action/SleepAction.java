@@ -80,8 +80,8 @@ public class SleepAction extends Action {
 				villager.updateStatus("statusEnd");
 				villager.setBlocking(true);
 				actionSuccess();
+				villager.sleptOutsideLastNight = true;
 			}
-			villager.sleptOutsideLastNight = true;
 		}else if(FindEntity.standingOnTile(villager.getWorld(), EntityType.HOUSE_FLOOR, villager.getX(), villager.getY())){
 			if(this.firstTick){
 				//System.out.println("Sleeping on floor!");

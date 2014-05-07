@@ -88,6 +88,13 @@ public abstract class Entity implements Copyable, Serializable {
 	}
 	
 	/**
+	 * A mwthod to delete the associated View object.
+	 */
+	public void deleteView(){
+		pcs.firePropertyChange("delete", null, null);
+	}
+	
+	/**
 	 * A method to find the column of the Entity.
 	 * 
 	 * @return the column in which the Entity is.

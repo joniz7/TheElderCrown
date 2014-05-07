@@ -20,8 +20,8 @@ public class HouseCornerView extends EntityView {
 	 * @param y the y-coordinate for the corner.
 	 * @param rotation an int to give the orientation.
 	 */
-	public HouseCornerView(int x, int y, int rotation) {
-		super("corner", x, y);
+	public HouseCornerView(int x, int y, int rotation, int id) {
+		super("corner", x, y, id);
 		this.rotation = rotation;
 	}
 

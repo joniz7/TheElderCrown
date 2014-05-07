@@ -21,8 +21,8 @@ public class HouseDoorView extends EntityView {
 	 * @param y the y-coordinate for the door.
 	 * @param rotation an int to give the orientation.
 	 */
-	public HouseDoorView(int x, int y, int rotation) {
-		super("door", x, y);
+	public HouseDoorView(int x, int y, int rotation, int id) {
+		super("door", x, y, id);
 		this.rotation = rotation;
 	}
 

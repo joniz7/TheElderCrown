@@ -9,6 +9,7 @@ import java.beans.PropertyChangeListener;
 import java.beans.PropertyChangeSupport;
 import java.util.ArrayList;
 import java.util.ConcurrentModificationException;
+import java.util.Iterator;
 
 import javax.swing.Timer;
 
@@ -28,7 +29,6 @@ import org.lwjgl.opengl.GL11;
 import org.newdawn.slick.Color;
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.Image;
-import org.newdawn.slick.opengl.renderer.SGL;
 
 import util.Constants;
 import util.EntityType;
@@ -245,27 +245,27 @@ public class WorldView implements PropertyChangeListener {
 			EntityView view = null;
 			switch(type){
 			case TREE:
-				view = new TreeView(entity.getX()-1, entity.getY()-1);
+				view = new TreeView(entity.getX()-1, entity.getY()-1, entity.getId());
 				break;
 			case HOUSE_DOOR:
 				HouseDoor door = (HouseDoor) entity;
-				view = new HouseDoorView(door.getX(), door.getY(), door.getOrientation());
+				view = new HouseDoorView(door.getX(), door.getY(), door.getOrientation(), entity.getId());
 				break;
 			case HOUSE_WALL:
 				HouseWall wall = (HouseWall) entity;
-				view = new HouseWallView(wall.getX(), wall.getY(), wall.getOrientation());
+				view = new HouseWallView(wall.getX(), wall.getY(), wall.getOrientation(), entity.getId());
 				break;
 			case HOUSE_CORNER:
 				HouseCorner corner = (HouseCorner) entity;
-				view = new HouseCornerView(corner.getX(), corner.getY(), corner.getOrientation());
+				view = new HouseCornerView(corner.getX(), corner.getY(), corner.getOrientation(), entity.getId());
 				break;
 			case FOOD_STORAGE:
 				FoodStorage fs = (FoodStorage) entity;
-				view = new FoodStorageView(fs.getX(), fs.getY());
+				view = new FoodStorageView(fs.getX(), fs.getY(), entity.getId());
 				break;
 			case DRINK_STORAGE:
 				DrinkStorage ds = (DrinkStorage) entity;
-				view = new DrinkStorageView(ds.getX(), ds.getY());
+				view = new DrinkStorageView(ds.getX(), ds.getY(), entity.getId());
 				break;
 			}
 			PropertyChangeSupport pcs = entity.getPCS();
@@ -280,7 +280,7 @@ public class WorldView implements PropertyChangeListener {
 			case VILLAGER:
 				Villager villager = (Villager) entity;
 				view = new VillagerView(entity.getX(), entity.getY(), 
-						villager.getLength(), villager.getWeight());
+						villager.getLength(), villager.getWeight(), villager.getId());
 				break;
 
 			}
@@ -294,16 +294,16 @@ public class WorldView implements PropertyChangeListener {
 			EntityView view = null;
 			switch(type){
 			case GRASS_TILE:
-				view = new GrassTileView(entity.getX(), entity.getY());
+				view = new GrassTileView(entity.getX(), entity.getY(), entity.getId());
 				break;
 			case WATER_TILE:
-				view = new WaterTileView(entity.getX(), entity.getY());
+				view = new WaterTileView(entity.getX(), entity.getY(), entity.getId());
 				break;
 			case HOUSE_FLOOR:
-				view = new HouseFloorView(entity.getX(), entity.getY());
+				view = new HouseFloorView(entity.getX(), entity.getY(), entity.getId());
 				break;
 			case BED:
-				view = new BedView(entity.getX(),entity.getY());
+				view = new BedView(entity.getX(),entity.getY(), entity.getId());
 				break;
 			}
 			PropertyChangeSupport pcs = entity.getPCS();
@@ -342,15 +342,34 @@ public class WorldView implements PropertyChangeListener {
 			UI.add(view);
 		}
 		else if (name.equals("removeTopEntity")) {
-			// TODO search and remove from list
-			//      (should implement GUIDs first)
-			throw new UnsupportedOperationException();
+			Iterator<EntityView> it = ((ArrayList<EntityView>) topGraphics.clone()).iterator();
+			EntityView temp;
+			while(it.hasNext()){
+				temp = it.next();
+				if(temp.ID == (int) event.getNewValue()){
+					topGraphics.remove(temp);
+				}
+			}
 		}
 		else if (name.equals("removeMidEntity")) {
-			throw new UnsupportedOperationException();
+			Iterator<EntityView> it = ((ArrayList<EntityView>) midGraphics.clone()).iterator();
+			EntityView temp;
+			while(it.hasNext()){
+				temp = it.next();
+				if(temp.ID == (int) event.getNewValue()){
+					midGraphics.remove(temp);
+				}
+			}
 		}
 		else if (name.equals("removeBotEntity")) {
-			throw new UnsupportedOperationException();
+			Iterator<EntityView> it = ((ArrayList<EntityView>) botGraphics.clone()).iterator();
+			EntityView temp;
+			while(it.hasNext()){
+				temp = it.next();
+				if(temp.ID == (int) event.getNewValue()){
+					botGraphics.remove(temp);
+				}
+			}
 		}
 		else if(name.equals("setTime")){
 			Integer time = (Integer) event.getNewValue();
@@ -387,7 +406,7 @@ public class WorldView implements PropertyChangeListener {
 			}
 		}else if(name.equals("helper")){
 			Point p = (Point) event.getOldValue();
-			topGraphics.add(new Helper3View(p.x, p.y));
+			topGraphics.add(new Helper3View(p.x, p.y, 0));
 		}
 	}
 	

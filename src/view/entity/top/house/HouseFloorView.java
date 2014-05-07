@@ -4,8 +4,8 @@ import view.entity.EntityView;
 
 public class HouseFloorView extends EntityView {
 
-	public HouseFloorView(int x, int y) {
-		super("floor", x, y);
+	public HouseFloorView(int x, int y, int id) {
+		super("floor", x, y, id);
 	}
 
 }

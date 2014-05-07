@@ -17,11 +17,12 @@ public class IsUnclaimed implements Criteria {
 	public boolean match(Entity ge) {
 		if(ge instanceof Bed){
 			Bed bed = (Bed) ge;
-			if(villager.isMale() && bed.isClaimedByFemale() && !bed.isClaimedByMale()){
+			if(villager.isMale() &&
+					(!bed.isClaimedByMale() ||
+							bed.getMaleClaimantID() ==
+							villager.getId())){
 				return true;
-			}else if(villager.isFemale() && bed.isClaimedByMale() && !bed.isClaimedByFemale()){
-				return true;
-			}else if(bed.isFree()){
+			}else if(villager.isFemale() && (!bed.isClaimedByFemale() || bed.getFemaleClaimantID() == villager.getId())){
 				return true;
 			}
 		}

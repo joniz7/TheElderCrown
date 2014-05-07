@@ -249,6 +249,7 @@ public class RandomWorld extends World{
 		HouseCorner corner;
 		boolean cornerPut = false;
 		for(int k=1; k<outerWidth; k++){
+			removeTopEntity(p);
 			if(p.x != x || p.y != y){
 				if(cornerPut){
 					wall = new HouseWall(p.x, p.y, Constants.UP_ENTRANCE);
@@ -263,6 +264,7 @@ public class RandomWorld extends World{
 		}
 		cornerPut = false;
 		for(int k=1; k<outerHeight; k++){
+			removeTopEntity(p);
 			if(p.x != x || p.y != y){
 				if(cornerPut){
 					wall = new HouseWall(p.x, p.y, Constants.RIGHT_ENTRANCE);
@@ -277,6 +279,7 @@ public class RandomWorld extends World{
 		}
 		cornerPut = false;
 		for(int k=1; k<outerWidth; k++){
+			removeTopEntity(p);
 			if(p.x != x || p.y != y){
 				if(cornerPut){
 					wall = new HouseWall(p.x, p.y, Constants.DOWN_ENTRANCE);
@@ -291,6 +294,7 @@ public class RandomWorld extends World{
 		}
 		cornerPut = false;
 		for(int k=1; k<outerHeight; k++){
+			removeTopEntity(p);
 			if(p.x != x || p.y != y){
 				if(cornerPut){
 					wall = new HouseWall(p.x, p.y, Constants.LEFT_ENTRANCE);
@@ -308,6 +312,8 @@ public class RandomWorld extends World{
 		
 		//ADD DOOR
 		Point doorPoint = new Point(x, y);
+		removeTopEntity(doorPoint);
+		removeBotEntity(doorPoint);
 		HouseFloor floor = new HouseFloor(x, y);
 		addEntity(doorPoint, floor);
 		topEntities.remove(doorPoint);
@@ -319,6 +325,8 @@ public class RandomWorld extends World{
 		Bed bed;
 		for(int k=0; k<outerWidth-2; k++){
 			for(int l=0; l<outerHeight-2; l++){
+				removeBotEntity(p);
+				removeTopEntity(p);
 				if((l==0 || l==outerHeight-3) && (k==0 || k==outerWidth-3)){
 					floor = new HouseFloor(p.x, p.y);
 					addEntity(new Point(p.x, p.y), floor);
@@ -408,8 +416,9 @@ public class RandomWorld extends World{
 							orientation = Constants.RIGHT_ENTRANCE;
 						}
 					}
+					int sizeX = UtilClass.getRandomInt(3, 2), sizeY = UtilClass.getRandomInt(2, 2);
 					buildHouse(villageCenter.x + tempX, villageCenter.y + tempY,
-							UtilClass.getRandomInt(3, 2), UtilClass.getRandomInt(3, 2), orientation);
+							sizeX, sizeY, orientation);
 					stillLookingForPlace = false;
 				}
 				offset++;

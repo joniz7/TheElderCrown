@@ -16,8 +16,8 @@ public class TreeView extends EntityView {
 	 * @param x - the world's x coordinate
 	 * @param y - the world's y coordinate
 	 */
-	public TreeView(int x, int y) {
-		super("tree2", x, y);
+	public TreeView(int x, int y, int id) {
+		super("tree2", x, y, id);
 	}
 	
 	@Override

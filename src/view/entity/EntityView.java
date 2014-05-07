@@ -7,8 +7,10 @@ import java.beans.PropertyChangeListener;
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.Image;
 
+import util.EntityId;
 import util.ImageLoader;
 import util.InterpolPosition;
+import util.UtilClass;
 import view.WorldView;
 
 /**
@@ -20,6 +22,7 @@ public class EntityView implements PropertyChangeListener {
 
 	protected Image image;
 	private String name;
+	public final int ID;
 	
 	// View coordinates
 	protected int x, y;
@@ -32,11 +35,12 @@ public class EntityView implements PropertyChangeListener {
 	 * @param x - the world's x coordinate
 	 * @param y - the world's y coordinate
 	 */
-	public EntityView(String name, int x, int y){
+	public EntityView(String name, int x, int y, int id){
 		image = ImageLoader.getImage(name);
 		this.x = WorldView.modelToViewCoordinate(x);
 		this.y = WorldView.modelToViewCoordinate(y);
 		this.name = name;
+		ID = id;
 	}
 	
 	public boolean draw(Graphics g, int cameraX, int cameraY, int width, int height){

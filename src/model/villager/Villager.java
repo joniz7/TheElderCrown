@@ -10,6 +10,7 @@ import model.entity.bottom.Bed;
 import model.entity.mid.MidEntity;
 import model.item.Item;
 import model.path.FindEntity;
+import model.path.criteria.IsUnclaimed;
 import model.villager.intentions.Intent;
 import model.villager.intentions.IntentionHandler;
 import model.villager.intentions.SocialiseInitIntent;
@@ -152,7 +153,8 @@ public class Villager extends MidEntity implements Agent {
 			pregnantTime++;
 		}
 		if(sleptOutsideLastNight){
-			if(isInsideVillage(getPosition())){
+			if(isInsideVillage(getPosition()) && 
+					FindEntity.findTopMidEntity(getWorld(), new IsUnclaimed(this), EntityType.BED, x, y) == null){
 				buildHouse();
 			}
 			sleptOutsideLastNight = false;

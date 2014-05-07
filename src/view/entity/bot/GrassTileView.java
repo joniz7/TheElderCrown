@@ -15,8 +15,8 @@ public class GrassTileView extends EntityView {
 	 * @param x - the world's x coordinate
 	 * @param y - the world's y coordinate
 	 */
-	public GrassTileView(int x, int y) {
-		super(tileType(), x, y);		
+	public GrassTileView(int x, int y, int id) {
+		super(tileType(), x, y, id);		
 	}
 	
 	private static String tileType(){
