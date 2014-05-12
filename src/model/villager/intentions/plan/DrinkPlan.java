@@ -51,6 +51,9 @@ public class DrinkPlan extends Plan{
 				}
 				addAction(new DrinkAction(villager));
 				return;
+			} else {
+				addAction(new MoveAction(villager, movePath));
+				addAction(new DrinkAction(villager));
 			}
 		}else if(p2 != null){
 			Path movePath = PathFinder.getPathToAdjacent(villager.getX(), villager.getY(), p2.x, p2.y);
