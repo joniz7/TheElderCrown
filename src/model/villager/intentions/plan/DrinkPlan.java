@@ -26,7 +26,6 @@ public class DrinkPlan extends Plan{
 			
 			addAction(new DrinkAction(villager));
 
-			System.out.println("ALREADY ADJACENT WATER");
 			return;
 		}
 		
