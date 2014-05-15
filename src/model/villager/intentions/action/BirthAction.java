@@ -38,7 +38,7 @@ public class BirthAction extends Action {
 			Point p = FindEntity.FreeTile(villager.getWorld(), villager.getX(), villager.getY());
 			if(p != null){
 				villager.setBlocking(true);
-				w.newVillager(p, 0,villager.getHome());
+				w.newVillager(p, 0,villager.getHome(), villager, villager.getFatherToBaby());
 				villager.setPregnant(false, null);
 				villager.updateStatus("statusEnd");
 				actionSuccess();

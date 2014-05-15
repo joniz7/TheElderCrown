@@ -34,7 +34,7 @@ public class ExplorePlan extends Plan {
 
 			p = new Point(randInt((villager.getX()-5),(villager.getX()+5)),randInt((villager.getY()-5),(villager.getY()+5)));
 			
-			if(p != null){
+			if(p != null && p.x != villager.getX() && p.y != villager.getY()){
 				path = PathFinder.getPathToAdjacent(villager.getX(),villager.getY(),p.x,p.y);
 			}
 

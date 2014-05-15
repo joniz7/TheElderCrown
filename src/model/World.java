@@ -303,6 +303,20 @@ public abstract class World implements Tickable, TileBasedMap, PropertyChangeLis
 		}
 	}
 	
+	public void newVillager(Point p, int age, int village, Villager mother, Villager father) {
+		// Spawn only if position is empty
+		if (midEntities.get(p) == null) {
+			System.out.println("A baby is born!");
+			Villager v = new Villager(p,age, village, mother, father);
+			addEntity(p, v);
+			addVillagerUI(p, v);
+			v.getPCS().addPropertyChangeListener(this);
+//			testSubject = v;
+		}
+		else {
+			System.out.println("Can't spawn baby: Stillborn");
+		}
+	}
 	
 	
 	/**
