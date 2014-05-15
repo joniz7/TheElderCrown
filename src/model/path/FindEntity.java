@@ -380,7 +380,7 @@ public class FindEntity {
 //					View.addTopGraphic(new Helper1View(p.x, p.y));
 			}
 			
-			if(stacks > 100 || visited.size() == 0){
+			if(stacks > 40 || visited.size() == 0){
 				//System.out.println("FindObject: " + visited.size());
 				//System.out.println("FindObject: " + crit);
 				//System.out.println("FindObject: " + type);

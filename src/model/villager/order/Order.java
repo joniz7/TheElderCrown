@@ -14,7 +14,7 @@ public class Order {
 	private int fromId, toId;
 
 	// TODO should probably consist of more than an intent
-	private Intent intent;
+	protected Intent intent;
 	
 	public Order(int fromId, int toId, Intent intent) {
 		this.fromId = fromId;

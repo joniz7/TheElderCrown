@@ -39,7 +39,7 @@ public class BirthAction extends Action {
 			if(p != null){
 				villager.setBlocking(true);
 				w.newVillager(p, 0,villager.getHome());
-				villager.setPregnant(false);
+				villager.setPregnant(false, null);
 				villager.updateStatus("statusEnd");
 				actionSuccess();
 			}else

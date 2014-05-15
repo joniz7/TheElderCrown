@@ -54,7 +54,7 @@ public class SleepAction extends Action {
 				villager.updateStatus("cuddling");
 				//System.out.println("Bed used by >1!");
 				//TODO: Change name of action.
-				villager.setPregnant(true);
+				thisBed.getFemale().setPregnant(true, thisBed.getMale());
 			}else{
 				villager.updateStatus("sleeping");
 			}

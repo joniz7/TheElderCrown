@@ -64,6 +64,7 @@ public class Villager extends MidEntity implements Agent {
 	private HashMap<Point, Agent> nearbyAgents;
 	private boolean isPregnant;
 	private int pregnantTime;
+	private Villager fatherToBaby;
 	
 	// Characteristics (act as modifiers)
 	private float hunger, thirst, speed, sleepiness, laziness, obedience;
@@ -104,6 +105,48 @@ public class Villager extends MidEntity implements Agent {
 		this.speed = UtilClass.getRandomInt(10, 25);
 		this.laziness = UtilClass.getRandomInt(20, 1);
 		this.obedience = UtilClass.getRandomInt(20, 1);
+		this.modifier = UtilClass.getRandomInt(5, 1);
+		this.social = 40;
+		
+		this.currentHunger = 50-modifier*hunger;
+		this.currentThirst = 50-modifier*thirst;
+		this.currentSleepiness = 40-modifier*sleepiness;
+		this.currentLaziness = 50-modifier*laziness;
+		this.currentSocial = 0f;
+		
+		currentAction = "Doing Nothing";
+		currentPlan = "Doing Nothing";
+		
+		System.out.println("New villager created: " + name+ " " +length+"  "+weight+ " " +sex);
+	}
+	
+	public Villager(Point p, int age, int village, Villager mother, Villager father){
+		super(p.x, p.y, EntityType.VILLAGER);
+		world = new AgentWorld();
+		length = (mother.getLength()+father.getLength())/2 + UtilClass.getRandomInt(50, 0);
+		weight = length / 4 + UtilClass.getRandomInt(length/4, 0);
+		this.home = village;
+		profession = new WaterGatherer(this, WorkLevel.MEDIUM);
+		
+		this.age=age;
+		ageprog=0;
+		deathrisk=1;
+		ih = new IntentionHandler(this);
+		
+		this.sex = UtilClass.getRandomInt(2, 0);
+		if(sex == 0){
+			this.name = NameGen.newName(true);
+		}else{
+			this.name = NameGen.newName(false);
+		}
+		
+		//Randomize starting values for needs, wants and stats.
+		this.hunger = (mother.getHunger()+father.getHunger())/2 + UtilClass.getRandomInt(4,1);
+		this.thirst = (mother.getThirst()+father.getThirst())/2 + UtilClass.getRandomInt(4,1);
+		this.sleepiness = (mother.getSleepiness()+father.getSleepiness())/2 + UtilClass.getRandomInt(4,1);
+		this.speed = (mother.getSpeed()+father.getSpeed())/2 + UtilClass.getRandomInt(4,1);
+		this.laziness = (mother.getLaziness()+father.getLaziness())/2 + UtilClass.getRandomInt(4,1);
+		this.obedience = (mother.getObedience()+father.getObedience())/2 + UtilClass.getRandomInt(4,1);
 		this.modifier = UtilClass.getRandomInt(5, 1);
 		this.social = 40;
 		
@@ -171,7 +214,7 @@ public class Villager extends MidEntity implements Agent {
 			addOrder(p.order);
 		}
 		
-		//seeIfDead();
+		seeIfDead();
 		plan();
 		
 		if(profession != null)
@@ -620,7 +663,7 @@ public class Villager extends MidEntity implements Agent {
 		return world;
 	}
 	
-	public boolean setPregnant(boolean value){
+	public boolean setPregnant(boolean value, Villager father){
 		
 		if(value==false){
 			isPregnant=false;
@@ -629,12 +672,17 @@ public class Villager extends MidEntity implements Agent {
 		if(isFemale() && age>=15 && isPregnant == false){
 			isPregnant = value;
 			this.pregnantTime = 0;
+			fatherToBaby = father;
 			System.out.println("Villager: "+name+" got pregnant! Hooray!");
 			return true;
 		}else{
 			//System.out.println("Villager " +name+ " " +isFemale() +" " +age+ " " +isPregnant);
 			return false;
 		}
+	}
+	
+	public Villager getFatherToBaby(){
+		return fatherToBaby;
 	}
 	
 	private boolean mustBirth(){
