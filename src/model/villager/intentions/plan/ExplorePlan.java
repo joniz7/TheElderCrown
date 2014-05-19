@@ -4,6 +4,7 @@ import java.awt.Point;
 import java.util.LinkedList;
 import java.util.Random;
 
+import model.path.FindEntity;
 import model.path.PathFinder;
 import model.villager.Villager;
 import model.villager.intentions.action.Action;
@@ -11,6 +12,8 @@ import model.villager.intentions.action.IdleAction;
 import model.villager.intentions.action.MoveAction;
 
 import org.newdawn.slick.util.pathfinding.Path;
+
+import util.Constants;
 
 public class ExplorePlan extends Plan {
 	
@@ -24,7 +27,7 @@ public class ExplorePlan extends Plan {
 		villager.updateStatus("exploring");
 		
 		stacks = 0;
-		while(path == null){
+		while(path == null && !isFinished){
 			stacks++;
 			if(stacks > 100){
 				addAction(new IdleAction(villager));
@@ -33,6 +36,17 @@ public class ExplorePlan extends Plan {
 			}
 
 			p = new Point(randInt((villager.getX()-5),(villager.getX()+5)),randInt((villager.getY()-5),(villager.getY()+5)));
+			if(p.x > Constants.WORLD_WIDTH) {
+				p.x = Constants.WORLD_WIDTH - 1;
+			} else if(p.x < 0) {
+				p.x=0;
+			}
+			
+			if(p.y > Constants.WORLD_HEIGHT) {
+				p.y = Constants.WORLD_HEIGHT - 1;
+			} else if(p.y < 0) {
+				p.y = 0;
+			}
 			
 			if(p != null && p.x != villager.getX() && p.y != villager.getY()){
 				path = PathFinder.getPathToAdjacent(villager.getX(),villager.getY(),p.x,p.y);
