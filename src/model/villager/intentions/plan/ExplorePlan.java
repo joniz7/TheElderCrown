@@ -36,13 +36,14 @@ public class ExplorePlan extends Plan {
 			}
 
 			p = new Point(randInt((villager.getX()-5),(villager.getX()+5)),randInt((villager.getY()-5),(villager.getY()+5)));
-			if(p.x > Constants.WORLD_WIDTH) {
+			
+			if(p.x >= Constants.WORLD_WIDTH) {
 				p.x = Constants.WORLD_WIDTH - 1;
 			} else if(p.x < 0) {
 				p.x=0;
 			}
 			
-			if(p.y > Constants.WORLD_HEIGHT) {
+			if(p.y >= Constants.WORLD_HEIGHT) {
 				p.y = Constants.WORLD_HEIGHT - 1;
 			} else if(p.y < 0) {
 				p.y = 0;
