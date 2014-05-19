@@ -142,10 +142,10 @@ public class Bed extends BottomEntity implements Tickable {
 	}
 	
 	public void removeMe(Villager vill){
-		if(female.equals(vill)){
+		if(vill.equals(female)){
 			this.female = null;
 			this.femaleClaimantID = UNOCCUPIED_ID;
-		}else if(male.equals(vill)){
+		}else if(vill.equals(male)){
 			this.male = null;
 			this.maleClaimantID = UNOCCUPIED_ID;
 		}

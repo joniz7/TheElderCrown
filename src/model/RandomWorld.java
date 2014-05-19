@@ -196,12 +196,12 @@ public class RandomWorld extends World{
 
 			buildHouse(villages.get(v).x - UtilClass.getRandomInt(4, 3), villages.get(v).y - UtilClass.getRandomInt(4, 3),
 					UtilClass.getRandomInt(3, 2), UtilClass.getRandomInt(3, 2), Constants.DOWN_ENTRANCE);
-//			buildHouse(villages.get(v).x - UtilClass.getRandomInt(4, 3), villages.get(v).y + UtilClass.getRandomInt(4, 3),
-//					UtilClass.getRandomInt(3, 2), UtilClass.getRandomInt(3, 2), Constants.RIGHT_ENTRANCE);
-//			buildHouse(villages.get(v).x + UtilClass.getRandomInt(4, 3), villages.get(v).y - UtilClass.getRandomInt(4, 3),
-//					UtilClass.getRandomInt(3, 2), UtilClass.getRandomInt(3, 2), Constants.DOWN_ENTRANCE);
-//			buildHouse(villages.get(v).x + UtilClass.getRandomInt(4, 3), villages.get(v).y + UtilClass.getRandomInt(4, 4),
-//					UtilClass.getRandomInt(3, 2), UtilClass.getRandomInt(3, 2), Constants.UP_ENTRANCE);
+			buildHouse(villages.get(v).x - UtilClass.getRandomInt(4, 3), villages.get(v).y + UtilClass.getRandomInt(4, 3),
+					UtilClass.getRandomInt(3, 2), UtilClass.getRandomInt(3, 2), Constants.RIGHT_ENTRANCE);
+			buildHouse(villages.get(v).x + UtilClass.getRandomInt(4, 3), villages.get(v).y - UtilClass.getRandomInt(4, 3),
+					UtilClass.getRandomInt(3, 2), UtilClass.getRandomInt(3, 2), Constants.LEFT_ENTRANCE);
+			buildHouse(villages.get(v).x + UtilClass.getRandomInt(4, 3), villages.get(v).y + UtilClass.getRandomInt(4, 4),
+					UtilClass.getRandomInt(3, 2), UtilClass.getRandomInt(3, 2), Constants.UP_ENTRANCE);
 
 			FoodStorage storage = new FoodStorage(villages.get(v).x + 2, villages.get(v).y - 1);
 			addEntity(storage.getPosition(), storage);
@@ -316,10 +316,32 @@ public class RandomWorld extends World{
 		removeBotEntity(doorPoint);
 		HouseFloor floor = new HouseFloor(x, y);
 		addEntity(doorPoint, floor);
-		topEntities.remove(doorPoint);
 		HouseDoor door = new HouseDoor(x, y, orientation);
 		addEntity(doorPoint, door);
 		
+		//ADD BACKDOOR
+		switch (orientation){
+		case Constants.DOWN_ENTRANCE:
+			doorPoint = new Point(x, y-j-1);
+			break;
+		case Constants.LEFT_ENTRANCE:
+			doorPoint = new Point(x+outerWidth-1, y);
+			break;
+		case Constants.RIGHT_ENTRANCE:
+			doorPoint = new Point(x-outerWidth+1, y);
+			break;
+		case Constants.UP_ENTRANCE:
+			doorPoint = new Point(x, y+j+1);
+			break;
+		}
+		removeTopEntity(doorPoint);
+		removeBotEntity(doorPoint);
+		floor = new HouseFloor(doorPoint.x, doorPoint.y);
+		addEntity(doorPoint, floor);
+		door = new HouseDoor(doorPoint.x, doorPoint.y, orientation);
+		addEntity(doorPoint, door);
+		
+		doorPoint = new Point(x,y);
 		
 		//ADD FLOOR
 		Bed bed;
