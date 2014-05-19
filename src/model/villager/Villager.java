@@ -391,7 +391,7 @@ public class Villager extends MidEntity implements Agent {
 		if(ageprog>12*Constants.TICKS_HOUR){
 			age++;
 			ageprog=0;
-			if(age>30){				
+			if(age>25){
 				deathrisk++;				
 			}
 		}
