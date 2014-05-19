@@ -74,7 +74,7 @@ public class SleepAction extends Action {
 				villager.updateStatus("sleeping");
 				firstTick = false;
 			}
-			villager.satisfySleep(0.1f);
+			villager.satisfySleep(0.17f);
 			if(villager.getSleepiness() >= Constants.MAX_SLEEP){
 				villager.updateStatus("wakeup");
 				villager.updateStatus("statusEnd");
@@ -89,7 +89,7 @@ public class SleepAction extends Action {
 				villager.updateStatus("sleeping");
 				firstTick = false;
 			}
-			villager.satisfySleep(0.1f);
+			villager.satisfySleep(0.17f);
 			if(villager.getSleepiness() >= Constants.MAX_SLEEP){
 				villager.updateStatus("wakeup");
 				villager.updateStatus("statusEnd");
